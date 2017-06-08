@@ -63,8 +63,8 @@
                 margin-bottom: 30px;
             }
         </style>
-				<script scr="js/app.js"></script>
-				<script src="js/md5.js"></script>
+        <script scr="js/app.js"></script>
+        <script src="js/md5.js"></script>
     </head>
     <script>
         function encode (obj) {
@@ -102,13 +102,8 @@
                     <input type="text" id="empno" name="empno" onchange="encode(this)" style="width: 500px;">
                 </div>
 
-                <div>
-                    @php
-                        //$results = DB::select('select * from mpe_category');
-                        //dd($results);
-                        //dd (DB::connection()->getPdo());
-                        //phpinfo();
-                    @endphp
+                <div id="app">
+                    <template></template>
                 </div>
             </div>
         </div>

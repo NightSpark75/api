@@ -20,7 +20,7 @@ class CreateFileBase extends Migration
             $table->string('name', 30)->nullable(); 
             $table->string('description', 200)->nullable();
             $table->string('previous', 36)->nullable();
-            $table->string('status', 1)->nullable();
+            $table->string('status', 1)->nullable()->comment('C=Creating, S=Success Save');
             $table->string('created_by', 10)->nullable();
             $table->string('updated_by', 10)->nullable();
             $table->timestamps();

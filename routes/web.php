@@ -12,9 +12,6 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('testapi2', function () {
-    return 'testapi2';
+    //return view('welcome');
+    return view('index');
 });

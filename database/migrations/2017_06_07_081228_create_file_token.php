@@ -20,7 +20,7 @@ class CreateFileToken extends Migration
             $table->string('file_token', 36)->primary();
             $table->string('load_user', 10); 
             $table->string('file_id', 36);
-            $table->string('status', 1)->nullable();
+            $table->string('status', 1)->nullable()->comment('G=Get Token, L=Loaded');
             $table->string('created_by', 10)->nullable();
             $table->string('updated_by', 10)->nullable();
             $table->timestamps();
