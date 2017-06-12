@@ -16,10 +16,10 @@ class CreateFileBase extends Migration
         //
         Schema::create('api_file_base', function($table)
         {
-            $table->string('id', 36)->primary();
-            $table->string('name', 30)->nullable(); 
-            $table->string('description', 200)->nullable();
-            $table->string('previous', 36)->nullable();
+            $table->string('id', 36)->primary()->comment('檔案id');
+            $table->string('name', 30)->nullable()->comment('檔案名稱'); 
+            $table->string('description', 200)->nullable()->comment('檔案描述');
+            $table->string('previous', 36)->nullable()->comment('上一版檔案id');
             $table->string('status', 1)->nullable()->comment('C=Creating, S=Success Save');
             $table->string('created_by', 10)->nullable();
             $table->string('updated_by', 10)->nullable();
