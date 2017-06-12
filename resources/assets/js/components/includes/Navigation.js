@@ -22,7 +22,7 @@ export default class Navigation extends React.Component{
             <div className="navbar navbar-default navbar-fixed-top">
                 <div className="container">
                     <div className="navbar-header">
-                    <a href="#/" className="navbar-brand">My React App</a>
+                    <a href="/" className="navbar-brand">My React App</a>
                     <button className="navbar-toggle" type="button" onClick={this.toggleCollapse.bind(this)}>
                         <span className="sr-only">Toggle Navigation</span>
                         <span className="icon-bar"></span>
