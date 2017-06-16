@@ -1,62 +1,124 @@
+/** 
+ * Upload.js
+ */
 import React from 'react';
+import axios from 'axios';
+
+function alert_msg (type, msg) {
+    let type_class = {
+        success: 'alert alert-success',
+        danger: 'alert alert-danger',
+        primary: 'alert alert-primary',
+        default: 'alert alert-default',
+        warning: 'alert alert-warning',
+    }
+    if (msg !== '') {
+        return(
+            <div className={type_class[type]}>
+                {msg}
+            </div>
+        );
+    };
+}
+
 export default class Upload extends React.Component{
     constructor(props){
         super(props);
 
-        this.stats = {
-            errors: '',
+        this.state = {
+            file_id: '',
+            user_id: '',
+            file_data: undefined,
+            msg: '',
+            msg_type: '',
         }
 
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.alert_msg = this.alert_msg.bind(this);
     }
 
-    handleSubmit(event){
-        return;
+    alert_msg (type, msg) {
+        let type_class = {
+            success: 'alert alert-success',
+            danger: 'alert alert-danger',
+            primary: 'alert alert-primary',
+            default: 'alert alert-default',
+            warning: 'alert alert-warning',
+        }
+        if (msg !== '') {
+            return(
+                <div className={type_class[type]}>
+                    {msg}
+                </div>
+            );
+        };
+    }
+
+    setMsg(type = '', msg = '') {
+        this.setState({
+            msg_type: type,
+            msg: msg,
+        });
+    }
+
+    componentDidMount() {
+        this.setState({
+            file_id: this.props.params.file_id,
+            user_id: this.props.params.user_id,
+        });
+    }
+
+    onFileChange(event){
+        event.preventDefault();
+        this.setState({file_data: event.target.files[0]})
+    }
+
+    onUpload(event){
+        const {file_id, user_id, file_data} = this.state;
+        
+        if (file_data === undefined) {
+            this.setMsg('danger', '請選擇檔案!');
+            return;
+        } else {
+            this.setMsg('', '');
+        }
+
+        let form_data = new FormData();
+        form_data.append('file_id', file_id);
+        form_data.append('user_id', user_id);
+        form_data.append('file_data', file_data);
+        axios.post('/api/file/upload', form_data, {
+            method: 'post',
+            headers: {'Content-Type': 'multipart/form-data'}
+        }).then(function (response) {
+            console.log(response);
+            //hashHistory.push('/posts');
+        }).catch(function (error) {
+            console.log(error);
+        });
+        
     }
     render(){
         return(
-            <div className="panel panel-default">
-                <div className="panel-body">
-                    <form className="form-horizontal" role="form" onSubmit={this.handleSubmit}>
-                        <input type="hidden" id="file_id" name="file_id" defaultValue={this.props.params.file_id}/>
-                        <div className="form-group">
-                            <label className="col-md-3 control-label">檔案名稱</label>
-                            <div className="col-md-9">
-                                <input type="text" className="form-control" id="file_name" name="file_name"/>
-                            </div>
+            <div className="row">
+                <div className="col-md-4 col-md-offset-4">
+                    <div className="panel panel-primary">
+                        <div className="panel-heading"><h4 className="panel-title">上傳檔案</h4></div>
+                        <div className="panel-body">
+                            <form role="form">
+                                <div className="form-group">
+                                    <input type="file" id="file_data" name="file_data" onChange={this.onFileChange.bind(this)}/>
+                                </div>
+                                {alert_msg(this.state.msg_type, this.state.msg)}
+                                <div className="form-group">
+                                    <button type="button" className="btn btn-primary" onClick={this.onUpload.bind(this)}>
+                                        <span className="glyphicon glyphicon-upload"></span>上傳
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                        <div className="form-group">
-                            <label className="col-md-3 control-label">檔案描述</label>
-                            <div className="col-md-9">
-                                <textarea className="form-control" rows="3" id="file_description" name="file_description"></textarea>
-                            </div>
-                        </div>
-                        <div className="form-group">
-                            <label className="col-md-3 control-label">上傳檔案</label>
-                            <div className="col-md-9">
-                                <input type="file" id="file_data" name="file_data"/>
-                            </div>
-                        </div>
-                        <div className="form-group">
-                            <div className="col-md-offset-3 col-md-9">
-                                <button type="submit" className="btn btn-default">上傳</button>
-                            </div>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         );
     }
 }
-/*
-    <div className="panel panel-default">
-        <div className="panel-body">
-            <form className="form-horizontal" role="form" method="POST" enctype="multipart/form-data" onSubmit={this.handleSubmit}>
-                <div className="form-group">
-                    <label className="control-label" for="file">檔案上傳</label>
-                    <input type="file" nam="file"/>
-                </div>
-            </form>
-        </div>
-    </div>
-*/

@@ -16,9 +16,22 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::get('/welcome', function () {
+    return view('welcome');
+});
+
+Route::get('/phpinfo', function () {
+    phpinfo();
+});
+
+Route::get('/pdo', function () {
+    dd (DB::connection()->getPdo());
+});
+
 // change your existing app route to this:
 // we are basically just giving it an optional parameter of "anything"
 Route::get('/{path?}', function($path = null){
         return View::make('index');
     })->where('path', '.*'); 
 //regex to match anything (dots, slashes, letters, numbers, etc)
+

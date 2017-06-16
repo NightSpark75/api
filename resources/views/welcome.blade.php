@@ -105,6 +105,13 @@
                 <div id="app">
                     <template></template>
                 </div>
+
+                <div>
+                    <form class="form-horizontal" method="POST" action="/api/file/upload" enctype="multipart/form-data">
+                        <input type="file" id="file_data" name="file_data"/>
+                        <button type="submit" >submit</button>
+                    </form>
+                </div>
             </div>
         </div>
     </body>

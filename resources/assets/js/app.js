@@ -7,8 +7,11 @@ import Home from "./components/Home";
 import Users from "./components/Users";
 import Articles from "./components/Articles";
 import Upload from "./components/Upload";
+//import jQuery from "jquery";
+//import Fileinput from "bootstrap-fileinput";
 
 const app = document.getElementById('app');
+//const $ = require('jQuery');
 
 ReactDOM.render(
     <Router history={browserHistory}>
@@ -19,7 +22,7 @@ ReactDOM.render(
             <Route path="upload" component={Upload}></Route>
         </Route>
         <Route path="s" component={SinglePage}>
-            <Route path="file/upload/:file_id" component={Upload}></Route>
+            <Route path="file/upload/:user_id/:file_id" component={Upload}></Route>
         </Route>
     </Router>,
 app);

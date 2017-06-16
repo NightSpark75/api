@@ -23,6 +23,9 @@
     "vue": "^2.3.4"
   },
   "dependencies": {
-    "Babel": "0.0.1"
+    "Babel": "0.0.1",
+    "bootstrap": "^3.3.7",
+    "bootstrap-fileinput": "^4.4.1",
+    "react-bootstrap": "^0.31.0"
   }
 }

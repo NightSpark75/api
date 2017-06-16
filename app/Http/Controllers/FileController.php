@@ -8,14 +8,17 @@ class FileController extends Controller
 {
     //
 
-    function __onstruct()
+    function __construct()
     {
 
     }
 
-    function uploadFile()
+    function uploadFile(Request $req)
     {
-
+        $x = request()->input();
+        $f = request()->file('file_data');
+        $a = $req->all();
+        $t = request()->hasFile('file_data');
     }
 
     function downloadFile()

@@ -22,3 +22,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('testapi', function () {
     return 'testapi';
 });
+
+Route::post('file/upload', 'FileController@uploadFile');
