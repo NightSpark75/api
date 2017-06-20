@@ -23,6 +23,18 @@ class FileRepository
 
     }
 
+
+    /**
+     * 寫入檔案資料
+     * 
+     * @param string $id file id
+     * @param string $user user id
+     * @param string $name name 檔名
+     * @param string $file_name file name 副檔名
+     * @param string $mime MIME 檔案型態
+     * @param string $code base64 code
+     * @return 
+     */
     public function set_upload_file_data($id, $user, $name, $file_name, $mime, $code) 
     {
         $pdo = DB::getPdo();
@@ -42,6 +54,14 @@ class FileRepository
         $proc->execute();
     }
 
+    /**
+     * 取得檔案base64編碼
+     * 
+     * @param string $token file token
+     * @param string $file_id file id
+     * @param string $user user id
+     * @return 
+     */
     public function get_file_code($token, $file_id, $user)
     {
         $pdo = DB::getPdo();
