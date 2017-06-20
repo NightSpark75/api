@@ -18,7 +18,7 @@ class CreateFileToken extends Migration
         Schema::create('api_file_token', function($table)
         {
             $table->string('file_token', 32)->primary()->comment('取檔token');
-            $table->string('load_user', 10)->comment('檔案取用人員'); 
+            $table->string('load_user', 32)->comment('檔案取用人員'); 
             $table->string('file_id', 32)->comment('檔案id');
             $table->string('status', 1)->nullable()->comment('G=Get Token, L=Loaded');
             $table->string('created_by', 10)->nullable();
