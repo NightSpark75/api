@@ -28,75 +28,42 @@ class FileController extends Controller
         $id = $input['file_id'];
         $user = $input['user_id'];
         $name = $file->getClientOriginalName();
-        $extention = $file->getClientOriginalExtension();
+        $extension = $file->getClientOriginalExtension();
         $mime = $file->getMimeType();
         $data = file_get_contents($file);
         $code = base64_encode($data);
-        $this->file->set_upload_file_data($id, $user, $name, $extention, $mime, $code);
-        //$this->file->set_upload_file_data($id, $user, $name, $extention, $mime, $file);
+        $result = $this->file->set_upload_file_data($id, $user, $name, $extension, $mime, $code);
+        return $result;
     }
 
-    function downloadFile(Request $req)
+    function downloadFile($token, $file_id, $user_id)
     {
-        $input = $req->input();
-        $token = $input['token'];
-        $file_id = $input['file_id'];
-        $user_id = $input['user_id'];
-        $file_info = $this->file->get_file_info($token, $file_id, $user_id);
+        $result = $this->file->get_file_info($token, $file_id, $user_id);
         
-        $mime = $file_info->mime;
-        $name = $file_info->name;
-        $code = base64_decode($file_info->code);
+        if ($result['result'] == false) {
+            return $result['msg'];
+        }
 
-        return response($code)
-            ->header('Content-Type', $mime) // MIME
-            ->header('Content-length', strlen($code)) // base64
-            ->header('Content-Disposition', 'attachment; filename=' . $name) // file_name
-            ->header('Content-Transfer-Encoding', 'binary');
-    }
-
-    function testproc()
-    {
-        $pdo = DB::getPdo();
-        //$pdo = $this->db->getPdo();
-
-        $name = 'test';
-        $dis = 'test proc';
-        $user = '106013';
-        $pre = '';
-        $result;
-        $msg;
+        $mime = $result['info']['mime'];
+        $name = $result['info']['name'];
+        $code = base64_decode($result['info']['code']);
+        $extension = $result['info']['extension'];
         
+        $online_open = ['pdf'];
 
-        $proc = $pdo->prepare("begin pk_common.get_new_file_id(:name, :dis, :user, :pre, :id, :result, :msg); end;");
-        // in
-        $proc->bindValue(':name', $name, PDO::PARAM_STR, 30);
-        $proc->bindParam(':dis', $dis, PDO::PARAM_STR, 200);
-        $proc->bindParam(':user', $uesr, PDO::PARAM_STR, 10);
-        $proc->bindParam(':pre', $pre, PDO::PARAM_STR, 32);
-        // out
-        $proc->bindParam(':id', $id, PDO::PARAM_STR, 32);
-        $proc->bindParam(':result', $result, PDO::PARAM_STR, 10);
-        $proc->bindParam(':msg', $msg, PDO::PARAM_STR, 1000);
-
-        $proc->execute();
-        return ['name' => $name, 
-                'dis' => $dis, 
-                'user' => $user, 
-                'pre' => $pre, 
-                'id' => $id, 
-                'result' => $result,
-                'msg' => $msg];
-    }
-
-    function g_test()
-    {
-        //$pdo = DB::getPdo();
-        $p1 = 'test';
-        $proc = $this->pdo->prepare('begin pk_common.g_test(:p1, :p2); end;');
-        $proc->bindValue(':p1', $p1, PDO::PARAM_STR, 10);
-        $proc->bindParam(':p2', $p2, PDO::PARAM_STR, 10);
-        $proc->execute();
-        return (string)$p2;
+        if (in_array($extension, $online_open)) {
+            $response = response($code)
+                ->header('Content-Type', $mime) // MIME
+                ->header('Content-length', strlen($code)) // base64
+                ->header('Content-Transfer-Encoding', 'binary');
+        } else {
+            $response = response($code)
+                ->header('Content-Type', $mime) // MIME
+                ->header('Content-length', strlen($code)) // base64
+                ->header('Content-Disposition', 'attachment; filename=' . $name) // file_name
+                ->header('Content-Transfer-Encoding', 'binary');
+        }
+        
+        return $response;
     }
 }

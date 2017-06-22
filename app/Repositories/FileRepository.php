@@ -64,15 +64,17 @@ class FileRepository
      */
     public function set_upload_file_data($id, $user, $name, $extension, $mime, $code) 
     {
-        $user_query = 
-            'select created_by as "user" 
+        $user_query = "
+            select created_by as \"user\" 
                 from api_file_base 
-                where id = \''.$id.'\'';
+                where id = '$id'
+        ";
         $created_user = $this->select($user_query)->user;
 
-        $md5_query = 
-            'select pk_common.get_md5(\''.$created_user.'\') as "md5" 
-                from dual';
+        $md5_query = "
+            select pk_common.get_md5('$created_user') as \"md5\" 
+                from dual
+        ";
         $user_md5 = $this->select($md5_query)->md5;
 
         if ($user_md5 != $user) {
@@ -88,10 +90,11 @@ class FileRepository
         $insert_code = $this->query($code_bindings, $insert_code_query);
 
         $file_bindings = [$id];
-        $update_file_query = 
-            'update api_file_base 
-                set status = \'S\', updated_by = created_by , updated_at = CURRENT_TIMESTAMP 
-                where id = ?';
+        $update_file_query = "
+            update api_file_base 
+                set status = 'S', updated_by = created_by , updated_at = CURRENT_TIMESTAMP 
+                where id = ?
+        ";
         $update_file = $this->query($file_bindings, $update_file_query);
 
         return $update_file;
@@ -107,45 +110,48 @@ class FileRepository
      */
     public function get_file_info($token, $file_id, $user)
     {
-        $query = 
-            'select t.file_id, t.load_user, t.status, c.name, c.extension, c.mime, c.code, t.created_by
+        $query = "
+            select t.file_id, t.load_user, t.status, c.name, c.extension, c.mime, c.code, t.created_by
                 from api_file_token t, api_file_code c
-                where t.file_id = c.file_id and file_token \'' . $token . '\'';
+                where t.file_id = pk_common.get_md5(c.file_id) and file_token = '$token'
+        ";
         $select = $this->select($query);
 
-        $s_file_id = $select->file_id;
-        $s_load_user = $select->load_user;
-        $s_status = $select->status;
-        $s_name = $select->name;
-        $s_extension = $select->extension;
-        $s_mime = $select->mime;
-        $s_code = $select->code;
-        $s_created_by = $select->code;
-        
-        return [
-            'name' => $s_name,
-            'file_name' => $s_extension,
-            ''
+        if ($select == null) {
+            return [
+                'result' => false,
+                'msg' => '您無權限讀取該檔案',
+                'info' => [],
+            ];
+        }
+
+        if ($select->status != 'G') {
+            return [
+                'result' => false,
+                'msg' => '請重新點選讀檔',
+                'info' => [],
+            ];
+        }
+
+        $binds = [$token];
+        $update = "
+            update api_file_token
+                set status = 'L', updated_by = created_by, updated_at = CURRENT_TIMESTAMP
+                where file_token = ?
+        ";
+        $res = $this->query($binds, $update);
+
+        $info = [
+            'name' => $select->name,
+            'mime' => $select->mime,
+            'code' => $select->code,
+            'extension' => $select->extension,
         ];
-
-
-
-        $pdo = DB::getPdo();
-        
-        $proc = $pdo->prepare('begin pk_common.get_file_code(:token, :file_id, :user, :name, :file_name, :mime, :code, :result, :msg); end;');
-        // in
-        $proc->bindParam(':token', $token);
-        $proc->bindParam(':file_id', $file_id);
-        $proc->bindParam(':user', $user);
-        // out
-        $proc->bindParam(':name', $name);
-        $proc->bindParam(':file_name', $file_name);
-        $proc->bindParam(':mime', $mime);
-        $proc->bindParam(':code', $code);
-        $proc->bindParam(':result', $result);
-        $proc->bindParam(':msg', $msg);
-
-        $proc->execute();
+        return [
+            'result' => true,
+            'msg' => '讀取檔案成功',
+            'info' => $info,
+        ];
     }
 
 }
