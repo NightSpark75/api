@@ -22,7 +22,7 @@ ReactDOM.render(
             <Route path="upload" component={Upload}></Route>
         </Route>
         <Route path="s" component={SinglePage}>
-            <Route path="file/upload/:user_id/:file_id" component={Upload}></Route>
+            <Route path="file/upload/:file_id/:user_id" component={Upload}></Route>
         </Route>
     </Router>,
 app);

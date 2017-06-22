@@ -14,7 +14,7 @@ class CreateCache extends Migration
     public function up()
     {
         //
-        Schema::create('cache', function($table) {
+        Schema::create('api_cache', function($table) {
             $table->string('key')->unique();
             $table->text('value');
             $table->integer('expiration');

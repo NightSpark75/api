@@ -16,11 +16,9 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-
 // url need api/
-Route::get('testapi', function () {
-    return 'testapi';
-});
+
+
+Route::get('file/testproc', 'FileController@g_test');
 
 Route::post('file/upload', 'FileController@uploadFile');

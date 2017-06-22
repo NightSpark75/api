@@ -13450,7 +13450,7 @@ __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */],
         { path: "s", component: __WEBPACK_IMPORTED_MODULE_4__components_SinglePage__["a" /* default */] },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "file/upload/:user_id/:file_id", component: __WEBPACK_IMPORTED_MODULE_8__components_Upload__["a" /* default */] })
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "file/upload/:file_id/:user_id", component: __WEBPACK_IMPORTED_MODULE_8__components_Upload__["a" /* default */] })
     )
 ), app);
 
