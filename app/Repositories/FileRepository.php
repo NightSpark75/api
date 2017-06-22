@@ -1,11 +1,11 @@
 <?php
 /**
- * File相關資料邏輯處理
+ * 檔案上傳與下載資料處理
  *
  * @version 1.0.0
  * @author spark Lin.yupin@standart.com.tw
- * @date 17/06/20
- * @since 1.0.0 spark: 建立檔案寫入與讀取相關procedure
+ * @date 17/06/22
+ * @since 1.0.0 spark: 建立檔案寫入與讀取相關的SQL
  * 
  */
 namespace App\Repositories;
@@ -20,11 +20,6 @@ use PDO;
  */
 class FileRepository
 {   
-    public function __constructure() 
-    {
-
-    }
-
     /**
      * 執行SQL語法
      * 

@@ -1,7 +1,20 @@
 <?php
-
+/**
+ * 取得UUID
+ *
+ * @version 1.0.0
+ * @author spark Lin.yupin@standart.com.tw
+ * @date 17/06/22
+ * @since 1.0.0 spark: 完成基本功能
+ * 
+ */
 namespace Traits;
 
+/**
+ * Class Uuid
+ *
+ * @package App\Traits
+ */
 class Uuid
 {
     /**

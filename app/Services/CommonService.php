@@ -1,19 +1,22 @@
 <?php
-
+/**
+ * 共用元件函式庫
+ *
+ * @version 1.0.0
+ * @author spark Lin.yupin@standart.com.tw
+ * @date 17/06/22
+ * @since 1.0.0 spark: 完成檔案上傳與下載功能
+ * 
+ */
 namespace Services;
 
+/**
+ * Class CommonService
+ *
+ * @package App\Service
+ */
 class CommonService
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Common Class
-    |--------------------------------------------------------------------------
-    |
-    | 共用元件函式庫
-    |
-    */
-
-
     /**
      * 取得UUID
      *

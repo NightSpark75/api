@@ -1,26 +1,31 @@
 <?php
-
+/**
+ * 檔案上傳與下載相關邏輯
+ *
+ * @version 1.0.0
+ * @author spark Lin.yupin@standart.com.tw
+ * @date 17/06/22
+ * @since 1.0.0 spark: 完成檔案上傳與下載功能
+ * 
+ */
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use DB;
-use PDO;
 use App\Repositories\FileRepository;
 
+/**
+ * Class FileController
+ *
+ * @package App\Http\Controllers
+ */
 class FileController extends Controller
 {
-    //
-    private $db;
-    private $file;
-    private $pdo;
-
-    function __construct(DB $db, FileRepository $file)
-    {
-        $this->db = $db;
-        $this->file = $file;
-        $this->pdo = DB::getPdo();
-    }
-
+    /**
+     * file upload
+     * 
+     * @param Request $req request
+     * @return array
+     */
     function uploadFile(Request $req)
     {
         $input = $req->input();
@@ -36,6 +41,14 @@ class FileController extends Controller
         return $result;
     }
 
+    /**
+     * file download
+     * 
+     * @param string $token load file token
+     * @param string $file_id load file id
+     * @param string $user_id user id
+     * @return response
+     */
     function downloadFile($token, $file_id, $user_id)
     {
         $result = $this->file->get_file_info($token, $file_id, $user_id);
@@ -63,7 +76,7 @@ class FileController extends Controller
                 ->header('Content-Disposition', 'attachment; filename=' . $name) // file_name
                 ->header('Content-Transfer-Encoding', 'binary');
         }
-        
+
         return $response;
     }
 }
