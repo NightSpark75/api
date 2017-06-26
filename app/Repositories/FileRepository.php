@@ -57,11 +57,11 @@ class FileRepository
         $user_md5 = $this->userToMD5($created_user);
 
         if($status == 'S') {
-            throw new Exception('#0002;檔案已上傳成功，無法重複上傳');
+            throw new Exception('#0001;檔案已上傳成功，無法重複上傳');
         }
 
         if ($user_md5 != $user) {
-            throw new Exception('#0003;檔案驗證資訊有誤，您無權限讀取該檔案!');
+            throw new Exception('#0002;檔案驗證資訊有誤，您無權限讀取該檔案!');
         }
         return $created_user;
     }
@@ -83,7 +83,7 @@ class FileRepository
         if (isset($result)) {
             return $result;
         }
-        throw new Exception('#0004;查詢不到檔案資料!');
+        throw new Exception('#0003;查詢不到檔案資料!');
     }
 
     /**
@@ -94,15 +94,9 @@ class FileRepository
      */
     private function userToMD5($user)
     {
-        $query = "
-            select pk_common.get_md5('$user') as \"md5\" 
-                from dual
-        ";
+        $query = "select pk_common.get_md5('$user') as \"md5\" from dual";
         $result = $this->select($query);
-        if (isset($result)) {
-            return $result->md5;
-        }
-        throw new Exception('#0005;user轉換MD5編碼有異常');
+        return $result->md5;
     }
 
     /**
@@ -181,7 +175,7 @@ class FileRepository
         try {
             $file_info = $this->getFileInfo($token, $file_id, $user);
             $this->updateFileStatus($token);
-            return ['result' => true, 'msg' => '#0007;檔案資料截取成功!', 'file' => $file_info];
+            return ['result' => true, 'msg' => '#0005;檔案資料截取成功!', 'file' => $file_info];
         } catch (Exception $e) {
             return ['result' => false, 'msg' => $e->getMessage()];
         }
@@ -203,12 +197,12 @@ class FileRepository
                 where t.file_id = pk_common.get_md5(c.file_id) and t.status = 'G'
                     and t.file_token = '$token' and t.file_id = '$file_id' and t.load_user = '$user'
         ";
-        $result = $this->select($query);
+        $file_info = $this->select($query);
 
-        if ($result == null) {
+        if ($file_info == null) {
             throw new Exception('#0006讀取檔案的驗證參數有異常，您無權限讀取此檔!');
         }
-        return $result;
+        return $file_info;
     }
 
     /**

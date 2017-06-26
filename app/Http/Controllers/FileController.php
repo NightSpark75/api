@@ -73,11 +73,11 @@ class FileController extends Controller
      */
     private function setFile($file)
     {
-        $decode = base64_decode($file['code']);
-        $code = $file['code'];
-        $name = $file['name'];
-        $mime = $file['mime'];
-        $extension = $file['extension'];
+        $decode = base64_decode($file->code);
+        $code = $file->code;
+        $name = $file->name;
+        $mime = $file->mime;
+        $extension = $file->extension;
 
         if (in_array($extension, $this->online_open)) {
             return $this->onlineOpen($decode, $mime, $code);

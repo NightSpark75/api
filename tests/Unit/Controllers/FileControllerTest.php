@@ -59,59 +59,23 @@ class FileControllerTest extends TestCase
     }
 
     /**
-     * test downloadFile.
+     * test downloadFile. return attachment
      *
      * @return void
      */
-    public function test_downloadFile()
+    public function test_downloadFile_attachment()
     {
         /** arrange */
-        $pars = [':name' => 'test', ':dis' => 'test dis', ':user' => 'test_user', ':pre' => '', ':id' => '', ':res' => '', ':msg' => ''];
-        $pars = $this->procedure('pk_common.get_new_file_id', $pars);
-        $file_id = $pars[':id'];
-
-        $bindings = [$file_id];
-        $upload_query = "
-            update api_file_base 
-                set status = 'S', updated_by = created_by, updated_at = CURRENT_TIMESTAMP 
-            where id = ?
-        ";
-        $this->query($bindings, $upload_query);
-
-        $upload_query = "
-            update api_file_code
-                set 
-                    name = 'test.txt', 
-                    extension = 'txt',
-                    mime = 'text/plain',
-                    code = 'MTIz',
-                    updated_by = created_by, 
-                    updated_at = CURRENT_TIMESTAMP
-            where file_id = ?
-        ";
-        $this->query($bindings, $upload_query);
-
-        $pars = [':id' => $file_id, ':user' => 'test_user', ':token' => '', ':md5_user' => '', ':md5_id' => '',  ':res' => '', ':msg' => ''];
-        $pars = $this->procedure('pk_common.get_file_token', $pars);
-        $token = $pars[':token'];
-        $md5_file_id = $pars[':md5_id'];
-        $md5_user_id = $pars[':md5_user'];
-
-        $file_query = "select name, code, mime, extension from api_file_code where file_id = '$file_id'";
-        $file = $this->select($file_query);
-
-        $result = ['result' => true, 'msg' => 'download file', 
-            'file' => [
-                'code' => $file->code,
-                'mime' => $file->mime,
-                'name' => $file->name,
-                'extension' => $file->extension, 
-            ]
-        ];
-        $expected = response(base64_decode($file->code))
-            ->header('Content-Type', $file->mime) // MIME
-            ->header('Content-length', strlen($file->code)) // base64
-            ->header('Content-Disposition', 'attachment; filename=' . $file->name) // file_name
+        $file = new \stdClass();
+        $file->code = 'code';
+        $file->mime = 'mime';
+        $file->name = 'name';
+        $file->extension = 'extension';
+        $result = ['result' => true, 'msg' => 'download file', 'file' => $file];
+        $expected = response(base64_decode('code'))
+            ->header('Content-Type', 'mime') // MIME
+            ->header('Content-length', strlen('code')) // base64
+            ->header('Content-Disposition', 'attachment; filename=' . 'name') // file_name
             ->header('Content-Transfer-Encoding', 'binary');
 
         /** act */
@@ -120,7 +84,61 @@ class FileControllerTest extends TestCase
             ->once()
             ->withAnyArgs()
             ->andReturn($result);
-        $actual = $this->target->downloadFile($token, $md5_file_id, $md5_user_id);
+        $actual = $this->target->downloadFile('token', 'file_id', 'user_id');
+
+        /** assert */
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * test downloadFile. online open file
+     *
+     * @return void
+     */
+    public function test_downloadFile_open()
+    {
+        /** arrange */
+        $file = new \stdClass();
+        $file->code = 'code';
+        $file->mime = 'mime';
+        $file->name = 'name';
+        $file->extension = 'pdf';
+        $result = ['result' => true, 'msg' => 'download file', 'file' => $file];
+        $expected = response(base64_decode('code'))
+            ->header('Content-Type', 'mime') // MIME
+            ->header('Content-length', strlen('code')) // base64
+            ->header('Content-Transfer-Encoding', 'binary');
+
+        /** act */
+        $this->app->instance(FileController::class, $this->mock);
+        $this->mock->shouldReceive('downloadFile')
+            ->once()
+            ->withAnyArgs()
+            ->andReturn($result);
+        $actual = $this->target->downloadFile('token', 'file_id', 'user_id');
+
+        /** assert */
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * test downloadFile. result false
+     *
+     * @return void
+     */
+    public function test_downloadFile_result_false()
+    {
+        /** arrange */
+        $result = ['result' => false, 'msg' => 'result false'];
+        $expected = view('error')->with('message', $result['msg']);
+
+        /** act */
+        $this->app->instance(FileController::class, $this->mock);
+        $this->mock->shouldReceive('downloadFile')
+            ->once()
+            ->withAnyArgs()
+            ->andReturn($result);
+        $actual = $this->target->downloadFile('token', 'file_id', 'user_id');
 
         /** assert */
         $this->assertEquals($expected, $actual);
