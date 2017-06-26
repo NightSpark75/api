@@ -8,14 +8,14 @@
  * @since 1.0.0 spark: 完成基本功能
  * 
  */
-namespace Traits;
+namespace App\Traits;
 
 /**
- * Class Uuid
+ * trait Uuid
  *
  * @package App\Traits
  */
-class Uuid
+trait Uuid
 {
     /**
      * 取得UUID

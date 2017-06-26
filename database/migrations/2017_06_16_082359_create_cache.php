@@ -29,5 +29,6 @@ class CreateCache extends Migration
     public function down()
     {
         //
+        Schema::dropIfExists('api_cache');
     }
 }

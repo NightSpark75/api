@@ -74,7 +74,7 @@ export default class Upload extends React.Component{
 
     onUpload(event){
         const {file_id, user_id, file_data} = this.state;
-        
+        let self = this;
         if (file_data === undefined) {
             this.setMsg('danger', '請選擇檔案!');
             return;
@@ -91,7 +91,11 @@ export default class Upload extends React.Component{
             headers: {'Content-Type': 'multipart/form-data'}
         }).then(function (response) {
             console.log(response);
-            //hashHistory.push('/posts');
+            if (response.data.result) {
+                self.setMsg('success', response.data.msg);
+            } else {
+                self.setMsg('danger', response.data.msg);
+            }
         }).catch(function (error) {
             console.log(error);
         });

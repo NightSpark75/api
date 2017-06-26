@@ -20,6 +20,10 @@ Route::get('/welcome', function () {
     return view('welcome');
 });
 
+Route::get('/error', function () {
+    return view('error');
+});
+
 Route::get('/phpinfo', function () {
     phpinfo();
 });

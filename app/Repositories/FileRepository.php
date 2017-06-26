@@ -10,8 +10,8 @@
  */
 namespace App\Repositories;
 
-use DB;
-use PDO;
+use Exception;
+use App\Traits\Sqlexecute;
 
 /**
  * Class FileRepository
@@ -20,133 +20,211 @@ use PDO;
  */
 class FileRepository
 {   
+    use Sqlexecute;
+
     /**
-     * 執行SQL語法
+     * 檔案上傳
      * 
-     * @param array $bindings parames
-     * @param string $query query string
-     * @return 
+     * @param string $id file id
+     * @param string $user user id
+     * @param uploadFile $file  檔案物件
+     * @return array
      */
-    public function query($bindings, $query) 
+    public function uploadFile($id, $user, $file)
     {
-        $statement = DB::getPdo()->prepare($query);
-        DB::bindValues($statement, DB::prepareBindings($bindings));
-        $statement->execute();
-        return ['result' => true, $msg = 'execute query success!!'];
+        try {
+            $created_user = $this->checkUpload($id, $user);
+            $this->insertFile($id, $file, $created_user);
+            $this->changeFileStatus($id);
+            return ['result' => true, 'msg' => '#0000;檔案上傳成功!'];
+        } catch (Exception $e) {
+            return ['result' => false, 'msg' => $e->getMessage()];
+        }
     }
 
     /**
-     * 執行SQL查詢
+     * 上傳前資料檢核
      * 
-     * @param string $query query string
-     * @return 
+     * @param string $id file id
+     * @param string $user user id
+     * @return string created user id
      */
-    public function select($query)
+    private function checkUpload($id, $user)
     {
-        return DB::selectOne($query);
+        $file_base = $this->getFileUser($id);
+        $created_user = $file_base->user;
+        $status = $file_base->status;
+        $user_md5 = $this->userToMD5($created_user);
+
+        if($status == 'S') {
+            throw new Exception('#0002;檔案已上傳成功，無法重複上傳');
+        }
+
+        if ($user_md5 != $user) {
+            throw new Exception('#0003;檔案驗證資訊有誤，您無權限讀取該檔案!');
+        }
+        return $created_user;
+    }
+
+    /**
+     * 取得建檔使用者與狀態
+     * 
+     * @param string $id file id
+     * @return array user and status
+     */
+    private function getFileUser($id)
+    {
+        $query = "
+            select created_by as \"user\", status 
+                from api_file_base
+                where id = '$id'
+            ";
+        $result = $this->select($query);
+        if (isset($result)) {
+            return $result;
+        }
+        throw new Exception('#0004;查詢不到檔案資料!');
+    }
+
+    /**
+     * 使用者id md5加密
+     * 
+     * @param string $id file id
+     * @return string
+     */
+    private function userToMD5($user)
+    {
+        $query = "
+            select pk_common.get_md5('$user') as \"md5\" 
+                from dual
+        ";
+        $result = $this->select($query);
+        if (isset($result)) {
+            return $result->md5;
+        }
+        throw new Exception('#0005;user轉換MD5編碼有異常');
     }
 
     /**
      * 寫入檔案資料
      * 
      * @param string $id file id
-     * @param string $user user id
      * @param string $name name 檔名
      * @param string $extension extension副檔名
      * @param string $mime MIME 檔案型態
      * @param string $code base64 code
-     * @return 
+     * @param string $created_user user id
+     * @return array
      */
-    public function set_upload_file_data($id, $user, $name, $extension, $mime, $code) 
+    private function insertFile($id, $file, $created_user)
     {
-        $user_query = "
-            select created_by as \"user\" 
-                from api_file_base 
-                where id = '$id'
-        ";
-        $created_user = $this->select($user_query)->user;
+        $bindings = $this->getFileContent($file);
+        $bindings['updated_by'] = $created_user;
+        $bindings['file_id'] = $id;
+        $query = 
+            'update api_file_code 
+                set name = :name, extension = :extension, mime = :mime, code = :code, 
+                    updated_by = :updated_by, updated_at = CURRENT_TIMESTAMP
+                where file_id = :file_id
+        ';
+        $this->query($bindings, $query);       
+    }
 
-        $md5_query = "
-            select pk_common.get_md5('$created_user') as \"md5\" 
-                from dual
-        ";
-        $user_md5 = $this->select($md5_query)->md5;
+    /**
+     * 取得上傳檔案內容
+     * 
+     * @param uploadFile $file client uploaded file content
+     * @return array
+     */
+    private function getFileContent($file)
+    {
+        $name = $file->getClientOriginalName();
+        $extension = $file->getClientOriginalExtension();
+        $mime = $file->getMimeType();
+        $code = base64_encode(file_get_contents($file));
+        
+        return [
+            'name' => $name,
+            'extension' => $extension,
+            'mime' => $mime,
+            'code' => $code,
+        ];
+    }
 
-        if ($user_md5 != $user) {
-            return ['result' => false, 'msg' => 'not the creator'];
-        }
-
-        $code_bindings = [$id, $name, $extension, $mime, $code, $created_user];
-        $insert_code_query = 
-            'insert into api_file_code 
-                    (file_id, name, extension, mime, code, created_by, created_at) 
-                values 
-                    (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)';
-        $insert_code = $this->query($code_bindings, $insert_code_query);
-
-        $file_bindings = [$id];
-        $update_file_query = "
+    /**
+     * 更新檔案資料狀態
+     * 
+     * @param string $id file id
+     * @return array
+     */
+    private function changeFileStatus($id)
+    {
+        $bindings = [$id];
+        $query = "
             update api_file_base 
                 set status = 'S', updated_by = created_by , updated_at = CURRENT_TIMESTAMP 
                 where id = ?
         ";
-        $update_file = $this->query($file_bindings, $update_file_query);
-
-        return $update_file;
+        $this->query($bindings, $query);
     }
 
     /**
-     * 取得檔案base64編碼
+     * 下載檔案
      * 
      * @param string $token file token
      * @param string $file_id file id
      * @param string $user user id
-     * @return 
+     * @return mix
      */
-    public function get_file_info($token, $file_id, $user)
+    public function downloadFile($token, $file_id, $user)
+    {
+        try {
+            $file_info = $this->getFileInfo($token, $file_id, $user);
+            $this->updateFileStatus($token);
+            return ['result' => true, 'msg' => '#0007;檔案資料截取成功!', 'file' => $file_info];
+        } catch (Exception $e) {
+            return ['result' => false, 'msg' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * 取得檔案資料
+     * 
+     * @param string $token file token
+     * @param string $file_id file id
+     * @param string $user user id
+     * @return array
+     */
+    private function getFileInfo($token, $file_id, $user)
     {
         $query = "
             select t.file_id, t.load_user, t.status, c.name, c.extension, c.mime, c.code, t.created_by
                 from api_file_token t, api_file_code c
-                where t.file_id = pk_common.get_md5(c.file_id) and file_token = '$token'
+                where t.file_id = pk_common.get_md5(c.file_id) and t.status = 'G'
+                    and t.file_token = '$token' and t.file_id = '$file_id' and t.load_user = '$user'
         ";
-        $select = $this->select($query);
+        $result = $this->select($query);
 
-        if ($select == null) {
-            return [
-                'result' => false,
-                'msg' => '您無權限讀取該檔案',
-                'info' => [],
-            ];
+        if ($result == null) {
+            throw new Exception('#0006讀取檔案的驗證參數有異常，您無權限讀取此檔!');
         }
+        return $result;
+    }
 
-        if ($select->status != 'G') {
-            return [
-                'result' => false,
-                'msg' => '請重新點選讀檔',
-                'info' => [],
-            ];
-        }
-
+    /**
+     * 更新檔案資訊
+     * 
+     * @param string $token file token
+     * @return void
+     */
+    private function updateFileStatus($token)
+    {
         $binds = [$token];
         $update = "
             update api_file_token
                 set status = 'L', updated_by = created_by, updated_at = CURRENT_TIMESTAMP
                 where file_token = ?
         ";
-        $res = $this->query($binds, $update);
-
-        $info = [
-            'name' => $select->name,
-            'mime' => $select->mime,
-            'code' => $select->code,
-            'extension' => $select->extension,
-        ];
-        return [
-            'result' => true,
-            'msg' => '讀取檔案成功',
-            'info' => $info,
-        ];
+        $this->query($binds, $update);
     }
-
 }

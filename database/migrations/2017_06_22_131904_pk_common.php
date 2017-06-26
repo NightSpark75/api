@@ -131,6 +131,9 @@ class PkCommon extends Migration
                 v_id := sys_guid();
                 insert into api_file_base 
                     values (v_id, v_name, v_discription, v_previous, 'C', v_user, '', CURRENT_TIMESTAMP, '');
+
+                insert into api_file_code (file_id, created_by, created_at)
+                    values (v_id, v_user, CURRENT_TIMESTAMP);
                 r_id := v_id;
                 r_result := 'true';
                 r_msg := 'create file data success !!';
@@ -197,8 +200,11 @@ class PkCommon extends Migration
                 r_result out varchar2, r_msg out varchar2) is
             -- ----------------------------------------------------------------------------
             begin
-                insert into api_file_code 
-                    values (v_id, v_name, v_extension, v_mime, v_code, v_user, '', CURRENT_TIMESTAMP, '');
+                update api_file_code 
+                    set name = v_name, extension = v_extension, mime = v_mime,
+                        updated_by = v_user, updated_at = CURRENT_TIMESTAMP
+                    where file_id = v_id;
+
             
                 update api_file_base
                     set status = 'S', updated_by = v_user

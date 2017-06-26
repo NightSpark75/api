@@ -10,7 +10,6 @@
  */
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Repositories\FileRepository;
 
 /**
@@ -20,25 +19,33 @@ use App\Repositories\FileRepository;
  */
 class FileController extends Controller
 {
+    private $file;
+    private $online_open = ['pdf'];
+
+    /**
+     * construct
+     * 
+     * @param FileRepository $file
+     * @return void
+     */
+    public function __construct(FileRepository $file)
+    {
+        $this->file = $file;
+    }
+
     /**
      * file upload
      * 
      * @param Request $req request
      * @return array
      */
-    function uploadFile(Request $req)
+    public function uploadFile()
     {
-        $input = $req->input();
-        $file = $req->file('file_data');
-        $id = $input['file_id'];
-        $user = $input['user_id'];
-        $name = $file->getClientOriginalName();
-        $extension = $file->getClientOriginalExtension();
-        $mime = $file->getMimeType();
-        $data = file_get_contents($file);
-        $code = base64_encode($data);
-        $result = $this->file->set_upload_file_data($id, $user, $name, $extension, $mime, $code);
-        return $result;
+        $file = request()->file('file_data');
+        $id = request()->input('file_id');
+        $user = request()->input('user_id');
+        $result = $this->file->uploadFile($id, $user, $file);
+        return response()->json($result);
     }
 
     /**
@@ -47,36 +54,72 @@ class FileController extends Controller
      * @param string $token load file token
      * @param string $file_id load file id
      * @param string $user_id user id
-     * @return response
+     * @return Mixed
      */
-    function downloadFile($token, $file_id, $user_id)
+    public function downloadFile($token, $file_id, $user_id)
     {
-        $result = $this->file->get_file_info($token, $file_id, $user_id);
-        
-        if ($result['result'] == false) {
-            return $result['msg'];
+        $result = $this->file->downloadFile($token, $file_id, $user_id);
+        if ($result['result']) {
+            return $this->setFile($result['file']);
         }
+        return view('error')->with('message', $result['msg']);
+    }
 
-        $mime = $result['info']['mime'];
-        $name = $result['info']['name'];
-        $code = base64_decode($result['info']['code']);
-        $extension = $result['info']['extension'];
-        
-        $online_open = ['pdf'];
+    /**
+     * 建構檔案下載頁面
+     * 
+     * @param array $file $file_info
+     * @return Response
+     */
+    private function setFile($file)
+    {
+        $decode = base64_decode($file['code']);
+        $code = $file['code'];
+        $name = $file['name'];
+        $mime = $file['mime'];
+        $extension = $file['extension'];
 
-        if (in_array($extension, $online_open)) {
-            $response = response($code)
-                ->header('Content-Type', $mime) // MIME
-                ->header('Content-length', strlen($code)) // base64
-                ->header('Content-Transfer-Encoding', 'binary');
-        } else {
-            $response = response($code)
-                ->header('Content-Type', $mime) // MIME
-                ->header('Content-length', strlen($code)) // base64
-                ->header('Content-Disposition', 'attachment; filename=' . $name) // file_name
-                ->header('Content-Transfer-Encoding', 'binary');
+        if (in_array($extension, $this->online_open)) {
+            return $this->onlineOpen($decode, $mime, $code);
         }
+        return $this->attachmentFile($decode, $mime, $code, $name);
+    }
 
+    /**
+     * 建構檔案下載頁面
+     * 
+     * @param string $decode decoded base64
+     * @param string $mime file mime
+     * @param string $code file base64 code
+     * @param string $name file name
+     * @return Response
+     */
+    private function attachmentFile($decode, $mime, $code, $name)
+    {
+        $response = 
+            response($decode)
+            ->header('Content-Type', $mime) // MIME
+            ->header('Content-length', strlen($code)) // base64
+            ->header('Content-Disposition', 'attachment; filename=' . $name) // file_name
+            ->header('Content-Transfer-Encoding', 'binary');
+        return $response;
+    }
+
+    /**
+     * 建構檔案直接線上開啟
+     * 
+     * @param string $decode decoded base64
+     * @param string $mime file mime
+     * @param string $code file base64 code
+     * @return Response
+     */
+    private function onlineOpen($decode, $mime, $code)
+    {
+        $response = 
+            response($decode)
+            ->header('Content-Type', $mime) // MIME
+            ->header('Content-length', strlen($code)) // base64
+            ->header('Content-Transfer-Encoding', 'binary');
         return $response;
     }
 }
