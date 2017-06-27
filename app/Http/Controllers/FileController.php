@@ -60,9 +60,32 @@ class FileController extends Controller
     {
         $result = $this->file->downloadFile($token, $file_id, $user_id);
         if ($result['result']) {
-            return $this->setFile($result['file']);
+            return $this->initFile($result['file']);
         }
         return view('error')->with('message', $result['msg']);
+    }
+
+    private function initFile($file)
+    {
+        if ($file->store_type == 'path') {
+            return $this->loadFile($file);
+        }
+        return $this->setFile($file);
+    }
+
+    private function loadFile($file)
+    {
+        if (in_array($file->extension, $this->online_open)) {
+            $head = [
+                'Content-Type' => $file->mime,
+            ];
+            return response()->download($file->path.'\\'.$file->transform, $file->name, $headers);
+        }
+        $head = [
+            'Content-Type' => $file->mime,
+            'Content-Disposition' => 'attachment; filename='.$file->name,
+        ];
+        return response()->download($file->path.'\\'.$file->transform, $file->name, $headers);
     }
 
     /**

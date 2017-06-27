@@ -71,6 +71,9 @@ class FileControllerTest extends TestCase
         $file->mime = 'mime';
         $file->name = 'name';
         $file->extension = 'extension';
+        $file->path = 'path';
+        $file->transform = 'transform';
+        $file->store_type = 'store_type';
         $result = ['result' => true, 'msg' => 'download file', 'file' => $file];
         $expected = response(base64_decode('code'))
             ->header('Content-Type', 'mime') // MIME
@@ -103,6 +106,9 @@ class FileControllerTest extends TestCase
         $file->mime = 'mime';
         $file->name = 'name';
         $file->extension = 'pdf';
+        $file->path = 'path';
+        $file->transform = 'transform';
+        $file->store_type = 'store_type';
         $result = ['result' => true, 'msg' => 'download file', 'file' => $file];
         $expected = response(base64_decode('code'))
             ->header('Content-Type', 'mime') // MIME

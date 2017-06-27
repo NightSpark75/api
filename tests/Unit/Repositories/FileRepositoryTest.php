@@ -35,10 +35,8 @@ class FileRepositoryTest extends TestCase
     }
 
     /**
-        $songfile = new UploadedFile($temp_filepath, 'foofile.mp3', 'audio/mpeg', 100023, null, $test=true);
-        $files = ['songfile' => $songfile,];
-        // define $uri, $method, $parameters, $cookies, $server, $content
-        $request = Request::create($uri, $method, $parameters, $cookies, $files, $server, $content);
+     * $file = new UploadedFile($temp_filepath, 'foofile.mp3', 'audio/mpeg', 100023, null, $test=true);
+     * $request = Request::create($uri, $method, $parameters, $cookies, $files, $server, $content);
      */
 
     /**
@@ -65,6 +63,11 @@ class FileRepositoryTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    /** 
+     * test uploadFile. for path
+     *
+     * @return void
+     */
     public function test_uploadFile_for_path()
     {
         /** arrange */
@@ -274,7 +277,8 @@ class FileRepositoryTest extends TestCase
     private function getFileContent($token, $file_id, $user)
     {
         $file_query = "
-            select t.file_id, t.load_user, t.status, c.name, c.extension, c.mime, c.code, t.created_by
+            select t.file_id, t.load_user, t.status, c.name, c.extension, c.mime, c.code, 
+                    c.path, c.transform, c.store_type, t.created_by
                 from api_file_token t, api_file_code c
                 where t.file_id = pk_common.get_md5(c.file_id) and t.status = 'G'
                     and t.file_token = '$token' and t.file_id = '$file_id' and t.load_user = '$user'

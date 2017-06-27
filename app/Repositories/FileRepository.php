@@ -224,7 +224,8 @@ class FileRepository
     private function getFileInfo($token, $file_id, $user)
     {
         $query = "
-            select t.file_id, t.load_user, t.status, c.name, c.extension, c.mime, c.code, t.created_by
+            select t.file_id, t.load_user, t.status, c.name, c.extension, c.mime, c.code, 
+                    c.path, c.transform, c.store_type, t.created_by
                 from api_file_token t, api_file_code c
                 where t.file_id = pk_common.get_md5(c.file_id) and t.status = 'G'
                     and t.file_token = '$token' and t.file_id = '$file_id' and t.load_user = '$user'
