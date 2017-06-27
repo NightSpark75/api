@@ -134,6 +134,8 @@ class PkCommon extends Migration
 
                 insert into api_file_code (file_id, created_by, created_at)
                     values (v_id, v_user, CURRENT_TIMESTAMP);
+                commit;
+
                 r_id := v_id;
                 r_result := 'true';
                 r_msg := 'create file data success !!';
@@ -170,6 +172,8 @@ class PkCommon extends Migration
                 c_user := get_md5(v_user);
                 insert into api_file_token 
                     values (v_token, c_user, c_file_id, 'G', v_user, '', CURRENT_TIMESTAMP, '');
+                commit;
+                
                 r_token := v_token;
                 r_file_id := c_file_id;
                 r_user := c_user;
@@ -209,7 +213,8 @@ class PkCommon extends Migration
                 update api_file_base
                     set status = 'S', updated_by = v_user
                     where id = v_id;
-                
+                commit;
+
                 r_result := 'true';
                 r_msg := 'upload file data success !!';
             exception
@@ -262,7 +267,8 @@ class PkCommon extends Migration
                 update api_file_token
                     set status = 'L', updated_by = created_user, updated_at = CURRENT_TIMESTAMP
                     where file_token = v_token;
-                    
+                commit;
+
                 r_name := v_name;
                 r_extension := v_extension;
                 r_mime := v_mime;

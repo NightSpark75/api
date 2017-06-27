@@ -104,7 +104,7 @@ export default class Upload extends React.Component{
     render(){
         return(
             <div className="row">
-                <div className="col-md-4 col-md-offset-4">
+                <div className="col-md-6 col-md-offset-3">
                     <div className="panel panel-primary">
                         <div className="panel-heading"><h4 className="panel-title">上傳檔案</h4></div>
                         <div className="panel-body">

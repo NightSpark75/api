@@ -7,8 +7,10 @@ import Upload from "./components/Upload";
 import Error from "./components/Error";
 //import jQuery from "jquery";
 //import Fileinput from "bootstrap-fileinput";
+import 'babel-polyfill'
 
 const app = document.getElementById('app');
+var Promise = require('es6-promise').Promise;
 //const $ = require('jQuery');
 
 ReactDOM.render(

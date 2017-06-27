@@ -24,8 +24,10 @@
   },
   "dependencies": {
     "Babel": "0.0.1",
+    "babel-polyfill": "^6.23.0",
     "bootstrap": "^3.3.7",
     "bootstrap-fileinput": "^4.4.1",
+    "es6-promise": "^4.1.0",
     "react-bootstrap": "^0.31.0"
   }
 }
