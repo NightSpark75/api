@@ -75,7 +75,7 @@ class FileController extends Controller
     {
         $decode = base64_decode($file->code);
         $code = $file->code;
-        $name = $file->name;
+        $name = mb_convert_encoding($file->name,"BIG-5","UTF-8");
         $mime = $file->mime;
         $extension = $file->extension;
 

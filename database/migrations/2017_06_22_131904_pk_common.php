@@ -118,13 +118,15 @@ class PkCommon extends Migration
         $package = "
             procedure get_new_file_id (v_name in varchar2, v_discription in varchar2, 
                 v_user in varchar2, v_previous in varchar2, 
-                r_id out varchar2, r_result out varchar2, r_msg out varchar2);
+                r_id out varchar2, r_user out varchar2, 
+                r_result out varchar2, r_msg out varchar2);
         ";
         $body = "
             -- ----------------------------------------------------------------------------
             procedure get_new_file_id (v_name in varchar2, v_discription in varchar2, 
                 v_user in varchar2, v_previous in varchar2, 
-                r_id out varchar2, r_result out varchar2, r_msg out varchar2) is
+                r_id out varchar2, r_user out varchar2, 
+                r_result out varchar2, r_msg out varchar2) is
             -- ----------------------------------------------------------------------------
                 v_id varchar2(32);
             begin
@@ -137,11 +139,13 @@ class PkCommon extends Migration
                 commit;
 
                 r_id := v_id;
+                r_user := get_md5(v_user);
                 r_result := 'true';
                 r_msg := 'create file data success !!';
             exception
                 when others then
                     r_id := '';
+                    r_user := '';
                     r_result := 'false';
                     r_msg := SQLCODE||' -ERROR- '||SQLERRM;
             end get_new_file_id;
