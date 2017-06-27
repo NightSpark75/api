@@ -14481,9 +14481,9 @@ var Upload = function (_React$Component) {
             }
 
             if (store_type === 'c') {
-                url = '/api/file/upload';
+                url = '/api/file/upload/code';
             } else {
-                url = '/api/file/copy';
+                url = '/api/file/upload/path';
             }
 
             var form_data = new FormData();

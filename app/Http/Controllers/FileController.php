@@ -39,12 +39,12 @@ class FileController extends Controller
      * @param Request $req request
      * @return array
      */
-    public function uploadFile()
+    public function uploadFile($store_type = 'code')
     {
         $file = request()->file('file_data');
         $id = request()->input('file_id');
         $user = request()->input('user_id');
-        $result = $this->file->uploadFile($id, $user, $file);
+        $result = $this->file->uploadFile($id, $user, $file, $store_type);
         return response()->json($result);
     }
 

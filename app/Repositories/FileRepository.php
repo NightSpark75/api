@@ -28,13 +28,14 @@ class FileRepository
      * @param string $id file id
      * @param string $user user id
      * @param uploadFile $file  檔案物件
+     * @param boolean $store_type 以路徑方式儲存
      * @return array
      */
-    public function uploadFile($id, $user, $file)
+    public function uploadFile($id, $user, $file, $store_type)
     {
         try {
             $created_user = $this->checkUpload($id, $user);
-            $this->insertFile($id, $file, $created_user);
+            $this->storeType($id, $file, $created_user, $store_type);
             $this->changeFileStatus($id);
             return ['result' => true, 'msg' => '#0000;檔案上傳成功!'];
         } catch (Exception $e) {
@@ -100,19 +101,70 @@ class FileRepository
     }
 
     /**
+     * 依儲存方式進行存檔
+     * 
+     * @param string $id file id
+     * @param uploadFile $file 檔案內容
+     * @param string $created_user user id
+     * @param string $store_type 儲存方式
+     * @return string
+     */
+    private function storeType($id, $file, $created_user, $store_type)
+    {
+        if ($store_type == 'path') {
+            $this->copyFile($id, $file, $created_user);
+            return;
+        }
+        $this->insertFile($id, $file, $created_user);
+    }
+
+    /**
+     * 複製檔案到伺服器
+     * 
+     * @param string $id file id
+     * @param uploadFile $file 檔案內容
+     * @param string $created_user user id
+     * @return array
+     */
+    private function copyFile($id, $file, $created_user)
+    {
+        $transform = strtoupper(md5(uniqid(mt_rand(), true)));
+        $file_path = storage_path().'\app\public';
+        $tmp_name = $transform.'.tmp';
+
+        $bindings['name'] = $file->getClientOriginalName();
+        $bindings['extension'] = $file->getClientOriginalExtension();
+        $bindings['mime'] = $file->getMimeType();
+        $bindings['path'] = $file_path;
+        $bindings['transform'] = $tmp_name;
+        $bindings['updated_by'] = $created_user;
+        $bindings['file_id'] = $id;
+
+        $file->move($file_path, $tmp_name);
+
+        $query = 
+            "update api_file_code 
+                set name = :name, extension = :extension, mime = :mime, transform = :transform, path = :path,
+                    store_type = 'P', updated_by = :updated_by, updated_at = CURRENT_TIMESTAMP
+                where file_id = :file_id
+        ";
+        $this->query($bindings, $query);       
+    }
+
+    /**
      * 寫入檔案資料
      * 
      * @param string $id file id
-     * @param string $name name 檔名
-     * @param string $extension extension副檔名
-     * @param string $mime MIME 檔案型態
-     * @param string $code base64 code
+     * @param uploadFile $file 檔案內容
      * @param string $created_user user id
      * @return array
      */
     private function insertFile($id, $file, $created_user)
     {
-        $bindings = $this->getFileContent($file);
+        $bindings['name'] = $file->getClientOriginalName();
+        $bindings['extension'] = $file->getClientOriginalExtension();
+        $bindings['mime'] = $file->getMimeType();
+        $bindings['code'] = base64_encode(file_get_contents($file));
         $bindings['updated_by'] = $created_user;
         $bindings['file_id'] = $id;
         
@@ -123,27 +175,6 @@ class FileRepository
                 where file_id = :file_id
         ";
         $this->query($bindings, $query);       
-    }
-
-    /**
-     * 取得上傳檔案內容
-     * 
-     * @param uploadFile $file client uploaded file content
-     * @return array
-     */
-    private function getFileContent($file)
-    {
-        $name = $file->getClientOriginalName();
-        $extension = $file->getClientOriginalExtension();
-        $mime = $file->getMimeType();
-        $code = base64_encode(file_get_contents($file));
-        
-        return [
-            'name' => $name,
-            'extension' => $extension,
-            'mime' => $mime,
-            'code' => $code,
-        ];
     }
 
     /**

@@ -17,7 +17,7 @@ class CreateFileCode extends Migration
         Schema::create('api_file_code', function($table)
         {
             $table->string('file_id', 32)->primary()->comment('檔案id');
-            $table->string('name', 30)->nullable()->comment('檔名'); 
+            $table->string('name', 100)->nullable()->comment('檔名'); 
             $table->string('extension', 30)->nullable()->comment('副檔名');
             $table->string('mime', 30)->nullable()->comment('檔案MIME');
             $table->longText('code')->nullable()->comment('base64編碼');

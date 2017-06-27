@@ -53,16 +53,39 @@ class FileRepositoryTest extends TestCase
         $pars = $this->procedure('pk_common.get_new_file_id', $pars);
         $query = "select pk_common.get_md5('test_user') as \"md5\" from dual";
         $md5_user = $this->select($query)->md5;
-        $path = base_path().'\tests\temp\FileRepository@upload.tmp';
-        $file = new UploadedFile($path, 'FileRepository@upload.tmp', 'application/pdf', 100023, null, $test=true);
+        $file_path = base_path().'\tests\temp\FileRepository@upload.tmp';
+        $file = new UploadedFile($file_path, 'FileRepository@upload.tmp', 'application/pdf', 100023, null, $test=true);
+        $store_type = 'code';
         $expected = ['result' => true, 'msg' => '#0000;檔案上傳成功!'];
 
         /** act */
-        $actual = $this->target->uploadFile($pars[':id'], $md5_user, $file);
+        $actual = $this->target->uploadFile($pars[':id'], $md5_user, $file, $store_type);
 
         /** assert */
         $this->assertEquals($expected, $actual);
     }
+
+    public function test_uploadFile_for_path()
+    {
+        /** arrange */
+        $pars = [':name' => 'test', ':dis' => 'test dis', ':user' => 'test_user', ':pre' => '', ':id' => '', ':r_user' => '', ':res' => '', ':msg' => ''];
+        $pars = $this->procedure('pk_common.get_new_file_id', $pars);
+        $query = "select pk_common.get_md5('test_user') as \"md5\" from dual";
+        $md5_user = $this->select($query)->md5;
+        $tmp = strtoupper(md5(uniqid(mt_rand(), true))).'.tmp';
+        copy(base_path().'\\tests\\temp\\FileRepository@upload.tmp', base_path().'\\tests\\temp\\'.$tmp);
+        $file_path = base_path().'\\tests\\temp\\'.$tmp;
+        $file = new UploadedFile($file_path, $tmp, 'application/tmp', 100023, null, $test=true);
+        $store_type = 'path';
+        $expected = ['result' => true, 'msg' => '#0000;檔案上傳成功!'];
+
+        /** act */
+        $actual = $this->target->uploadFile($pars[':id'], $md5_user, $file, $store_type);
+
+        /** assert */
+        $this->assertEquals($expected, $actual);
+    }
+    
 
     /**
      * test uploadFile. error #0001
@@ -83,12 +106,13 @@ class FileRepositoryTest extends TestCase
         $this->query($bindings, $upload_query);
         $query = "select pk_common.get_md5('test_user') as \"md5\" from dual";
         $md5_user = $this->select($query)->md5;
-        $path = base_path().'\tests\temp\FileRepository@upload.tmp';
-        $file = new UploadedFile($path, 'FileRepository@upload.tmp', 'application/pdf', 100023, null, $test=true);
+        $file_path = base_path().'\tests\temp\FileRepository@upload.tmp';
+        $file = new UploadedFile($file_path, 'FileRepository@upload.tmp', 'application/pdf', 100023, null, $test=true);
+        $store_type = 'code';
         $expected = ['result' => false, 'msg' => '#0001;檔案已上傳成功，無法重複上傳'];
 
         /** act */
-        $actual = $this->target->uploadFile($pars[':id'], $md5_user, $file);
+        $actual = $this->target->uploadFile($pars[':id'], $md5_user, $file, $store_type);
 
         /** assert */
         $this->assertEquals($expected, $actual);
@@ -106,12 +130,13 @@ class FileRepositoryTest extends TestCase
         $pars = $this->procedure('pk_common.get_new_file_id', $pars);
         $query = "select pk_common.get_md5('error_user') as \"md5\" from dual";
         $md5_user = $this->select($query)->md5;
-        $path = base_path().'\tests\temp\FileRepository@upload.tmp';
-        $file = new UploadedFile($path, 'FileRepository@upload.tmp', 'application/pdf', 100023, null, $test=true);
+        $file_path = base_path().'\tests\temp\FileRepository@upload.tmp';
+        $file = new UploadedFile($file_path, 'FileRepository@upload.tmp', 'application/pdf', 100023, null, $test=true);
+        $store_type = 'code';
         $expected = ['result' => false, 'msg' => '#0002;檔案驗證資訊有誤，您無權限上傳該檔案!'];
 
         /** act */
-        $actual = $this->target->uploadFile($pars[':id'], $md5_user, $file);
+        $actual = $this->target->uploadFile($pars[':id'], $md5_user, $file, $store_type);
 
         /** assert */
         $this->assertEquals($expected, $actual);
@@ -129,12 +154,13 @@ class FileRepositoryTest extends TestCase
         $pars = $this->procedure('pk_common.get_new_file_id', $pars);
         $query = "select pk_common.get_md5('error_user') as \"md5\" from dual";
         $md5_user = $this->select($query)->md5;
-        $path = base_path().'\tests\temp\FileRepository@upload.tmp';
-        $file = new UploadedFile($path, 'FileRepository@upload.tmp', 'application/pdf', 100023, null, $test=true);
+        $file_path = base_path().'\tests\temp\FileRepository@upload.tmp';
+        $file = new UploadedFile($file_path, 'FileRepository@upload.tmp', 'application/pdf', 100023, null, $test=true);
+        $store_type = 'code';
         $expected = ['result' => false, 'msg' => '#0003;查詢不到檔案資料!'];
 
         /** act */
-        $actual = $this->target->uploadFile('error_file_id', $md5_user, $file);
+        $actual = $this->target->uploadFile('error_file_id', $md5_user, $file, $store_type);
 
         /** assert */
         $this->assertEquals($expected, $actual);
