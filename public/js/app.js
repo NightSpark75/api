@@ -13322,7 +13322,7 @@ __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */],
         { path: "s", component: __WEBPACK_IMPORTED_MODULE_4__components_SinglePage__["a" /* default */] },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "file/upload/:file_id/:user_id", component: __WEBPACK_IMPORTED_MODULE_5__components_Upload__["a" /* default */] }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "file/upload/:store_type/:file_id/:user_id", component: __WEBPACK_IMPORTED_MODULE_5__components_Upload__["a" /* default */] }),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "error/:msg", component: __WEBPACK_IMPORTED_MODULE_6__components_Error__["a" /* default */] })
     )
 ), app);
@@ -14409,6 +14409,7 @@ var Upload = function (_React$Component) {
             file_id: '',
             user_id: '',
             file_data: undefined,
+            store_type: '',
             msg: '',
             msg_type: ''
         };
@@ -14451,7 +14452,8 @@ var Upload = function (_React$Component) {
         value: function componentDidMount() {
             this.setState({
                 file_id: this.props.params.file_id,
-                user_id: this.props.params.user_id
+                user_id: this.props.params.user_id,
+                sotre_type: this.props.params.store_type
             });
         }
     }, {
@@ -14466,9 +14468,11 @@ var Upload = function (_React$Component) {
             var _state = this.state,
                 file_id = _state.file_id,
                 user_id = _state.user_id,
-                file_data = _state.file_data;
+                file_data = _state.file_data,
+                store_type = _state.store_type;
 
             var self = this;
+            var url = '';
             if (file_data === undefined) {
                 this.setMsg('danger', '請選擇檔案!');
                 return;
@@ -14476,11 +14480,17 @@ var Upload = function (_React$Component) {
                 this.setMsg('', '');
             }
 
+            if (store_type === 'c') {
+                url = '/api/file/upload';
+            } else {
+                url = '/api/file/copy';
+            }
+
             var form_data = new FormData();
             form_data.append('file_id', file_id);
             form_data.append('user_id', user_id);
             form_data.append('file_data', file_data);
-            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post('/api/file/upload', form_data, {
+            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post(url, form_data, {
                 method: 'post',
                 headers: { 'Content-Type': 'multipart/form-data' }
             }).then(function (response) {

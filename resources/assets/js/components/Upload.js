@@ -29,6 +29,7 @@ export default class Upload extends React.Component{
             file_id: '',
             user_id: '',
             file_data: undefined,
+            store_type: '',
             msg: '',
             msg_type: '',
         }
@@ -64,6 +65,7 @@ export default class Upload extends React.Component{
         this.setState({
             file_id: this.props.params.file_id,
             user_id: this.props.params.user_id,
+            sotre_type: this.props.params.store_type,
         });
     }
 
@@ -73,8 +75,9 @@ export default class Upload extends React.Component{
     }
 
     onUpload(event){
-        const {file_id, user_id, file_data} = this.state;
+        const {file_id, user_id, file_data, store_type} = this.state;
         let self = this;
+        let url = '';
         if (file_data === undefined) {
             this.setMsg('danger', '請選擇檔案!');
             return;
@@ -82,11 +85,17 @@ export default class Upload extends React.Component{
             this.setMsg('', '');
         }
 
+        if (store_type === 'c') {
+            url = '/api/file/upload';
+        } else {
+            url = '/api/file/copy';
+        }
+
         let form_data = new FormData();
         form_data.append('file_id', file_id);
         form_data.append('user_id', user_id);
         form_data.append('file_data', file_data);
-        axios.post('/api/file/upload', form_data, {
+        axios.post(url, form_data, {
             method: 'post',
             headers: {'Content-Type': 'multipart/form-data'}
         }).then(function (response) {

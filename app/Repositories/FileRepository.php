@@ -61,7 +61,7 @@ class FileRepository
         }
 
         if ($user_md5 != $user) {
-            throw new Exception('#0002;檔案驗證資訊有誤，您無權限讀取該檔案!');
+            throw new Exception('#0002;檔案驗證資訊有誤，您無權限上傳該檔案!');
         }
         return $created_user;
     }
@@ -115,12 +115,13 @@ class FileRepository
         $bindings = $this->getFileContent($file);
         $bindings['updated_by'] = $created_user;
         $bindings['file_id'] = $id;
+        
         $query = 
-            'update api_file_code 
+            "update api_file_code 
                 set name = :name, extension = :extension, mime = :mime, code = :code, 
-                    updated_by = :updated_by, updated_at = CURRENT_TIMESTAMP
+                    store_type = 'C', updated_by = :updated_by, updated_at = CURRENT_TIMESTAMP
                 where file_id = :file_id
-        ';
+        ";
         $this->query($bindings, $query);       
     }
 

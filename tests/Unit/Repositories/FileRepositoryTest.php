@@ -49,7 +49,7 @@ class FileRepositoryTest extends TestCase
     public function test_uploadFile()
     {
         /** arrange */
-        $pars = [':name' => 'test', ':dis' => 'test dis', ':user' => 'test_user', ':pre' => '', ':id' => '', ':res' => '', ':msg' => ''];
+        $pars = [':name' => 'test', ':dis' => 'test dis', ':user' => 'test_user', ':pre' => '', ':id' => '', ':r_user' => '', ':res' => '', ':msg' => ''];
         $pars = $this->procedure('pk_common.get_new_file_id', $pars);
         $query = "select pk_common.get_md5('test_user') as \"md5\" from dual";
         $md5_user = $this->select($query)->md5;
@@ -72,7 +72,7 @@ class FileRepositoryTest extends TestCase
     public function test_uploadFile_e_0001()
     {
         /** arrange */
-        $pars = [':name' => 'test', ':dis' => 'test dis', ':user' => 'test_user', ':pre' => '', ':id' => '', ':res' => '', ':msg' => ''];
+        $pars = [':name' => 'test', ':dis' => 'test dis', ':user' => 'test_user', ':pre' => '', ':id' => '', ':r_user' => '', ':res' => '', ':msg' => ''];
         $pars = $this->procedure('pk_common.get_new_file_id', $pars);
         $bindings = [$pars[':id']];
         $upload_query = "
@@ -102,13 +102,13 @@ class FileRepositoryTest extends TestCase
     public function test_uploadFile_e_0002()
     {
         /** arrange */
-        $pars = [':name' => 'test', ':dis' => 'test dis', ':user' => 'test_user', ':pre' => '', ':id' => '', ':res' => '', ':msg' => ''];
+        $pars = [':name' => 'test', ':dis' => 'test dis', ':user' => 'test_user', ':pre' => '', ':id' => '', ':r_user' => '', ':res' => '', ':msg' => ''];
         $pars = $this->procedure('pk_common.get_new_file_id', $pars);
         $query = "select pk_common.get_md5('error_user') as \"md5\" from dual";
         $md5_user = $this->select($query)->md5;
         $path = base_path().'\tests\temp\FileRepository@upload.tmp';
         $file = new UploadedFile($path, 'FileRepository@upload.tmp', 'application/pdf', 100023, null, $test=true);
-        $expected = ['result' => false, 'msg' => '#0002;檔案驗證資訊有誤，您無權限讀取該檔案!'];
+        $expected = ['result' => false, 'msg' => '#0002;檔案驗證資訊有誤，您無權限上傳該檔案!'];
 
         /** act */
         $actual = $this->target->uploadFile($pars[':id'], $md5_user, $file);
@@ -125,7 +125,7 @@ class FileRepositoryTest extends TestCase
     public function test_uploadFile_e_0003()
     {
         /** arrange */
-        $pars = [':name' => 'test', ':dis' => 'test dis', ':user' => 'test_user', ':pre' => '', ':id' => '', ':res' => '', ':msg' => ''];
+        $pars = [':name' => 'test', ':dis' => 'test dis', ':user' => 'test_user', ':pre' => '', ':id' => '', ':r_user' => '', ':res' => '', ':msg' => ''];
         $pars = $this->procedure('pk_common.get_new_file_id', $pars);
         $query = "select pk_common.get_md5('error_user') as \"md5\" from dual";
         $md5_user = $this->select($query)->md5;
@@ -199,7 +199,7 @@ class FileRepositoryTest extends TestCase
     private function initDownloadData()
     {
         // created new file data and return file_id
-        $pars = [':name' => 'test', ':dis' => 'test dis', ':user' => 'test_user', ':pre' => '', ':id' => '', ':res' => '', ':msg' => ''];
+        $pars = [':name' => 'test', ':dis' => 'test dis', ':user' => 'test_user', ':pre' => '', ':id' => '', ':r_user' => '', ':res' => '', ':msg' => ''];
         $pars = $this->procedure('pk_common.get_new_file_id', $pars);
         $file_id = $pars[':id'];
 

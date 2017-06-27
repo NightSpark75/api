@@ -19,7 +19,7 @@ ReactDOM.render(
             {/*<IndexRoute component={Home}></IndexRoute>*/}
         </Route>
         <Route path="s" component={SinglePage}>
-            <Route path="file/upload/:file_id/:user_id" component={Upload}></Route>
+            <Route path="file/upload/:store_type/:file_id/:user_id" component={Upload}></Route>
             <Route path="error/:msg" component={Error}></Route>
         </Route>
         

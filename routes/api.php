@@ -20,4 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 // about file api route
 Route::post('file/upload', 'FileController@uploadFile');
+Route::post('file/copy', 'FileController@copyFile');
 Route::get('file/download/{token}/{file_id}/{user_id}', 'FileController@downloadFile');

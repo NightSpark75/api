@@ -42,6 +42,7 @@ class PkCommon extends Migration
         array_push($function, $this->get_md5());
         array_push($function, $this->get_new_file_id());
         array_push($function, $this->get_file_token());
+        array_push($function, $this->delete_file());
 
         for ($i = 0 ; $i < count($function); $i++) {
             $content = $content . $function[$i];
@@ -61,6 +62,7 @@ class PkCommon extends Migration
         array_push($function, $this->get_md5(true));
         array_push($function, $this->get_new_file_id(true));
         array_push($function, $this->get_file_token(true));
+        array_push($function, $this->delete_file(true));
 
         for ($i = 0 ; $i < count($function); $i++) {
             $content = $content . $function[$i];
@@ -133,7 +135,6 @@ class PkCommon extends Migration
                 v_id := sys_guid();
                 insert into api_file_base 
                     values (v_id, v_name, v_discription, v_previous, 'C', v_user, '', CURRENT_TIMESTAMP, '');
-
                 insert into api_file_code (file_id, created_by, created_at)
                     values (v_id, v_user, CURRENT_TIMESTAMP);
                 commit;
@@ -212,7 +213,6 @@ class PkCommon extends Migration
                     set name = v_name, extension = v_extension, mime = v_mime,
                         updated_by = v_user, updated_at = CURRENT_TIMESTAMP
                     where file_id = v_id;
-
             
                 update api_file_base
                     set status = 'S', updated_by = v_user
@@ -288,6 +288,44 @@ class PkCommon extends Migration
                     r_result := 'false';
                     r_msg := SQLCODE||' -ERROR- '||SQLERRM;
             end get_file_code;
+            -- ----------------------------------------------------------------------------
+        ";
+        return $content ? $body : $package;
+    }
+
+    public function delete_file($content = false)
+    {
+        $package = "
+            procedure delete_file (v_id in varchar2, v_user in varchar2, 
+                r_result out varchar2, r_msg out varchar2);
+        ";
+        $body = "
+            -- ----------------------------------------------------------------------------
+            procedure delete_file (v_id in varchar2, v_user in varchar2,  
+                r_result out varchar2, r_msg out varchar2) is
+            -- ----------------------------------------------------------------------------
+            begin
+                insert into api_file_delete 
+                    select b.id, b.name base_name, b.description base_description, 
+                        b.previous, c.store_type, c.name, c.extension, c.mime, c.path, c.transform, 
+                        v_user deleted_by, CURRENT_TIMESTAMP deleted_at
+                    from api_file_base b, api_file_code c 
+                    where b.id = c.file_id and b.id = v_id;
+
+                delete api_file_base
+                    where id = v_id;
+                delete api_file_code
+                    where file_id = v_id;
+
+                commit;
+
+                r_result := 'true';
+                r_msg := 'delete file data success !!';
+            exception
+                when others then
+                    r_result := 'false';
+                    r_msg := SQLCODE||' -ERROR- '||SQLERRM;
+            end delete_file;
             -- ----------------------------------------------------------------------------
         ";
         return $content ? $body : $package;
