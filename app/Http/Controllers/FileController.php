@@ -89,8 +89,8 @@ class FileController extends Controller
     {
         // 直接開啟
         if (in_array($file->extension, $this->online_open)) {
-            $headers = ['Content-Type' => $file->mime,];
-            return response()->download($file->path.'\\'.$file->transform, $file->name, $headers);
+            $content = file_get_contents($file->path.'\\'.$file->transform);
+            return response()->make($content, 200, array('content-type' => $file->mime));
         }
 
         // 建立下載檔案標頭

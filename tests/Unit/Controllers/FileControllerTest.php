@@ -179,8 +179,8 @@ class FileControllerTest extends TestCase
         $file->transform = 'FileRepository@upload.tmp';
         $file->store_type = 'P';
         $result = ['result' => true, 'msg' => 'download file', 'file' => $file];
-        $headers = ['Content-Type' => $file->mime,];
-        $expected = response()->download($file->path.'\\'.$file->transform, $file->name, $headers);
+        $content = file_get_contents($file->path.'\\'.$file->transform);
+        $expected = response()->make($content, 200, array('content-type' => $file->mime));
         /** act */
         $this->app->instance(FileController::class, $this->mock);
         $this->mock->shouldReceive('downloadFile')

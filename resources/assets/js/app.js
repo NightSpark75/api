@@ -4,14 +4,11 @@ import {Router, Route, IndexRoute, browserHistory} from "react-router";
 import Layout from "./components/Layout";
 import SinglePage from "./components/SinglePage";
 import Upload from "./components/Upload";
+import Login from "./components/Login";
 import Error from "./components/Error";
-//import jQuery from "jquery";
-//import Fileinput from "bootstrap-fileinput";
 import 'babel-polyfill'
 
 const app = document.getElementById('app');
-var Promise = require('es6-promise').Promise;
-//const $ = require('jQuery');
 
 ReactDOM.render(
     <Router history={browserHistory}>
@@ -22,6 +19,8 @@ ReactDOM.render(
             <Route path="file/upload/:store_type/:file_id/:user_id" component={Upload}></Route>
             <Route path="error/:msg" component={Error}></Route>
         </Route>
-        
+        <Route path="pad" component={SinglePage}>
+            <Route path="login/:system" component={Login}></Route>
+        </Route>
     </Router>,
 app);
