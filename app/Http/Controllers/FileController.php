@@ -23,7 +23,7 @@ class FileController extends Controller
     private $online_open = ['pdf'];
 
     /**
-     * construct
+     * 建構式
      * 
      * @param FileRepository $file
      * @return void
@@ -34,7 +34,7 @@ class FileController extends Controller
     }
 
     /**
-     * file upload
+     * 檔案上傳
      * 
      * @param Request $req request
      * @return array
@@ -49,7 +49,7 @@ class FileController extends Controller
     }
 
     /**
-     * file download
+     * 檔案下載
      * 
      * @param string $token load file token
      * @param string $file_id load file id
@@ -60,28 +60,41 @@ class FileController extends Controller
     {
         $result = $this->file->downloadFile($token, $file_id, $user_id);
         if ($result['result']) {
-            return $this->initFile($result['file']);
+            return $this->getFile($result['file']);
         }
         return view('error')->with('message', $result['msg']);
     }
 
-    private function initFile($file)
+    /**
+     * 取得檔案
+     * 
+     * @param array $file file info
+     * @return Mixed
+     */
+    private function getFile($file)
     {
-        if ($file->store_type == 'path') {
+        if ($file->store_type == 'P') {
             return $this->loadFile($file);
         }
         return $this->setFile($file);
     }
 
+    /**
+     * 讀取實體檔案並下載，或直接開啟檔案
+     * 
+     * @param array $file file info
+     * @return Response
+     */
     private function loadFile($file)
     {
+        // 直接開啟
         if (in_array($file->extension, $this->online_open)) {
-            $head = [
-                'Content-Type' => $file->mime,
-            ];
+            $headers = ['Content-Type' => $file->mime,];
             return response()->download($file->path.'\\'.$file->transform, $file->name, $headers);
         }
-        $head = [
+
+        // 建立下載檔案標頭
+        $headers = [
             'Content-Type' => $file->mime,
             'Content-Disposition' => 'attachment; filename='.$file->name,
         ];
@@ -89,7 +102,7 @@ class FileController extends Controller
     }
 
     /**
-     * 建構檔案下載頁面
+     * 建構檔案下載頁面，或直接開啟檔案
      * 
      * @param array $file $file_info
      * @return Response
@@ -102,47 +115,19 @@ class FileController extends Controller
         $mime = $file->mime;
         $extension = $file->extension;
 
+        // 建構標頭
+        $response = 
+            response($decode)
+            ->header('Content-Type', $mime) // MIME
+            ->header('Content-length', strlen($code)) // base64
+            ->header('Content-Transfer-Encoding', 'binary');
+
         if (in_array($extension, $this->online_open)) {
-            return $this->onlineOpen($decode, $mime, $code);
+            return $response;
         }
-        return $this->attachmentFile($decode, $mime, $code, $name);
-    }
 
-    /**
-     * 建構檔案下載頁面
-     * 
-     * @param string $decode decoded base64
-     * @param string $mime file mime
-     * @param string $code file base64 code
-     * @param string $name file name
-     * @return Response
-     */
-    private function attachmentFile($decode, $mime, $code, $name)
-    {
-        $response = 
-            response($decode)
-            ->header('Content-Type', $mime) // MIME
-            ->header('Content-length', strlen($code)) // base64
-            ->header('Content-Disposition', 'attachment; filename=' . $name) // file_name
-            ->header('Content-Transfer-Encoding', 'binary');
-        return $response;
-    }
-
-    /**
-     * 建構檔案直接線上開啟
-     * 
-     * @param string $decode decoded base64
-     * @param string $mime file mime
-     * @param string $code file base64 code
-     * @return Response
-     */
-    private function onlineOpen($decode, $mime, $code)
-    {
-        $response = 
-            response($decode)
-            ->header('Content-Type', $mime) // MIME
-            ->header('Content-length', strlen($code)) // base64
-            ->header('Content-Transfer-Encoding', 'binary');
+        // 加入下載檔案標頭
+        $response->header('Content-Disposition', 'attachment; filename=' . $name); // file_name
         return $response;
     }
 }
