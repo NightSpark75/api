@@ -15,8 +15,9 @@ class FileControllerTest extends TestCase
     use DatabaseTransactions;
     use Sqlexecute;
 
-    protected $mock;
-    protected $target;
+    private $mock;
+    private $target;
+
     /**
      * setUp()
      */
@@ -80,7 +81,6 @@ class FileControllerTest extends TestCase
             ->header('Content-length', strlen('code')) // base64
             ->header('Content-Disposition', 'attachment; filename=' . 'name') // file_name
             ->header('Content-Transfer-Encoding', 'binary');
-
         /** act */
         $this->app->instance(FileController::class, $this->mock);
         $this->mock->shouldReceive('downloadFile')
@@ -90,7 +90,7 @@ class FileControllerTest extends TestCase
         $actual = $this->target->downloadFile('token', 'file_id', 'user_id');
 
         /** assert */
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals($expected->getOriginalContent(), $actual->getOriginalContent());
     }
 
     /**
@@ -110,10 +110,7 @@ class FileControllerTest extends TestCase
         $file->transform = 'FileRepository@upload.tmp';
         $file->store_type = 'P';
         $result = ['result' => true, 'msg' => 'download file', 'file' => $file];
-        $headers = [
-            'Content-Type' => $file->mime,
-            'Content-Disposition' => 'attachment; filename='.$file->name,
-        ];
+        $headers = ['Content-Type' => $file->mime];
         $expected = response()->download($file->path.'\\'.$file->transform, $file->name, $headers);
 
         /** act */
@@ -125,7 +122,7 @@ class FileControllerTest extends TestCase
         $actual = $this->target->downloadFile('token', 'file_id', 'user_id');
 
         /** assert */
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals($expected->getFile(), $actual->getFile());
     }
 
     /**
@@ -159,7 +156,7 @@ class FileControllerTest extends TestCase
         $actual = $this->target->downloadFile('token', 'file_id', 'user_id');
 
         /** assert */
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals($expected->getOriginalContent(), $actual->getOriginalContent());
     }
 
     /**
@@ -179,8 +176,8 @@ class FileControllerTest extends TestCase
         $file->transform = 'FileRepository@upload.tmp';
         $file->store_type = 'P';
         $result = ['result' => true, 'msg' => 'download file', 'file' => $file];
-        $content = file_get_contents($file->path.'\\'.$file->transform);
-        $expected = response()->make($content, 200, array('content-type' => $file->mime));
+        $headers = ['Content-Type' => $file->mime];
+        $expected = response()->file($file->path.'\\'.$file->transform, $headers);
         /** act */
         $this->app->instance(FileController::class, $this->mock);
         $this->mock->shouldReceive('downloadFile')
@@ -190,7 +187,7 @@ class FileControllerTest extends TestCase
         $actual = $this->target->downloadFile('token', 'file_id', 'user_id');
 
         /** assert */
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals($expected->getFile(), $actual->getFile());
     }
 
     /**

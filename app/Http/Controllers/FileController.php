@@ -87,18 +87,24 @@ class FileController extends Controller
      */
     private function loadFile($file)
     {
-        // 直接開啟
+        //$content = file_get_contents($file->path.'\\'.$file->transform);
+        $path = $file->path.'\\'.$file->transform;
+        $header = ['Content-Type' => $file->mime];
+        // 瀏覽器開啟
         if (in_array($file->extension, $this->online_open)) {
-            $content = file_get_contents($file->path.'\\'.$file->transform);
-            return response()->make($content, 200, array('content-type' => $file->mime));
+            //return response()->make($content, 200, array('content-type' => $file->mime));
+            return response()->file($path, $header);
         }
-
+        // 下載檔案
+        return response()->download($path, $file->name, $header);
+        /*
         // 建立下載檔案標頭
         $headers = [
             'Content-Type' => $file->mime,
             'Content-Disposition' => 'attachment; filename='.$file->name,
         ];
         return response()->download($file->path.'\\'.$file->transform, $file->name, $headers);
+        */
     }
 
     /**

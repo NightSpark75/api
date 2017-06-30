@@ -32,6 +32,8 @@ Route::get('/pdo', function () {
     dd (DB::connection()->getPdo());
 });
 
+Route::get('/test', 'FileController@test');
+
 // change your existing app route to this:
 // we are basically just giving it an optional parameter of "anything"
 Route::get('/{path?}', function($path = null){

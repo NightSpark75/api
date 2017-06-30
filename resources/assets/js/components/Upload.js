@@ -41,7 +41,6 @@ export default class Upload extends React.Component {
     }
 
     onUpload(event) {
-        this.setState({buttonState: 'uploading'})
         const {file_id, user_id, file_data, store_type} = this.state;
         let self = this;
         let url = '';
@@ -57,7 +56,7 @@ export default class Upload extends React.Component {
         } else {
             url = '/api/file/upload/path';
         }
-
+        this.setState({buttonState: 'uploading'});
         let form_data = new FormData();
         form_data.append('file_id', file_id);
         form_data.append('user_id', user_id);
@@ -89,7 +88,7 @@ export default class Upload extends React.Component {
                             <h4 className="panel-title">上傳檔案</h4>
                         </div>
                         <div className="panel-body">
-                            <form role="form">
+                            <div role="form">
                                 <div className="form-group">
                                     <input 
                                         type="file" 
@@ -132,7 +131,7 @@ export default class Upload extends React.Component {
                                     </div>
                                 : null
                                 }
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
