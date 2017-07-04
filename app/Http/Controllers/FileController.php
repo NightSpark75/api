@@ -11,6 +11,8 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\FileRepository;
+use App\Models\User;
+use Auth;
 
 /**
  * Class FileController
@@ -31,6 +33,22 @@ class FileController extends Controller
     public function __construct(FileRepository $file)
     {
         $this->file = $file;
+    }
+
+    public function test()
+    {
+        //$user = User::where('user_id', '106013');
+        //$a = User::where('user_id', '106013')->where('user_pw', 'PA676579')->first();
+        //return count($a);
+        /*
+        if (Auth::attempt(['user_id' => '106013', 'user_pw' => 'PA676579', 'state' => 'Y'], false)) {
+            return ['result' => true, 'msg' => '登入成功!(#0000)'];
+        }*/
+        $user = User::where('user_id', '106013')
+                                ->where('user_pw', 'PA676579')->first();
+        Auth::loginUsingId($user->user_id, false);
+        $auth = Auth::check() ? 'yes' : 'no';
+        return $auth;
     }
 
     /**
@@ -87,24 +105,14 @@ class FileController extends Controller
      */
     private function loadFile($file)
     {
-        //$content = file_get_contents($file->path.'\\'.$file->transform);
         $path = $file->path.'\\'.$file->transform;
         $header = ['Content-Type' => $file->mime];
         // 瀏覽器開啟
         if (in_array($file->extension, $this->online_open)) {
-            //return response()->make($content, 200, array('content-type' => $file->mime));
             return response()->file($path, $header);
         }
         // 下載檔案
         return response()->download($path, $file->name, $header);
-        /*
-        // 建立下載檔案標頭
-        $headers = [
-            'Content-Type' => $file->mime,
-            'Content-Disposition' => 'attachment; filename='.$file->name,
-        ];
-        return response()->download($file->path.'\\'.$file->transform, $file->name, $headers);
-        */
     }
 
     /**

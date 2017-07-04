@@ -3,6 +3,7 @@
  */
 import React from "react";
 import { Link } from "react-router";
+import axios from 'axios';
 import AlertMsg from '../components/includes/AlertMsg';
 
 export default class Login extends React.Component{
@@ -59,13 +60,18 @@ export default class Login extends React.Component{
         form_data.append('account', account);
         form_data.append('password', password);
         form_data.append('system', system);
-        axios.post('api/pad/login', form_data, {
+        axios.post('/api/pad/login', form_data, {
             method: 'post',
         }).then(function (response) {
             console.log(response);
-            // response.data.result
+            if (response.data.result === true) {
+                window.location = '/pad/menu';
+            } else {
+                self.setMsg('danger', response.data.msg);
+            }
         }).catch(function (error) {
             console.log(error);
+            self.setMsg('danger', error.message);
         });
         this.setState({buttonState: ''});
     }
@@ -97,10 +103,6 @@ export default class Login extends React.Component{
                                 onChange={this.onPasswordChange.bind(this)}
                             />
                         </div>
-                        <AlertMsg 
-                            type={this.state.msg_type} 
-                            msg={this.state.msg}
-                        />
                         {this.state.buttonState === 'submit' ?
                             <button 
                                 type="button" 
@@ -117,6 +119,10 @@ export default class Login extends React.Component{
                                 登入
                             </button>
                         }
+                        <AlertMsg 
+                            type={this.state.msg_type} 
+                            msg={this.state.msg}
+                        />
                     </form>
                 </div>
             </div>    

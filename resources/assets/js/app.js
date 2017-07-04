@@ -1,11 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {Router, Route, IndexRoute, browserHistory} from "react-router";
+
 import Layout from "./components/Layout";
 import SinglePage from "./components/SinglePage";
 import Upload from "./components/Upload";
 import Login from "./components/Login";
 import Error from "./components/Error";
+import Menu from "./components/Menu";
 import 'babel-polyfill'
 
 const app = document.getElementById('app');
@@ -21,6 +23,7 @@ ReactDOM.render(
         </Route>
         <Route path="pad" component={SinglePage}>
             <Route path="login/:system" component={Login}></Route>
+            <Route path="menu" component={Menu}></Route>
         </Route>
     </Router>,
 app);

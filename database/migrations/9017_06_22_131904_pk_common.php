@@ -17,7 +17,7 @@ class PkCommon extends Migration
     {
         //
         DB::connection()->getPdo()->exec($this->package());
-        DB::connection()->getPdo()->exec($this->package_body());
+        DB::connection()->getPdo()->exec($this->packageBody());
     }
 
     /**
@@ -38,11 +38,11 @@ class PkCommon extends Migration
         $function = [];
         $content = "";
 
-        array_push($function, $this->get_uuid());
-        array_push($function, $this->get_md5());
-        array_push($function, $this->get_new_file_id());
-        array_push($function, $this->get_file_token());
-        array_push($function, $this->delete_file());
+        array_push($function, $this->getUuid());
+        array_push($function, $this->getMd5());
+        array_push($function, $this->getNewFileId());
+        array_push($function, $this->getFileToken());
+        array_push($function, $this->deleteFile());
 
         for ($i = 0 ; $i < count($function); $i++) {
             $content = $content . $function[$i];
@@ -51,18 +51,18 @@ class PkCommon extends Migration
         return $title . $content . $bottom;
     }
 
-    public function package_body()
+    public function packageBody()
     {
         $title = "create or replace package body $this->package_name as ";
         $bottom = "end $this->package_name ;";
         $function = [];
         $content = "";
 
-        array_push($function, $this->get_uuid(true));
-        array_push($function, $this->get_md5(true));
-        array_push($function, $this->get_new_file_id(true));
-        array_push($function, $this->get_file_token(true));
-        array_push($function, $this->delete_file(true));
+        array_push($function, $this->getUuid(true));
+        array_push($function, $this->getMd5(true));
+        array_push($function, $this->getNewFileId(true));
+        array_push($function, $this->getFileToken(true));
+        array_push($function, $this->deleteFile(true));
 
         for ($i = 0 ; $i < count($function); $i++) {
             $content = $content . $function[$i];
@@ -71,7 +71,7 @@ class PkCommon extends Migration
         return $title . $content . $bottom;
     }
 
-    public function get_uuid($content = false)
+    public function getUuid($content = false)
     {
         $package = "
             function get_uuid return varchar2;
@@ -96,7 +96,7 @@ class PkCommon extends Migration
         return $content ? $body : $package; 
     }
 
-    public function get_md5($content = false)
+    public function getMd5($content = false)
     {
         $package = "
             function get_md5 (v_str in varchar2) return varchar2;
@@ -115,7 +115,7 @@ class PkCommon extends Migration
         return $content ? $body : $package;
     }
 
-    public function get_new_file_id($content = false)
+    public function getNewFileId($content = false)
     {
         $package = "
             procedure get_new_file_id (v_name in varchar2, v_discription in varchar2, 
@@ -154,7 +154,7 @@ class PkCommon extends Migration
         return $content ? $body : $package;
     }
 
-    public function get_file_token($content = false)
+    public function getFileToken($content = false)
     {
         $package = "
             procedure get_file_token (v_file_id in varchar2, v_user in varchar2,  
@@ -193,7 +193,7 @@ class PkCommon extends Migration
         return $content ? $body : $package;
     }
 
-    public function set_upload_file_data($content = false)
+    public function setUploadFileData($content = false)
     {
         $package = "
             procedure set_upload_file_data (v_id in varchar2, v_user in varchar2, 
@@ -228,7 +228,7 @@ class PkCommon extends Migration
         return $content ? $body : $package;
     }
 
-    public function get_file_code($content = false)
+    public function getFileCode($content = false)
     {
         $package = "
             procedure get_file_code (v_token in varchar2, v_file_id in varchar2, v_user in varchar2, 
@@ -289,7 +289,7 @@ class PkCommon extends Migration
         return $content ? $body : $package;
     }
 
-    public function delete_file($content = false)
+    public function deleteFile($content = false)
     {
         $package = "
             procedure delete_file (v_id in varchar2, v_user in varchar2, 

@@ -97,10 +97,6 @@ export default class Upload extends React.Component {
                                         onChange={this.onFileChange.bind(this)}
                                     />
                                 </div>
-                                <AlertMsg 
-                                    type={this.state.msg_type} 
-                                    msg={this.state.msg}
-                                />
                                 {this.state.buttonState === 'default' ? 
                                     <div className="form-group">
                                         <button 
@@ -131,6 +127,10 @@ export default class Upload extends React.Component {
                                     </div>
                                 : null
                                 }
+                                <AlertMsg 
+                                    type={this.state.msg_type} 
+                                    msg={this.state.msg}
+                                />
                             </div>
                         </div>
                     </div>

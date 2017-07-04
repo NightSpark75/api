@@ -31,15 +31,25 @@ class AuthController extends Controller
     public function login()
     {
         $account = request()->input('account');
-        $password = request()->input('password');
+        $password = strtoupper(request()->input('password'));
         $system = request()->input('system');
-
-        $response = response();
+        $result = $this->auth->login($account, $password, $system);
+        $response = response()->json($result);
         return $response;
     }
 
     public function logout()
     {
-        
+        $this->auth->logout();
+        $response = redirect()->route('thanks');
+        $c = \Auth::check();
+        $a = \Auth::user();
+        return $response;
+    }
+
+    public function getUser()
+    {
+        $a = \Auth::user();
+        return $a;
     }
 }

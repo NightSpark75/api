@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
+import Navigation from "../components/includes/Navigation";
 
 export default class SinglePage extends React.Component{
     render(){
@@ -9,6 +10,7 @@ export default class SinglePage extends React.Component{
         };
         return(
             <div>
+                {/*<Navigation location={location} />*/}
                 <div className="container" style={containerStyle}>
                     <div className="row">
                         <div className="col-lg-12">

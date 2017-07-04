@@ -42,7 +42,7 @@ class FileControllerTest extends TestCase
      *
      * @return void
      */
-    public function test_uploadFile()
+    public function testUploadFile()
     {
         /** arrange */
         $result = ['result' => true, 'msg' => 'unit test'];
@@ -64,7 +64,7 @@ class FileControllerTest extends TestCase
      *
      * @return void
      */
-    public function test_downloadFile_attachment()
+    public function testDownloadFileAttachment()
     {
         /** arrange */
         $file = new \stdClass();
@@ -98,7 +98,7 @@ class FileControllerTest extends TestCase
      *
      * @return void
      */
-    public function test_downloadFile_path_attachment()
+    public function testDownloadFilePathAttachment()
     {
         /** arrange */
         $file = new \stdClass();
@@ -130,7 +130,7 @@ class FileControllerTest extends TestCase
      *
      * @return void
      */
-    public function test_downloadFile_open()
+    public function testDownloadFileOpen()
     {
         /** arrange */
         $file = new \stdClass();
@@ -164,7 +164,7 @@ class FileControllerTest extends TestCase
      *
      * @return void
      */
-    public function test_downloadFile_path_open()
+    public function testDownloadFilePathOpen()
     {
         /** arrange */
         $file = new \stdClass();
@@ -195,7 +195,7 @@ class FileControllerTest extends TestCase
      *
      * @return void
      */
-    public function test_downloadFile_result_false()
+    public function testDownloadFileResultFalse()
     {
         /** arrange */
         $result = ['result' => false, 'msg' => 'result false'];

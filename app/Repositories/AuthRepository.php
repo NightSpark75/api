@@ -11,7 +11,8 @@
 namespace App\Repositories;
 
 use Exception;
-use App\Traits\Sqlexecute;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class AuthRepository
@@ -20,27 +21,49 @@ use App\Traits\Sqlexecute;
  */
 class AuthRepository
 {   
-    use Sqlexecute;
+    private $user;
+
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
 
     /**
-     * 檔案上傳
+     * 使用者登入
      * 
-     * @param string $id file id
-     * @param string $user user id
-     * @param uploadFile $file  檔案物件
-     * @param boolean $store_type 以路徑方式儲存
+     * @param string $account
+     * @param string $password
+     * @param string $system
      * @return array
      */
-    public function uploadFile($id, $user, $file, $store_type)
+    public function login($account, $password, $system)
     {
         try {
-            $created_user = $this->checkUpload($id, $user);
-            $this->storeType($id, $file, $created_user, $store_type);
-            $this->changeFileStatus($id);
-            return ['result' => true, 'msg' => '#0000;檔案上傳成功!'];
+            $auth = 
+                $this->user
+                    ->where('id', $account)
+                    ->where('pwd', $password)
+                    ->where('sys', $system)
+                    ->first();
+            if ($auth) {
+                Auth::login($auth);
+                return ['result' => true, 'msg' => '登入成功!(#0000)'];
+            }
+            throw new Exception('帳號或密碼錯誤!(#0001)');
         } catch (Exception $e) {
             return ['result' => false, 'msg' => $e->getMessage()];
         }
+    }
+
+
+    /**
+     * 使用者登出
+     * 
+     * @return Response
+     */
+    public function logout()
+    {
+        Auth::logout();
     }
 
 }

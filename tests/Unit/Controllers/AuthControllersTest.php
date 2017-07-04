@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Http\Controllers\AuthController;
 use App\Repositories\AuthRepository;
 use App\Traits\Sqlexecute;
+use Auth;
 
 class AuthControllersTest extends TestCase
 {
@@ -47,7 +48,7 @@ class AuthControllersTest extends TestCase
      *
      * @return void
      */
-    public function _test_login()
+    public function testLogin()
     {
         /** arrange */
         $result = ['result' => true, 'msg' => 'unit test'];
@@ -62,5 +63,27 @@ class AuthControllersTest extends TestCase
         $actual = $this->target->login();
         /** assert */
         $this->assertEquals($expected->getData(), $actual->getData());
+    }
+
+    /**
+     * test logout.
+     *
+     * @return void
+     */
+    public function testLogout()
+    {
+        /** arrange */
+        $user_id = str_random(10);
+
+        /** act */
+        $this->app->instance(AuthController::class, $this->mock);
+        $this->mock->shouldReceive('logout')
+            ->once()
+            ->withAnyArgs();
+        Auth::loginUsingId($user_id, false);
+        $this->target->logout();
+        $actual = Auth::check();
+        /** assert */
+        $this->assertFalse($actual);
     }
 }

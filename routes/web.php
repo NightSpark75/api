@@ -32,6 +32,10 @@ Route::get('/pdo', function () {
     dd (DB::connection()->getPdo());
 });
 
+Route::get('/thanks', function () {
+    return view('thanks');
+})->name('thanks');
+
 Route::get('/test', 'FileController@test');
 
 // change your existing app route to this:

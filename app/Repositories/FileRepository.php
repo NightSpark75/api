@@ -37,7 +37,7 @@ class FileRepository
             $created_user = $this->checkUpload($id, $user);
             $this->storeType($id, $file, $created_user, $store_type);
             $this->changeFileStatus($id);
-            return ['result' => true, 'msg' => '#0000;檔案上傳成功!'];
+            return ['result' => true, 'msg' => '檔案上傳成功!(#0000)'];
         } catch (Exception $e) {
             return ['result' => false, 'msg' => $e->getMessage()];
         }
@@ -58,11 +58,11 @@ class FileRepository
         $user_md5 = $this->userToMD5($created_user);
 
         if($status == 'S') {
-            throw new Exception('#0001;檔案已上傳成功，無法重複上傳');
+            throw new Exception('檔案已上傳成功，無法重複上傳!(#0001)');
         }
 
         if ($user_md5 != $user) {
-            throw new Exception('#0002;檔案驗證資訊有誤，您無權限上傳該檔案!');
+            throw new Exception('檔案驗證資訊有誤，您無權限上傳該檔案!(#0002)');
         }
         return $created_user;
     }
@@ -84,7 +84,7 @@ class FileRepository
         if (isset($result)) {
             return $result;
         }
-        throw new Exception('#0003;查詢不到檔案資料!');
+        throw new Exception('查詢不到檔案資料!(#0003)');
     }
 
     /**
@@ -207,7 +207,7 @@ class FileRepository
         try {
             $file_info = $this->getFileInfo($token, $file_id, $user);
             $this->updateFileStatus($token);
-            return ['result' => true, 'msg' => '#0005;檔案資料截取成功!', 'file' => $file_info];
+            return ['result' => true, 'msg' => '檔案資料截取成功!(#0005)', 'file' => $file_info];
         } catch (Exception $e) {
             return ['result' => false, 'msg' => $e->getMessage()];
         }
@@ -233,7 +233,7 @@ class FileRepository
         $file_info = $this->select($query);
 
         if ($file_info == null) {
-            throw new Exception('#0006讀取檔案的驗證參數有異常，您無權限讀取此檔!');
+            throw new Exception('讀取檔案的驗證參數有異常，您無權限讀取此檔!(#0006)');
         }
         return $file_info;
     }

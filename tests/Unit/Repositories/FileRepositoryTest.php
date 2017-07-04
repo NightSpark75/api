@@ -44,7 +44,7 @@ class FileRepositoryTest extends TestCase
      *
      * @return void
      */
-    public function test_uploadFile()
+    public function testUploadFile()
     {
         /** arrange */
         $pars = [':name' => 'test', ':dis' => 'test dis', ':user' => 'test_user', ':pre' => '', ':id' => '', ':r_user' => '', ':res' => '', ':msg' => ''];
@@ -54,7 +54,7 @@ class FileRepositoryTest extends TestCase
         $file_path = base_path().'\tests\temp\FileRepository@upload.tmp';
         $file = new UploadedFile($file_path, 'FileRepository@upload.tmp', 'application/pdf', 100023, null, $test=true);
         $store_type = 'code';
-        $expected = ['result' => true, 'msg' => '#0000;檔案上傳成功!'];
+        $expected = ['result' => true, 'msg' => '檔案上傳成功!(#0000)'];
 
         /** act */
         $actual = $this->target->uploadFile($pars[':id'], $md5_user, $file, $store_type);
@@ -68,7 +68,7 @@ class FileRepositoryTest extends TestCase
      *
      * @return void
      */
-    public function test_uploadFile_for_path()
+    public function testUploadFileForPath()
     {
         /** arrange */
         $pars = [':name' => 'test', ':dis' => 'test dis', ':user' => 'test_user', ':pre' => '', ':id' => '', ':r_user' => '', ':res' => '', ':msg' => ''];
@@ -80,7 +80,7 @@ class FileRepositoryTest extends TestCase
         $file_path = base_path().'\\tests\\temp\\'.$tmp;
         $file = new UploadedFile($file_path, $tmp, 'application/tmp', 100023, null, $test=true);
         $store_type = 'path';
-        $expected = ['result' => true, 'msg' => '#0000;檔案上傳成功!'];
+        $expected = ['result' => true, 'msg' => '檔案上傳成功!(#0000)'];
 
         /** act */
         $actual = $this->target->uploadFile($pars[':id'], $md5_user, $file, $store_type);
@@ -95,7 +95,7 @@ class FileRepositoryTest extends TestCase
      *
      * @return void
      */
-    public function test_uploadFile_e_0001()
+    public function testUploadFileError0001()
     {
         /** arrange */
         $pars = [':name' => 'test', ':dis' => 'test dis', ':user' => 'test_user', ':pre' => '', ':id' => '', ':r_user' => '', ':res' => '', ':msg' => ''];
@@ -112,7 +112,7 @@ class FileRepositoryTest extends TestCase
         $file_path = base_path().'\tests\temp\FileRepository@upload.tmp';
         $file = new UploadedFile($file_path, 'FileRepository@upload.tmp', 'application/pdf', 100023, null, $test=true);
         $store_type = 'code';
-        $expected = ['result' => false, 'msg' => '#0001;檔案已上傳成功，無法重複上傳'];
+        $expected = ['result' => false, 'msg' => '檔案已上傳成功，無法重複上傳!(#0001)'];
 
         /** act */
         $actual = $this->target->uploadFile($pars[':id'], $md5_user, $file, $store_type);
@@ -126,7 +126,7 @@ class FileRepositoryTest extends TestCase
      *
      * @return void
      */
-    public function test_uploadFile_e_0002()
+    public function testUploadFileError0002()
     {
         /** arrange */
         $pars = [':name' => 'test', ':dis' => 'test dis', ':user' => 'test_user', ':pre' => '', ':id' => '', ':r_user' => '', ':res' => '', ':msg' => ''];
@@ -136,7 +136,7 @@ class FileRepositoryTest extends TestCase
         $file_path = base_path().'\tests\temp\FileRepository@upload.tmp';
         $file = new UploadedFile($file_path, 'FileRepository@upload.tmp', 'application/pdf', 100023, null, $test=true);
         $store_type = 'code';
-        $expected = ['result' => false, 'msg' => '#0002;檔案驗證資訊有誤，您無權限上傳該檔案!'];
+        $expected = ['result' => false, 'msg' => '檔案驗證資訊有誤，您無權限上傳該檔案!(#0002)'];
 
         /** act */
         $actual = $this->target->uploadFile($pars[':id'], $md5_user, $file, $store_type);
@@ -150,7 +150,7 @@ class FileRepositoryTest extends TestCase
      *
      * @return void
      */
-    public function test_uploadFile_e_0003()
+    public function testUploadFileError0003()
     {
         /** arrange */
         $pars = [':name' => 'test', ':dis' => 'test dis', ':user' => 'test_user', ':pre' => '', ':id' => '', ':r_user' => '', ':res' => '', ':msg' => ''];
@@ -160,7 +160,7 @@ class FileRepositoryTest extends TestCase
         $file_path = base_path().'\tests\temp\FileRepository@upload.tmp';
         $file = new UploadedFile($file_path, 'FileRepository@upload.tmp', 'application/pdf', 100023, null, $test=true);
         $store_type = 'code';
-        $expected = ['result' => false, 'msg' => '#0003;查詢不到檔案資料!'];
+        $expected = ['result' => false, 'msg' => '查詢不到檔案資料!(#0003)'];
 
         /** act */
         $actual = $this->target->uploadFile('error_file_id', $md5_user, $file, $store_type);
@@ -174,7 +174,7 @@ class FileRepositoryTest extends TestCase
      *
      * @return void
      */
-    public function test_downloadFile()
+    public function testDownloadFile()
     {
         /** arrange */
         $file_id = $this->initDownloadData();
@@ -185,7 +185,7 @@ class FileRepositoryTest extends TestCase
         $md5_user_id = $pars[':md5_user'];
 
         $file = $this->getFileContent($token, $md5_file_id, $md5_user_id);
-        $result = ['result' => true, 'msg' => '#0005;檔案資料截取成功!', 'file' => $file];
+        $result = ['result' => true, 'msg' => '檔案資料截取成功!(#0005)', 'file' => $file];
         $expected = $result;
 
         /** act */
@@ -200,7 +200,7 @@ class FileRepositoryTest extends TestCase
      *
      * @return void
      */
-    public function test_downloadFile_e_0006()
+    public function testDownloadFileError0006()
     {
         /** arrange */
         $file_id = $this->initDownloadData();
@@ -210,7 +210,7 @@ class FileRepositoryTest extends TestCase
         $md5_file_id = $pars[':md5_id'];
         $md5_user_id = $pars[':md5_user'];
 
-        $result = ['result' => false, 'msg' => '#0006讀取檔案的驗證參數有異常，您無權限讀取此檔!'];
+        $result = ['result' => false, 'msg' => '讀取檔案的驗證參數有異常，您無權限讀取此檔!(#0006)'];
         $expected = $result;
 
         /** act */

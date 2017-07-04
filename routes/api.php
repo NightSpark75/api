@@ -13,14 +13,14 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware('web')->get('/user', function (Request $request) { // 20170704: 修正以web為主
     return $request->user();
 });
-// url need api/
 
 // login
-Route::post('pad/login', 'LoginController@login');
-Route::get('pad/logout', 'LoginController@logout');
+Route::post('pad/login', 'AuthController@login');
+Route::get('pad/logout', 'AuthController@logout');
+Route::get('pad/user', 'AuthController@getUser');
 
 // file api
 Route::post('file/upload/{store_type}', 'FileController@uploadFile');

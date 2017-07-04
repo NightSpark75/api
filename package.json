@@ -17,8 +17,8 @@
     "jquery": "^3.1.1",
     "laravel-mix": "0.*",
     "lodash": "^4.17.4",
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
     "react-router": "^3.0.5",
     "vue": "^2.3.4"
   },
@@ -26,8 +26,8 @@
     "Babel": "0.0.1",
     "babel-polyfill": "^6.23.0",
     "bootstrap": "^3.3.7",
-    "bootstrap-fileinput": "^4.4.1",
-    "es6-promise": "^4.1.0",
+    "bootstrap-fileinput": "^4.4.2",
+    "es6-promise": "^4.1.1",
     "react-bootstrap": "^0.31.0"
   }
 }
