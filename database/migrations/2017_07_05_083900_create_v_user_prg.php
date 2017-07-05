@@ -16,7 +16,7 @@ class CreateVUserPrg extends Migration
         //
         DB::statement("
             CREATE VIEW v_user_prg AS
-                select pm.sys_id, pm.sys_name, pd.prg_id, pd.prg_name, user_id
+                select pm.sys_id, pm.sys_name, pd.prg_id, pd.prg_name, w.user_id, a.web_route, rd.prg_ins, rd.prg_upd, rd.prg_del, rd.prg_stat
                     from (
                         select substr(t.user_id, 2, length(t.user_id)) user_id, substr(t.data_d,1,8) prg_id
                             from sma_tree t    
@@ -26,8 +26,10 @@ class CreateVUserPrg extends Migration
                         union
                         select substr(u.user_id, 2, length(u.user_id)) user_id, substr(u.data_d,1,8) prg_id
                             from sma_tree_user u
-                            order by 1, 2) w, sma_sys_prg_m pm, sma_sys_prg_d pd, api_web_prg a
-                    where pm.co = pd.co and pm.sys_id = pd.sys_id and w.prg_id = pd.prg_id and a.prg_id = pd.prg_id and pm.co = a.co
+                            order by 1, 2) w, sma_sys_prg_m pm, sma_sys_prg_d pd, sma_user_role_d ud, sma_role_prg_d rd, api_web_prg a
+                    where pm.co = pd.co and pm.sys_id = pd.sys_id and w.prg_id = pd.prg_id and a.prg_id = pd.prg_id and pm.co = a.co 
+                        and rd.prg_id = pd.prg_id and ud.user_id = w.user_id
+                    group by pm.sys_id, pm.sys_name, pd.prg_id, pd.prg_name, w.user_id, a.web_route, rd.prg_ins, rd.prg_upd, rd.prg_del, rd.prg_stat
                     order by user_id, sys_id, prg_id
         ");
     }

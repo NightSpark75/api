@@ -4,10 +4,14 @@ import {Router, Route, IndexRoute, browserHistory} from "react-router";
 
 import Layout from "./components/Layout";
 import SinglePage from "./components/SinglePage";
+import NavPage from "./components/NavPage";
 import Upload from "./components/Upload";
 import Login from "./components/Login";
 import Error from "./components/Error";
 import Menu from "./components/Menu";
+
+import User from "./components/web/user/User";
+
 import 'babel-polyfill'
 
 const app = document.getElementById('app');
@@ -21,9 +25,12 @@ ReactDOM.render(
             <Route path="file/upload/:store_type/:file_id/:user_id" component={Upload}></Route>
             <Route path="error/:msg" component={Error}></Route>
         </Route>
-        <Route path="pad" component={SinglePage}>
+        <Route path="pad" component={NavPage}>
             <Route path="login/:system" component={Login}></Route>
             <Route path="menu" component={Menu}></Route>
+        </Route>
+        <Route path="web" component={NavPage}>
+            <Route path="user" component={User}></Route>
         </Route>
     </Router>,
 app);

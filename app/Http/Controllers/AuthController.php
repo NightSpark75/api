@@ -46,8 +46,6 @@ class AuthController extends Controller
 
     public function menu()
     {
-        $a = auth();
-        $u = auth()->user();
         $result = ['result' => false, 'msg' => '尚未登入，無法取得功能清單!(#0001)'];
         if (auth()->check()) {
             $user_id = auth()->user()->id;
@@ -55,5 +53,11 @@ class AuthController extends Controller
         }
         $response = response()->json($result);
         return $response;
+    }
+
+    public function user()
+    {
+        $user = $this->auth->getUser();
+        return $user;
     }
 }

@@ -77,4 +77,9 @@ class AuthRepository
         $result = ['result' => true, 'msg' => '已取得清單!(#0000)', 'menu' => $menu];
         return $result;
     }
+
+    public function getUser()
+    {
+        return Auth::user();
+    }
 }
