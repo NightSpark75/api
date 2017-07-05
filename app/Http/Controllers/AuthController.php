@@ -27,7 +27,6 @@ class AuthController extends Controller
         $this->auth = $auth;
     }
 
-
     public function login()
     {
         $account = request()->input('account');
@@ -45,12 +44,16 @@ class AuthController extends Controller
         return $response;
     }
 
-    public function getMenu()
+    public function menu()
     {
+        $a = auth();
+        $u = auth()->user();
+        $result = ['result' => false, 'msg' => '尚未登入，無法取得功能清單!(#0001)'];
         if (auth()->check()) {
-            $user_id = auth()->user()->id();
-            $this->auth->getMenu($user_id);
+            $user_id = auth()->user()->id;
+            $result = $this->auth->getMenu($user_id);
         }
-        return view('thanks'); 
+        $response = response()->json($result);
+        return $response;
     }
 }

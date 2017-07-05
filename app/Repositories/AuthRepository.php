@@ -12,6 +12,7 @@ namespace App\Repositories;
 
 use Exception;
 use App\Models\User;
+use App\Models\UserPrg;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -22,10 +23,12 @@ use Illuminate\Support\Facades\Auth;
 class AuthRepository
 {   
     private $user;
+    private $prg;
 
-    public function __construct(User $user)
+    public function __construct(User $user, UserPrg $prg)
     {
         $this->user = $user;
+        $this->prg = $prg;
     }
 
     /**
@@ -48,6 +51,7 @@ class AuthRepository
                     ->first();
             if ($auth) {
                 Auth::login($auth);
+                Auth::loginUsingId($auth->id, false);
                 return ['result' => true, 'msg' => '登入成功!(#0000)'];
             }
             throw new Exception('帳號或密碼錯誤!(#0001)');
@@ -55,7 +59,6 @@ class AuthRepository
             return ['result' => false, 'msg' => $e->getMessage()];
         }
     }
-
 
     /**
      * 使用者登出
@@ -67,4 +70,11 @@ class AuthRepository
         Auth::logout();
     }
 
+
+    public function getMenu($user_id)
+    {
+        $menu = $this->prg->where('user_id', $user_id)->get()->toArray();
+        $result = ['result' => true, 'msg' => '已取得清單!(#0000)', 'menu' => $menu];
+        return $result;
+    }
 }

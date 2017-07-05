@@ -17,7 +17,7 @@ class CreateVApiUser extends Migration
         DB::statement("
             CREATE VIEW v_api_user AS
                 select 'ppm' sys, co, user_id id, user_name name, user_pw pwd, class, state
-                    from ppmadm.sma_user_m
+                    from sma_user_m
         ");
     }
 
@@ -29,6 +29,6 @@ class CreateVApiUser extends Migration
     public function down()
     {
         //
-        DB::statement('DROP VIEW IF EXISTS v_api_user');
+        DB::statement('DROP VIEW v_api_user');
     }
 }

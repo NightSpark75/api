@@ -26,8 +26,8 @@ class CreateVUserPrg extends Migration
                         union
                         select substr(u.user_id, 2, length(u.user_id)) user_id, substr(u.data_d,1,8) prg_id
                             from sma_tree_user u
-                            order by 1, 2) w, sma_sys_prg_m pm, sma_sys_prg_d pd
-                    where pm.sys_id = pd.sys_id and w.prg_id = pd.prg_id
+                            order by 1, 2) w, sma_sys_prg_m pm, sma_sys_prg_d pd, api_web_prg a
+                    where pm.co = pd.co and pm.sys_id = pd.sys_id and w.prg_id = pd.prg_id and a.prg_id = pd.prg_id and pm.co = a.co
                     order by user_id, sys_id, prg_id
         ");
     }
@@ -40,6 +40,6 @@ class CreateVUserPrg extends Migration
     public function down()
     {
         //
-        DB::statement('DROP VIEW IF EXISTS v_user_prg');
+        DB::statement('DROP VIEW v_user_prg');
     }
 }

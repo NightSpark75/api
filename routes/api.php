@@ -13,14 +13,15 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('web')->get('/user', function (Request $request) { // 20170704: 修正以web為主
+// 20170704: 修正以web為主
+Route::middleware('web')->get('/user', function (Request $request) { 
     return $request->user();
 });
 
 // login
 Route::post('pad/login', 'AuthController@login');
 Route::get('pad/logout', 'AuthController@logout');
-Route::get('pad/user', 'AuthController@getUser');
+Route::get('pad/menu', 'AuthController@menu');
 
 // file api
 Route::post('file/upload/{store_type}', 'FileController@uploadFile');

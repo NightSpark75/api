@@ -52,7 +52,8 @@ class AuthControllersTest extends TestCase
     {
         /** arrange */
         $result = ['result' => true, 'msg' => 'unit test'];
-        $expected = response()->json($result);
+        $response = response()->json($result);
+        $expected = $response->getData();
 
         /** act */
         $this->app->instance(AuthController::class, $this->mock);
@@ -60,9 +61,11 @@ class AuthControllersTest extends TestCase
             ->once()
             ->withAnyArgs()
             ->andReturn($result);
-        $actual = $this->target->login();
+        $action = $this->target->login();
+        $actual = $action->getData();
+
         /** assert */
-        $this->assertEquals($expected->getData(), $actual->getData());
+        $this->assertEquals($expected, $actual);
     }
 
     /**
@@ -73,17 +76,67 @@ class AuthControllersTest extends TestCase
     public function testLogout()
     {
         /** arrange */
-        $user_id = str_random(10);
+        $expected = redirect()->route('thanks');
 
         /** act */
         $this->app->instance(AuthController::class, $this->mock);
         $this->mock->shouldReceive('logout')
             ->once()
             ->withAnyArgs();
-        Auth::loginUsingId($user_id, false);
-        $this->target->logout();
-        $actual = Auth::check();
+        $actual = $this->target->logout();
+
         /** assert */
-        $this->assertFalse($actual);
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testMenuNoLogin()
+    {
+        /** arrange */
+        $result = ['result' => false, 'msg' => '尚未登入，無法取得功能清單!(#0001)'];
+        $response = response()->json($result);
+        $expected = $response->getData();
+
+        /** act */
+        $action = $this->target->menu();
+        $actual = $action->getData();
+
+        /** assert */
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testMenuLogged()
+    {
+        /** arrange */
+        $user_id = str_random(10);
+        $user_pw = str_random(10);
+        $user_name = str_random(10);
+        $bindings = [
+            'user_id' => $user_id,
+            'user_pw' => $user_pw,
+            'user_name' => $user_name,
+        ];
+        $insert_query = "
+            insert into sma_user_m (co, user_id, user_pw, user_name, state)
+                values ('C01', :user_id, :user_pw, :user_name, 'Y')
+        ";
+        $this->query($bindings, $insert_query);
+        Auth::loginUsingId($user_id, false);
+        $menu = [];
+        $result = ['result' => true, 'msg' => '已取得清單!(#0000)', 'menu' => $menu];
+        $response = response()->json($result);
+        $expected = $response->getData();
+
+        /** act */
+        $this->app->instance(AuthController::class, $this->mock);
+        $this->mock->shouldReceive('getMenu')
+            ->once()
+            ->withAnyArgs()
+            ->andReturn($result);
+        $action = $this->target->menu();
+        $actual = $action->getData();
+
+        /** assert */
+        $this->assertEquals($expected, $actual);
+        Auth::logout();
     }
 }
