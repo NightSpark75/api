@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCache extends Migration
+class CreateVApiUser extends Migration
 {
     /**
      * Run the migrations.
@@ -14,11 +14,11 @@ class CreateCache extends Migration
     public function up()
     {
         //
-        Schema::create('api_cache', function($table) {
-            $table->string('key')->unique();
-            $table->text('value');
-            $table->integer('expiration');
-        });
+        DB::statement("
+            CREATE VIEW v_api_user AS
+                select 'ppm' sys, co, user_id id, user_name name, user_pw pwd, class, state
+                    from ppmadm.sma_user_m
+        ");
     }
 
     /**
@@ -29,6 +29,6 @@ class CreateCache extends Migration
     public function down()
     {
         //
-        Schema::dropIfExists('api_cache');
+        DB::statement('DROP VIEW IF EXISTS v_api_user');
     }
 }

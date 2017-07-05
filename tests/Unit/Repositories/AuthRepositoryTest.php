@@ -54,8 +54,8 @@ class AuthRepositoryTest extends TestCase
             'user_name' => $user_name,
         ];
         $insert_query = "
-            insert into sma_user_m (co, user_id, user_pw, user_name)
-                values ('C01', :user_id, :user_pw, :user_name)
+            insert into sma_user_m (co, user_id, user_pw, user_name, state)
+                values ('C01', :user_id, :user_pw, :user_name, 'Y')
         ";
         $this->query($bindings, $insert_query);
         

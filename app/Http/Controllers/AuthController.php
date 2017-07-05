@@ -42,14 +42,15 @@ class AuthController extends Controller
     {
         $this->auth->logout();
         $response = redirect()->route('thanks');
-        $c = \Auth::check();
-        $a = \Auth::user();
         return $response;
     }
 
-    public function getUser()
+    public function getMenu()
     {
-        $a = \Auth::user();
-        return $a;
+        if (auth()->check()) {
+            $user_id = auth()->user()->id();
+            $this->auth->getMenu($user_id);
+        }
+        return view('thanks'); 
     }
 }

@@ -44,6 +44,7 @@ class AuthRepository
                     ->where('id', $account)
                     ->where('pwd', $password)
                     ->where('sys', $system)
+                    ->where('state', 'Y')
                     ->first();
             if ($auth) {
                 Auth::login($auth);

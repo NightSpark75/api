@@ -17635,12 +17635,13 @@ var Login = function (_React$Component) {
                     window.location = '/pad/menu';
                 } else {
                     self.setMsg('danger', response.data.msg);
+                    self.setState({ buttonState: '' });
                 }
             }).catch(function (error) {
                 console.log(error);
                 self.setMsg('danger', error.message);
+                self.setState({ buttonState: '' });
             });
-            this.setState({ buttonState: '' });
         }
     }, {
         key: "render",

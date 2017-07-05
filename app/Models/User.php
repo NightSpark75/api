@@ -13,7 +13,7 @@ class User extends Authenticatable
     protected $table = "v_api_user";
     protected $primaryKey = 'id';
     protected $visible = ['sys', 'co', 'id', 'name', 'class', 'state'];
-    protected $hidden = ['password'];
+    protected $hidden = ['pwd'];
     
     public function getRememberToken()
     {
