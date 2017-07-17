@@ -5,12 +5,12 @@
 
     RewriteEngine On
 
+    # virtual directory name
+    RewriteBase /stdapi
+
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)/$ /$1 [L,R=301]
-
-    # virtual directory name
-    RewriteBase /stdapi
 
     # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
