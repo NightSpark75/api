@@ -41,6 +41,6 @@ Route::get('/test', 'FileController@test');
 // we are basically just giving it an optional parameter of "anything"
 Route::get('/{path?}', function($path = null){
         return View::make('index');
-    })->where('path', '.*'); 
+})->where('path', '.*'); 
 //regex to match anything (dots, slashes, letters, numbers, etc)
 

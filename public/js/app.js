@@ -29247,7 +29247,7 @@ var Login = function (_React$Component) {
             form_data.append('account', account);
             form_data.append('password', password);
             form_data.append('system', system);
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('api/pad/login', form_data, {
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/pad/login', form_data, {
                 method: 'post'
             }).then(function (response) {
                 if (response.data.result === true) {
