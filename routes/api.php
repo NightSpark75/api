@@ -26,6 +26,13 @@ Route::get('pad/logout', 'AuthController@logout');
 Route::get('pad/menu', 'AuthController@menu');
 Route::get('pad/user', 'AuthController@user');
 
+// web user
+Route::get('web/user/init', 'Web\UserController@init');
+Route::post('web/user/insert', 'Web\UserController@insert');
+Route::post('web/user/update', 'Web\UserController@update');
+Route::post('web/user/delete', 'Web\UserController@delete');
+Route::get('web/user/search/{str}', 'Web\UserController@search');
+
 // file api
 Route::post('file/upload/{store_type}', 'FileController@uploadFile');
 Route::get('file/download/{token}/{file_id}/{user_id}', 'FileController@downloadFile');

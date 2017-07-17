@@ -65,7 +65,6 @@ export default class Upload extends React.Component {
             method: 'post',
             headers: {'Content-Type': 'multipart/form-data'}
         }).then(function (response) {
-            console.log(response);
             if (response.data.result) {
                 self.setMsg('success', response.data.msg);
                 self.setState({buttonState: 'complete'})

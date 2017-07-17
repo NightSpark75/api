@@ -16,7 +16,6 @@ export default class NavPage extends React.Component{
         axios.get('/api/pad/user', new FormData(), {
             method: 'get',
         }).then(function (response) {
-            console.log(response);
             self.setState({user: response.data});
         }).catch(function (error) {
             console.log(error);

@@ -63,7 +63,6 @@ export default class Login extends React.Component{
         axios.post('/api/pad/login', form_data, {
             method: 'post',
         }).then(function (response) {
-            console.log(response);
             if (response.data.result === true) {
                 window.location = '/pad/menu';
             } else {

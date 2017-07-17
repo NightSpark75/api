@@ -35,22 +35,6 @@ class FileController extends Controller
         $this->file = $file;
     }
 
-    public function test()
-    {
-        //$user = User::where('user_id', '106013');
-        //$a = User::where('user_id', '106013')->where('user_pw', 'PA676579')->first();
-        //return count($a);
-        /*
-        if (Auth::attempt(['user_id' => '106013', 'user_pw' => 'PA676579', 'state' => 'Y'], false)) {
-            return ['result' => true, 'msg' => '登入成功!(#0000)'];
-        }*/
-        $user = User::where('user_id', '106013')
-                                ->where('user_pw', 'PA676579')->first();
-        Auth::loginUsingId($user->user_id, false);
-        $auth = Auth::check() ? 'yes' : 'no';
-        return $auth;
-    }
-
     /**
      * 檔案上傳
      * 

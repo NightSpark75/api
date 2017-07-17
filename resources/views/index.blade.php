@@ -7,6 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Stardant D2K Web Api</title>
+    <link rel="stylesheet" href="http://otissv.github.io/react-uikit-components/docs/styles/uikit.min.css">
     <link href="{{ url('/css/app.css') }}" rel="stylesheet">
 </head>
 <body>
