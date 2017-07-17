@@ -18,24 +18,26 @@ const app = document.getElementById('app');
 
 ReactDOM.render(
     <Router history={browserHistory}>
-        <Route path="/" component={Layout}>
-            {/*<IndexRoute component={Home}></IndexRoute>*/}
-        </Route>
-        <Route path="s" component={SinglePage}>
-            <Route path="file/upload/:store_type/:file_id/:user_id" component={Upload}></Route>
-            <Route path="error/:msg" component={Error}></Route>
-        </Route>
-        <Route path="pad" component={SinglePage}>
-            <Route path="login/:system" component={Login}></Route>
-        </Route>
-        <Route path="pad" component={NavPage}>
-            <Route path="menu" component={Menu}></Route>
-        </Route>
-        <Route path="web" component={NavPage}>
-            <Route path="user" component={User}></Route>
-        </Route>
-        <Route path="ui" component={SinglePage}>
-            <Route path="test" component={Test}></Route>
+        <Route path={serverName}>
+            <Route path="/" component={Layout}>
+                {/*<IndexRoute component={Home}></IndexRoute>*/}
+            </Route>
+            <Route path="s" component={SinglePage}>
+                <Route path="file/upload/:store_type/:file_id/:user_id" component={Upload}></Route>
+                <Route path="error/:msg" component={Error}></Route>
+            </Route>
+            <Route path="pad" component={SinglePage}>
+                <Route path="login/:system" component={Login}></Route>
+            </Route>
+            <Route path="pad" component={NavPage}>
+                <Route path="menu" component={Menu}></Route>
+            </Route>
+            <Route path="web" component={NavPage}>
+                <Route path="user" component={User}></Route>
+            </Route>
+            <Route path="ui" component={SinglePage}>
+                <Route path="test" component={Test}></Route>
+            </Route>
         </Route>
     </Router>,
 app);
