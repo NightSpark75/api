@@ -86,7 +86,7 @@ class UserController extends Controller
         return $response;
     }
 
-    public function search($str)
+    public function search($str = '')
     {
         $result = $this->user->search($str);
         $response = response()->json($result);
