@@ -30029,7 +30029,7 @@ var User = function (_React$Component) {
             search: '',
             isAddShow: false,
             isEditShow: false,
-            searchStr: ''
+            allList: true
         };
         return _this;
     }
@@ -30127,20 +30127,17 @@ var User = function (_React$Component) {
             }
         }
     }, {
-        key: 'onSearch',
-        value: function onSearch() {
-            var search = this.state.search;
-            if (search === '') {
-                search = '%';
-            }
+        key: 'nonSearch',
+        value: function nonSearch() {
             var self = this;
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/web/user/search/' + search, null, {
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/web/user/search/%%', null, {
                 method: 'get'
             }).then(function (response) {
                 if (response.data.result) {
                     self.setState({
                         user: response.data.user,
-                        searchStr: search
+                        search: '',
+                        allList: true
                     });
                     console.log(response.data);
                 } else {
@@ -30149,6 +30146,29 @@ var User = function (_React$Component) {
             }).catch(function (error) {
                 console.log(error);
             });
+        }
+    }, {
+        key: 'onSearch',
+        value: function onSearch() {
+            var search = this.state.search;
+            if (search !== '') {
+                var self = this;
+                __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/web/user/search/' + search, null, {
+                    method: 'get'
+                }).then(function (response) {
+                    if (response.data.result) {
+                        self.setState({
+                            user: response.data.user,
+                            allList: false
+                        });
+                        console.log(response.data);
+                    } else {
+                        console.log(response.data);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
         }
     }, {
         key: 'searchChange',
@@ -30192,16 +30212,49 @@ var User = function (_React$Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
                             { className: 'col-lg-4 text-right' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            this.state.allList ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
                                 { className: 'input-group' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', className: 'form-control', onChange: this.searchChange.bind(this) }),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', {
+                                    type: 'text',
+                                    className: 'form-control',
+                                    value: this.state.search,
+                                    onChange: this.searchChange.bind(this) }),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'span',
                                     { className: 'input-group-btn' },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         'button',
                                         { className: 'btn btn-default', onClick: this.onSearch.bind(this) },
+                                        '\u67E5\u8A62'
+                                    )
+                                )
+                            ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'input-group' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', {
+                                    type: 'text',
+                                    className: 'form-control',
+                                    value: this.state.search,
+                                    onChange: this.searchChange.bind(this)
+                                }),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'span',
+                                    { className: 'input-group-btn' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'button',
+                                        {
+                                            className: 'btn btn-danger',
+                                            onClick: this.nonSearch.bind(this)
+                                        },
+                                        '\u53D6\u6D88'
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'button',
+                                        {
+                                            className: 'btn btn-default',
+                                            onClick: this.onSearch.bind(this)
+                                        },
                                         '\u67E5\u8A62'
                                     )
                                 )

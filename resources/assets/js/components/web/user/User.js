@@ -18,7 +18,7 @@ export default class User extends React.Component{
             search: '',
             isAddShow: false,
             isEditShow: false,
-            searchStr: ''
+            allList: true
         }
     }
 
@@ -105,19 +105,16 @@ export default class User extends React.Component{
         }
     }
 
-    onSearch() {
-        let search = this.state.search;
-        if (search === '') {
-            search = '%'
-        }
+    nonSearch() {
         let self = this;       
-        axios.get('/api/web/user/search/' + search, null, {
+        axios.get('/api/web/user/search/%%', null, {
             method: 'get',
         }).then(function (response) {
             if (response.data.result) {
                 self.setState({
                     user: response.data.user,
-                    searchStr: search
+                    search: '',
+                    allList: true
                 });
                 console.log(response.data);
             } else {
@@ -126,6 +123,28 @@ export default class User extends React.Component{
         }).catch(function (error) {
             console.log(error);
         });
+    }
+
+    onSearch() {
+        let search = this.state.search;
+        if (search !== '') {
+            let self = this;       
+            axios.get('/api/web/user/search/' + search, null, {
+                method: 'get',
+            }).then(function (response) {
+                if (response.data.result) {
+                    self.setState({
+                        user: response.data.user,
+                        allList: false
+                    });
+                    console.log(response.data);
+                } else {
+                    console.log(response.data);
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
     }
     
     searchChange(e) {
@@ -151,12 +170,41 @@ export default class User extends React.Component{
                             }
                         </div>
                         <div className="col-lg-4 text-right">
-                            <div className="input-group">
-                                <input type="text" className="form-control" onChange={this.searchChange.bind(this)}/>
-                                <span className="input-group-btn">
-                                    <button className="btn btn-default" onClick={this.onSearch.bind(this)}>查詢</button>
-                                </span>
-                            </div>
+                            {this.state.allList ? 
+                                <div className="input-group">
+                                    <input 
+                                        type="text" 
+                                        className="form-control" 
+                                        value={this.state.search}
+                                        onChange={this.searchChange.bind(this)}/>
+                                    <span className="input-group-btn">
+                                        <button className="btn btn-default" onClick={this.onSearch.bind(this)}>查詢</button>
+                                    </span>
+                                </div>
+                            :
+                                <div className="input-group">
+                                    <input 
+                                        type="text" 
+                                        className="form-control"
+                                        value={this.state.search}  
+                                        onChange={this.searchChange.bind(this)}
+                                    />
+                                    <span className="input-group-btn">
+                                        <button 
+                                            className="btn btn-danger" 
+                                            onClick={this.nonSearch.bind(this)}
+                                        >
+                                        取消
+                                        </button>
+                                        <button 
+                                            className="btn btn-default" 
+                                            onClick={this.onSearch.bind(this)}
+                                        >
+                                        查詢
+                                        </button>
+                                    </span>
+                                </div>
+                            }
                         </div>
                     </div>
                     <p></p>
