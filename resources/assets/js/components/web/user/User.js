@@ -18,6 +18,7 @@ export default class User extends React.Component{
             search: '',
             isAddShow: false,
             isEditShow: false,
+            searchStr: ''
         }
     }
 
@@ -106,22 +107,25 @@ export default class User extends React.Component{
 
     onSearch() {
         let search = this.state.search;
-        if (search !== '') {
-            let self = this;       
-            axios.get('/api/web/user/search/' + search, null, {
-                method: 'get',
-            }).then(function (response) {
-                if (response.data.result) {
-                    self.setState({
-                        user: response.data.user,
-                    });
-                } else {
-                    console.log(response.data);
-                }
-            }).catch(function (error) {
-                console.log(error);
-            });
+        if (search === '') {
+            search = '%'
         }
+        let self = this;       
+        axios.get('/api/web/user/search/' + search, null, {
+            method: 'get',
+        }).then(function (response) {
+            if (response.data.result) {
+                self.setState({
+                    user: response.data.user,
+                    searchStr: search
+                });
+                console.log(response.data);
+            } else {
+                console.log(response.data);
+            }
+        }).catch(function (error) {
+            console.log(error);
+        });
     }
     
     searchChange(e) {

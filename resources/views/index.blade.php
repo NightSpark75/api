@@ -10,9 +10,6 @@
     <link href="{{ url('/css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <script type="text/javascript">
-        var serverName = "/{{ env('APP_VD', '') }}";
-    </script> 
     <div id="app"></div>
     <script src="{{ url('/js/app.js') }}"></script>
 </body>

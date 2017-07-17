@@ -28156,36 +28156,32 @@ var app = document.getElementById('app');
 __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
     __WEBPACK_IMPORTED_MODULE_2_react_router__["a" /* Router */],
     { history: __WEBPACK_IMPORTED_MODULE_2_react_router__["b" /* browserHistory */] },
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "/", component: __WEBPACK_IMPORTED_MODULE_3__components_Layout__["a" /* default */] }),
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */],
-        { path: serverName },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "/", component: __WEBPACK_IMPORTED_MODULE_3__components_Layout__["a" /* default */] }),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            __WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */],
-            { path: "s", component: __WEBPACK_IMPORTED_MODULE_4__components_SinglePage__["a" /* default */] },
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "file/upload/:store_type/:file_id/:user_id", component: __WEBPACK_IMPORTED_MODULE_6__components_Upload__["a" /* default */] }),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "error/:msg", component: __WEBPACK_IMPORTED_MODULE_8__components_Error__["a" /* default */] })
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            __WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */],
-            { path: "pad", component: __WEBPACK_IMPORTED_MODULE_4__components_SinglePage__["a" /* default */] },
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "login/:system", component: __WEBPACK_IMPORTED_MODULE_7__components_Login__["a" /* default */] })
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            __WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */],
-            { path: "pad", component: __WEBPACK_IMPORTED_MODULE_5__components_NavPage__["a" /* default */] },
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "menu", component: __WEBPACK_IMPORTED_MODULE_9__components_Menu__["a" /* default */] })
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            __WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */],
-            { path: "web", component: __WEBPACK_IMPORTED_MODULE_5__components_NavPage__["a" /* default */] },
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "user", component: __WEBPACK_IMPORTED_MODULE_11__components_web_user_User__["a" /* default */] })
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            __WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */],
-            { path: "ui", component: __WEBPACK_IMPORTED_MODULE_4__components_SinglePage__["a" /* default */] },
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "test", component: __WEBPACK_IMPORTED_MODULE_10__components_Test__["a" /* default */] })
-        )
+        { path: "s", component: __WEBPACK_IMPORTED_MODULE_4__components_SinglePage__["a" /* default */] },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "file/upload/:store_type/:file_id/:user_id", component: __WEBPACK_IMPORTED_MODULE_6__components_Upload__["a" /* default */] }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "error/:msg", component: __WEBPACK_IMPORTED_MODULE_8__components_Error__["a" /* default */] })
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */],
+        { path: "pad", component: __WEBPACK_IMPORTED_MODULE_4__components_SinglePage__["a" /* default */] },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "login/:system", component: __WEBPACK_IMPORTED_MODULE_7__components_Login__["a" /* default */] })
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */],
+        { path: "pad", component: __WEBPACK_IMPORTED_MODULE_5__components_NavPage__["a" /* default */] },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "menu", component: __WEBPACK_IMPORTED_MODULE_9__components_Menu__["a" /* default */] })
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */],
+        { path: "web", component: __WEBPACK_IMPORTED_MODULE_5__components_NavPage__["a" /* default */] },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "user", component: __WEBPACK_IMPORTED_MODULE_11__components_web_user_User__["a" /* default */] })
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */],
+        { path: "ui", component: __WEBPACK_IMPORTED_MODULE_4__components_SinglePage__["a" /* default */] },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "test", component: __WEBPACK_IMPORTED_MODULE_10__components_Test__["a" /* default */] })
     )
 ), app);
 
@@ -29251,7 +29247,7 @@ var Login = function (_React$Component) {
             form_data.append('account', account);
             form_data.append('password', password);
             form_data.append('system', system);
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/pad/login', form_data, {
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('api/pad/login', form_data, {
                 method: 'post'
             }).then(function (response) {
                 if (response.data.result === true) {
@@ -30032,7 +30028,8 @@ var User = function (_React$Component) {
             user: [],
             search: '',
             isAddShow: false,
-            isEditShow: false
+            isEditShow: false,
+            searchStr: ''
         };
         return _this;
     }
@@ -30133,22 +30130,25 @@ var User = function (_React$Component) {
         key: 'onSearch',
         value: function onSearch() {
             var search = this.state.search;
-            if (search !== '') {
-                var self = this;
-                __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/web/user/search/' + search, null, {
-                    method: 'get'
-                }).then(function (response) {
-                    if (response.data.result) {
-                        self.setState({
-                            user: response.data.user
-                        });
-                    } else {
-                        console.log(response.data);
-                    }
-                }).catch(function (error) {
-                    console.log(error);
-                });
+            if (search === '') {
+                search = '%';
             }
+            var self = this;
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/web/user/search/' + search, null, {
+                method: 'get'
+            }).then(function (response) {
+                if (response.data.result) {
+                    self.setState({
+                        user: response.data.user,
+                        searchStr: search
+                    });
+                    console.log(response.data);
+                } else {
+                    console.log(response.data);
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
         }
     }, {
         key: 'searchChange',
