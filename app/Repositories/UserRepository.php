@@ -14,7 +14,7 @@ use Exception;
 use App\Traits\Sqlexecute;
 
 use App\Models\UserList;
-use App\models\UserPrg;
+use App\Models\UserPrg;
 
 /**
  * Class UserRepository
