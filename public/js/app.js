@@ -30130,7 +30130,7 @@ var User = function (_React$Component) {
         key: 'nonSearch',
         value: function nonSearch() {
             var self = this;
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/web/user/search/%%', null, {
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/web/user/search/', null, {
                 method: 'get'
             }).then(function (response) {
                 if (response.data.result) {

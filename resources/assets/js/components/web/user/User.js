@@ -107,7 +107,7 @@ export default class User extends React.Component{
 
     nonSearch() {
         let self = this;       
-        axios.get('/api/web/user/search/%%', null, {
+        axios.get('/api/web/user/search/', null, {
             method: 'get',
         }).then(function (response) {
             if (response.data.result) {
