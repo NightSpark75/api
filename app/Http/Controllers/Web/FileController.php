@@ -8,8 +8,9 @@
  * @since 1.0.0 spark: 完成檔案上傳與下載功能
  * 
  */
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Controller;
 use App\Repositories\FileRepository;
 use App\Models\User;
 use Auth;

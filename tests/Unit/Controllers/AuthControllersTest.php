@@ -6,7 +6,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Web\AuthController;
 use App\Repositories\AuthRepository;
 use App\Traits\Sqlexecute;
 use Auth;
@@ -48,7 +48,7 @@ class AuthControllersTest extends TestCase
      *
      * @return void
      */
-    public function testLogin()
+    public function test_login()
     {
         /** arrange */
         $result = ['result' => true, 'msg' => 'unit test'];
@@ -73,7 +73,7 @@ class AuthControllersTest extends TestCase
      *
      * @return void
      */
-    public function testLogout()
+    public function test_logout()
     {
         /** arrange */
         $expected = redirect()->route('thanks');
@@ -89,7 +89,12 @@ class AuthControllersTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testMenuNoLogin()
+    /**
+     * test get menu when no login.
+     *
+     * @return void
+     */
+    public function test_menu_no_login()
     {
         /** arrange */
         $result = ['result' => false, 'msg' => '尚未登入，無法取得功能清單!(#0001)'];
@@ -104,7 +109,12 @@ class AuthControllersTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testMenuLogged()
+    /**
+     * test get menu when logged.
+     *
+     * @return void
+     */
+    public function test_menu_logged()
     {
         /** arrange */
         $user_id = str_random(10);

@@ -6,7 +6,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-use App\Http\Controllers\FileController;
+use App\Http\Controllers\Web\FileController;
 use App\Repositories\FileRepository;
 use App\Traits\Sqlexecute;
 
@@ -42,7 +42,7 @@ class FileControllerTest extends TestCase
      *
      * @return void
      */
-    public function testUploadFile()
+    public function test_upload_file()
     {
         /** arrange */
         $result = ['result' => true, 'msg' => 'unit test'];
@@ -64,7 +64,7 @@ class FileControllerTest extends TestCase
      *
      * @return void
      */
-    public function testDownloadFileAttachment()
+    public function test_download_file_attachment()
     {
         /** arrange */
         $file = new \stdClass();
@@ -98,7 +98,7 @@ class FileControllerTest extends TestCase
      *
      * @return void
      */
-    public function testDownloadFilePathAttachment()
+    public function test_download_file_path_attachment()
     {
         /** arrange */
         $file = new \stdClass();
@@ -130,7 +130,7 @@ class FileControllerTest extends TestCase
      *
      * @return void
      */
-    public function testDownloadFileOpen()
+    public function test_download_file_open()
     {
         /** arrange */
         $file = new \stdClass();
@@ -164,7 +164,7 @@ class FileControllerTest extends TestCase
      *
      * @return void
      */
-    public function testDownloadFilePathOpen()
+    public function test_download_file_path_open()
     {
         /** arrange */
         $file = new \stdClass();
@@ -195,7 +195,7 @@ class FileControllerTest extends TestCase
      *
      * @return void
      */
-    public function testDownloadFileResultFalse()
+    public function test_download_file_result_false()
     {
         /** arrange */
         $result = ['result' => false, 'msg' => 'result false'];

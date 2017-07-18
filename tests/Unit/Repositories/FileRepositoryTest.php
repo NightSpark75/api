@@ -44,7 +44,7 @@ class FileRepositoryTest extends TestCase
      *
      * @return void
      */
-    public function testUploadFile()
+    public function test_upload_file()
     {
         /** arrange */
         $pars = [':name' => 'test', ':dis' => 'test dis', ':user' => 'test_user', ':pre' => '', ':id' => '', ':r_user' => '', ':res' => '', ':msg' => ''];
@@ -68,7 +68,7 @@ class FileRepositoryTest extends TestCase
      *
      * @return void
      */
-    public function testUploadFileForPath()
+    public function test_upload_file_for_path()
     {
         /** arrange */
         $pars = [':name' => 'test', ':dis' => 'test dis', ':user' => 'test_user', ':pre' => '', ':id' => '', ':r_user' => '', ':res' => '', ':msg' => ''];
@@ -95,7 +95,7 @@ class FileRepositoryTest extends TestCase
      *
      * @return void
      */
-    public function testUploadFileError0001()
+    public function test_upload_file_error_0001()
     {
         /** arrange */
         $pars = [':name' => 'test', ':dis' => 'test dis', ':user' => 'test_user', ':pre' => '', ':id' => '', ':r_user' => '', ':res' => '', ':msg' => ''];
@@ -126,7 +126,7 @@ class FileRepositoryTest extends TestCase
      *
      * @return void
      */
-    public function testUploadFileError0002()
+    public function test_upload_file_error_0002()
     {
         /** arrange */
         $pars = [':name' => 'test', ':dis' => 'test dis', ':user' => 'test_user', ':pre' => '', ':id' => '', ':r_user' => '', ':res' => '', ':msg' => ''];
@@ -150,7 +150,7 @@ class FileRepositoryTest extends TestCase
      *
      * @return void
      */
-    public function testUploadFileError0003()
+    public function test_upload_file_error_0003()
     {
         /** arrange */
         $pars = [':name' => 'test', ':dis' => 'test dis', ':user' => 'test_user', ':pre' => '', ':id' => '', ':r_user' => '', ':res' => '', ':msg' => ''];
@@ -174,7 +174,7 @@ class FileRepositoryTest extends TestCase
      *
      * @return void
      */
-    public function testDownloadFile()
+    public function test_download_file()
     {
         /** arrange */
         $file_id = $this->initDownloadData();
@@ -200,7 +200,7 @@ class FileRepositoryTest extends TestCase
      *
      * @return void
      */
-    public function testDownloadFileError0006()
+    public function test_download_file_error_0006()
     {
         /** arrange */
         $file_id = $this->initDownloadData();

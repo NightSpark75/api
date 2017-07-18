@@ -35,8 +35,6 @@ Route::get('/thanks', function () {
     return view('thanks');
 })->name('thanks');
 
-Route::get('/test', 'FileController@test');
-
 // change your existing app route to this:
 // we are basically just giving it an optional parameter of "anything"
 Route::get('/{path?}', function($path = null){

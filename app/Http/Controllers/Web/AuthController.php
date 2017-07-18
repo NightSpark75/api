@@ -8,8 +8,9 @@
  * @since 1.0.0 spark: 完成登入登出功能
  * 
  */
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Controller;
 use App\Repositories\AuthRepository;
 
 /**
@@ -22,11 +23,22 @@ class AuthController extends Controller
     //
     private $auth;
 
+    /**
+     * construct
+     * 
+     * @param AuthRepository $auth
+     * @return void
+     */
     public function __construct(AuthRepository $auth)
     {
         $this->auth = $auth;
     }
 
+    /**
+     * 使用者登入
+     * 
+     * @return Response->json()
+     */
     public function login()
     {
         $account = request()->input('account');
@@ -37,6 +49,11 @@ class AuthController extends Controller
         return $response;
     }
 
+    /**
+     * 使用者登出
+     * 
+     * @return Response->route('thanks')
+     */
     public function logout()
     {
         $this->auth->logout();
@@ -44,6 +61,11 @@ class AuthController extends Controller
         return $response;
     }
 
+    /**
+     * 取得使用者功能清單
+     * 
+     * @return Response->json()
+     */
     public function menu()
     {
         $result = ['result' => false, 'msg' => '尚未登入，無法取得功能清單!(#0001)'];
@@ -55,6 +77,11 @@ class AuthController extends Controller
         return $response;
     }
 
+    /**
+     * 取得登入使用者資料
+     * 
+     * @return App\Models\User
+     */
     public function user()
     {
         $user = $this->auth->getUser();

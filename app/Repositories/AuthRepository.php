@@ -70,7 +70,12 @@ class AuthRepository
         Auth::logout();
     }
 
-
+    /**
+     * 取得使用者清單
+     * 
+     * @param string $user_id
+     * @return Mix
+     */
     public function getMenu($user_id)
     {
         $menu = $this->prg->where('user_id', $user_id)->get()->toArray();
@@ -78,6 +83,11 @@ class AuthRepository
         return $result;
     }
 
+    /**
+     * 取得登入使用者資料
+     * 
+     * @return App\Models\User
+     */
     public function getUser()
     {
         return Auth::user();

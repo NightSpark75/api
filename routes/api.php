@@ -14,16 +14,20 @@ use Illuminate\Http\Request;
 */
 
 // 20170704: 修正以web為主
-
+/*
 Route::middleware('web')->get('/user', function (Request $request) { 
     return $request->user();
 });
+*/
 
 // login
-Route::post('pad/login', 'AuthController@login');
-Route::get('pad/logout', 'AuthController@logout');
-Route::get('pad/menu', 'AuthController@menu');
-Route::get('pad/user', 'AuthController@user');
+Route::group(['prefix' => 'pad'], function () {
+    Route::post('login', 'Web\AuthController@login');
+    Route::get('logout', 'Web\AuthController@logout');
+    Route::middleware('web')->get('menu', 'Web\AuthController@menu');
+    Route::middleware('web')->get('user', 'Web\AuthController@user');
+});
+
 
 // web user
 Route::group(['middleware' => 'web', 'prefix' => 'web/user'], function () {
@@ -36,5 +40,7 @@ Route::group(['middleware' => 'web', 'prefix' => 'web/user'], function () {
 
 
 // file api
-Route::post('file/upload/{store_type}', 'FileController@uploadFile');
-Route::get('file/download/{token}/{file_id}/{user_id}', 'FileController@downloadFile');
+Route::group(['prefix' => 'file'], function () {
+    Route::post('upload/{store_type}', 'Web\FileController@uploadFile');
+    Route::get('download/{token}/{file_id}/{user_id}', 'Web\FileController@downloadFile');
+});
