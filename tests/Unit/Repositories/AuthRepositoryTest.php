@@ -6,10 +6,10 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-use App\Repositories\AuthREpository;
+use App\Repositories\Web\AuthREpository;
 use App\Traits\Sqlexecute;
 use Auth;
-use App\Models\UserPrg;
+use App\Models\Web\UserPrg;
 
 
 class AuthRepositoryTest extends TestCase

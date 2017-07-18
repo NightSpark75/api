@@ -8,7 +8,7 @@
  * @since 1.0.0 spark: 建立檔案寫入與讀取相關的資料處理
  * 
  */
-namespace App\Repositories;
+namespace App\Repositories\Web;
 
 use Exception;
 use App\Traits\Sqlexecute;

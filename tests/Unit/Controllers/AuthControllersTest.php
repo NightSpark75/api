@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 use App\Http\Controllers\Web\AuthController;
-use App\Repositories\AuthRepository;
+use App\Repositories\Web\AuthRepository;
 use App\Traits\Sqlexecute;
 use Auth;
 

@@ -11,7 +11,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\AuthRepository;
+use App\Repositories\Web\AuthRepository;
 
 /**
  * Class AuthController

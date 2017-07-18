@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 use App\Http\Controllers\Web\FileController;
-use App\Repositories\FileRepository;
+use App\Repositories\Web\FileRepository;
 use App\Traits\Sqlexecute;
 
 class FileControllerTest extends TestCase

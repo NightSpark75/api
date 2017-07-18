@@ -11,8 +11,8 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\FileRepository;
-use App\Models\User;
+use App\Repositories\Web\FileRepository;
+use App\Models\Web\User;
 use Auth;
 
 /**

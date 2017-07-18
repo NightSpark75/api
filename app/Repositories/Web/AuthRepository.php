@@ -8,11 +8,11 @@
  * @since 1.0.0 spark: 帳號驗證相關的資料處理
  * 
  */
-namespace App\Repositories;
+namespace App\Repositories\Web;
 
 use Exception;
-use App\Models\User;
-use App\Models\UserPrg;
+use App\Models\Web\User;
+use App\Models\Web\UserPrg;
 use Illuminate\Support\Facades\Auth;
 
 /**

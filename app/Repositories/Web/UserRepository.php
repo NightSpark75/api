@@ -8,13 +8,13 @@
  * @since 1.0.0 spark: 建立檔案寫入與讀取相關的資料處理
  * 
  */
-namespace App\Repositories;
+namespace App\Repositories\Web;
 
 use Exception;
 use App\Traits\Sqlexecute;
 
-use App\Models\UserList;
-use App\Models\UserPrg;
+use App\Models\Web\UserList;
+use App\Models\Web\UserPrg;
 
 /**
  * Class UserRepository
