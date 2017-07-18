@@ -90,7 +90,7 @@ class FileController extends Controller
      */
     private function loadFile($file)
     {
-        $path = $file->path.'\\'.$file->transform;
+        $path = $file->path.'/'.$file->transform;
         $header = ['Content-Type' => $file->mime];
         // 瀏覽器開啟
         if (in_array($file->extension, $this->online_open)) {

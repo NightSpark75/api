@@ -129,7 +129,7 @@ class FileRepository
     private function copyFile($id, $file, $created_user)
     {
         $transform = strtoupper(md5(uniqid(mt_rand(), true)));
-        $file_path = storage_path().'\app\public';
+        $file_path = storage_path().'/app/public';
         $tmp_name = $transform.'.tmp';
 
         $bindings['name'] = $file->getClientOriginalName();
