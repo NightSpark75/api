@@ -106,12 +106,12 @@ class FileControllerTest extends TestCase
         $file->mime = 'text/plain';
         $file->name = 'text.txt';
         $file->extension = 'txt';
-        $file->path = 'C:\\Users\\106013\\laravel\stdapi\\tests\\temp';
+        $file->path = dirname(dirname(dirname(__FILE__))).'/temp';
         $file->transform = 'FileRepository@upload.tmp';
         $file->store_type = 'P';
         $result = ['result' => true, 'msg' => 'download file', 'file' => $file];
         $headers = ['Content-Type' => $file->mime];
-        $expected = response()->download($file->path.'\\'.$file->transform, $file->name, $headers);
+        $expected = response()->download($file->path.'/'.$file->transform, $file->name, $headers);
 
         /** act */
         $this->app->instance(FileController::class, $this->mock);
@@ -172,12 +172,12 @@ class FileControllerTest extends TestCase
         $file->mime = 'application/pdf';
         $file->name = 'test.pdf';
         $file->extension = 'pdf';
-        $file->path = 'C:\\Users\\106013\\laravel\stdapi\\tests\\temp';
+        $file->path = 'tests/temp';
         $file->transform = 'FileRepository@upload.tmp';
         $file->store_type = 'P';
         $result = ['result' => true, 'msg' => 'download file', 'file' => $file];
         $headers = ['Content-Type' => $file->mime];
-        $expected = response()->file($file->path.'\\'.$file->transform, $headers);
+        $expected = response()->file($file->path.'/'.$file->transform, $headers);
         /** act */
         $this->app->instance(FileController::class, $this->mock);
         $this->mock->shouldReceive('downloadFile')

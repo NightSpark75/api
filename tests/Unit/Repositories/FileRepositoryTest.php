@@ -51,7 +51,7 @@ class FileRepositoryTest extends TestCase
         $pars = $this->procedure('pk_common.get_new_file_id', $pars);
         $query = "select pk_common.get_md5('test_user') as \"md5\" from dual";
         $md5_user = $this->select($query)->md5;
-        $file_path = base_path().'\tests\temp\FileRepository@upload.tmp';
+        $file_path = base_path().'/tests/temp/FileRepository@upload.tmp';
         $file = new UploadedFile($file_path, 'FileRepository@upload.tmp', 'application/pdf', 100023, null, $test=true);
         $store_type = 'code';
         $expected = ['result' => true, 'msg' => '檔案上傳成功!(#0000)'];
@@ -76,8 +76,8 @@ class FileRepositoryTest extends TestCase
         $query = "select pk_common.get_md5('test_user') as \"md5\" from dual";
         $md5_user = $this->select($query)->md5;
         $tmp = strtoupper(md5(uniqid(mt_rand(), true))).'.tmp';
-        copy(base_path().'\\tests\\temp\\FileRepository@upload.tmp', base_path().'\\tests\\temp\\'.$tmp);
-        $file_path = base_path().'\\tests\\temp\\'.$tmp;
+        copy(base_path().'/tests/temp/FileRepository@upload.tmp', base_path().'/tests/temp/'.$tmp);
+        $file_path = base_path().'/tests/temp/'.$tmp;
         $file = new UploadedFile($file_path, $tmp, 'application/tmp', 100023, null, $test=true);
         $store_type = 'path';
         $expected = ['result' => true, 'msg' => '檔案上傳成功!(#0000)'];
@@ -109,7 +109,7 @@ class FileRepositoryTest extends TestCase
         $this->query($bindings, $upload_query);
         $query = "select pk_common.get_md5('test_user') as \"md5\" from dual";
         $md5_user = $this->select($query)->md5;
-        $file_path = base_path().'\tests\temp\FileRepository@upload.tmp';
+        $file_path = base_path().'/tests/temp/FileRepository@upload.tmp';
         $file = new UploadedFile($file_path, 'FileRepository@upload.tmp', 'application/pdf', 100023, null, $test=true);
         $store_type = 'code';
         $expected = ['result' => false, 'msg' => '檔案已上傳成功，無法重複上傳!(#0001)'];
@@ -133,7 +133,7 @@ class FileRepositoryTest extends TestCase
         $pars = $this->procedure('pk_common.get_new_file_id', $pars);
         $query = "select pk_common.get_md5('error_user') as \"md5\" from dual";
         $md5_user = $this->select($query)->md5;
-        $file_path = base_path().'\tests\temp\FileRepository@upload.tmp';
+        $file_path = base_path().'/tests/temp/FileRepository@upload.tmp';
         $file = new UploadedFile($file_path, 'FileRepository@upload.tmp', 'application/pdf', 100023, null, $test=true);
         $store_type = 'code';
         $expected = ['result' => false, 'msg' => '檔案驗證資訊有誤，您無權限上傳該檔案!(#0002)'];
@@ -157,7 +157,7 @@ class FileRepositoryTest extends TestCase
         $pars = $this->procedure('pk_common.get_new_file_id', $pars);
         $query = "select pk_common.get_md5('error_user') as \"md5\" from dual";
         $md5_user = $this->select($query)->md5;
-        $file_path = base_path().'\tests\temp\FileRepository@upload.tmp';
+        $file_path = base_path().'/tests/temp/FileRepository@upload.tmp';
         $file = new UploadedFile($file_path, 'FileRepository@upload.tmp', 'application/pdf', 100023, null, $test=true);
         $store_type = 'code';
         $expected = ['result' => false, 'msg' => '查詢不到檔案資料!(#0003)'];
