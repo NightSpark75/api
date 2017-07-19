@@ -52,13 +52,13 @@ class AuthController extends Controller
     /**
      * 使用者登出
      * 
-     * @return Response->route('thanks')
+     * @return Redirect('/web/login/'.$system)
      */
     public function logout()
     {
+        $system = session('system');
         $this->auth->logout();
-        $response = redirect()->route('thanks');
-        return $response;
+        return redirect('/web/login/'.$system);
     }
 
     /**

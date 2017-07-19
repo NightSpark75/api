@@ -35,9 +35,9 @@ export default class NavPage extends React.Component{
                             </span>
                         </div>
                         <div className="navbar-collapse collapse">
-                            <div className="navbar-right">
-                                <a className="navbar-brand" href="#">
-                                    <span className="glyphicon glyphicon-log-out"></span>
+                            <div className="nav navbar-nav navbar-right">
+                                <a className="navbar-brand" href="/api/web/logout">
+                                    <span>登出</span>
                                 </a>
                             </div>
                         </div>

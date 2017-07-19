@@ -44,6 +44,7 @@ export default class Login extends React.Component{
     }
 
     onLogin(event) {
+        event.preventDefault();
         const {account, password, system} = this.state;
         let self = this;
         if (account === '') {
@@ -79,7 +80,7 @@ export default class Login extends React.Component{
         return(   
             <div className="row">
                 <div className="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4">
-                    <form role="form">
+                    <form role="form" onSubmit={this.onLogin.bind(this)}>
                         <h4>請輸入帳號密碼登入</h4>
                         <div className="form-group">
                             <input 
@@ -112,9 +113,8 @@ export default class Login extends React.Component{
                             </button>
                         :
                             <button 
-                                type="button" 
-                                className="btn btn-primary btn-block"  
-                                onClick={this.onLogin.bind(this)}  
+                                type="submit" 
+                                className="btn btn-primary btn-block"   
                             >
                                 登入
                             </button>

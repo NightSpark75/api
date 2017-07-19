@@ -29231,6 +29231,7 @@ var Login = function (_React$Component) {
     }, {
         key: "onLogin",
         value: function onLogin(event) {
+            event.preventDefault();
             var _state = this.state,
                 account = _state.account,
                 password = _state.password,
@@ -29277,7 +29278,7 @@ var Login = function (_React$Component) {
                     { className: "col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4" },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         "form",
-                        { role: "form" },
+                        { role: "form", onSubmit: this.onLogin.bind(this) },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "h4",
                             null,
@@ -29319,9 +29320,8 @@ var Login = function (_React$Component) {
                         ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "button",
                             {
-                                type: "button",
-                                className: "btn btn-primary btn-block",
-                                onClick: this.onLogin.bind(this)
+                                type: "submit",
+                                className: "btn btn-primary btn-block"
                             },
                             "\u767B\u5165"
                         ),
@@ -29529,11 +29529,15 @@ var NavPage = function (_React$Component) {
                             { className: "navbar-collapse collapse" },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 "div",
-                                { className: "navbar-right" },
+                                { className: "nav navbar-nav navbar-right" },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "a",
-                                    { className: "navbar-brand", href: "#" },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "glyphicon glyphicon-log-out" })
+                                    { className: "navbar-brand", href: "/api/web/logout" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "span",
+                                        null,
+                                        "\u767B\u51FA"
+                                    )
                                 )
                             )
                         )

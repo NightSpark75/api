@@ -76,7 +76,8 @@ class AuthControllersTest extends TestCase
     public function test_logout()
     {
         /** arrange */
-        $expected = redirect()->route('thanks');
+        session(['system' => 'test']);
+        $expected = redirect('/web/login/test');
 
         /** act */
         $this->app->instance(AuthController::class, $this->mock);

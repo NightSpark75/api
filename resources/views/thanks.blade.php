@@ -21,7 +21,7 @@
                             </div>
                             <div class="panel-body">
                                 <h5>感謝您的使用</h5>
-                                <h5><a href="{{ url('/pad/login/ppm') }}">需要重新登入請按此</a></h5>
+                                <h5><a href="{{ url('/web/login/ppm') }}">需要重新登入請按此</a></h5>
                             </div>
                         </div>
                     </div>
