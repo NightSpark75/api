@@ -17,13 +17,13 @@ export default class Menu extends React.Component{
 
     componentDidMount() {
         let self = this;
-        axios.get('/api/pad/menu', new FormData(), {
+        axios.get('/api/web/menu', new FormData(), {
             method: 'get',
         }).then(function (response) {
             if (response.data.result) {
                 self.setState({list: response.data.menu});
             } else {
-                window.location = '/pad/login/ppm';
+                window.location = '/web/login/ppm';
             }
         }).catch(function (error) {
             console.log(error);

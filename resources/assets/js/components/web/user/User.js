@@ -6,7 +6,6 @@ import { Link } from 'react-router';
 import axios from 'axios';
 import UserAdd from './UserAdd';
 import UserEdit from './UserEdit';
-import uikit from 'react-uikit-base';
 
 export default class User extends React.Component{
     constructor(props) {
@@ -34,7 +33,7 @@ export default class User extends React.Component{
                 });
             } else {
                 console.log(response.data);
-                window.location = '/pad/login/ppm';
+                window.location = '/web/login/ppm';
             }
         }).catch(function (error) {
             console.log(error);

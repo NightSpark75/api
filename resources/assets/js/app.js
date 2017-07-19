@@ -9,8 +9,11 @@ import Upload from "./components/Upload";
 import Login from "./components/Login";
 import Error from "./components/Error";
 import Menu from "./components/Menu";
-import Test from "./components/Test";
 import User from "./components/web/user/User";
+import Pointlog from "./components/web/mpz/Pointlog"
+
+
+import Test from "./components/Test";
 
 import 'babel-polyfill'
 
@@ -25,14 +28,15 @@ ReactDOM.render(
             <Route path="file/upload/:store_type/:file_id/:user_id" component={Upload}></Route>
             <Route path="error/:msg" component={Error}></Route>
         </Route>
-        <Route path="pad" component={SinglePage}>
+        <Route path="web" component={SinglePage}>
             <Route path="login/:system" component={Login}></Route>
         </Route>
-        <Route path="pad" component={NavPage}>
-            <Route path="menu" component={Menu}></Route>
-        </Route>
         <Route path="web" component={NavPage}>
+            <Route path="menu" component={Menu}></Route>
             <Route path="user" component={User}></Route>
+            <Route path="mpz" >
+                <Route path="pointlog" component={Pointlog}></Route>
+            </Route>
         </Route>
         <Route path="ui" component={SinglePage}>
             <Route path="test" component={Test}></Route>

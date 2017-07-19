@@ -13,7 +13,7 @@ export default class NavPage extends React.Component{
     }
     componentDidMount() {
         let self = this;
-        axios.get('/api/pad/user', new FormData(), {
+        axios.get('/api/web/user', new FormData(), {
             method: 'get',
         }).then(function (response) {
             self.setState({user: response.data});
@@ -30,9 +30,16 @@ export default class NavPage extends React.Component{
                 <nav className="navbar navbar-inverse navbar-fixed-top" role="navigation">
                     <div className="container">
                         <div className="navbar-header">
-                            <a href="#" className="navbar-brand">
+                            <span className="navbar-brand">
                                 {this.state.user.length === 0 ? '資料讀取中...': this.state.user['name'] + ' 您好'}
-                            </a>
+                            </span>
+                        </div>
+                        <div className="navbar-collapse collapse">
+                            <div className="navbar-right">
+                                <a className="navbar-brand" href="#">
+                                    <span className="glyphicon glyphicon-log-out"></span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </nav>

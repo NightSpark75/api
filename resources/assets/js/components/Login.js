@@ -60,11 +60,11 @@ export default class Login extends React.Component{
         form_data.append('account', account);
         form_data.append('password', password);
         form_data.append('system', system);
-        axios.post('/api/pad/login', form_data, {
+        axios.post('/api/web/login', form_data, {
             method: 'post',
         }).then(function (response) {
             if (response.data.result === true) {
-                window.location = '/pad/menu';
+                window.location = '/web/menu';
             } else {
                 self.setMsg('danger', response.data.msg);
                 self.setState({buttonState: ''});
