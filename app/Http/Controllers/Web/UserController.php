@@ -4,17 +4,20 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use App\Repositories\Web\UserRepository;
 
 class UserController extends Controller
 {
     //
     private $user;
+    private $program;
 
     public function __construct(UserRepository $user)
     {
         $this->user = $user;
+        $this->program = 'SMAF0030';
+        session(['program' => $this->program]);
+        $this->middleware('role');
     }
 
     public function init()
@@ -28,8 +31,12 @@ class UserController extends Controller
         }
         $user_list = $this->user->getUser();
         $user_id = Auth()->user()->id;
-        $prg_id = 'SMAF0030';
+        $prg_id = $this->program;
         $prg = $this->user->getPrg($user_id, $prg_id);
+        if (count($prg)) {
+            $data = ['result' => false];
+            return response()->json($data);
+        }
         $data = [
             'result' => true,
             'user' => $user_list,
@@ -41,6 +48,7 @@ class UserController extends Controller
 
     public function insert()
     {
+        $this->middleware('role:insert');
         $input = request()->all();
         $params = [
             'co' => 'C010',
@@ -60,6 +68,7 @@ class UserController extends Controller
 
     public function update()
     {
+        $this->middleware('role:update');
         $input = request()->all();
         $user_id = $input['user_id'];
         $params = [
@@ -78,6 +87,7 @@ class UserController extends Controller
 
     public function delete()
     {
+        $this->middleware('role:delete');
         $r = request();
         $input = request()->all();
         $user_id = $input['user_id'];

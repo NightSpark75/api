@@ -20,7 +20,7 @@
                                 <h4 class="panel-title">error page</h4>
                             </div>
                             <div class="panel-body">
-                                <h4>{{ $message }}</h4>
+                                <h4>{{ isset($message) ? $message : session('message') }}</h4>
                             </div>
                         </div>
                     </div>

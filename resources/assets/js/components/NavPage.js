@@ -35,11 +35,18 @@ export default class NavPage extends React.Component{
                             </span>
                         </div>
                         <div className="navbar-collapse collapse">
-                            <div className="nav navbar-nav navbar-right">
-                                <a className="navbar-brand" href="/api/web/logout">
-                                    <span>登出</span>
-                                </a>
-                            </div>
+                            <ul className="nav navbar-nav navbar-right">
+                                <li>
+                                    <a href="/web/menu">
+                                        回功能頁
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/api/web/logout">
+                                        <span>登出</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </nav>
