@@ -22,21 +22,10 @@ class UserController extends Controller
 
     public function init()
     {
-        if (auth()->check() == false) {
-            $data = [
-                'result' => false
-            ];
-            $response = response()->json($data);
-            return $response;
-        }
         $user_list = $this->user->getUser();
         $user_id = Auth()->user()->id;
         $prg_id = $this->program;
-        $prg = $this->user->getPrg($user_id, $prg_id);
-        if (count($prg)) {
-            $data = ['result' => false];
-            return response()->json($data);
-        }
+        $prg = session('program');
         $data = [
             'result' => true,
             'user' => $user_list,

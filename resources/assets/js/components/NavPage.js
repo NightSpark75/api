@@ -11,9 +11,10 @@ export default class NavPage extends React.Component{
             user: []
         }
     }
+
     componentDidMount() {
         let self = this;
-        axios.get('/api/web/user', new FormData(), {
+        axios.get('/api/web/user/info', new FormData(), {
             method: 'get',
         }).then(function (response) {
             self.setState({user: response.data});
@@ -21,6 +22,13 @@ export default class NavPage extends React.Component{
             console.log(error);
         });
     }
+
+    onLogout(event) {
+        if(confirm('您確定要登出系統？')) {
+            window.location = '/api/web/logout';
+        }
+    }
+
     render(){
         const containerStyle = {
             marginTop: "73px"
@@ -42,8 +50,8 @@ export default class NavPage extends React.Component{
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/api/web/logout">
-                                        <span>登出</span>
+                                    <a onClick={this.onLogout.bind(this)} href="#">
+                                        登出
                                     </a>
                                 </li>
                             </ul>

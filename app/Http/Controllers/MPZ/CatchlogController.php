@@ -11,29 +11,20 @@ class CatchlogController extends Controller
 {
     //
     private $catchlog;
+    private $program;
 
     public function __construct(CatchlogRepository $catchlog)
     {
         $this->catchlog = $catchlog;
+        $this->program = 'SMAF0030';
+        session(['program' => $this->program]);
+        $this->middleware('role');
     }
 
     public function init()
     {
-        /*
-        if (auth()->check() == false) {
-            $data = [
-                'result' => false
-            ];
-            $response = response()->json($data);
-            return $response;
-        }
-        */
-        $point = $this->catchlog->getPoint();
-        $data = [
-            'result' => true,
-            'point' => $point,
-        ];
-        $response = response()->json($data);
+        $result = $this->catchlog->getInit();
+        $response = response()->json($result);
         return $response;
     }
 
@@ -47,6 +38,7 @@ class CatchlogController extends Controller
 
     public function insert()
     {
+        $this->middleware('role:insert');
         $params = request()->all();
         $result = $this->catchlog->insert($params);
         $response = response()->json($result);

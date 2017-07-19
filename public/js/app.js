@@ -29492,13 +29492,20 @@ var NavPage = function (_React$Component) {
         key: "componentDidMount",
         value: function componentDidMount() {
             var self = this;
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/web/user', new FormData(), {
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/web/user/info', new FormData(), {
                 method: 'get'
             }).then(function (response) {
                 self.setState({ user: response.data });
             }).catch(function (error) {
                 console.log(error);
             });
+        }
+    }, {
+        key: "onLogout",
+        value: function onLogout(event) {
+            if (confirm('您確定要登出系統？')) {
+                window.location = '/api/web/logout';
+            }
         }
     }, {
         key: "render",
@@ -29544,12 +29551,8 @@ var NavPage = function (_React$Component) {
                                     null,
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         "a",
-                                        { href: "/api/web/logout" },
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            "span",
-                                            null,
-                                            "\u767B\u51FA"
-                                        )
+                                        { onClick: this.onLogout.bind(this), href: "#" },
+                                        "\u767B\u51FA"
                                     )
                                 )
                             )
