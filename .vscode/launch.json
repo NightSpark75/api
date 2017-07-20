@@ -1,12 +1,21 @@
 {
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "Listen for XDebug",
             "type": "php",
             "request": "launch",
             "port": 9000,
             "serverSourceRoot": "C:\\Users\\106013\\laravel\\stdapi",
+            "localSourceRoot": "${workspaceRoot}"
+        },
+        {
+            "name": "Server",
+            "type": "php",
+            "request": "launch",
+            "port": 9000,
+            "serverSourceRoot": "/var/www/html/stdapi",
             "localSourceRoot": "${workspaceRoot}"
         },
         {
