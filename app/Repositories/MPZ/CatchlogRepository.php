@@ -40,12 +40,33 @@ class CatchlogRepository
         $this->point = $point;
     }
 
-    public function getPoint()
+    public function init()
+    {
+        try{
+            $point = $this->getPoint();
+            $result = [
+                'result' => true,
+                'msg' => '已成功取得檢查點資料!(#0001)',
+                'point' => $point,
+            ];
+            return $result;
+        } catch (Exception $e) {
+            $result = [
+                'result' => false,
+                'msg' => $e.getMessage(),
+            ];
+            return $result;
+        }
+        
+
+    }
+
+    private function getPoint()
     {
         $list = $this->point->join('mpz_device', 'mpz_point.device_type', '=', 'mpz_device.device_no')
             ->where('mpz_point.state', 'Y')
             ->select('mpz_point.point_no' ,'point_name', 'mpz_point.device_type', 'device_name')
-            ->get();
+            ->get()->toArray();
         if (isset($list)) {
             return $list;
         }
@@ -63,7 +84,7 @@ class CatchlogRepository
             $this->catchlog->insert($params);
             $result = [
                 'result' => true,
-                'msg' => '新增檢查點資料成功(#0001)'
+                'msg' => '新增檢查點資料成功(#0003)'
             ];
             return $result;
         } catch (\Exception $e) {

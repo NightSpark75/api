@@ -15,30 +15,36 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/welcome', function () {
+Route::get('welcome', function () {
     return view('welcome');
 });
 
-Route::get('/error', function () {
+Route::get('error', function () {
     return view('error');
 });
 
-Route::get('/phpinfo', function () {
+Route::get('phpinfo', function () {
     phpinfo();
 });
 
-Route::get('/pdo', function () {
+Route::get('pdo', function () {
     dd (DB::connection()->getPdo());
 });
 
-Route::get('/thanks', function () {
+Route::get('thanks', function () {
     return view('thanks');
 })->name('thanks');
 
-// change your existing app route to this:
-// we are basically just giving it an optional parameter of "anything"
+Route::get('testWeb', function() {
+    return 'testWeb';
+})->middleware('auth');
+
+// ReactJs 須認證的頁面
+Route::get('/auth/{path?}', function($path = null){
+        return View::make('index');
+})->where('path', '.*')->middleware('auth'); 
+
+// ReactJs 一般頁面
 Route::get('/{path?}', function($path = null){
         return View::make('index');
 })->where('path', '.*'); 
-//regex to match anything (dots, slashes, letters, numbers, etc)
-

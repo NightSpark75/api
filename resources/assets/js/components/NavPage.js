@@ -45,7 +45,7 @@ export default class NavPage extends React.Component{
                         <div className="navbar-collapse collapse">
                             <ul className="nav navbar-nav navbar-right">
                                 <li>
-                                    <a href="/web/menu">
+                                    <a href="/auth/web/menu">
                                         回功能頁
                                     </a>
                                 </li>

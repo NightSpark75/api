@@ -24,8 +24,8 @@ Route::middleware('web')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'web', 'namespace' => 'Web'], function () {
     Route::post('login', 'AuthController@login');
     Route::get('logout', 'AuthController@logout');
-    Route::middleware('auth:web')->get('menu', 'AuthController@menu');
-    Route::middleware('auth:web')->get('user/info', 'AuthController@user');
+    Route::middleware('web')->get('menu', 'AuthController@menu');
+    Route::middleware('web')->get('user/info', 'AuthController@user');
 });
 
 // web user
@@ -37,13 +37,18 @@ Route::group(['prefix' => 'web/user', 'namespace' => 'Web'], function () {
     Route::get('search/{str?}', 'UserController@search');
 });
 
-// file api
+// file upload
 Route::group(['prefix' => 'file', 'namespace' => 'Web'], function () {
     Route::post('upload/{store_type}', 'FileController@uploadFile');
     Route::get('download/{token}/{file_id}/{user_id}', 'FileController@downloadFile');
 });
 
 // MPZ
-Route::group(['prefix' => 'mpz/pad', 'namespace' => 'MPZ'], function () {
-    Route::get('init', 'CatchlogController@init');
+Route::group(['prefix' => 'web/mpz', 'namespace' => 'MPZ'], function () {
+    // pointlog
+    Route::group(['prefix' => 'pointlog'], function () {
+        Route::get('init', 'CatchlogController@init');
+        Route::post('check', 'CatchlogController@init');
+        Route::post('save', 'CatchlogController@save');
+    });
 });

@@ -265,7 +265,11 @@ export default class User extends React.Component{
                             <h3>資料讀取中...</h3> 
                         </div>
                     : null}
-                    <UserAdd showModal={this.state.isAddShow} onHide={this.hideAdd.bind(this)} addList={this.addList.bind(this)} />
+                    <UserAdd 
+                        showModal={this.state.isAddShow} 
+                        onHide={this.hideAdd.bind(this)} 
+                        addList={this.addList.bind(this)} 
+                    />
                     <UserEdit 
                         showModal={this.state.isEditShow} 
                         onHide={this.hideEdit.bind(this)}  

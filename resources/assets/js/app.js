@@ -31,11 +31,13 @@ ReactDOM.render(
         <Route path="web" component={SinglePage}>
             <Route path="login/:system" component={Login}></Route>
         </Route>
-        <Route path="web" component={NavPage}>
-            <Route path="menu" component={Menu}></Route>
-            <Route path="user" component={User}></Route>
-            <Route path="mpz" >
-                <Route path="pointlog" component={Pointlog}></Route>
+        <Route path="auth">
+            <Route path="web" component={NavPage}>
+                <Route path="menu" component={Menu}></Route>
+                <Route path="user" component={User}></Route>
+                <Route path="mpz" >
+                    <Route path="pointlog" component={Pointlog}></Route>
+                </Route>
             </Route>
         </Route>
         <Route path="ui" component={SinglePage}>

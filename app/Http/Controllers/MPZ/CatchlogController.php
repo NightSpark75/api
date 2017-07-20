@@ -23,7 +23,7 @@ class CatchlogController extends Controller
 
     public function init()
     {
-        $result = $this->catchlog->getInit();
+        $result = $this->catchlog->init();
         $response = response()->json($result);
         return $response;
     }
