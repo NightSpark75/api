@@ -55,7 +55,7 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'role' => \App\Http\Middleware\RoleMiddleWare::class,   // 驗證使用者程式權限
+        'role' => \App\Http\Middleware\RoleMiddleware::class,   // 驗證使用者程式權限
         'role:insert' => \App\Http\Middleware\InsertMiddleware::class,   // 驗證使用者程式權限Insert
         'role:update' => \App\Http\Middleware\UpdateMiddleware::class,   // 驗證使用者程式權限Update
         'role:delete' => \App\Http\Middleware\DeleteMiddleware::class,   // 驗證使用者程式權限Delete
