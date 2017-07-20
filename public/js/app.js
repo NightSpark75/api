@@ -7577,13 +7577,13 @@ Button.defaultProps = defaultProps;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__CarouselItem__ = __webpack_require__(320);
 /* unused harmony reexport CarouselItem */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__Checkbox__ = __webpack_require__(698);
-/* unused harmony reexport Checkbox */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return __WEBPACK_IMPORTED_MODULE_10__Checkbox__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__Clearfix__ = __webpack_require__(699);
 /* unused harmony reexport Clearfix */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ControlLabel__ = __webpack_require__(701);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_12__ControlLabel__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__Col__ = __webpack_require__(700);
-/* unused harmony reexport Col */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_13__Col__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__Collapse__ = __webpack_require__(212);
 /* unused harmony reexport Collapse */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__Dropdown__ = __webpack_require__(146);
@@ -7593,11 +7593,11 @@ Button.defaultProps = defaultProps;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__Fade__ = __webpack_require__(147);
 /* unused harmony reexport Fade */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__Form__ = __webpack_require__(704);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_18__Form__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_18__Form__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__FormControl__ = __webpack_require__(705);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_19__FormControl__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__FormGroup__ = __webpack_require__(708);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_20__FormGroup__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_20__FormGroup__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__Glyphicon__ = __webpack_require__(213);
 /* unused harmony reexport Glyphicon */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__Grid__ = __webpack_require__(323);
@@ -7621,7 +7621,7 @@ Button.defaultProps = defaultProps;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__MenuItem__ = __webpack_require__(723);
 /* unused harmony reexport MenuItem */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__Modal__ = __webpack_require__(724);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_32__Modal__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return __WEBPACK_IMPORTED_MODULE_32__Modal__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__ModalBody__ = __webpack_require__(325);
 /* unused harmony reexport ModalBody */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__ModalFooter__ = __webpack_require__(326);
@@ -7663,7 +7663,7 @@ Button.defaultProps = defaultProps;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_52__ProgressBar__ = __webpack_require__(738);
 /* unused harmony reexport ProgressBar */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_53__Radio__ = __webpack_require__(739);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return __WEBPACK_IMPORTED_MODULE_53__Radio__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return __WEBPACK_IMPORTED_MODULE_53__Radio__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_54__ResponsiveEmbed__ = __webpack_require__(740);
 /* unused harmony reexport ResponsiveEmbed */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_55__Row__ = __webpack_require__(741);
@@ -17649,7 +17649,7 @@ var FieldGroup = function (_React$Component) {
             var label = this.props.label;
             var help = this.props.help;
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["f" /* FormGroup */],
+                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["e" /* FormGroup */],
                 { controlId: id },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["g" /* ControlLabel */],
@@ -30037,7 +30037,6 @@ var Navigation = function (_React$Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__ = __webpack_require__(120);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__catchlog_Catchlog__ = __webpack_require__(904);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__catchlog_Device_1__ = __webpack_require__(905);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__catchlog_Device_1___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__catchlog_Device_1__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__catchlog_Device_2__ = __webpack_require__(908);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__catchlog_Device_3__ = __webpack_require__(907);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__catchlog_Device_4__ = __webpack_require__(906);
@@ -30200,7 +30199,7 @@ var Pointlog = function (_React$Component) {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["a" /* Panel */],
                 null,
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__catchlog_Device_1__["default"], {
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__catchlog_Device_1__["a" /* default */], {
                     pointInfo: this.state.point_info,
                     onCancel: this.onCancel.bind(this)
                 })
@@ -30212,7 +30211,7 @@ var Pointlog = function (_React$Component) {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["a" /* Panel */],
                 null,
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__catchlog_Device_1__["default"], null)
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__catchlog_Device_1__["a" /* default */], null)
             );
         }
     }, {
@@ -30221,7 +30220,7 @@ var Pointlog = function (_React$Component) {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["a" /* Panel */],
                 null,
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__catchlog_Device_1__["default"], null)
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__catchlog_Device_1__["a" /* default */], null)
             );
         }
     }, {
@@ -30230,7 +30229,7 @@ var Pointlog = function (_React$Component) {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["a" /* Panel */],
                 null,
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__catchlog_Device_1__["default"], null)
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__catchlog_Device_1__["a" /* default */], null)
             );
         }
     }, {
@@ -30962,22 +30961,22 @@ var UserAdd = function (_React$Component) {
             var radioSyle = { marginRight: '10px' };
             var isLoading = this.state.isLoading;
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["d" /* Modal */],
+                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["k" /* Modal */],
                 { show: this.props.showModal, onHide: this.props.onHide, backdrop: "static" },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["d" /* Modal */].Header,
+                    __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["k" /* Modal */].Header,
                     { closeButton: true },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["d" /* Modal */].Title,
+                        __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["k" /* Modal */].Title,
                         null,
                         "\u65B0\u589E\u4F7F\u7528\u8005"
                     )
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["d" /* Modal */].Body,
+                    __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["k" /* Modal */].Body,
                     null,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["e" /* Form */],
+                        __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["d" /* Form */],
                         null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_includes_FieldGroup__["a" /* default */], {
                             id: "user_id",
@@ -31013,7 +31012,7 @@ var UserAdd = function (_React$Component) {
                             onChange: this.confPwChange.bind(this)
                         }),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["f" /* FormGroup */],
+                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["e" /* FormGroup */],
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["g" /* ControlLabel */],
@@ -31021,7 +31020,7 @@ var UserAdd = function (_React$Component) {
                                 "\u5BC6\u78BC\u6C38\u4E45\u6709\u6548"
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["h" /* Radio */],
+                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["l" /* Radio */],
                                 {
                                     name: "pw_ctrl",
                                     inline: true,
@@ -31033,7 +31032,7 @@ var UserAdd = function (_React$Component) {
                                 this.state.pw_ctrl_y
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["h" /* Radio */],
+                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["l" /* Radio */],
                                 {
                                     name: "pw_ctrl",
                                     inline: true,
@@ -31045,7 +31044,7 @@ var UserAdd = function (_React$Component) {
                             )
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["f" /* FormGroup */],
+                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["e" /* FormGroup */],
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["g" /* ControlLabel */],
@@ -31053,7 +31052,7 @@ var UserAdd = function (_React$Component) {
                                 "\u4F7F\u7528User Menu"
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["h" /* Radio */],
+                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["l" /* Radio */],
                                 {
                                     name: "class",
                                     inline: true,
@@ -31065,7 +31064,7 @@ var UserAdd = function (_React$Component) {
                                 this.state.class_y
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["h" /* Radio */],
+                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["l" /* Radio */],
                                 {
                                     name: "class",
                                     inline: true,
@@ -31077,7 +31076,7 @@ var UserAdd = function (_React$Component) {
                             )
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["f" /* FormGroup */],
+                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["e" /* FormGroup */],
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["g" /* ControlLabel */],
@@ -31085,7 +31084,7 @@ var UserAdd = function (_React$Component) {
                                 "\u4F7F\u7528\u72C0\u614B"
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["h" /* Radio */],
+                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["l" /* Radio */],
                                 {
                                     name: "state",
                                     inline: true,
@@ -31097,7 +31096,7 @@ var UserAdd = function (_React$Component) {
                                 this.state.state_y
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["h" /* Radio */],
+                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["l" /* Radio */],
                                 {
                                     name: "state",
                                     inline: true,
@@ -31109,7 +31108,7 @@ var UserAdd = function (_React$Component) {
                             )
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["f" /* FormGroup */],
+                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["e" /* FormGroup */],
                             { controlId: "rmk" },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["g" /* ControlLabel */],
@@ -31130,7 +31129,7 @@ var UserAdd = function (_React$Component) {
                     })
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["d" /* Modal */].Footer,
+                    __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["k" /* Modal */].Footer,
                     null,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["i" /* Button */],
@@ -31395,25 +31394,25 @@ var UserEdit = function (_React$Component) {
             var radioSyle = { marginRight: '10px' };
             var isLoading = this.state.isLoading;
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["d" /* Modal */],
+                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["k" /* Modal */],
                 { show: this.props.showModal, onHide: this.props.onHide, backdrop: "static" },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["d" /* Modal */].Header,
+                    __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["k" /* Modal */].Header,
                     { closeButton: true },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["d" /* Modal */].Title,
+                        __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["k" /* Modal */].Title,
                         null,
                         "\u7DE8\u8F2F\u4F7F\u7528\u8005"
                     )
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["d" /* Modal */].Body,
+                    __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["k" /* Modal */].Body,
                     null,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["e" /* Form */],
+                        __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["d" /* Form */],
                         null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["f" /* FormGroup */],
+                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["e" /* FormGroup */],
                             { id: "user_id" },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["g" /* ControlLabel */],
@@ -31452,7 +31451,7 @@ var UserEdit = function (_React$Component) {
                             onChange: this.confPwChange.bind(this)
                         }),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["f" /* FormGroup */],
+                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["e" /* FormGroup */],
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["g" /* ControlLabel */],
@@ -31460,7 +31459,7 @@ var UserEdit = function (_React$Component) {
                                 "\u5BC6\u78BC\u6C38\u4E45\u6709\u6548"
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["h" /* Radio */],
+                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["l" /* Radio */],
                                 {
                                     name: "pw_ctrl",
                                     inline: true,
@@ -31472,7 +31471,7 @@ var UserEdit = function (_React$Component) {
                                 this.state.pw_ctrl_y
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["h" /* Radio */],
+                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["l" /* Radio */],
                                 {
                                     name: "pw_ctrl",
                                     inline: true,
@@ -31484,7 +31483,7 @@ var UserEdit = function (_React$Component) {
                             )
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["f" /* FormGroup */],
+                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["e" /* FormGroup */],
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["g" /* ControlLabel */],
@@ -31492,7 +31491,7 @@ var UserEdit = function (_React$Component) {
                                 "\u4F7F\u7528User Menu"
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["h" /* Radio */],
+                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["l" /* Radio */],
                                 {
                                     name: "class",
                                     inline: true,
@@ -31504,7 +31503,7 @@ var UserEdit = function (_React$Component) {
                                 this.state.class_y
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["h" /* Radio */],
+                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["l" /* Radio */],
                                 {
                                     name: "class",
                                     inline: true,
@@ -31516,7 +31515,7 @@ var UserEdit = function (_React$Component) {
                             )
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["f" /* FormGroup */],
+                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["e" /* FormGroup */],
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["g" /* ControlLabel */],
@@ -31524,7 +31523,7 @@ var UserEdit = function (_React$Component) {
                                 "\u4F7F\u7528\u72C0\u614B"
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["h" /* Radio */],
+                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["l" /* Radio */],
                                 {
                                     name: "state",
                                     inline: true,
@@ -31536,7 +31535,7 @@ var UserEdit = function (_React$Component) {
                                 this.state.state_y
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["h" /* Radio */],
+                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["l" /* Radio */],
                                 {
                                     name: "state",
                                     inline: true,
@@ -31548,7 +31547,7 @@ var UserEdit = function (_React$Component) {
                             )
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["f" /* FormGroup */],
+                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["e" /* FormGroup */],
                             { controlId: "rmk" },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["g" /* ControlLabel */],
@@ -31569,7 +31568,7 @@ var UserEdit = function (_React$Component) {
                     })
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["d" /* Modal */].Footer,
+                    __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["k" /* Modal */].Footer,
                     null,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["i" /* Button */],
@@ -40665,7 +40664,7 @@ var Checkbox = function (_React$Component) {
 Checkbox.propTypes = propTypes;
 Checkbox.defaultProps = defaultProps;
 
-/* unused harmony default export */ var _unused_webpack_default_export = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9__utils_bootstrapUtils__["c" /* bsClass */])('checkbox', Checkbox));
+/* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9__utils_bootstrapUtils__["c" /* bsClass */])('checkbox', Checkbox));
 
 /***/ }),
 /* 699 */
@@ -41054,7 +41053,7 @@ var Col = function (_React$Component) {
 Col.propTypes = propTypes;
 Col.defaultProps = defaultProps;
 
-/* unused harmony default export */ var _unused_webpack_default_export = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9__utils_bootstrapUtils__["c" /* bsClass */])('col', Col));
+/* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9__utils_bootstrapUtils__["c" /* bsClass */])('col', Col));
 
 /***/ }),
 /* 701 */
@@ -67043,9 +67042,294 @@ var Catchlog = function (_React$Component) {
 
 /***/ }),
 /* 905 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-throw new Error("Module build failed: SyntaxError: C:/Users/106013/laravel/stdapi/resources/assets/js/components/web/mpz/catchlog/Device_1.js: Unexpected token, expected , (61:45)\n\n\u001b[0m \u001b[90m 59 | \u001b[39m        \u001b[36mconst\u001b[39m point_no \u001b[33m=\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mprops\u001b[33m.\u001b[39mpoint_no\u001b[33m;\u001b[39m\n \u001b[90m 60 | \u001b[39m        let form_data \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mFormData\u001b[39m()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 61 | \u001b[39m        form_data\u001b[33m.\u001b[39mappend(\u001b[32m'point_no'\u001b[39m\u001b[33m,\u001b[39m point_no\u001b[33m;\u001b[39m\n \u001b[90m    | \u001b[39m                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 62 | \u001b[39m        form_data\u001b[33m.\u001b[39mappend(\u001b[32m'catch_num3'\u001b[39m\u001b[33m,\u001b[39m catch_num3)\u001b[33m;\u001b[39m\n \u001b[90m 63 | \u001b[39m        form_data\u001b[33m.\u001b[39mappend(\u001b[32m'catch_num4'\u001b[39m\u001b[33m,\u001b[39m catch_num4)\u001b[33m;\u001b[39m\n \u001b[90m 64 | \u001b[39m        form_data\u001b[33m.\u001b[39mappend(\u001b[32m'catch_num5'\u001b[39m\u001b[33m,\u001b[39m catch_num5)\u001b[33m;\u001b[39m\u001b[0m\n");
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__ = __webpack_require__(120);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_includes_FieldGroup__ = __webpack_require__(258);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_includes_AlertMsg__ = __webpack_require__(127);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_axios__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_axios__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+
+
+
+var Device_1 = function (_React$Component) {
+    _inherits(Device_1, _React$Component);
+
+    function Device_1(props) {
+        _classCallCheck(this, Device_1);
+
+        var _this = _possibleConstructorReturn(this, (Device_1.__proto__ || Object.getPrototypeOf(Device_1)).call(this, props));
+
+        _this.state = {
+
+            catch_num3: 0,
+            catch_num4: 0,
+            catch_num5: 0,
+            catch_num6: 0,
+            change5: 'N',
+            isLoading: false,
+            msg_type: '',
+            msg: ''
+        };
+        return _this;
+    }
+
+    _createClass(Device_1, [{
+        key: "setMsg",
+        value: function setMsg() {
+            var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+            var msg = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+
+            this.setState({
+                msg_type: type,
+                msg: msg
+            });
+        }
+    }, {
+        key: "catchNum3Change",
+        value: function catchNum3Change(e) {
+            this.setState({ catch_num3: e.target.value });
+        }
+    }, {
+        key: "catchNum4Change",
+        value: function catchNum4Change(e) {
+            this.setState({ catch_num4: e.target.value });
+        }
+    }, {
+        key: "catchNum5Change",
+        value: function catchNum5Change(e) {
+            this.setState({ catch_num5: e.target.value });
+        }
+    }, {
+        key: "catchNum6Change",
+        value: function catchNum6Change(e) {
+            this.setState({ catch_num6: e.target.value });
+        }
+    }, {
+        key: "change5Change",
+        value: function change5Change(e) {
+            if (this.state.change5 === 'Y') {
+                this.setState({ change5: 'N' });
+                return;
+            }
+            this.setState({ change5: 'Y' });
+        }
+    }, {
+        key: "onSave",
+        value: function onSave(e) {
+            var self = this;
+            this.setState({ isLoading: true });
+            var _state = this.state,
+                catch_num3 = _state.catch_num3,
+                catch_num4 = _state.catch_num4,
+                catch_num5 = _state.catch_num5,
+                catch_num6 = _state.catch_num6,
+                change5 = _state.change5;
+
+            var point_no = this.props.point_no;
+            var form_data = new FormData();
+            form_data.append('point_no', point_no);
+            form_data.append('catch_num3', catch_num3);
+            form_data.append('catch_num4', catch_num4);
+            form_data.append('catch_num5', catch_num5);
+            form_data.append('catch_num6', catch_num6);
+            form_data.append('change5', change5);
+            __WEBPACK_IMPORTED_MODULE_5_axios___default.a.post('/api/web/user/insert', form_data, {
+                method: 'post'
+            }).then(function (response) {
+                if (response.data.result) {
+                    self.setMsg('success', response.data.msg);
+                    self.setState({ buttonState: 'complete' });
+                    self.initState();
+                    self.addList(response.data.user);
+                    self.onHide();
+                } else {
+                    self.setMsg('danger', response.data.msg);
+                    self.setState({ buttonState: 'default' });
+                }
+                self.setState({ isLoading: false });
+            }).catch(function (error) {
+                console.log(error);
+                self.setMsg('danger', error);
+                self.setState({ isLoading: false });
+            });
+        }
+    }, {
+        key: "onCancel",
+        value: function onCancel() {
+            this.setState({
+                catch_num3: 0,
+                catch_num4: 0,
+                catch_num5: 0,
+                catch_num6: 0,
+                change5: 'N',
+                isLoading: false,
+                msg_type: '',
+                msg: ''
+            });
+            this.props.onCancel();
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var isLoading = this.state.isLoading;
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "div",
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["d" /* Form */],
+                    { horizontal: true },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["e" /* FormGroup */],
+                        { controlId: "catch_num3" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["f" /* Col */],
+                            { componentClass: __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["g" /* ControlLabel */], sm: 1 },
+                            "\u58C1\u864E"
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["f" /* Col */],
+                            { sm: 3 },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["b" /* FormControl */], {
+                                type: "number",
+                                value: this.state.catch_num3,
+                                onChange: this.catchNum3Change.bind(this),
+                                required: true
+                            })
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["e" /* FormGroup */],
+                        { controlId: "catch_num4" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["f" /* Col */],
+                            { componentClass: __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["g" /* ControlLabel */], sm: 1 },
+                            "\u6606\u87F2"
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["f" /* Col */],
+                            { sm: 3 },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["b" /* FormControl */], {
+                                type: "number",
+                                value: this.state.catch_num4,
+                                onChange: this.catchNum4Change.bind(this),
+                                required: true
+                            })
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["e" /* FormGroup */],
+                        { controlId: "catch_num5" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["f" /* Col */],
+                            { componentClass: __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["g" /* ControlLabel */], sm: 1 },
+                            "\u9F20\u985E"
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["f" /* Col */],
+                            { sm: 3 },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["b" /* FormControl */], {
+                                type: "number",
+                                value: this.state.catch_num5,
+                                onChange: this.catchNum5Change.bind(this),
+                                required: true
+                            })
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["e" /* FormGroup */],
+                        { controlId: "catch_num6" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["f" /* Col */],
+                            { componentClass: __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["g" /* ControlLabel */], sm: 1 },
+                            "\u5176\u5B83"
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["f" /* Col */],
+                            { sm: 3 },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["b" /* FormControl */], {
+                                type: "number",
+                                value: this.state.catch_num6,
+                                onChange: this.catchNum6Change.bind(this),
+                                required: true
+                            })
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["e" /* FormGroup */],
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["f" /* Col */],
+                            { smOffset: 1, sm: 10 },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["h" /* Checkbox */],
+                                {
+                                    name: "change5",
+                                    inline: true,
+                                    value: this.state.change5,
+                                    checked: this.state.change5 === 'Y',
+                                    onChange: this.change5Change.bind(this)
+                                },
+                                "\u66F4\u63DB\u9ECF\u9F20\u677F"
+                            )
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_includes_AlertMsg__["a" /* default */], {
+                        type: this.state.msg_type,
+                        msg: this.state.msg
+                    }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["e" /* FormGroup */],
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["f" /* Col */],
+                            { smOffset: 1, sm: 2 },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["i" /* Button */],
+                                { onClick: this.onCancel.bind(this) },
+                                "\u53D6\u6D88"
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["f" /* Col */],
+                            { sm: 2 },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["i" /* Button */],
+                                {
+                                    type: "submit",
+                                    bsStyle: "primary",
+                                    disabled: isLoading,
+                                    onClick: !isLoading ? this.onSave.bind(this) : null
+                                },
+                                isLoading ? '資料儲存中...' : '儲存'
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Device_1;
+}(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["a"] = (Device_1);
 
 /***/ }),
 /* 906 */

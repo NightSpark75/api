@@ -58,7 +58,7 @@ export default class Device_1 extends React.Component{
         const {catch_num3, catch_num4, catch_num5, catch_num6, change5} = this.state;
         const point_no = this.props.point_no;
         let form_data = new FormData();
-        form_data.append('point_no', point_no;
+        form_data.append('point_no', point_no);
         form_data.append('catch_num3', catch_num3);
         form_data.append('catch_num4', catch_num4);
         form_data.append('catch_num5', catch_num5);
