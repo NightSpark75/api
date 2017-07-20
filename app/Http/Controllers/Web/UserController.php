@@ -25,7 +25,7 @@ class UserController extends Controller
         $user_list = $this->user->getUser();
         $user_id = Auth()->user()->id;
         $prg_id = $this->program;
-        $prg = session('program');
+        $prg = session('prg_role');
         $data = [
             'result' => true,
             'user' => $user_list,
