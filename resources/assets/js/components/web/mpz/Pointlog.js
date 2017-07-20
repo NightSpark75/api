@@ -68,9 +68,12 @@ export default class Pointlog extends React.Component{
                 let device_type = list[i]['device_type'];
                 this.setState({
                     point_info: list[i],
-                    scan: 'disabled'
+                    scan: 'disabled',
+                    scan_message: '資料驗證中...'
                 });
-                this.setComponent(device_type);
+                this.pointCheck(point_no);
+                break;
+                
             }
         }
     }
@@ -81,14 +84,14 @@ export default class Pointlog extends React.Component{
             method: 'get',
         }).then(function (response) {
             if (response.data.result) {
-                self.setState({
-                    point: response.data.point,
-                    scan: ''
-                });
+                self.setComponent(device_type);
                 console.log(response.data);
             } else {
+                self.setState({
+                    scan: '',
+                    scan_message: response.data.msg,
+                });
                 console.log(response.data);
-                window.location = '/web/login/ppm';
             }
         }).catch(function (error) {
             console.log(error);
@@ -180,7 +183,7 @@ export default class Pointlog extends React.Component{
                         </div>
                         <div className="col-sm-8 col-md-9">
                             {this.state.scan_message !== '' ? 
-                                <Alert bsStyle="danger">
+                                <Alert bsStyle="warning">
                                     {this.state.scan_message}
                                 </Alert>
                             :

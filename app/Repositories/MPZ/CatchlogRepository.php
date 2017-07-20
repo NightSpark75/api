@@ -10,6 +10,7 @@
  */
 namespace App\Repositories\MPZ;
 
+use DB;
 use Exception;
 use App\Traits\Sqlexecute;
 
@@ -73,10 +74,64 @@ class CatchlogRepository
         throw new Exception('查詢不到檢查點資料!(#0002)');
     }
 
-    public function check()
+    public function check($point_no)
     {
-
+        $msg = '';
+        $today =  date('Ymd');
+        $check = $this->catchlog
+            ->where('point_no', $point_no)
+            ->where('ldate', $today)
+            ->first();
+        if (isset($check)) {
+            $result = [
+                'result' => false,
+                'msg' => '此檢查點今日已記錄完畢!(#0004)'
+            ];
+            return $result;
+        }
+        $result = [
+            'result' => true,
+            'msg' => '',
+        ];
+        return $result;
     }
+
+    public function catchCount($point_no)
+    {
+        try{
+            $thisMonth = $this->getCatchCount($point_no, (int)date('Ym'));
+            $lastMonth = $this->getCatchCount($point_no, (int)date('Ym') - 1);
+            $result = [
+                'result' => true,
+                'msg' => '',
+                'thisMonth' => $thisMonth,
+                'lastMonth' => $lastMonth,
+            ];
+            return $result;
+        } catch (Exception $e) {
+            $result = [
+                'result' => false,
+                'msg' => $e->getMessage()
+            ];
+            return $result;
+        }
+    }
+
+    private function getCatchCount($point_no, $month)
+    {
+        $count = $this->catchlog
+            ->where('ldate', 'like', $month.'%')
+            ->where('point_no', $point_no)
+            ->select(DB::raw('count(catch_num1) + count(catch_num2) + count(catch_num3) 
+                + count(catch_num4) + count(catch_num5) + count(catch_num6)'))
+            ->first();
+        return $count;
+    }
+
+    private function getLastMonth($point_no)
+    {
+                $thisMonth = (int) date('Ym');
+    }   
 
     public function insert($params)
     {

@@ -30128,17 +30128,21 @@ var Pointlog = function (_React$Component) {
                     item[e] = list[i][e];
                 });
                 if (item['point_no'] === point_no) {
-                    var device_type = list[i]['device_type'];
+                    var _device_type = list[i]['device_type'];
                     _this2.setState({
                         point_info: list[i],
-                        scan: 'disabled'
+                        scan: 'disabled',
+                        scan_message: '資料驗證中...'
                     });
-                    _this2.setComponent(device_type);
+                    _this2.pointCheck(point_no);
+                    return 'break';
                 }
             };
 
             for (var i = 0; i < list.length; i++) {
-                _loop();
+                var _ret = _loop();
+
+                if (_ret === 'break') break;
             }
         }
     }, {
@@ -30149,14 +30153,14 @@ var Pointlog = function (_React$Component) {
                 method: 'get'
             }).then(function (response) {
                 if (response.data.result) {
-                    self.setState({
-                        point: response.data.point,
-                        scan: ''
-                    });
+                    self.setComponent(device_type);
                     console.log(response.data);
                 } else {
+                    self.setState({
+                        scan: '',
+                        scan_message: response.data.msg
+                    });
                     console.log(response.data);
-                    window.location = '/web/login/ppm';
                 }
             }).catch(function (error) {
                 console.log(error);
@@ -30261,7 +30265,7 @@ var Pointlog = function (_React$Component) {
                             { className: 'col-sm-8 col-md-9' },
                             this.state.scan_message !== '' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["c" /* Alert */],
-                                { bsStyle: 'danger' },
+                                { bsStyle: 'warning' },
                                 this.state.scan_message
                             ) : null
                         )
@@ -31354,16 +31358,6 @@ var UserEdit = function (_React$Component) {
                 this.setState({ isLoading: false });
                 return;
             }
-            /*
-            let form_data = new FormData();
-            form_data.append('user_id', user_id);
-            form_data.append('user_name', user_name);
-            form_data.append('user_pw', user_pw);
-            form_data.append('pw_ctrl', pw_ctrl);
-            form_data.append('class', s_class);
-            form_data.append('state', state);
-            form_data.append('rmk', rmk);
-            */
             var data = {
                 user_id: user_id,
                 user_name: user_name,

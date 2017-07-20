@@ -50,7 +50,7 @@ class AuthRepository
                     ->where('state', 'Y')
                     ->first();
             if ($auth) {
-                Auth::loginUsingId($auth->id, false);
+                Auth::login($auth);
                 session(['system' => $system]);
                 return ['result' => true, 'msg' => '登入成功!(#0000)'];
             }

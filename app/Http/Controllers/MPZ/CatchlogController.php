@@ -28,19 +28,25 @@ class CatchlogController extends Controller
         return $response;
     }
 
-    public function check()
+    public function check($point_no)
     {
-        $input = request()->all();
-        $result = $this->catchlog->check();
+        $result = $this->catchlog->check($point_no);
         $response = response()->json($result);
         return $response;
     }
 
-    public function insert()
+    public function save()
     {
         $this->middleware('role:insert');
         $params = request()->all();
         $result = $this->catchlog->insert($params);
+        $response = response()->json($result);
+        return $response;
+    }
+
+    public function catchCount($point_no)
+    {
+        $result = $this->catchlog->catch($point_no);
         $response = response()->json($result);
         return $response;
     }
