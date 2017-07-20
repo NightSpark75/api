@@ -64,7 +64,7 @@ export default class Device_1 extends React.Component{
         form_data.append('catch_num5', catch_num5);
         form_data.append('catch_num6', catch_num6);
         form_data.append('change5', change5);
-        axios.post('/api/web/user/insert', form_data, {
+        axios.post('/api/web/mpz/save', form_data, {
             method: 'post'
         }).then(function (response) {
             if (response.data.result) {

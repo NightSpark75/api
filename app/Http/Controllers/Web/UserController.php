@@ -74,12 +74,9 @@ class UserController extends Controller
         return $response;
     }
 
-    public function delete()
+    public function delete($user_id)
     {
         $this->middleware('role:delete');
-        $r = request();
-        $input = request()->all();
-        $user_id = $input['user_id'];
         $result = $this->user->delete($user_id);
         $response = response()->json($result);
         return $response;

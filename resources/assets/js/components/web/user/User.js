@@ -86,14 +86,11 @@ export default class User extends React.Component{
 
     onDelete(user_id) {
         if(confirm('您確定要刪除資料？')) {
-            this.deleteList(user_id);
-            let self = this;       
-            let form_data = new FormData();
-            form_data.append('user_id', user_id);
-            axios.post('/api/web/user/delete', form_data, {
-                method: 'post',
-            }).then(function (response) {
+            let self = this;
+            axios.delete('/api/web/user/delete/' + user_id)
+            .then(function (response) {
                 if (response.data.result) {
+                    self.deleteList(user_id);
                     alert('使用者[' + user_id + ']已刪除');
                 } else {
                     alert(response.data.msg);
@@ -161,14 +158,14 @@ export default class User extends React.Component{
             <div>
                 <div className="row">
                     <div className="row">
-                        <div className="col-lg-8">
+                        <div className="col-lg-8 col-md-8 col-sm-6">
                             {prg['prg_ins'] === 'Y' ?
                                 <button className="btn btn-primary" onClick={this.openAdd.bind(this)}>新增</button>
                             :
                                 <button className="btn btn-primary disabled">新增</button>
                             }
                         </div>
-                        <div className="col-lg-4 text-right">
+                        <div className="col-lg-4 col-md-4 col-sm-6 text-right">
                             {this.state.allList ? 
                                 <div className="input-group">
                                     <input 

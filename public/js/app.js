@@ -30400,14 +30400,10 @@ var User = function (_React$Component) {
         key: 'onDelete',
         value: function onDelete(user_id) {
             if (confirm('您確定要刪除資料？')) {
-                this.deleteList(user_id);
                 var self = this;
-                var form_data = new FormData();
-                form_data.append('user_id', user_id);
-                __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/user/delete', form_data, {
-                    method: 'post'
-                }).then(function (response) {
+                __WEBPACK_IMPORTED_MODULE_2_axios___default.a.delete('/api/web/user/delete/' + user_id).then(function (response) {
                     if (response.data.result) {
+                        self.deleteList(user_id);
                         alert('使用者[' + user_id + ']已刪除');
                     } else {
                         alert(response.data.msg);
@@ -30489,7 +30485,7 @@ var User = function (_React$Component) {
                         { className: 'row' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
-                            { className: 'col-lg-8' },
+                            { className: 'col-lg-8 col-md-8 col-sm-6' },
                             prg['prg_ins'] === 'Y' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'button',
                                 { className: 'btn btn-primary', onClick: this.openAdd.bind(this) },
@@ -30502,7 +30498,7 @@ var User = function (_React$Component) {
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
-                            { className: 'col-lg-4 text-right' },
+                            { className: 'col-lg-4 col-md-4 col-sm-6 text-right' },
                             this.state.allList ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
                                 { className: 'input-group' },
@@ -30935,9 +30931,7 @@ var UserAdd = function (_React$Component) {
             form_data.append('class', s_class);
             form_data.append('state', state);
             form_data.append('rmk', rmk);
-            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.post('/api/web/user/insert', form_data, {
-                method: 'post'
-            }).then(function (response) {
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.post('/api/web/user/insert', form_data).then(function (response) {
                 if (response.data.result) {
                     self.setMsg('success', response.data.msg);
                     self.setState({ buttonState: 'complete' });
@@ -31360,7 +31354,8 @@ var UserEdit = function (_React$Component) {
                 this.setState({ isLoading: false });
                 return;
             }
-            var form_data = new FormData();
+            /*
+            let form_data = new FormData();
             form_data.append('user_id', user_id);
             form_data.append('user_name', user_name);
             form_data.append('user_pw', user_pw);
@@ -31368,9 +31363,17 @@ var UserEdit = function (_React$Component) {
             form_data.append('class', s_class);
             form_data.append('state', state);
             form_data.append('rmk', rmk);
-            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.post('/api/web/user/update', form_data, {
-                method: 'post'
-            }).then(function (response) {
+            */
+            var data = {
+                user_id: user_id,
+                user_name: user_name,
+                user_pw: user_pw,
+                pw_ctrl: pw_ctrl,
+                class: s_class,
+                state: state,
+                rmk: rmk
+            };
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.put('/api/web/user/update', data).then(function (response) {
                 if (response.data.result) {
                     self.setMsg('success', response.data.msg);
                     self.setState({ buttonState: 'complete' });
@@ -67150,7 +67153,7 @@ var Device_1 = function (_React$Component) {
             form_data.append('catch_num5', catch_num5);
             form_data.append('catch_num6', catch_num6);
             form_data.append('change5', change5);
-            __WEBPACK_IMPORTED_MODULE_5_axios___default.a.post('/api/web/user/insert', form_data, {
+            __WEBPACK_IMPORTED_MODULE_5_axios___default.a.post('/api/web/mpz/save', form_data, {
                 method: 'post'
             }).then(function (response) {
                 if (response.data.result) {

@@ -32,8 +32,8 @@ Route::group(['prefix' => 'web', 'namespace' => 'Web'], function () {
 Route::group(['prefix' => 'web/user', 'namespace' => 'Web'], function () {
     Route::get('init', 'UserController@init');
     Route::post('insert', 'UserController@insert');
-    Route::post('update', 'UserController@update');
-    Route::post('delete', 'UserController@delete');
+    Route::put('update', 'UserController@update');
+    Route::delete('delete/{user_id}', 'UserController@delete');
     Route::get('search/{str?}', 'UserController@search');
 });
 

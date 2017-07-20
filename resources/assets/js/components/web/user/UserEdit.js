@@ -137,6 +137,7 @@ export default class UserEdit extends React.Component{
             this.setState({isLoading: false});
             return;
         }
+        /*
         let form_data = new FormData();
         form_data.append('user_id', user_id);
         form_data.append('user_name', user_name);
@@ -145,9 +146,18 @@ export default class UserEdit extends React.Component{
         form_data.append('class', s_class);
         form_data.append('state', state);
         form_data.append('rmk', rmk);
-        axios.post('/api/web/user/update', form_data, {
-            method: 'post'
-        }).then(function (response) {
+        */
+        let data = {
+            user_id: user_id,
+            user_name: user_name,
+            user_pw: user_pw,
+            pw_ctrl: pw_ctrl,
+            class: s_class,
+            state: state,
+            rmk: rmk,
+        };
+        axios.put('/api/web/user/update', data)
+        .then(function (response) {
             if (response.data.result) {
                 self.setMsg('success', response.data.msg);
                 self.setState({buttonState: 'complete'});

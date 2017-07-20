@@ -131,9 +131,8 @@ export default class UserAdd extends React.Component{
         form_data.append('class', s_class);
         form_data.append('state', state);
         form_data.append('rmk', rmk);
-        axios.post('/api/web/user/insert', form_data, {
-            method: 'post'
-        }).then(function (response) {
+        axios.post('/api/web/user/insert', form_data)
+        .then(function (response) {
             if (response.data.result) {
                 self.setMsg('success', response.data.msg);
                 self.setState({buttonState: 'complete'});
