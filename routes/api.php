@@ -43,7 +43,7 @@ Route::group(['prefix' => 'file', 'namespace' => 'Web'], function () {
     Route::get('download/{token}/{file_id}/{user_id}', 'FileController@downloadFile');
 });
 
-// MPZ
+// MPZ set
 Route::group(['prefix' => 'web/mpz', 'namespace' => 'MPZ'], function () {
     // pointlog
     Route::group(['prefix' => 'pointlog'], function () {
