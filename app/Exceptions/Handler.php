@@ -61,6 +61,7 @@ class Handler extends ExceptionHandler
         }
 
         //return redirect()->guest(route('login'));
-        return redirect('/error')->with('message', '你無權限進行此一操作');
+        return redirect('/web/login/ppm');
+        //return redirect('/error')->with('message', '你無權限進行此一操作');
     }
 }

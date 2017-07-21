@@ -65,7 +65,6 @@ export default class UserEdit extends React.Component{
     }
 
     setData(item) {
-        let a = item['class'];
         this.setState({
             user_id: item['user_id'],
             user_name: item['user_name'],

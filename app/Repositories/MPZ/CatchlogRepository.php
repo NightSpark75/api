@@ -17,6 +17,7 @@ use App\Traits\Sqlexecute;
 use App\Models\MPZ\MPZ_CATCHLOG;
 use App\Models\MPZ\MPZ_DEVICE;
 use App\Models\MPZ\MPZ_POINT;
+use App\Models\MPZ\MPZ_POINT_LOG;
 
 /**
  * Class CatchlogRepository
@@ -30,15 +31,18 @@ class CatchlogRepository
     private $catchlog;
     private $device;
     private $point;
+    private $point_log;
 
     public function __construct(
         MPZ_CATCHLOG $catchlog, 
         MPZ_DEVICE $device,
-        MPZ_POINT $point
+        MPZ_POINT $point,
+        MPZ_POINT_LOG $point_log
     ) {
-        $this->chatchlog = $catchlog;
+        $this->catchlog = $catchlog;
         $this->device = $device;
         $this->point = $point;
+        $this->point_log = $point_log;
     }
 
     public function init()
@@ -58,8 +62,6 @@ class CatchlogRepository
             ];
             return $result;
         }
-        
-
     }
 
     private function getPoint()
@@ -76,36 +78,55 @@ class CatchlogRepository
 
     public function check($point_no)
     {
-        $msg = '';
-        $today =  date('Ymd');
-        $check = $this->catchlog
-            ->where('point_no', $point_no)
-            ->where('ldate', $today)
-            ->first();
-        if (isset($check)) {
+        try {
+            $msg = '';
+            $today =  (int)date('Ymd');
+            $check = $this->catchlog
+                ->where('point_no', $point_no)
+                ->where('ldate', $today)
+                ->first();
+            if (isset($check)) {
+                $result = [
+                    'result' => false,
+                    'msg' => '此檢查點今日已記錄完畢!(#0004)',
+                ];
+                return $result;
+            }
+            $result = [
+                'result' => true,
+                'msg' => '此檢查點今日尚未記錄(#0005)',
+                'ldate' => $today,
+            ];
+            return $result;
+        } catch (Exception $e) {
             $result = [
                 'result' => false,
-                'msg' => '此檢查點今日已記錄完畢!(#0004)'
+                'msg' => $e->getMessage(),
             ];
             return $result;
         }
-        $result = [
-            'result' => true,
-            'msg' => '',
-        ];
-        return $result;
     }
 
-    public function catchCount($point_no)
+    public function catchCount($point_no, $ldate)
     {
         try{
-            $thisMonth = $this->getCatchCount($point_no, (int)date('Ym'));
-            $lastMonth = $this->getCatchCount($point_no, (int)date('Ym') - 1);
+            $month = (int)substr($ldate, 0, 6);
+            $thisMonth = $this->getCatchCount($point_no, $month);
+            $lastMonth = $this->getCatchCount($point_no, $month - 1);
+            $changeDate = [
+                'change1' => $this->getChangeDate($point_no, $ldate, 'change1'),
+                'change2' => $this->getChangeDate($point_no, $ldate, 'change2'),
+                'change3' => $this->getChangeDate($point_no, $ldate, 'change3'),
+                'change4' => $this->getChangeDate($point_no, $ldate, 'change4'),
+                'change5' => $this->getChangeDate($point_no, $ldate, 'change5'),
+                'change6' => $this->getChangeDate($point_no, $ldate, 'change6'),
+            ];
             $result = [
                 'result' => true,
                 'msg' => '',
                 'thisMonth' => $thisMonth,
                 'lastMonth' => $lastMonth,
+                'changeDate' => $changeDate,
             ];
             return $result;
         } catch (Exception $e) {
@@ -123,26 +144,41 @@ class CatchlogRepository
             ->where('ldate', 'like', $month.'%')
             ->where('point_no', $point_no)
             ->select(DB::raw('count(catch_num1) + count(catch_num2) + count(catch_num3) 
-                + count(catch_num4) + count(catch_num5) + count(catch_num6)'))
+                + count(catch_num4) + count(catch_num5) + count(catch_num6) as n'))
             ->first();
-        return $count;
-    }
-
-    private function getLastMonth($point_no)
-    {
-                $thisMonth = (int) date('Ym');
+        return $count->n;
     }   
 
-    public function insert($params)
+    private function getChangeDate($point_no, $ldate, $item)
+    {
+        $date = $this->catchlog
+            ->where('point_no', $point_no)
+            ->where('ldate', '<', $ldate)
+            ->where($item, 'Y')
+            ->select(DB::raw("max(ldate) as d"))
+            ->first();
+        return $date->d;
+    }
+
+    public function save($params)
     {
         try{
+            $params['duser'] = auth()->user()->id;
+            $params['ddate'] = date("Y-m-d H:i:s");
             $this->catchlog->insert($params);
+            $params = [
+                'point_no' => $params['point_no'],
+                'ldate' => $params['ldate'],
+                'duser' => $params['duser'],
+                'ddate' => $params['ddate'],
+            ];
+            $this->point_log->insert($params);
             $result = [
                 'result' => true,
                 'msg' => '新增檢查點資料成功(#0003)'
             ];
             return $result;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $result = [
                 'result' => false,
                 'msg' => $e->getMessage(),

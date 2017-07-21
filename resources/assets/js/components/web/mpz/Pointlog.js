@@ -6,10 +6,6 @@ import { Link } from 'react-router';
 import axios from 'axios';
 import { Button, Panel, FormControl, Alert } from "react-bootstrap";
 import Catchlog from './catchlog/Catchlog';
-import Device_1 from './catchlog/Device_1';
-import Device_2 from './catchlog/Device_2';
-import Device_3 from './catchlog/Device_3';
-import Device_4 from './catchlog/Device_4';
 
 export default class Pointlog extends React.Component{
     constructor(props) {
@@ -21,7 +17,7 @@ export default class Pointlog extends React.Component{
             scan: 'disabled',
             scan_message: '',
             point_info: [],
-            logComponent: null,
+            mouse_show: false,
         }
     }
 
@@ -71,20 +67,20 @@ export default class Pointlog extends React.Component{
                     scan: 'disabled',
                     scan_message: '資料驗證中...'
                 });
-                this.pointCheck(point_no);
+                this.pointCheck(point_no, device_type);
                 break;
-                
             }
         }
     }
 
-    pointCheck(point_no) {
+    pointCheck(point_no, device_type) {
         let self = this;       
-        axios.get('/api/web/mpz/pointlog/check', null, {
-            method: 'get',
-        }).then(function (response) {
+        axios.get('/api/web/mpz/pointlog/check/' + point_no)
+        .then(function (response) {
             if (response.data.result) {
-                self.setComponent(device_type);
+                let ldate = response.data.ldate;
+                self.setState({scan_message: ''});
+                self.setComponent(point_no, ldate, device_type);
                 console.log(response.data);
             } else {
                 self.setState({
@@ -98,72 +94,29 @@ export default class Pointlog extends React.Component{
         });
     }
 
-    setComponent(device_type) {
-        let component = '';
+    setComponent(point_no, ldate, device_type) {
         switch (device_type) {
             case '1':
-                component = this.device_1();
-                break;
             case '2':
-                component = this.device_2();
-                break;
             case '3':
-                component = this.device_3();
-                break;
             case '4':
-                component = this.device_4();
+                this.setState({mouse_show: true});
+                this.refs.mouse.init(point_no, ldate, device_type);
                 break;
-            default:
-                component = null;
         }
-        this.setState({logComponent: component});
     }
 
     onCancel() {
         this.setState({
-            logComponent: null,
+            mouse_show: false,
             point_no: '',
-            scan: ''
+            scan: '',
+            point_info: [],
         });
     }
 
-    device_1() {
-        return (
-            <Panel>
-                <Device_1
-                    pointInfo={this.state.point_info}
-                    onCancel={this.onCancel.bind(this)}
-                >
-                </Device_1>
-            </Panel>
-        );
-    }
-
-    device_2() {
-        return (
-            <Panel>
-                <Device_1>
-                </Device_1>
-            </Panel>
-        );
-    }
-
-    device_3() {
-        return (
-            <Panel>
-                <Device_1>
-                </Device_1>
-            </Panel>
-        );
-    }
-
-    device_4() {
-        return (
-            <Panel>
-                <Device_1>
-                </Device_1>
-            </Panel>
-        );
+    componentMsg(msg) {
+        this.setState({scan_message: msg});
     }
 
     render() {
@@ -183,16 +136,28 @@ export default class Pointlog extends React.Component{
                         </div>
                         <div className="col-sm-8 col-md-9">
                             {this.state.scan_message !== '' ? 
-                                <Alert bsStyle="warning">
-                                    {this.state.scan_message}
-                                </Alert>
+                                <strong>
+                                    <h4>
+                                        {this.state.scan_message}
+                                    </h4>
+                                </strong>
                             :
                                 null
                             }
                         </div>
                     </div>  
                 </Panel> 
-                {this.state.logComponent}
+                {this.state.mouse_show &&
+                    <Panel>
+                        <Catchlog
+                            pointInfo={this.state.point_info}
+                            onCancel={this.onCancel.bind(this)}
+                            sendMsg={this.componentMsg.bind(this)}
+                            ref="mouse"
+                        >
+                        </Catchlog>
+                    </Panel>
+                }
             </div>
         );
     }

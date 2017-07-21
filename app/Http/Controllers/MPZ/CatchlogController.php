@@ -39,14 +39,14 @@ class CatchlogController extends Controller
     {
         $this->middleware('role:insert');
         $params = request()->all();
-        $result = $this->catchlog->insert($params);
+        $result = $this->catchlog->save($params);
         $response = response()->json($result);
         return $response;
     }
 
-    public function catchCount($point_no)
+    public function catchCount($point_no, $ldate)
     {
-        $result = $this->catchlog->catch($point_no);
+        $result = $this->catchlog->catchCount($point_no, $ldate);
         $response = response()->json($result);
         return $response;
     }
