@@ -5,7 +5,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import axios from 'axios';
 import { Button, Panel, FormControl, Alert } from "react-bootstrap";
-import Catchlog from './catchlog/Catchlog';
+import Catchlog from './Catchlog';
 
 export default class Pointlog extends React.Component{
     constructor(props) {

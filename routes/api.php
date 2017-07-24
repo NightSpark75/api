@@ -43,6 +43,17 @@ Route::group(['prefix' => 'file', 'namespace' => 'Web'], function () {
     Route::get('download/{token}/{file_id}/{user_id}', 'FileController@downloadFile');
 });
 
+// MPE set
+Route::group(['prefix' => 'web/mpe', 'namespace' => 'MPE'], function () {
+    Route::group(['prefix' => 'qa'], function () {
+        Route::group(['prefix' => 'receive'], function () {
+            Route::get('list', 'QAReceiveController@getList');
+            Route::get('detail/{lsa_no}', 'QAReceiveController@getDetail');
+            Route::post('posting', 'QAReceiveController@posting');
+        });
+    });
+});
+
 // MPZ set
 Route::group(['prefix' => 'web/mpz', 'namespace' => 'MPZ'], function () {
     // pointlog
