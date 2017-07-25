@@ -48,7 +48,6 @@ Route::group(['prefix' => 'web/mpe', 'namespace' => 'MPE'], function () {
     Route::group(['prefix' => 'qa'], function () {
         Route::group(['prefix' => 'receive'], function () {
             Route::get('list', 'QAReceiveController@getList');
-            Route::get('detail/{lsa_no}', 'QAReceiveController@getDetail');
             Route::post('posting', 'QAReceiveController@posting');
         });
     });

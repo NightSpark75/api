@@ -27,14 +27,11 @@ class QAReceiveController extends Controller
         return $result;
     }
 
-    public function getDetail($lsa_no)
-    {
-        $result = $this->receive->getDetail($lsa_no);
-        return $result;
-    }
-
     public function posting() 
     {
-
+        $input = request()->all();
+        $no = $input['no'];
+        $result = $this->receive->posting($no);
+        return $result;
     }
 }

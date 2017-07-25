@@ -30139,7 +30139,9 @@ var ReceiveList = function (_React$Component) {
             search: false, search_str: '',
             barcode: '',
             posting: false,
-            showReceive: false
+            showReceive: false,
+            msg: '',
+            msgType: ''
         };
         return _this;
     }
@@ -30178,14 +30180,37 @@ var ReceiveList = function (_React$Component) {
         }
     }, {
         key: 'onSearch',
-        value: function onSearch() {}
+        value: function onSearch() {
+            var lsa_m = this.state.lsa_m;
+            var lsa_no = this.state.search_str;
+            var item = [];
+            for (var i = 0; i < lsa_m.length; i++) {
+                if (lsa_m[i]['no'] === lsa_no) {
+                    item[0] = lsa_m[i];
+                    this.setState({
+                        search: true,
+                        search_m: item
+                    });
+                    return;
+                }
+            }
+        }
+    }, {
+        key: 'cancelSearch',
+        value: function cancelSearch() {
+            this.setState({
+                search: false,
+                search_m: []
+            });
+        }
     }, {
         key: 'goReceive',
         value: function goReceive(lsa_no, e) {
-            var item_m = this.setSelect(lsa_no, this.state.lsa_m, 'no');
+            var item_m = this.setFormMaster(lsa_no);
             var item_d = this.setSelect(lsa_no, this.state.lsa_d, 'lsa_no');
             var item_e = this.setSelect(lsa_no, this.state.lsa_e, 'lsa_no');
             this.setState({
+                posting: item_m['status'] === 'R' || item_m['posting'] === 'Y' ? true : false,
                 item_m: item_m,
                 item_d: item_d,
                 item_e: item_e,
@@ -30193,12 +30218,26 @@ var ReceiveList = function (_React$Component) {
             });
         }
     }, {
+        key: 'setFormMaster',
+        value: function setFormMaster(lsa_no) {
+            var lsa_m = this.state.lsa_m;
+            var item = [];
+            for (var i = 0; i < lsa_m.length; i++) {
+                if (lsa_m[i]['no'] === lsa_no) {
+                    item = lsa_m[i];
+                    return item;
+                }
+            }
+        }
+    }, {
         key: 'setSelect',
         value: function setSelect(lsa_no, list, id) {
             var item = [];
+            var seq = 0;
             for (var i = 0; i < list.length; i++) {
                 if (list[i][id] === lsa_no) {
-                    item = list[i];
+                    item[seq] = list[i];
+                    seq++;
                 }
             }
             return item;
@@ -30206,25 +30245,163 @@ var ReceiveList = function (_React$Component) {
     }, {
         key: 'barcodeChange',
         value: function barcodeChange(e) {
-            this.setState({ barcode: e.target.value });
+            var barcode = e.target.value;
+            this.setState({ barcode: barcode });
+            if (barcode.length === 8) {
+                this.checkBarcode(barcode);
+            }
+        }
+    }, {
+        key: 'checkBarcode',
+        value: function checkBarcode(barcode) {
+            var item_d = this.state.item_d;
+            var item_e = this.state.item_e;
+            for (var i = 0; i < item_e.length; i++) {
+                if (item_e[i]['barcode'] === barcode) {
+                    item_e[i]['status'] = 'Y';
+                    this.setState({
+                        item_e: item_e,
+                        barcode: '',
+                        msgType: 'info',
+                        msg: '[' + barcode + ']已領用'
+                    });
+                    this.checkSuccess(item_e[i]['bno']);
+                    return;
+                }
+            }
+            this.setState({
+                msgType: 'danger',
+                msg: '[' + barcode + ']非此申請單內之品項!'
+            });
+        }
+    }, {
+        key: 'checkSuccess',
+        value: function checkSuccess(bno) {
+            var item_d = this.state.item_d;
+            var item_e = this.state.item_e;
+            var count = 0;
+            var count_y = 0;
+            for (var i = 0; i < item_e.length; i++) {
+                if (item_e[i]['bno'] === bno) {
+                    if (item_e[i]['status'] === 'Y') {
+                        count_y++;
+                    }
+                    count++;
+                }
+            }
+            if (count === count_y) {
+                for (var _i = 0; _i < item_d.length; _i++) {
+                    if (item_d[_i]['bno'] === bno) {
+                        item_d[_i]['status'] = 'Y';
+                        this.setState({
+                            item_d: item_d,
+                            msgType: 'success',
+                            msg: '批號[' + item_d[_i]['bno'] + ']已全部領用'
+
+                        });
+                        this.checkPosting();
+                    }
+                }
+            }
+        }
+    }, {
+        key: 'checkPosting',
+        value: function checkPosting() {
+            var item_m = this.state.item_m;
+            var item_d = this.state.item_d;
+            var total = 0;
+            var total_y = 0;
+            for (var i = 0; i < item_d.length; i++) {
+                if (item_d[i]['status'] === 'Y') {
+                    total_y++;
+                }
+                total++;
+            }
+            if (total === total_y) {
+                var _item_m = this.state.item_m;
+                _item_m['status'] = 'R';
+                this.setState({
+                    item_m: _item_m,
+                    barcode: '',
+                    posting: true,
+                    msgType: 'success',
+                    msg: '申請單號[' + _item_m['no'] + ']已領用完畢，確認後即可過帳!'
+                });
+            }
+        }
+    }, {
+        key: 'goPosting',
+        value: function goPosting() {
+            if (confirm('您確定要領料過帳嗎？')) {
+                var self = this;
+                var no = this.state.item_m['no'];
+                var form_data = new FormData();
+                form_data.append('no', no);
+                __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpe/qa/receive/posting', form_data).then(function (response) {
+                    if (response.data.result) {
+                        var _self$state = self.state,
+                            lsa_m = _self$state.lsa_m,
+                            lsa_d = _self$state.lsa_d,
+                            lsa_e = _self$state.lsa_e;
+
+                        lsa_m = self.removeItem(no, lsa_m, 'no');
+                        lsa_d = self.removeItem(no, lsa_d, 'lsa_no');
+                        lsa_e = self.removeItem(no, lsa_e, 'lsa_no');
+                        self.setState({
+                            lsa_m: lsa_m,
+                            lsa_d: lsa_d,
+                            lsa_e: lsa_e
+                        });
+                        alert('已完成領料過帳!');
+                        self.goList();
+                        console.log(response.data);
+                    } else {
+                        console.log(response.data);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
+        }
+    }, {
+        key: 'removeItem',
+        value: function removeItem(no, list, pk) {
+            var seq = 0;
+            for (var i = 0; i < list.length; i++) {
+                if (list[seq][pk] === no) {
+                    list.splice(seq, 1);
+                } else {
+                    seq = seq++;
+                }
+            }
+            return list;
         }
     }, {
         key: 'goList',
         value: function goList() {
-            this.setState({ showReceive: false });
+            this.setState({
+                item_m: [], item_d: [], item_e: [],
+                barcode: '',
+                posting: false,
+                showReceive: false,
+                msg: '',
+                msgType: ''
+            });
         }
     }, {
         key: 'render',
         value: function render() {
             var _this2 = this;
 
-            var list = this.state.search > 0 ? this.state.search_m : this.state.lsa_m;
             var _state = this.state,
                 showReceive = _state.showReceive,
                 posting = _state.posting,
                 msg = _state.msg,
-                item_m = _state.item_m;
+                msgType = _state.msgType,
+                item_m = _state.item_m,
+                search = _state.search;
 
+            var list = search ? this.state.search_m : this.state.lsa_m;
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
@@ -30255,7 +30432,7 @@ var ReceiveList = function (_React$Component) {
                                 null,
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["d" /* Button */],
-                                    { bsStyle: 'warning', disabled: !posting, onClick: this.goList.bind(this) },
+                                    { bsStyle: posting ? "success" : "warning", disabled: !posting, onClick: this.goPosting.bind(this) },
                                     '\u9818\u6599\u904E\u5E33'
                                 )
                             )
@@ -30266,22 +30443,24 @@ var ReceiveList = function (_React$Component) {
                         { style: { marginBottom: '10px' } },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["b" /* Col */],
-                            { sm: 2, md: 2 },
+                            { sm: 5, md: 3 },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', {
                                 type: 'text',
                                 className: 'form-control',
+                                disabled: posting,
                                 value: this.state.barcode,
+                                maxLength: 8,
                                 placeholder: '\u6383\u63CF\u689D\u78BC',
                                 onChange: this.barcodeChange.bind(this)
                             })
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["b" /* Col */],
-                            { sm: 10, md: 10 },
+                            { sm: 9, md: 9 },
                             msg && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'strong',
-                                null,
-                                'msg'
+                                'div',
+                                { className: "alert alert-" + msgType, style: { padding: '6px', marginBottom: '0px' } },
+                                msg
                             )
                         )
                     ),
@@ -30353,8 +30532,8 @@ var ReceiveList = function (_React$Component) {
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
-                        { style: { height: '670px', overflow: 'auto' } },
-                        this.state.lsa_d.map(function (item_d, index_d) {
+                        { style: { height: '730px', overflow: 'auto' } },
+                        this.state.item_d.map(function (item_d, index_d) {
                             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'table',
                                 { className: 'table table-bordered table-hover', style: { marginBottom: '10px' }, key: index_d },
@@ -30363,7 +30542,7 @@ var ReceiveList = function (_React$Component) {
                                     null,
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         'tr',
-                                        { className: 'info' },
+                                        { className: item_d.status === 'N' ? "info" : "success" },
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             'th',
                                             { width: '80' },
@@ -30397,7 +30576,7 @@ var ReceiveList = function (_React$Component) {
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         'tr',
-                                        { className: 'info' },
+                                        { className: item_d.status === 'N' ? "info" : "success" },
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             'th',
                                             null,
@@ -30430,10 +30609,10 @@ var ReceiveList = function (_React$Component) {
                                         )
                                     )
                                 ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                item_d.status === 'N' && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'tbody',
                                     null,
-                                    _this2.state.lsa_e.map(function (item_e, index_e) {
+                                    _this2.state.item_e.map(function (item_e, index_e) {
                                         return item_d.bno === item_e.bno && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             'tr',
                                             { key: index_e, className: item_e.status === "Y" ? "success" : "default" },
@@ -30484,31 +30663,29 @@ var ReceiveList = function (_React$Component) {
                             { bsClass: 'row' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["b" /* Col */],
-                                { sm: 9, md: 9 },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["c" /* ButtonToolbar */],
-                                    null,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["d" /* Button */],
-                                        { bsStyle: 'primary' },
-                                        'Small button'
-                                    )
-                                )
+                                { sm: 7, md: 9 },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["c" /* ButtonToolbar */], null)
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["b" /* Col */],
-                                { sm: 3, md: 3 },
+                                { sm: 5, md: 3 },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
                                     { className: 'input-group' },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', {
                                         type: 'text',
                                         className: 'form-control',
+                                        maxLength: 9,
                                         value: this.state.search_str,
                                         onChange: this.searchChange.bind(this) }),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         'span',
                                         { className: 'input-group-btn' },
+                                        search && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'button',
+                                            { className: 'btn btn-danger', onClick: this.cancelSearch.bind(this) },
+                                            '\u53D6\u6D88'
+                                        ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             'button',
                                             { className: 'btn btn-default', onClick: this.onSearch.bind(this) },
@@ -30559,7 +30736,7 @@ var ReceiveList = function (_React$Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'tbody',
                             null,
-                            this.state.lsa_m.map(function (item, index) {
+                            list.map(function (item, index) {
                                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'tr',
                                     { key: index },
