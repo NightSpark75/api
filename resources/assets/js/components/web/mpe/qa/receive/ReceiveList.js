@@ -2,6 +2,7 @@
  * ReceiveList.js
  */
 import React from 'react';
+import ReactDOM from "react-dom";
 import { Link } from 'react-router';
 import axios from 'axios';
 import { Button, ButtonToolbar, Table, Panel, Pager, FormControl, Alert, Col, ListGroup, ListGroupItem } from "react-bootstrap";
@@ -274,6 +275,7 @@ export default class ReceiveList extends React.Component{
                                         className="form-control" 
                                         disabled={posting}
                                         value={this.state.barcode}
+                                        autoFocus
                                         maxLength={8}
                                         placeholder="掃描條碼"
                                         onChange={this.barcodeChange.bind(this)}

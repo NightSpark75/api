@@ -30103,11 +30103,13 @@ var Navigation = function (_React$Component) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__ = __webpack_require__(72);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ReceivePosting__ = __webpack_require__(259);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_router__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__ = __webpack_require__(72);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ReceivePosting__ = __webpack_require__(259);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -30119,6 +30121,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /** 
  * ReceiveList.js
  */
+
 
 
 
@@ -30155,7 +30158,7 @@ var ReceiveList = function (_React$Component) {
         key: 'init',
         value: function init() {
             var self = this;
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/web/mpe/qa/receive/list', null, {
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get('/api/web/mpe/qa/receive/list', null, {
                 method: 'get'
             }).then(function (response) {
                 if (response.data.result) {
@@ -30337,7 +30340,7 @@ var ReceiveList = function (_React$Component) {
                 var no = this.state.item_m['no'];
                 var form_data = new FormData();
                 form_data.append('no', no);
-                __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpe/qa/receive/posting', form_data).then(function (response) {
+                __WEBPACK_IMPORTED_MODULE_3_axios___default.a.post('/api/web/mpe/qa/receive/posting', form_data).then(function (response) {
                     if (response.data.result) {
                         var _self$state = self.state,
                             lsa_m = _self$state.lsa_m,
@@ -30409,29 +30412,29 @@ var ReceiveList = function (_React$Component) {
                     'div',
                     null,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["a" /* Panel */],
+                        __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["a" /* Panel */],
                         { style: { marginBottom: '10px' } },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["b" /* Col */],
+                            __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["b" /* Col */],
                             { sm: 10, md: 10 },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["c" /* ButtonToolbar */],
+                                __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["c" /* ButtonToolbar */],
                                 null,
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["d" /* Button */],
+                                    __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["d" /* Button */],
                                     { onClick: this.goList.bind(this) },
                                     '\u2190 \u56DE\u6E05\u55AE\u9801'
                                 )
                             )
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["b" /* Col */],
+                            __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["b" /* Col */],
                             { sm: 2, md: 2 },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["c" /* ButtonToolbar */],
+                                __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["c" /* ButtonToolbar */],
                                 null,
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["d" /* Button */],
+                                    __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["d" /* Button */],
                                     { bsStyle: posting ? "success" : "warning", disabled: !posting, onClick: this.goPosting.bind(this) },
                                     '\u9818\u6599\u904E\u5E33'
                                 )
@@ -30439,23 +30442,24 @@ var ReceiveList = function (_React$Component) {
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["a" /* Panel */],
+                        __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["a" /* Panel */],
                         { style: { marginBottom: '10px' } },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["b" /* Col */],
+                            __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["b" /* Col */],
                             { sm: 5, md: 3 },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', {
                                 type: 'text',
                                 className: 'form-control',
                                 disabled: posting,
                                 value: this.state.barcode,
+                                autoFocus: true,
                                 maxLength: 8,
                                 placeholder: '\u6383\u63CF\u689D\u78BC',
                                 onChange: this.barcodeChange.bind(this)
                             })
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["b" /* Col */],
+                            __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["b" /* Col */],
                             { sm: 9, md: 9 },
                             msg && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
@@ -30465,7 +30469,7 @@ var ReceiveList = function (_React$Component) {
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["e" /* Table */],
+                        __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["e" /* Table */],
                         { bordered: true, style: { marginBottom: '10px' } },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'tbody',
@@ -30656,18 +30660,18 @@ var ReceiveList = function (_React$Component) {
                     'div',
                     null,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["a" /* Panel */],
+                        __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["a" /* Panel */],
                         { style: { marginBottom: '10px' } },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["b" /* Col */],
+                            __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["b" /* Col */],
                             { bsClass: 'row' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["b" /* Col */],
+                                __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["b" /* Col */],
                                 { sm: 7, md: 9 },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["c" /* ButtonToolbar */], null)
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["c" /* ButtonToolbar */], null)
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["b" /* Col */],
+                                __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["b" /* Col */],
                                 { sm: 5, md: 3 },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
@@ -30697,7 +30701,7 @@ var ReceiveList = function (_React$Component) {
                         )
                     ),
                     list.length > 0 && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["e" /* Table */],
+                        __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["e" /* Table */],
                         { bordered: true, hover: true },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'thead',
@@ -30769,7 +30773,7 @@ var ReceiveList = function (_React$Component) {
                                         'td',
                                         null,
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["d" /* Button */],
+                                            __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["d" /* Button */],
                                             {
                                                 bsStyle: 'primary',
                                                 bsSize: 'small',
