@@ -269,7 +269,7 @@ export default class ReceiveList extends React.Component{
                             </Col>
                         </Panel> 
                         <Panel style={{marginBottom: '10px'}}>
-                            <Col sm={5} md={3}>
+                            <Col sm={3} md={3}>
                                     <input 
                                         type="text" 
                                         className="form-control" 
@@ -281,7 +281,7 @@ export default class ReceiveList extends React.Component{
                                         onChange={this.barcodeChange.bind(this)}
                                     />
                             </Col>
-                            <Col sm={7} md={9}>
+                            <Col sm={9} md={9}>
                                 {msg && 
                                     <div className={"alert alert-" + msgType} style={{padding: '6px', marginBottom: '0px'}}>
                                         {msg}

@@ -30446,7 +30446,7 @@ var ReceiveList = function (_React$Component) {
                         { style: { marginBottom: '10px' } },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["b" /* Col */],
-                            { sm: 5, md: 3 },
+                            { sm: 3, md: 3 },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', {
                                 type: 'text',
                                 className: 'form-control',
@@ -30460,7 +30460,7 @@ var ReceiveList = function (_React$Component) {
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["b" /* Col */],
-                            { sm: 7, md: 9 },
+                            { sm: 9, md: 9 },
                             msg && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
                                 { className: "alert alert-" + msgType, style: { padding: '6px', marginBottom: '0px' } },
