@@ -281,7 +281,7 @@ export default class ReceiveList extends React.Component{
                                         onChange={this.barcodeChange.bind(this)}
                                     />
                             </Col>
-                            <Col sm={9} md={9}>
+                            <Col sm={7} md={9}>
                                 {msg && 
                                     <div className={"alert alert-" + msgType} style={{padding: '6px', marginBottom: '0px'}}>
                                         {msg}
