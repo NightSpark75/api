@@ -1,5 +1,5 @@
 /** 
- * ReceiveList.js
+ * Receive.js
  */
 import React from 'react';
 import ReactDOM from "react-dom";
@@ -29,9 +29,8 @@ export default class Receive extends React.Component{
 
     init() {
         let self = this;       
-        axios.get('/api/web/mpe/qa/receive/list', null, {
-            method: 'get',
-        }).then(function (response) {
+        axios.get('/api/web/mpe/qa/receive/list')
+        .then(function (response) {
             if (response.data.result) {
                 self.setState({
                     lsa_m: response.data.lsa_m,
@@ -41,7 +40,6 @@ export default class Receive extends React.Component{
                 console.log(response.data);
             } else {
                 console.log(response.data);
-                window.location = '/web/login/ppm';
             }
         }).catch(function (error) {
             console.log(error);

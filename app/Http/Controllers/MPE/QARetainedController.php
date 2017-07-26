@@ -10,7 +10,6 @@ use App\Repositories\MPE\QARetainedRepository;
 class QARetainedController extends Controller
 {
     //
-
     private $retained;
 
     public function __construct(QARetainedRepository $retained) {
@@ -20,9 +19,9 @@ class QARetainedController extends Controller
         $this->middleware('role');
     }
 
-    public function getRetained()
+    public function getList($ldate)
     {
-        $result = $this->retained->getRetainedList();
+        $result = $this->retained->getList($ldate);
         return $result;
     }
 }
