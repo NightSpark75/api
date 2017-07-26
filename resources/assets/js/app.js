@@ -11,8 +11,7 @@ import Error from "./components/Error";
 import Menu from "./components/Menu";
 import User from "./components/web/user/User";
 import Pointlog from "./components/web/mpz/pointlog/Pointlog"
-import ReceiveList from "./components/web/mpe/qa/receive/ReceiveList"
-import ReceivePosting from "./components/web/mpe/qa/receive/ReceivePosting"
+import Receive from "./components/web/mpe/qa/receive/Receive"
 
 
 import Test from "./components/Test";
@@ -42,8 +41,7 @@ ReactDOM.render(
                 </Route>
                 <Route path="mpe">
                     <Route path="qa">
-                        <Route path="receive/list" component={ReceiveList}></Route>
-                        <Route path="receive/posting/:lsa_no" component={ReceivePosting}></Route>
+                        <Route path="receive/list" component={Receive}></Route>
                     </Route>
                 </Route>
             </Route>

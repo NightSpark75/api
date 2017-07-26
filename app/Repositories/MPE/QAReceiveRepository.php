@@ -12,13 +12,7 @@ namespace App\Repositories\MPE;
 
 use DB;
 use Exception;
-use App\Traits\Sqlexecute;
 use Auth;
-
-use App\Models\MPE\MPE_LSA_M;
-use App\Models\MPE\MPE_LSA_D;
-use App\Models\MPE\MPE_LSA_E;
-
 
 /**
  * Class CatchlogRepository
@@ -27,20 +21,8 @@ use App\Models\MPE\MPE_LSA_E;
  */
 class QAReceiveRepository
 {   
-    use Sqlexecute;
-    
-    private $lsa_m;
-    private $lsa_d;
-    private $lsa_e;
+    public function __construct() {
 
-    public function __construct(
-        MPE_LSA_M $lsa_m,
-        MPE_LSA_D $lsa_d,
-        MPE_LSA_E $lsa_e
-    ) {
-        $this->lsa_m = $lsa_m;
-        $this->lsa_d = $lsa_d;
-        $this->lsa_e = $lsa_e;
     }
 
     public function getList()

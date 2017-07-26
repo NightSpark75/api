@@ -10,15 +10,14 @@ use App\Repositories\MPE\QAReceiveRepository;
 class QAReceiveController extends Controller
 {
     //
-
     private $receive;
     private $program;
 
     public function __construct(QAReceiveRepository $receive) {
         $this->receive = $receive;
-        //$this->program = 'SMAF0030';
-        //session(['program' => $this->program]);
-        //$this->middleware('role');
+        $this->program = 'MPEF0220';
+        session(['program' => $this->program]);
+        $this->middleware('role');
     }
 
     public function getList() 

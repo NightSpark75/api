@@ -6,9 +6,8 @@ import ReactDOM from "react-dom";
 import { Link } from 'react-router';
 import axios from 'axios';
 import { Button, ButtonToolbar, Table, Panel, Pager, FormControl, Alert, Col, ListGroup, ListGroupItem } from "react-bootstrap";
-import Posting from './ReceivePosting';
 
-export default class ReceiveList extends React.Component{
+export default class Receive extends React.Component{
     constructor(props) {
         super(props);
 
@@ -231,7 +230,7 @@ export default class ReceiveList extends React.Component{
             if (list[seq][pk] === no) {
                 list.splice(seq, 1);
             } else {
-                seq = seq++;
+                seq++;
             }
         }
         return list;
