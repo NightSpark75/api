@@ -16,6 +16,7 @@ export default class Change extends React.Component{
             storage: [],
             search: [],
             search_str: '',
+            search_key: '',
             searching: false,
             select_item: [],
             storageShow: false,
@@ -45,28 +46,27 @@ export default class Change extends React.Component{
         });
     }
 
-    onSearch() {
+    onSearch(event) {
+        event.preventDefault();
         let str = this.state.search_str;
-        if (str === '') {
-            return null;
+        if (str !== '' || this.state.search_key === str) {
+            let self = this;       
+            axios.get('/api/web/mpe/qa/stock/list/' + str)
+            .then(function (response) {
+                if (response.data.result) {
+                    self.setState({
+                        search: response.data.list,
+                        searching: true,
+                        search_key: str,
+                    });
+                    console.log(response.data);
+                } else {
+                    console.log(response.data);
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
         }
-        let self = this;       
-        axios.get('/api/web/mpe/qa/stock/list/' + str)
-        .then(function (response) {
-            if (response.data.result) {
-                self.setState({
-                    search: response.data.list,
-                    searching: true,
-                });
-                console.log(response.data);
-            } else {
-                console.log(response.data);
-            }
-        }).catch(function (error) {
-            console.log(error);
-        });
-
-        this.setState({search: this.state.list});
     }
 
     searchChange(event) {
@@ -77,7 +77,9 @@ export default class Change extends React.Component{
         this.setState({
             search: [],
             search_str: '',
+            search_key: '',
             searching: false,
+            content: this.state.list,
         });
     }
 
@@ -143,7 +145,7 @@ export default class Change extends React.Component{
 
     render() { 
         const { list, search, search_str, searching, storageShow, storage, isLoading } = this.state;
-        let content = searching ? search : list; 
+        const content = search.length > 0 ? search : list;
         return(   
             <div>
                 <Panel style={{marginBottom: '10px'}}> 
@@ -153,18 +155,20 @@ export default class Change extends React.Component{
                         </ButtonToolbar>
                     </Col>
                     <Col sm={6} md={6}>
-                        <div className="input-group">
-                            <input 
-                                type="text" 
-                                className="form-control" 
-                                maxLength={30}
-                                value={this.state.search_str}
-                                onChange={this.searchChange.bind(this)}/>
-                            <span className="input-group-btn">
-                                {searching && <button className="btn btn-danger" onClick={this.cancelSearch.bind(this)}>取消</button>}
-                                <button className="btn btn-default" onClick={this.onSearch.bind(this)}>查詢</button>
-                            </span>
-                        </div>
+                        <form role="form" onSubmit={this.onSearch.bind(this)}>
+                            <div className="input-group">
+                                <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    maxLength={30}
+                                    value={this.state.search_str}
+                                    onChange={this.searchChange.bind(this)}/>
+                                <span className="input-group-btn">
+                                    {searching && <button className="btn btn-danger" onClick={this.cancelSearch.bind(this)}>取消</button>}
+                                    <button type="submit" className="btn btn-default">查詢</button>
+                                </span>
+                            </div>
+                        </form>
                     </Col>
                 </Panel> 
                 {content.length > 0 ?
