@@ -13,7 +13,7 @@ namespace App\Repositories\Web;
 use Exception;
 use App\Models\Web\User;
 use App\Models\Web\UserPrg;
-use Illuminate\Support\Facades\Auth;
+use Auth;
 
 /**
  * Class AuthRepository
@@ -42,6 +42,9 @@ class AuthRepository
     public function login($account, $password, $system)
     {
         try {
+            if (auth()->check()) {
+                return ['result' => true, 'msg' => '登入成功!(#0000)'];
+            }
             $auth = 
                 $this->user
                     ->where('id', $account)
