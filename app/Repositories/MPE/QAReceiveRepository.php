@@ -97,8 +97,7 @@ class QAReceiveRepository
     public function posting($no) 
     {
         try{
-            DB::transaction( function () use($no)
-            {
+            DB::transaction( function () use($no) {
                 $user = auth()->user()->id;
                 $today = date('Ymd');
                 DB::update("

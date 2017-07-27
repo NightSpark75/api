@@ -13,6 +13,7 @@ import User from "./components/web/user/User";
 import Pointlog from "./components/web/mpz/pointlog/Pointlog";
 import Receive from "./components/web/mpe/qa/receive/Receive";
 import Retained from "./components/web/mpe/qa/retained/Retained";
+import Change from "./components/web/mpe/qa/stock/storage/Change";
 
 
 import Test from "./components/Test";
@@ -44,6 +45,9 @@ ReactDOM.render(
                     <Route path="qa">
                         <Route path="receive/list" component={Receive}></Route>
                         <Route path="retained/list" component={Retained}></Route>
+                        <Route path="stock">
+                            <Route path="storage/Change" component={Change}></Route>
+                        </Route>
                     </Route>
                 </Route>
             </Route>

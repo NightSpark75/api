@@ -51,7 +51,11 @@ Route::group(['prefix' => 'web/mpe', 'namespace' => 'MPE'], function () {
             Route::post('posting', 'QAReceiveController@posting');
         });
         Route::group(['prefix' => 'retained'], function () {
-            Route::get('list/{ldate?}', 'QARetainedController@getList');
+            Route::get('list', 'QARetainedController@getList');
+        });
+        Route::group(['prefix' => 'stock'], function () {
+            Route::get('list/{str?}', 'QAStockController@getStockList');
+            Route::put('storage/change', 'QAStockController@storageChange');
         });
     });
 });

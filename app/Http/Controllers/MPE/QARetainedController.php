@@ -19,9 +19,9 @@ class QARetainedController extends Controller
         $this->middleware('role');
     }
 
-    public function getList($ldate)
+    public function getList()
     {
-        $result = $this->retained->getList($ldate);
+        $result = $this->retained->getList();
         return $result;
     }
 }

@@ -22,7 +22,7 @@ export default class Retained extends React.Component{
 
     init() {
         let self = this;       
-        axios.get('/api/web/mpe/qa/retained/list/20170525')
+        axios.get('/api/web/mpe/qa/retained/list')
         .then(function (response) {
             if (response.data.result) {
                 self.setState({
@@ -66,8 +66,8 @@ export default class Retained extends React.Component{
                             </tr>
                         </thead>
                         <tbody>
-                            {list.map((item,index) => (
-                                <tr>
+                            {list.map((item, index) => (
+                                <tr key={index}>
                                     <td>
                                         {item.irmcu}
                                     </td>

@@ -24,15 +24,15 @@ class QARetainedRepository
 
     }
 
-    public function getList($ldate = "to_number(to_char(sysdate, 'YYYYMMDD')") {
+    public function getList() {
         try {
             $list = DB::select("
                 select *
                 from v_mpe_erp_mate vm
-                where iratdt = :ldate
+                where iratdt = to_number(to_char(sysdate, 'YYYYMMDD')
                     and IRSQ03 > 0
                     and not exists (select * from mpe_house_m m where m.batch = vm.irlotn) 
-            ", ['ldate' => $ldate]);
+            ");
             $result = [
                 'result' => true,
                 'msg' => '取得留樣品清單成功!(#0001)',

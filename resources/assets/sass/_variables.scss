@@ -1,6 +1,7 @@
 
 // Body
-$body-bg: #f5f8fa;
+//$body-bg: #f5f8fa;
+$body-bg: #fff;
 
 // Borders
 $laravel-border-color: darken($body-bg, 10%);
@@ -20,8 +21,8 @@ $brand-danger: #bf5329;
 $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
 //$font-family-sans-serif: "Noto Sans TC", sans-serif;
 $font-family-sans-serif: sans-serif;
-$font-size-base: 14px;
-$line-height-base: 1.6;
+$font-size-base: 15px;
+$line-height-base: 1.5;
 //$text-color: #636b6f;
 $text-color: #4F4F4F;
 // Navbar
