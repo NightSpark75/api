@@ -30993,7 +30993,7 @@ var Change = function (_React$Component) {
         value: function onSearch(event) {
             event.preventDefault();
             var str = this.state.search_str;
-            if (str !== '' || this.state.search_key === str) {
+            if (str !== '' && this.state.search_key !== str) {
                 var self = this;
                 __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get('/api/web/mpe/qa/stock/list/' + str).then(function (response) {
                     if (response.data.result) {
@@ -31143,7 +31143,7 @@ var Change = function (_React$Component) {
                                     'span',
                                     { className: 'input-group-btn' },
                                     searching && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'button',
+                                        'a',
                                         { className: 'btn btn-danger', onClick: this.cancelSearch.bind(this) },
                                         '\u53D6\u6D88'
                                     ),

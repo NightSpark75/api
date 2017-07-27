@@ -49,7 +49,7 @@ export default class Change extends React.Component{
     onSearch(event) {
         event.preventDefault();
         let str = this.state.search_str;
-        if (str !== '' || this.state.search_key === str) {
+        if (str !== '' && this.state.search_key !== str) {
             let self = this;       
             axios.get('/api/web/mpe/qa/stock/list/' + str)
             .then(function (response) {
@@ -164,7 +164,7 @@ export default class Change extends React.Component{
                                     value={this.state.search_str}
                                     onChange={this.searchChange.bind(this)}/>
                                 <span className="input-group-btn">
-                                    {searching && <button className="btn btn-danger" onClick={this.cancelSearch.bind(this)}>取消</button>}
+                                    {searching && <a className="btn btn-danger" onClick={this.cancelSearch.bind(this)}>取消</a>}
                                     <button type="submit" className="btn btn-default">查詢</button>
                                 </span>
                             </div>
