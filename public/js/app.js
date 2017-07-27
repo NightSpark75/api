@@ -29494,6 +29494,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+/** 
+ * NavPage.js 
+ */
 
 
 
@@ -29520,7 +29523,12 @@ var NavPage = function (_React$Component) {
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/web/user/info', new FormData(), {
                 method: 'get'
             }).then(function (response) {
-                self.setState({ user: response.data });
+                if (response.data.session) {
+                    self.setState({ user: response.data.info });
+                } else {
+                    console.log('miss session, need login!');
+                    window.location = '/web/login/ppm';
+                }
             }).catch(function (error) {
                 console.log(error);
             });
@@ -29553,7 +29561,7 @@ var NavPage = function (_React$Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 "span",
                                 { className: "navbar-brand" },
-                                this.state.user.length === 0 ? '資料讀取中...' : this.state.user['name'] + ' 您好'
+                                this.state.user.length === 0 ? '資料讀取中...' : this.state.user['user_name'] + ' 您好'
                             )
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(

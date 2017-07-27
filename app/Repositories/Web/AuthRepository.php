@@ -54,7 +54,14 @@ class AuthRepository
                     ->first();
             if ($auth) {
                 Auth::login($auth);
-                session(['system' => $system]);
+                $user_info = [
+                    'system' => $system,
+                    'sys' => $auth->sys,
+                    'co' => $auth->co,
+                    'user_id' => $auth->id,
+                    'user_name' => $auth->name,
+                ];
+                session(['user_info' => $user_info]);
                 return ['result' => true, 'msg' => '登入成功!(#0000)'];
             }
             throw new Exception('帳號或密碼錯誤!(#0001)');
@@ -93,6 +100,24 @@ class AuthRepository
      */
     public function getUser()
     {
-        return Auth::user();
+        if ((session('user_info') === null) || !session()->has('user_info')) {
+            if (!auth()->check()) {
+                return ['session' => false];
+            }
+            $auth = auth()->user();
+            $user_info = [
+                'system' => 'ppm',
+                'sys' => $auth->sys,
+                'co' => $auth->co,
+                'user_id' => $auth->id,
+                'user_name' => $auth->name,
+            ];
+            session(['user_info' => $user_info]);
+        }
+        $response = [
+            'session' => true,
+            'info' => session('user_info'),
+        ];
+        return $response;
     }
 }

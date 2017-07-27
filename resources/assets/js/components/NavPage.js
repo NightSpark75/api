@@ -1,3 +1,6 @@
+/** 
+ * NavPage.js 
+ */
 import React from "react";
 import { Link } from "react-router";
 import axios from 'axios';
@@ -17,7 +20,12 @@ export default class NavPage extends React.Component{
         axios.get('/api/web/user/info', new FormData(), {
             method: 'get',
         }).then(function (response) {
-            self.setState({user: response.data});
+            if (response.data.session) {
+                self.setState({user: response.data.info});
+            } else {
+                console.log('miss session, need login!');
+                window.location = '/web/login/ppm';
+            }
         }).catch(function (error) {
             console.log(error);
         });
@@ -39,7 +47,7 @@ export default class NavPage extends React.Component{
                     <div className="container">
                         <div className="navbar-header">
                             <span className="navbar-brand">
-                                {this.state.user.length === 0 ? '資料讀取中...': this.state.user['name'] + ' 您好'}
+                                {this.state.user.length === 0 ? '資料讀取中...': this.state.user['user_name'] + ' 您好'}
                             </span>
                         </div>
                         <div className="navbar-collapse collapse">

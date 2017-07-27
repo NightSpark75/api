@@ -86,7 +86,7 @@ class AuthController extends Controller
      */
     public function user()
     {
-        $user = $this->auth->getUser();
-        return $user;
+        $info = $this->auth->getUser();
+        return response()->json($info);
     }
 }

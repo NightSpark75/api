@@ -126,7 +126,7 @@ class AuthRepositoryTest extends TestCase
      *
      * @return void
      */
-    public function test_get_enu()
+    public function test_get_menu()
     {
         /** arrange */
         $user_id = str_random(8);
