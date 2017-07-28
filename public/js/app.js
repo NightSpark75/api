@@ -31128,7 +31128,7 @@ var Change = function (_React$Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["d" /* Button */],
                                 { onClick: this.goMenu.bind(this) },
-                                '\u2190 \u56DE\u6E05\u55AE\u9801'
+                                '\u2190 \u529F\u80FD\u9078\u55AE'
                             )
                         )
                     ),
@@ -31953,7 +31953,7 @@ var Pointlog = function (_React$Component) {
             scan: 'disabled',
             scan_message: '',
             point_info: [],
-            mouse_show: false
+            catchlog_show: false
         };
         return _this;
     }
@@ -32012,7 +32012,7 @@ var Pointlog = function (_React$Component) {
                         scan: 'disabled',
                         scan_message: '資料驗證中...'
                     });
-                    _this2.pointCheck(point_no, device_type);
+                    _this2.pointCheck(list[i]);
                     return 'break';
                 }
             };
@@ -32025,13 +32025,13 @@ var Pointlog = function (_React$Component) {
         }
     }, {
         key: 'pointCheck',
-        value: function pointCheck(point_no, device_type) {
+        value: function pointCheck(point) {
             var self = this;
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/web/mpz/pointlog/check/' + point_no).then(function (response) {
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/web/mpz/pointlog/check/' + point.point_no).then(function (response) {
                 if (response.data.result) {
                     var ldate = response.data.ldate;
                     self.setState({ scan_message: '' });
-                    self.setComponent(point_no, ldate, device_type);
+                    self.setComponent(point, ldate);
                     console.log(response.data);
                 } else {
                     self.setState({
@@ -32046,22 +32046,56 @@ var Pointlog = function (_React$Component) {
         }
     }, {
         key: 'setComponent',
-        value: function setComponent(point_no, ldate, device_type) {
-            switch (device_type) {
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                    this.setState({ mouse_show: true });
-                    this.refs.mouse.init(point_no, ldate, device_type);
+        value: function setComponent(point, ldate) {
+            var point_type = point.point_type;
+            switch (point_type) {
+                case 'C':
+                    // 鼠蟲防治紀錄
+                    this.setCatchlog(point, ldate);
+                    break;
+                case 'T':
+                    // 溫溼紀錄
+                    this.setTemperaturelog(point, ldate);
+                    break;
+                case 'W':
+                    // 最濕點紀錄
+                    this.setHumiditylog(point, ldate);
+                    break;
+                case 'R':
+                    // 冷藏櫃操作紀錄
+                    this.setRefrigerationlog(point, ldate);
+                    break;
+                case 'P':
+                    // 壓差紀錄
+                    this.setPressurelog(point, ldate);
                     break;
             }
         }
     }, {
+        key: 'setCatchlog',
+        value: function setCatchlog(point, ldate) {
+            var point_no = point.point_no;
+            var device_type = point.device_type;
+            this.setState({ catchlog_show: true });
+            this.refs.catch.init(point_no, ldate, device_type);
+        }
+    }, {
+        key: 'setTemperaturelog',
+        value: function setTemperaturelog(point, ldate) {}
+    }, {
+        key: 'setHumiditylog',
+        value: function setHumiditylog(point, ldate) {}
+    }, {
+        key: 'setRefrigerationlog',
+        value: function setRefrigerationlog(point, ldate) {}
+    }, {
+        key: 'setPressurelog',
+        value: function setPressurelog(point, ldate) {}
+    }, {
         key: 'onCancel',
         value: function onCancel() {
             this.setState({
-                mouse_show: false,
+                catchlog_show: false,
                 point_no: '',
                 scan: '',
                 point_info: []
@@ -32111,14 +32145,14 @@ var Pointlog = function (_React$Component) {
                         )
                     )
                 ),
-                this.state.mouse_show && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                this.state.catchlog_show && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["a" /* Panel */],
                     null,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Catchlog__["a" /* default */], {
                         pointInfo: this.state.point_info,
                         onCancel: this.onCancel.bind(this),
                         sendMsg: this.componentMsg.bind(this),
-                        ref: 'mouse'
+                        ref: 'catch'
                     })
                 )
             );

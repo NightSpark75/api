@@ -17,7 +17,7 @@ export default class Pointlog extends React.Component{
             scan: 'disabled',
             scan_message: '',
             point_info: [],
-            mouse_show: false,
+            catchlog_show: false,
         }
     }
 
@@ -67,20 +67,20 @@ export default class Pointlog extends React.Component{
                     scan: 'disabled',
                     scan_message: '資料驗證中...'
                 });
-                this.pointCheck(point_no, device_type);
+                this.pointCheck(list[i]);
                 break;
             }
         }
     }
 
-    pointCheck(point_no, device_type) {
+    pointCheck(point) {
         let self = this;       
-        axios.get('/api/web/mpz/pointlog/check/' + point_no)
+        axios.get('/api/web/mpz/pointlog/check/' + point.point_no)
         .then(function (response) {
             if (response.data.result) {
                 let ldate = response.data.ldate;
                 self.setState({scan_message: ''});
-                self.setComponent(point_no, ldate, device_type);
+                self.setComponent(point, ldate);
                 console.log(response.data);
             } else {
                 self.setState({
@@ -94,21 +94,53 @@ export default class Pointlog extends React.Component{
         });
     }
 
-    setComponent(point_no, ldate, device_type) {
-        switch (device_type) {
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-                this.setState({mouse_show: true});
-                this.refs.mouse.init(point_no, ldate, device_type);
+    setComponent(point, ldate) {
+        let point_type = point.point_type;
+        switch (point_type) {
+            case 'C':   // 鼠蟲防治紀錄
+                this.setCatchlog(point, ldate);
+                break;
+            case 'T':   // 溫溼紀錄
+                this.setTemperaturelog(point, ldate);
+                break;
+            case 'W':   // 最濕點紀錄
+                this.setHumiditylog(point, ldate);
+                break;
+            case 'R':   // 冷藏櫃操作紀錄
+                this.setRefrigerationlog(point, ldate);
+                break;
+            case 'P':   // 壓差紀錄
+                this.setPressurelog(point, ldate);
                 break;
         }
     }
 
+    setCatchlog(point, ldate) {
+        let point_no = point.point_no;
+        let device_type = point.device_type;
+        this.setState({catchlog_show: true});
+        this.refs.catch.init(point_no, ldate, device_type);
+    }
+
+    setTemperaturelog(point, ldate) {
+
+    }
+
+    setHumiditylog(point, ldate) {
+
+    }
+
+    setRefrigerationlog(point, ldate) {
+
+    }
+
+    setPressurelog(point, ldate) {
+        
+    }
+
     onCancel() {
         this.setState({
-            mouse_show: false,
+            catchlog_show: false,
             point_no: '',
             scan: '',
             point_info: [],
@@ -147,13 +179,13 @@ export default class Pointlog extends React.Component{
                         </div>
                     </div>  
                 </Panel> 
-                {this.state.mouse_show &&
+                {this.state.catchlog_show &&
                     <Panel>
                         <Catchlog
                             pointInfo={this.state.point_info}
                             onCancel={this.onCancel.bind(this)}
                             sendMsg={this.componentMsg.bind(this)}
-                            ref="mouse"
+                            ref="catch"
                         >
                         </Catchlog>
                     </Panel>

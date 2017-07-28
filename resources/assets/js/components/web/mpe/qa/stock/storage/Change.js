@@ -151,7 +151,7 @@ export default class Change extends React.Component{
                 <Panel style={{marginBottom: '10px'}}> 
                     <Col sm={6} md={6}>
                         <ButtonToolbar >
-                            <Button onClick={this.goMenu.bind(this)}>&larr; 回清單頁</Button>
+                            <Button onClick={this.goMenu.bind(this)}>&larr; 功能選單</Button>
                         </ButtonToolbar>
                     </Col>
                     <Col sm={6} md={6}>

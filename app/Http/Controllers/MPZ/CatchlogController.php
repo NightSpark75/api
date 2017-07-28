@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\MPZ;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 use App\Repositories\MPZ\CatchlogRepository;
 
@@ -11,7 +11,6 @@ class CatchlogController extends Controller
 {
     //
     private $catchlog;
-    private $program;
 
     public function __construct(CatchlogRepository $catchlog)
     {
@@ -19,20 +18,6 @@ class CatchlogController extends Controller
         $this->program = 'SMAF0030';
         session(['program' => $this->program]);
         $this->middleware('role');
-    }
-
-    public function init()
-    {
-        $result = $this->catchlog->init();
-        $response = response()->json($result);
-        return $response;
-    }
-
-    public function check($point_no)
-    {
-        $result = $this->catchlog->check($point_no);
-        $response = response()->json($result);
-        return $response;
     }
 
     public function save()

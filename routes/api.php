@@ -64,8 +64,9 @@ Route::group(['prefix' => 'web/mpe', 'namespace' => 'MPE'], function () {
 Route::group(['prefix' => 'web/mpz', 'namespace' => 'MPZ'], function () {
     // pointlog
     Route::group(['prefix' => 'pointlog'], function () {
-        Route::get('init', 'CatchlogController@init');
-        Route::get('check/{point_no}', 'CatchlogController@check');
+        Route::get('init', 'PointlogController@init');
+        Route::get('check/{point_no}', 'PointlogController@check');
+        // catchlog
         Route::post('save', 'CatchlogController@save');
         Route::get('catch/count/{point_no}/{ldate}', 'CatchlogController@catchCount');
     });
