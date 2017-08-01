@@ -30339,16 +30339,9 @@ var Receive = function (_React$Component) {
             return list;
         }
     }, {
-        key: 'goList',
-        value: function goList() {
-            this.setState({
-                item_m: [], item_d: [], item_e: [],
-                barcode: '',
-                posting: false,
-                showReceive: false,
-                msg: '',
-                msgType: ''
-            });
+        key: 'goMenu',
+        value: function goMenu() {
+            window.location = '/auth/web/menu';
         }
     }, {
         key: 'render',
@@ -30381,7 +30374,7 @@ var Receive = function (_React$Component) {
                                 null,
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["d" /* Button */],
-                                    { onClick: this.goList.bind(this) },
+                                    { onClick: this.goMenu.bind(this) },
                                     '\u2190 \u56DE\u6E05\u55AE\u9801'
                                 )
                             )
@@ -30627,7 +30620,15 @@ var Receive = function (_React$Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["b" /* Col */],
                                 { sm: 7, md: 9 },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["c" /* ButtonToolbar */], null)
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["c" /* ButtonToolbar */],
+                                    null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["d" /* Button */],
+                                        { onClick: this.goMenu.bind(this) },
+                                        '\u2190 \u529F\u80FD\u9078\u55AE'
+                                    )
+                                )
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["b" /* Col */],
@@ -30822,12 +30823,34 @@ var Retained = function (_React$Component) {
             });
         }
     }, {
+        key: 'goMenu',
+        value: function goMenu() {
+            window.location = '/auth/web/menu';
+        }
+    }, {
         key: 'render',
         value: function render() {
             var list = this.state.list;
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["a" /* Panel */],
+                    { style: { marginBottom: '10px' } },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["b" /* Col */],
+                        { sm: 6, md: 6 },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["c" /* ButtonToolbar */],
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["d" /* Button */],
+                                { onClick: this.goMenu.bind(this) },
+                                '\u2190 \u529F\u80FD\u9078\u55AE'
+                            )
+                        )
+                    )
+                ),
                 list.length > 0 ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["e" /* Table */],
                     { bordered: true, hover: true },
@@ -31541,15 +31564,9 @@ var Receive = function (_React$Component) {
             }
         }
     }, {
-        key: 'goList',
-        value: function goList() {
-            this.setState({
-                barcode_list: [],
-                receive_list: [],
-                barcode: '',
-                msg: '',
-                msgType: ''
-            });
+        key: 'goMenu',
+        value: function goMenu() {
+            window.location = '/auth/web/menu';
         }
     }, {
         key: 'render',
@@ -31578,8 +31595,8 @@ var Receive = function (_React$Component) {
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["d" /* Button */],
-                                { onClick: this.goList.bind(this) },
-                                '\u2190 \u56DE\u6E05\u55AE\u9801'
+                                { onClick: this.goMenu.bind(this) },
+                                '\u2190 \u529F\u80FD\u9078\u55AE'
                             )
                         )
                     ),
@@ -31591,7 +31608,7 @@ var Receive = function (_React$Component) {
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["d" /* Button */],
-                                { bsStyle: 'success', disabled: receive_list.length === 0, onClick: this.goPosting.bind(this) },
+                                { bsClass: 'btn btn-success pull-right', disabled: receive_list.length === 0, onClick: this.goPosting.bind(this) },
                                 '\u9818\u6599\u904E\u5E33'
                             )
                         )
@@ -32482,11 +32499,33 @@ var Pointlog = function (_React$Component) {
             this.setState({ scan_message: msg });
         }
     }, {
+        key: 'goMenu',
+        value: function goMenu() {
+            window.location = '/auth/web/menu';
+        }
+    }, {
         key: 'render',
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["a" /* Panel */],
+                    { style: { marginBottom: '10px' } },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["b" /* Col */],
+                        { sm: 10, md: 10 },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["c" /* ButtonToolbar */],
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["d" /* Button */],
+                                { onClick: this.goMenu.bind(this) },
+                                '\u2190 \u529F\u80FD\u9078\u55AE'
+                            )
+                        )
+                    )
+                ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["a" /* Panel */],
                     null,

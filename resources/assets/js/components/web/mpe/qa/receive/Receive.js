@@ -234,16 +234,8 @@ export default class Receive extends React.Component{
         return list;
     }
 
-
-    goList() {
-        this.setState({
-            item_m: [], item_d: [], item_e: [],
-            barcode: '',
-            posting: false,
-            showReceive: false,
-            msg: '',
-            msgType: '',
-        });
+    goMenu() {
+        window.location = '/auth/web/menu';
     }
 
     render() { 
@@ -256,7 +248,7 @@ export default class Receive extends React.Component{
                         <Panel style={{marginBottom: '10px'}}> 
                             <Col sm={10} md={10}>
                                 <ButtonToolbar >
-                                    <Button onClick={this.goList.bind(this)}>&larr; 回清單頁</Button>
+                                    <Button onClick={this.goMenu.bind(this)}>&larr; 回清單頁</Button>
                                 </ButtonToolbar>
                             </Col>
                             <Col sm={2} md={2} >
@@ -336,6 +328,7 @@ export default class Receive extends React.Component{
                             <Col bsClass="row">
                                 <Col sm={7} md={9}>
                                     <ButtonToolbar >
+                                        <Button onClick={this.goMenu.bind(this)}>&larr; 功能選單</Button>
                                     </ButtonToolbar>
                                 </Col>
                                 <Col sm={5} md={3}>

@@ -130,14 +130,8 @@ export default class Receive extends React.Component{
         }
     }
 
-    goList() {
-        this.setState({
-            barcode_list: [],
-            receive_list: [],
-            barcode: '',
-            msg: '',
-            msgType: '',
-        });
+    goMenu() {
+        window.location = '/auth/web/menu';
     }
 
     render() { 
@@ -147,12 +141,12 @@ export default class Receive extends React.Component{
                 <Panel style={{marginBottom: '10px'}}> 
                     <Col sm={10} md={10}>
                         <ButtonToolbar >
-                            <Button onClick={this.goList.bind(this)}>&larr; 回清單頁</Button>
+                            <Button onClick={this.goMenu.bind(this)}>&larr; 功能選單</Button>
                         </ButtonToolbar>
                     </Col>
-                    <Col sm={2} md={2} >
-                        <ButtonToolbar >
-                            <Button bsStyle="success" disabled={receive_list.length === 0} onClick={this.goPosting.bind(this)}>領料過帳</Button>
+                    <Col sm={2} md={2}>
+                        <ButtonToolbar>
+                            <Button bsClass="btn btn-success pull-right" disabled={receive_list.length === 0} onClick={this.goPosting.bind(this)}>領料過帳</Button>
                         </ButtonToolbar>
                     </Col>
                 </Panel> 

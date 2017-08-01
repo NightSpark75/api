@@ -4,7 +4,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import axios from 'axios';
-import { Button, Panel, FormControl, Alert } from "react-bootstrap";
+import { Button, Panel, FormControl, Alert, Col, ButtonToolbar } from "react-bootstrap";
 import Catchlog from './Catchlog';
 
 export default class Pointlog extends React.Component{
@@ -151,9 +151,20 @@ export default class Pointlog extends React.Component{
         this.setState({scan_message: msg});
     }
 
+    goMenu() {
+        window.location = '/auth/web/menu';
+    }
+
     render() {
         return(   
             <div>
+                <Panel style={{marginBottom: '10px'}}> 
+                    <Col sm={10} md={10}>
+                        <ButtonToolbar >
+                            <Button onClick={this.goMenu.bind(this)}>&larr; 功能選單</Button>
+                        </ButtonToolbar>
+                    </Col>
+                </Panel> 
                 <Panel>
                     <div className="row">
                         <div className="col-sm-4 col-md-3">
