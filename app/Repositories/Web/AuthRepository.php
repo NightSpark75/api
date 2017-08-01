@@ -61,7 +61,10 @@ class AuthRepository
                     'user_id' => $auth->id,
                     'user_name' => $auth->name,
                 ];
-                session(['user_info' => $user_info]);
+                session([
+                    'user_info' => $user_info,
+                    'system' => $system,
+                ]);
                 return ['result' => true, 'msg' => '登入成功!(#0000)'];
             }
             throw new Exception('帳號或密碼錯誤!(#0001)');

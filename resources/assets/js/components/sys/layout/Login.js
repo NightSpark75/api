@@ -4,7 +4,7 @@
 import React from "react";
 import { Link } from "react-router";
 import axios from 'axios';
-import AlertMsg from '../components/includes/AlertMsg';
+import AlertMsg from '../../../components/includes/AlertMsg';
 
 export default class Login extends React.Component{
     constructor(props) {

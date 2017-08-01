@@ -4,7 +4,7 @@
 import React from "react";
 import { Link } from "react-router";
 import axios from 'axios';
-import Navigation from "../components/includes/Navigation";
+import Navigation from "../../../components/includes/Navigation";
 
 export default class NavPage extends React.Component{
     constructor(props) {
