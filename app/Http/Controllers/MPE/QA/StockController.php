@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\MPE;
+namespace App\Http\Controllers\MPE\QA;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\Repositories\MPE\QAStockRepository;
+use App\Repositories\MPE\QA\StockRepository;
 
-class QAStockController extends Controller
+class StockController extends Controller
 {
     //
     private $stock;
 
-    public function __construct(QAStockRepository $stock) {
+    public function __construct(StockRepository $stock) {
         $this->stock = $stock;
         $this->program = 'MPEW0020';
         session(['program' => $this->program]);

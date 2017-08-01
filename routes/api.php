@@ -45,17 +45,26 @@ Route::group(['prefix' => 'file', 'namespace' => 'Web'], function () {
 
 // MPE set
 Route::group(['prefix' => 'web/mpe', 'namespace' => 'MPE'], function () {
-    Route::group(['prefix' => 'qa'], function () {
+    // MPE QA
+    Route::group(['prefix' => 'qa', 'namespace' => 'QA'], function () {
         Route::group(['prefix' => 'receive'], function () {
-            Route::get('list', 'QAReceiveController@getList');
-            Route::post('posting', 'QAReceiveController@posting');
+            Route::get('list', 'ReceiveController@getList');
+            Route::post('posting', 'ReceiveController@posting');
         });
         Route::group(['prefix' => 'retained'], function () {
-            Route::get('list', 'QARetainedController@getList');
+            Route::get('list', 'RetainedController@getList');
         });
         Route::group(['prefix' => 'stock'], function () {
-            Route::get('list/{str?}', 'QAStockController@getStockList');
-            Route::put('storage/change', 'QAStockController@storageChange');
+            Route::get('list/{str?}', 'StockController@getStockList');
+            Route::put('storage/change', 'StockController@storageChange');
+        });
+    });
+
+    // MPE QC
+    Route::group(['prefix' => 'qc', 'namespace' => 'QC'], function () {
+        Route::group(['prefix' => 'receive'], function () {
+            Route::get('init', 'ReceiveController@init');
+            Route::post('posting', 'ReceiveController@posting');
         });
     });
 });

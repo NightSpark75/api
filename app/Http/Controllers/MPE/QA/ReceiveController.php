@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\MPE;
+namespace App\Http\Controllers\MPE\QA;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\Repositories\MPE\QAReceiveRepository;
+use App\Repositories\MPE\QA\ReceiveRepository;
 
-class QAReceiveController extends Controller
+class ReceiveController extends Controller
 {
     //
     private $receive;
     private $program;
 
-    public function __construct(QAReceiveRepository $receive) {
+    public function __construct(ReceiveRepository $receive) {
         $this->receive = $receive;
-        $this->program = 'MPEF0220';
+        $this->program = 'MPEW0030';
         session(['program' => $this->program]);
         $this->middleware('role');
     }

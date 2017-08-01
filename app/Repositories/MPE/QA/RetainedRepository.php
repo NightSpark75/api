@@ -8,17 +8,17 @@
  * @since 1.0.0 spark: 建立檔案寫入與讀取相關的資料處理
  * 
  */
-namespace App\Repositories\MPE;
+namespace App\Repositories\MPE\QA;
 
 use DB;
 use Exception;
 
 /**
- * Class QARetainedRepository
+ * Class RetainedRepository
  *
- * @package App\Repositories
+ * @package App\Repositories\MPE\QA
  */
-class QARetainedRepository
+class RetainedRepository
 {   
     public function __construct() {
 

@@ -8,7 +8,7 @@
  * @since 1.0.0 spark: 建立檔案寫入與讀取相關的資料處理
  * 
  */
-namespace App\Repositories\MPE;
+namespace App\Repositories\MPE\QA;
 
 use DB;
 use Exception;
@@ -17,9 +17,9 @@ use Auth;
 /**
  * Class StockRepository
  *
- * @package App\Repositories
+ * @package App\Repositories\MPE\QA
  */
-class QAStockRepository
+class StockRepository
 {   
     public function __construct() {
 
