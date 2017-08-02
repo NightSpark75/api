@@ -28,16 +28,6 @@ ReactDOM.render(
             <Route path="error/:msg" component={Error}></Route>
         </Route>
         <Route path="web" component={SinglePage}>
-            <Route path="login/:system" 
-                getComponent = {
-                    (Location, callback) => {
-                        require.ensure([], (require) => {
-                            callback(null, require('./components/sys/layout/Login').default)
-                        }, 'Login')
-                    }
-                }
-            >
-            </Route>
             <Route path="login/:system" component={Login}></Route>
         </Route>
         <Route path="auth">
