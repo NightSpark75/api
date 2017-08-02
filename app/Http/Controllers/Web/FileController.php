@@ -65,7 +65,7 @@ class FileController extends Controller
         $result = $this->file->uploadFile($id, $user, $file, $store_type);
         if ($result['result']) {
             return view('service.complete')
-                ->with('title', $result['msg'])
+                ->with('title', '檔案上傳成功!')
                 ->with('message', '請關閉此視窗');
         }
         return view('service.complete')
