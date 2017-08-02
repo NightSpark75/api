@@ -40,6 +40,7 @@ Route::group(['prefix' => 'web/user', 'namespace' => 'Web'], function () {
 // file upload
 Route::group(['prefix' => 'file', 'namespace' => 'Web'], function () {
     Route::post('upload/{store_type}', 'FileController@uploadFile');
+    Route::post('upload/old/{store_type}', 'FileController@uploadOldFile');
     Route::get('download/{token}/{file_id}/{user_id}', 'FileController@downloadFile');
 });
 

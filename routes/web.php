@@ -27,6 +27,12 @@ Route::get('thanks', function () {
     return view('thanks');
 })->name('thanks');
 
+Route::get('/web/file/upload/code/{file_id}/{user_id}',  function ($file_id, $user_id) {
+    return view('service.upload')
+        ->with('file_id', $file_id)
+        ->with('user_id', $user_id);
+});
+
 // ReactJs 須認證的頁面
 Route::get('/auth/{path?}', function($path = null){
         return View::make('index');

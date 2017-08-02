@@ -52,6 +52,28 @@ class FileController extends Controller
     }
 
     /**
+     * 檔案上傳舊介面
+     * 
+     * @param Request $req request
+     * @return array
+     */
+    public function uploadOldFile($store_type = 'code')
+    {
+        $file = request()->file('file_data');
+        $id = request()->input('file_id');
+        $user = request()->input('user_id');
+        $result = $this->file->uploadFile($id, $user, $file, $store_type);
+        if ($result['result']) {
+            return view('service.complete')
+                ->with('title', $result['msg'])
+                ->with('message', '請關閉此視窗');
+        }
+        return view('service.complete')
+            ->with('title', '檔案上傳失敗，請洽資訊課#6078')
+            ->with('message', $result['msg']);
+    }
+
+    /**
      * 檔案下載
      * 
      * @param string $token load file token

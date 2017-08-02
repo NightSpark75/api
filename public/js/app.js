@@ -12866,37 +12866,6 @@ __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
     )
 ), app);
 
-/*
-import web from './routes/web/index';
-import single from './routes/single/index';
-import auth from './routes/auth/index';
-
-const rootRoute = {
-    path: '/',
-    indexRoute: {
-        getComponent(nextState, cb) { 
-            require.ensure([], (require) => {  
-            cb(null, require('./components/sys/layout/Hello').default);
-            }, 'hellow');
-        }
-    },
-    childRoutes: [
-        auth,
-        single,
-        web,
-    ]
-}
-
-ReactDOM.render(
-    (
-        <Router
-            history={browserHistory}
-            routes={rootRoute}
-        />
-    ), document.getElementById('app')
-);
-*/
-
 /***/ }),
 /* 115 */
 /***/ (function(module, exports) {
