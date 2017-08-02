@@ -2,7 +2,6 @@
  * User.js
  */
 import React from 'react';
-import { Link } from 'react-router';
 import axios from 'axios';
 import UserAdd from './UserAdd';
 import UserEdit from './UserEdit';

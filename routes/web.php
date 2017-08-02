@@ -15,10 +15,6 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('welcome', function () {
-    return view('welcome');
-});
-
 Route::get('error', function () {
     return view('error');
 });
@@ -27,17 +23,9 @@ Route::get('phpinfo', function () {
     phpinfo();
 });
 
-Route::get('pdo', function () {
-    dd (DB::connection()->getPdo());
-});
-
 Route::get('thanks', function () {
     return view('thanks');
 })->name('thanks');
-
-Route::get('testWeb', function() {
-    return 'testWeb';
-})->middleware('auth');
 
 // ReactJs 須認證的頁面
 Route::get('/auth/{path?}', function($path = null){

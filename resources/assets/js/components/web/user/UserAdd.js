@@ -2,7 +2,6 @@
  * UserAdd.js
  */
 import React from "react";
-import { Link } from "react-router";
 import { Button, Modal, Form, FormGroup, FormControl, ControlLabel, Radio } from "react-bootstrap";
 import axios from 'axios';
 import FieldGroup from  '../../../components/includes/FieldGroup';

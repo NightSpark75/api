@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import axios from 'axios';
-import AlertMsg from '../components/includes/AlertMsg';
+import AlertMsg from '../../includes/AlertMsg';
 
 export default class Upload extends React.Component {
     constructor(props) {
