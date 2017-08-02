@@ -44,7 +44,16 @@ Route::group(['prefix' => 'file', 'namespace' => 'Web'], function () {
     Route::get('download/{token}/{file_id}/{user_id}', 'FileController@downloadFile');
 });
 
-// MPE set
+// MPB routes
+Route::group(['prefix' => 'web/mpb', 'namespace' => 'MPB'], function () {
+    // MPB Production
+    Route::group(['prefix' => 'prod', 'namespace' => 'Production'], function () {
+        Route::get('init', 'WorkOrderController@init');
+    });
+});
+
+
+// MPE routes
 Route::group(['prefix' => 'web/mpe', 'namespace' => 'MPE'], function () {
     // MPE QA
     Route::group(['prefix' => 'qa', 'namespace' => 'QA'], function () {
@@ -70,7 +79,7 @@ Route::group(['prefix' => 'web/mpe', 'namespace' => 'MPE'], function () {
     });
 });
 
-// MPZ set
+// MPZ routes
 Route::group(['prefix' => 'web/mpz', 'namespace' => 'MPZ'], function () {
     // pointlog
     Route::group(['prefix' => 'pointlog'], function () {
