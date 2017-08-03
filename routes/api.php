@@ -48,7 +48,9 @@ Route::group(['prefix' => 'file', 'namespace' => 'Web'], function () {
 Route::group(['prefix' => 'web/mpb', 'namespace' => 'MPB'], function () {
     // MPB Production
     Route::group(['prefix' => 'prod', 'namespace' => 'Production'], function () {
-        Route::get('init', 'WorkOrderController@init');
+        Route::get('job', 'WorkOrderController@getJob');
+        Route::post('compare', 'WorkOrderController@compare');
+        Route::get('member/{sno}/{psno}', 'WorkOrderController@member');
     });
 });
 

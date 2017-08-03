@@ -30,6 +30,7 @@
     "es6-promise": "^4.1.1",
     "react-bootstrap": "^0.31.0",
     "react-modal-bootstrap": "^1.1.1",
+    "react-timer-mixin": "^0.13.3",
     "react-uikit-alert": "^2.0.2",
     "react-uikit-base": "^2.0.2",
     "react-uikit-notify": "^2.0.0",

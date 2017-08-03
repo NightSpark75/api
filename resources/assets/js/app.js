@@ -16,6 +16,7 @@ import Retained from "./components/web/mpe/qa/retained/Retained";
 import Change from "./components/web/mpe/qa/stock/storage/Change";
 import QCReceive from "./components/web/mpe/qc/receive/Receive";
 import Job from "./components/web/mpb/production/Job";
+import Working from "./components/web/mpb/production/Working";
 
 const app = document.getElementById('app');
 
@@ -35,8 +36,11 @@ ReactDOM.render(
             <Route path="web" component={NavPage}>
                 <Route path="menu" component={Menu}></Route>
                 <Route path="user" component={User}></Route>
-                <Route path="production">
-                    <Route path="job" component={Job}></Route>
+                <Route path="mpb">
+                    <Route path="prod">
+                        <Route path="list" component={Job}></Route>
+                        <Route path="working/:sno/:psno" component={Working}></Route>
+                    </Route>
                 </Route>
                 <Route path="mpz">
                     <Route path="pointlog" component={Pointlog}></Route>

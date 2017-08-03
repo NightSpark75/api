@@ -29,7 +29,7 @@ class RetainedRepository
             $list = DB::select("
                 select *
                 from v_mpe_erp_mate vm
-                where iratdt = to_number(to_char(sysdate, 'YYYYMMDD')
+                where iratdt = to_number(to_char(sysdate, 'YYYYMMDD'))
                     and IRSQ03 > 0
                     and not exists (select * from mpe_house_m m where m.batch = vm.irlotn) 
             ");

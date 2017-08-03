@@ -20,13 +20,26 @@ class WorkOrderController extends Controller
         $this->middleware('role');
     }
 
-    public function init() {
-        $result = $this->work->init();
+    public function getJob() 
+    {
+        $result = $this->work->getJob();
         $response = response()->json($result);
         return $response;
     }
 
-    public function contract() {
-        
+    public function compare() 
+    {
+        $input = request()->all();
+        $job_list = json_decode($input['job_list'], true);
+        $result = $this->work->compare($job_list);
+        $response = response()->json($result);
+        return $response;
+    }
+
+    public function member($sno, $psno)
+    {
+        $result = $this->work->getMember($sno, $psno);
+        $response = response()->json($result);
+        return $response;
     }
 }
