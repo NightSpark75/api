@@ -30,10 +30,6 @@ export default class Menu extends React.Component{
         });
     }
 
-    goRoute(route) {
-        window.location = route;
-    }
-
     render() {
         const buttonStyle = {
             margin: '0px 0px 20px 0px',
@@ -49,13 +45,7 @@ export default class Menu extends React.Component{
                     : null}
                     {this.state.list.map((item, index) => (
                         <div className={buttonClass} style={buttonStyle} key={item['prg_id']}>
-                            <button 
-                                type="button" 
-                                className="btn btn-primary btn-lg btn-block"
-                                onClick={this.goRoute.bind(this, item['web_route'])}
-                            >
-                                {item['prg_name']}
-                            </button>
+                            <Link className="btn btn-primary btn-lg btn-block" to={item['web_route']}>{item['prg_name']}</Link> 
                         </div>
                     ))}
                 </div>    

@@ -25,4 +25,8 @@ class WorkOrderController extends Controller
         $response = response()->json($result);
         return $response;
     }
+
+    public function contract() {
+        
+    }
 }

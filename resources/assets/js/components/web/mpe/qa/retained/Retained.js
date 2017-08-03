@@ -36,10 +36,6 @@ export default class Retained extends React.Component{
             console.log(error);
         });
     }
-    
-    goMenu() {
-        window.location = '/auth/web/menu';
-    }
 
     render() { 
         const list = this.state.list;
@@ -48,7 +44,7 @@ export default class Retained extends React.Component{
                 <Panel style={{marginBottom: '10px'}}> 
                     <Col sm={6} md={6}>
                         <ButtonToolbar >
-                            <Button onClick={this.goMenu.bind(this)}>&larr; 功能選單</Button>
+                            <Link className="btn btn-default" to="/auth/web/menu">&larr; 功能選單</Link> 
                         </ButtonToolbar>
                     </Col>
                 </Panel> 

@@ -3,6 +3,8 @@
  */
 import React from 'react';
 import axios from 'axios';
+import { Link } from 'react-router';
+import { ButtonToolbar } from "react-bootstrap";
 import UserAdd from './UserAdd';
 import UserEdit from './UserEdit';
 
@@ -158,11 +160,14 @@ export default class User extends React.Component{
                 <div className="row">
                     <div className="row">
                         <div className="col-lg-8 col-md-8 col-sm-6">
-                            {prg['prg_ins'] === 'Y' ?
-                                <button className="btn btn-primary" onClick={this.openAdd.bind(this)}>新增</button>
-                            :
-                                <button className="btn btn-primary disabled">新增</button>
-                            }
+                            <ButtonToolbar>
+                                <Link className="btn btn-default" to="/auth/web/menu">&larr; 功能選單</Link> 
+                                {prg['prg_ins'] === 'Y' ?
+                                    <button className="btn btn-primary" onClick={this.openAdd.bind(this)}>新增</button>
+                                :
+                                    <button className="btn btn-primary disabled">新增</button>
+                                }
+                            </ButtonToolbar>
                         </div>
                         <div className="col-lg-4 col-md-4 col-sm-6 text-right">
                             {this.state.allList ? 
@@ -256,11 +261,11 @@ export default class User extends React.Component{
                             ))}
                         </tbody>
                     </table>
-                    {this.state.user.length === 0 ? 
+                    {this.state.user.length === 0 && 
                         <div>
                             <h3>資料讀取中...</h3> 
                         </div>
-                    : null}
+                    }
                     <UserAdd 
                         showModal={this.state.isAddShow} 
                         onHide={this.hideAdd.bind(this)} 
