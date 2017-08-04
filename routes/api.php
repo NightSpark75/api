@@ -64,7 +64,7 @@ Route::group(['prefix' => 'web/mpe', 'namespace' => 'MPE'], function () {
             Route::post('posting', 'ReceiveController@posting');
         });
         Route::group(['prefix' => 'retained'], function () {
-            Route::get('list', 'RetainedController@getList');
+            Route::get('list/{ldate}', 'RetainedController@getList');
         });
         Route::group(['prefix' => 'stock'], function () {
             Route::get('list/{str?}', 'StockController@getStockList');

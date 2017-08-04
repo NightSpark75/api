@@ -23954,7 +23954,8 @@ var Retained = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Retained.__proto__ || Object.getPrototypeOf(Retained)).call(this, props));
 
         _this.state = {
-            list: []
+            list: [],
+            ldate: 999999
         };
         return _this;
     }
@@ -23962,13 +23963,19 @@ var Retained = function (_React$Component) {
     _createClass(Retained, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            this.init();
+            var today = new Date();
+            var yyyy = today.toLocaleDateString().slice(0, 4);
+            var MM = (today.getMonth() + 1 < 10 ? '0' : '') + (today.getMonth() + 1);
+            var dd = (today.getDate() < 10 ? '0' : '') + today.getDate();
+            var ldate = yyyy + MM + dd;
+            this.setState({ ldate: ldate });
+            this.init(ldate);
         }
     }, {
         key: 'init',
-        value: function init() {
+        value: function init(ldate) {
             var self = this;
-            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get('/api/web/mpe/qa/retained/list').then(function (response) {
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get('/api/web/mpe/qa/retained/list/' + ldate).then(function (response) {
                 if (response.data.result) {
                     self.setState({
                         list: response.data.list
@@ -23982,9 +23989,21 @@ var Retained = function (_React$Component) {
             });
         }
     }, {
+        key: 'ldateChange',
+        value: function ldateChange(e) {
+            var ldate = e.target.value;
+            this.setState({ ldate: ldate });
+            if (ldate.length === 8) {
+                this.init(ldate);
+            }
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var list = this.state.list;
+            var _state = this.state,
+                list = _state.list,
+                ldate = _state.ldate;
+
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
@@ -23992,15 +24011,28 @@ var Retained = function (_React$Component) {
                     __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["a" /* Panel */],
                     { style: { marginBottom: '10px' } },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["b" /* Col */],
-                        { sm: 6, md: 6 },
+                        __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["c" /* ButtonToolbar */],
+                        null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["c" /* ButtonToolbar */],
-                            null,
+                            __WEBPACK_IMPORTED_MODULE_2_react_router__["e" /* Link */],
+                            { className: 'btn btn-default', to: '/auth/web/menu' },
+                            '\u2190 \u529F\u80FD\u9078\u55AE'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'pull-right col-lg-2 col-md-2 col-sm-3 col-xs-4' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', className: 'form-control', id: 'ldate', value: ldate,
+                                maxLength: 8,
+                                onChange: this.ldateChange.bind(this)
+                            })
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'pull-right text-right' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_2_react_router__["e" /* Link */],
-                                { className: 'btn btn-default', to: '/auth/web/menu' },
-                                '\u2190 \u529F\u80FD\u9078\u55AE'
+                                'label',
+                                { className: 'control-label', style: { margin: '6px 0 6px 0' } },
+                                '\u7559\u6A23\u65E5\u671F'
                             )
                         )
                     )

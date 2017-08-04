@@ -19,9 +19,9 @@ class RetainedController extends Controller
         $this->middleware('role');
     }
 
-    public function getList()
+    public function getList($ldate)
     {
-        $result = $this->retained->getList();
+        $result = $this->retained->getList($ldate);
         return $result;
     }
 }

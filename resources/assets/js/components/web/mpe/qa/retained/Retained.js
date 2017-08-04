@@ -12,17 +12,24 @@ export default class Retained extends React.Component{
         super(props);
 
         this.state = {
-            list: []
+            list: [],
+            ldate: 999999,
         }
     }
 
     componentDidMount() {
-        this.init();
+        let today = new Date();
+        var yyyy = today.toLocaleDateString().slice(0,4)
+        var MM = (today.getMonth()+1<10 ? '0' : '')+(today.getMonth()+1);
+        var dd = (today.getDate()<10 ? '0' : '')+today.getDate();
+        let ldate =  yyyy+MM+dd;
+        this.setState({ldate: ldate});
+        this.init(ldate);
     }
 
-    init() {
+    init(ldate) {
         let self = this;       
-        axios.get('/api/web/mpe/qa/retained/list')
+        axios.get('/api/web/mpe/qa/retained/list/' + ldate)
         .then(function (response) {
             if (response.data.result) {
                 self.setState({
@@ -37,16 +44,31 @@ export default class Retained extends React.Component{
         });
     }
 
+    ldateChange(e) {
+        let ldate  = e.target.value;
+        this.setState({ldate: ldate});
+        if (ldate.length === 8) {
+            this.init(ldate);
+        }
+    }
+
     render() { 
-        const list = this.state.list;
+        const { list, ldate } = this.state;
         return(   
             <div>
                 <Panel style={{marginBottom: '10px'}}> 
-                    <Col sm={6} md={6}>
-                        <ButtonToolbar >
-                            <Link className="btn btn-default" to="/auth/web/menu">&larr; 功能選單</Link> 
-                        </ButtonToolbar>
-                    </Col>
+                    <ButtonToolbar >
+                        <Link className="btn btn-default" to="/auth/web/menu">&larr; 功能選單</Link>
+                        <div className="pull-right col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                            <input type="text" className="form-control" id="ldate" value={ldate}
+                                maxLength={8}
+                                onChange={this.ldateChange.bind(this)}
+                            />
+                        </div>  
+                        <div className="pull-right text-right">
+                            <label className="control-label" style={{margin: '6px 0 6px 0'}}>留樣日期</label>
+                        </div>
+                    </ButtonToolbar>
                 </Panel> 
                 {list.length > 0 ?
                     <Table bordered hover>
