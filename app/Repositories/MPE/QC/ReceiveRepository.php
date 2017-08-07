@@ -30,20 +30,25 @@ class ReceiveRepository
 
     public function init()
     {
-        $barcode = $this->getBarcode();
-        $result = [
-            'result' => true,
-            'msg' => '取得條碼清單資料成功!(#0001)',
-            'barcode' => $barcode,
-        ];
-        return $result;
+        try {
+            $barcode = $this->getBarcode();
+            $result = [
+                'result' => true,
+                'msg' => '取得條碼清單資料成功!(#0001)',
+                'barcode' => $barcode,
+            ];
+            return $result;
+        } catch (Exception $e) {
+            return $this->exception($e);
+        }
+        
     }
 
     private function getBarcode()
     {
         $barcode = DB::select("
             select e.*, m.pname, m.molef, m.molew, m.casno, m.lev, m.conc, m.scrap, m.sfty, m.unit, 
-                m.toxicizer, m.hazard, m.ename, m.reagent, m.pioneer, m.docno, m.ops, h.usize,
+                m.toxicizer, m.hazard, m.ename, m.reagent, m.pioneer, m.sds_no, m.sdsdate, m.ops, h.usize,
                 (select sum(amt)
                     from mpe_house_e se
                     where e.code = se.code and e.partno = se.partno and e.batch = se.batch
