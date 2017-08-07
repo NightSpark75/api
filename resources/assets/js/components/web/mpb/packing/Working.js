@@ -1,5 +1,5 @@
 /** 
- * production.Working.js
+ * packing.Working.js
  */
 import React from 'react';
 import { Link } from 'react-router';
@@ -31,7 +31,7 @@ export default class Job extends React.Component{
     getMember() {
         const { sno, psno } = this.state;
         let self = this;       
-        axios.get('/api/web/mpb/prod/production/member/' + sno + '/' + psno)
+        axios.get('/api/web/mpb/prod/packing/member/' + sno + '/' + psno)
         .then(function (response) {
             if (response.data.result) {
                 if (!self.state.updated) {
@@ -60,7 +60,7 @@ export default class Job extends React.Component{
         form_data.append('sno', sno); 
         form_data.append('psno', psno);
         form_data.append('empno', empno);
-        axios.post('/api/web/mpb/prod/production/working/' + action, form_data)
+        axios.post('/api/web/mpb/prod/packing/working/' + action, form_data)
         .then(function (response) {
             if (response.data.result) {
                 console.log(response.data);
@@ -131,7 +131,7 @@ export default class Job extends React.Component{
             let form_data = new FormData();   
             form_data.append('sno', sno); 
             form_data.append('psno', psno);
-            axios.post('/api/web/mpb/prod/production/all/' + action, form_data)
+            axios.post('/api/web/mpb/prod/packing/all/' + action, form_data)
             .then(function (response) {
                 if (response.data.result) {
                     console.log(response.data);
@@ -154,11 +154,11 @@ export default class Job extends React.Component{
             form_data.append('sno', sno); 
             form_data.append('psno', psno);
             form_data.append('clean', clean);
-            axios.post('/api/web/mpb/prod/production/work/complete', form_data)
+            axios.post('/api/web/mpb/prod/packing/work/complete', form_data)
             .then(function (response) {
                 if (response.data.result) {
                     console.log(response.data);
-                    self.props.router.push('/auth/web/mpb/prod/list');
+                    self.props.router.push('/auth/web/mpb/packing/list');
                 } else {
                     console.log(response.data);
                 }
@@ -177,7 +177,7 @@ export default class Job extends React.Component{
                 <Panel style={{marginBottom: '10px'}}> 
                     <Col>
                         <ButtonToolbar >
-                            <Link className="btn btn-default" to="/auth/web/mpb/prod/list">&larr; 回生產清單</Link>
+                            <Link className="btn btn-default" to="/auth/web/mpb/packing/list">&larr; 回生產清單</Link>
                             <Button bsStyle="success"
                                 onClick={this.allUpdate.bind(this, 'join')}
                             >整批工作</Button>

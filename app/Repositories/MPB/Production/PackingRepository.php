@@ -1,6 +1,6 @@
 <?php
 /**
- * 生產派工流程資料
+ * 分裝派工流程資料
  *
  * @version 1.0.0
  * @author spark Lin.yupin@standart.com.tw
@@ -20,7 +20,7 @@ use App\Traits\Sqlexecute;
  *
  * @package App\Repositories\MPB\Production
  */
-class WorkOrderRepository
+class PackingRepository
 {   
     use Sqlexecute;
 
@@ -42,7 +42,7 @@ class WorkOrderRepository
     {
         try{
             $user_id = auth()->user()->id;
-            $where = $this->getOrderWhere($user_id);
+            $where = $this->getPackingWhere($user_id);
             $order_d = DB::select("
                 select d.*, 
                     pk_mpa.fu_pno_name(d.pno) pname, 
@@ -71,7 +71,7 @@ class WorkOrderRepository
      * @param string $user user id
      * @return string
      */
-    private function getOrderWhere($user_id) {
+    private function getPackingWhere($user_id) {
         $type = DB::selectOne("
             select count(*) as count
             from mpa_dept_emp 
@@ -79,14 +79,17 @@ class WorkOrderRepository
         ");
         if ($type->count === 0) {
             $where = DB::selectOne("
-                select pk_mpb.fu_order_where('1', '%', '$user_id') as str
+                select pk_mpb.fu_order_where_51('1', '%', '$user_id') as str
                 from dual
             ");
         } else {
             $where = DB::selectOne("
-                select pk_mpb.fu_order_where('2', '', '$user_id') as str
+                select pk_mpb.fu_order_where_51('3115', '', '$user_id') as str
                 from dual
             ");
+            if ($where->str === 'x') {
+                return '1 = 2';
+            }
         }
         return $where->str;
     }
@@ -161,10 +164,9 @@ class WorkOrderRepository
     {
         try {
             $prod = $this->getProcessInfo($sno, $psno);
-            $rno = $prod->rno;
             $mno = $prod->mno;
             
-            $waiting = $this->getWaiting($sno, $psno, $rno, $mno);
+            $waiting = $this->getWaiting($sno, $psno, $mno);
             $working = $this->getWorking($sno, $psno);
 
             $result = [
@@ -187,22 +189,18 @@ class WorkOrderRepository
      * @param string $rno 房室代號
      * @return stdClass
      */
-    private function getItmMember($sno, $psno, $rno)
+    private function getItmMember($sno, $psno)
     {
         $list = DB::select("
             select unique empno from (
-                select empno 
-                from mpa_proc_itm_f 
-                where itm = pk_mpb.fu_oredr_d_msg('2',:sno,:psno) and 
-                    bachno = pk_mpb.fu_oredr_d_msg('3',:sno,:psno) and psno = :psno
+                select empno from mpb_order_f 
+                    where sno = :sno and psno = :psno 
                 union
-                select empno 
-                from mpa_room_emp 
-                where rno = :rno)
+                select mno empno from mpb_order_g 
+                    where sno = :sno and psno = :psno)
         ", [
             'sno' => $sno,
             'psno' => $psno,
-            'rno' => $rno,
         ]);
         return $list;
     }
@@ -311,10 +309,10 @@ class WorkOrderRepository
      * @param string $psno 途程代號
      * @return array
      */
-    private function getWaiting($sno, $psno, $rno, $mno)
+    private function getWaiting($sno, $psno, $mno)
     {
         $waiting = [];
-        $member = $this->getItmMember($sno, $psno, $rno);
+        $member = $this->getItmMember($sno, $psno);
         for ($i = 0; $i < count($member); $i++) {
             $empno = $member[$i]->empno;
             $member_state = $this->memberStateCheck($sno, $psno, $empno);
@@ -436,9 +434,8 @@ class WorkOrderRepository
             $sno = $params['sno'];
             $psno = $params['psno'];
             $prod = $this->getProcessInfo($sno, $psno);
-            $rno = $prod->rno;
             $mno = substr($prod->mno, 2, 6);
-            $member = $this->getItmMember($sno, $psno, $rno);
+            $member = $this->getItmMember($sno, $psno);
             for ($i = 0; $i < count($member); $i++) {
                 $empno = $member[$i]->empno;
                 $params['empno'] = $empno;

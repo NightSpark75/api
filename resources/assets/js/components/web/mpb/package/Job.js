@@ -1,5 +1,5 @@
 /** 
- * production.Job.js
+ * package.Job.js
  */
 import React from 'react';
 import { Link } from 'react-router';
@@ -33,7 +33,7 @@ export default class Job extends React.Component{
 
     getJobList() {
         let self = this;       
-        axios.get('/api/web/mpb/prod/production/list')
+        axios.get('/api/web/mpb/prod/package/list')
         .then(function (response) {
             if (response.data.result) {
                 self.setState({
@@ -53,7 +53,7 @@ export default class Job extends React.Component{
         let job_list = JSON.stringify(this.state.job_list);
         let form_data = new FormData();
         form_data.append('job_list', job_list);
-        axios.post('/api/web/mpb/prod/production/compare', form_data)
+        axios.post('/api/web/mpb/prod/package/compare', form_data)
         .then(function (response) {
             if (response.data.result) {
                 self.setState({
@@ -144,7 +144,7 @@ export default class Job extends React.Component{
                                     */}
                                     <td>
                                         <Link className="btn btn-primary btn-sm" 
-                                            to={"/auth/web/mpb/prod/working/" + item.sno + "/" + item.psno}>報工</Link>
+                                            to={"/auth/web/mpb/package/working/" + item.sno + "/" + item.psno}>報工</Link>
                                     </td>
                                 </tr>
                             ))}

@@ -15,8 +15,12 @@ import QAReceive from "./components/web/mpe/qa/receive/Receive";
 import Retained from "./components/web/mpe/qa/retained/Retained";
 import Change from "./components/web/mpe/qa/stock/storage/Change";
 import QCReceive from "./components/web/mpe/qc/receive/Receive";
-import Job from "./components/web/mpb/production/Job";
-import Working from "./components/web/mpb/production/Working";
+import Production_Job from "./components/web/mpb/production/Job";
+import Production_Working from "./components/web/mpb/production/Working";
+import Packing_Job from "./components/web/mpb/packing/Job";
+import Packing_Working from "./components/web/mpb/packing/Working";
+import Package_Job from "./components/web/mpb/package/Job";
+import Package_Working from "./components/web/mpb/package/Working";
 
 const app = document.getElementById('app');
 
@@ -38,8 +42,16 @@ ReactDOM.render(
                 <Route path="user" component={User}></Route>
                 <Route path="mpb">
                     <Route path="prod">
-                        <Route path="list" component={Job}></Route>
-                        <Route path="working/:sno/:psno" component={Working}></Route>
+                        <Route path="list" component={Production_Job}></Route>
+                        <Route path="working/:sno/:psno" component={Production_Working}></Route>
+                    </Route>
+                    <Route path="package">
+                        <Route path="list" component={Package_Job}></Route>
+                        <Route path="working/:sno/:psno" component={Package_Working}></Route>
+                    </Route>
+                    <Route path="packing">
+                        <Route path="list" component={Packing_Job}></Route>
+                        <Route path="working/:sno/:psno" component={Packing_Working}></Route>
                     </Route>
                 </Route>
                 <Route path="mpz">

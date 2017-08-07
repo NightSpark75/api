@@ -4,24 +4,38 @@ namespace App\Http\Controllers\MPB\Production;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\Repositories\MPB\Production\WorkOrderRepository;
+use App\Repositories\MPB\Production\ProductionRepository;
 
-class WorkOrderController extends Controller
+class ProductionController extends Controller
 {
     //   
     private $work;
     private $program;
 
-    public function __construct(WorkOrderRepository $work) {
+    public function __construct(ProductionRepository $work) {
         $this->work = $work;
         $this->program = 'MPBW0010';
         session(['program' => $this->program]);
         $this->middleware('role');
     }
 
-    public function getJob() 
+    public function getProduction() 
     {
         $result = $this->work->getJob();
+        $response = response()->json($result);
+        return $response;
+    }
+
+    public function getPacking() 
+    {
+        $result = $this->work->getJob('packing');
+        $response = response()->json($result);
+        return $response;
+    }
+
+    public function getPackage() 
+    {
+        $result = $this->work->getJob('package');
         $response = response()->json($result);
         return $response;
     }

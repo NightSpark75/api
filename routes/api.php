@@ -48,14 +48,32 @@ Route::group(['prefix' => 'file', 'namespace' => 'Web'], function () {
 Route::group(['prefix' => 'web/mpb', 'namespace' => 'MPB'], function () {
     // MPB Production
     Route::group(['prefix' => 'prod', 'namespace' => 'Production'], function () {
-        Route::get('job', 'WorkOrderController@getJob');
-        Route::post('compare', 'WorkOrderController@compare');
-        Route::get('member/{sno}/{psno}', 'WorkOrderController@member');
-        Route::post('working/join', 'WorkOrderController@joinWorking');
-        Route::post('working/leave', 'WorkOrderController@leaveWorking');
-        Route::post('all/join', 'WorkOrderController@allJoinWorking');
-        Route::post('all/leave', 'WorkOrderController@allLeaveWorking');
-        Route::post('work/complete', 'WorkOrderController@workComplete');
+        Route::get('production/list', 'ProductionController@getProduction');
+        Route::post('production/compare', 'ProductionController@compare');
+        Route::get('production/member/{sno}/{psno}', 'ProductionController@member');
+        Route::post('production/working/join', 'ProductionController@joinWorking');
+        Route::post('production/working/leave', 'ProductionController@leaveWorking');
+        Route::post('production/all/join', 'ProductionController@allJoinWorking');
+        Route::post('production/all/leave', 'ProductionController@allLeaveWorking');
+        Route::post('production/work/complete', 'ProductionController@workComplete');
+
+        Route::get('packing/list', 'PackingController@getPacking');
+        Route::post('packing/compare', 'PackingController@compare');
+        Route::get('packing/member/{sno}/{psno}', 'PackingController@member');
+        Route::post('packing/working/join', 'PackingController@joinWorking');
+        Route::post('packing/working/leave', 'PackingController@leaveWorking');
+        Route::post('packing/all/join', 'PackingController@allJoinWorking');
+        Route::post('packing/all/leave', 'PackingController@allLeaveWorking');
+        Route::post('packing/work/complete', 'PackingController@workComplete');
+
+        Route::get('package/list', 'PackageController@getPackage');
+        Route::post('package/compare', 'PackageController@compare');
+        Route::get('package/member/{sno}/{psno}', 'PackageController@member');
+        Route::post('package/working/join', 'PackageController@joinWorking');
+        Route::post('package/working/leave', 'PackageController@leaveWorking');
+        Route::post('package/all/join', 'PackageController@allJoinWorking');
+        Route::post('package/all/leave', 'PackageController@allLeaveWorking');
+        Route::post('package/work/complete', 'PackageController@workComplete');
     });
 });
 
