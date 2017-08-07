@@ -22819,7 +22819,9 @@ var Job = function (_React$Component) {
 
         _this.state = {
             ready: false,
-            job_list: []
+            job_list: [],
+            showInfo: false,
+            item: []
         };
         return _this;
     }
@@ -22880,8 +22882,26 @@ var Job = function (_React$Component) {
             }
         }
     }, {
+        key: 'showProcessInfo',
+        value: function showProcessInfo(item) {
+            this.setState({
+                showInfo: true,
+                item: item
+            });
+        }
+    }, {
+        key: 'hideProcessInfo',
+        value: function hideProcessInfo() {
+            this.setState({
+                showInfo: false,
+                item: []
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var _this2 = this;
+
             var job_list = this.state.job_list;
 
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -22904,6 +22924,22 @@ var Job = function (_React$Component) {
                         )
                     )
                 ),
+                this.state.showInfo && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["g" /* Alert */],
+                    { bsStyle: 'info', onDismiss: this.hideProcessInfo.bind(this), style: { marginBottom: '10px' } },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'h4',
+                        null,
+                        '\u88FD\u7A0B\u55AE\u865F',
+                        this.state.item.sno,
+                        '\u8A73\u7D30\u8CC7\u8A0A'
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'p',
+                        null,
+                        this.state.item.info
+                    )
+                ),
                 job_list.length > 0 ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["e" /* Table */],
                     { bordered: true, hover: true },
@@ -22913,6 +22949,7 @@ var Job = function (_React$Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'tr',
                             null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('th', { width: '65.56' }),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'th',
                                 null,
@@ -22944,7 +22981,7 @@ var Job = function (_React$Component) {
                                 '\u5DE5\u4F5C\u5BA4\u540D\u7A31'
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('th', { width: '92.22' }),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('th', { width: '92.22' })
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('th', { width: '65.56' })
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -22954,6 +22991,15 @@ var Job = function (_React$Component) {
                             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'tr',
                                 { key: index },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'td',
+                                    null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["d" /* Button */],
+                                        { bsSize: 'small', onClick: _this2.showProcessInfo.bind(_this2, item) },
+                                        '\u8A73\u7D30\u8CC7\u8A0A'
+                                    )
+                                ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'td',
                                     null,

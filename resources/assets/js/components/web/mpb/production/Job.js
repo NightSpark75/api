@@ -4,7 +4,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import axios from 'axios';
-import { Button, ButtonToolbar, Table, Panel, Pager, FormControl, Alert, Col, ListGroup, ListGroupItem } from "react-bootstrap";
+import { Button, ButtonToolbar, Table, Panel, Alert, Col } from "react-bootstrap";
 
 export default class Job extends React.Component{
     constructor(props) {
@@ -13,6 +13,8 @@ export default class Job extends React.Component{
         this.state = {
             ready: false,
             job_list: [],
+            showInfo: false,
+            item: [],
         }
     }
     
@@ -68,6 +70,19 @@ export default class Job extends React.Component{
         }
     }
 
+    showProcessInfo(item) {
+        this.setState({
+            showInfo: true, 
+            item: item,
+        });
+    }
+
+    hideProcessInfo() {
+        this.setState({
+            showInfo: false,
+            item: [],
+        })
+    }
 
     render() {
         const { job_list } = this.state; 
@@ -77,13 +92,28 @@ export default class Job extends React.Component{
                     <Col sm={10} md={10}>
                         <ButtonToolbar >
                             <Link className="btn btn-default" to="/auth/web/menu">&larr; 功能選單</Link>
+                            {/*}
+                            <Button bsStyle="primary" className="pull-right"
+
+                            >結束且完工(無清潔)</Button>
+                            <Button bsStyle="primary" className="pull-right"
+                                
+                            >結束且完工(清潔)</Button>
+                            */}
                         </ButtonToolbar>
                     </Col>
                 </Panel> 
+                {this.state.showInfo &&  
+                    <Alert bsStyle="info" onDismiss={this.hideProcessInfo.bind(this)} style={{marginBottom: '10px'}}>
+                        <h4>製程單號{this.state.item.sno}詳細資訊</h4>
+                        <p>{this.state.item.info}</p>
+                    </Alert>
+                }
                 {job_list.length > 0 ?
                     <Table bordered hover>
                         <thead>
                             <tr>
+                                <th width="65.56"></th>
                                 <th>製程單號</th>
                                 <th>批號</th>
                                 <th>順序</th>
@@ -91,12 +121,15 @@ export default class Job extends React.Component{
                                 <th>設備編號</th>
                                 <th>工作室名稱</th>
                                 <th width="92.22"></th>
-                                <th width="92.22"></th>
+                                <th width="65.56"></th>
                             </tr>
                         </thead>
                         <tbody>
                             {job_list.map((item, index) => (
                                 <tr key={index}>
+                                    <td>
+                                        <Button bsSize="small" onClick={this.showProcessInfo.bind(this, item)}>詳細資訊</Button>
+                                    </td>
                                     <td>{item.sno}</td>
                                     <td>{item.bno}</td>
                                     <td>{item.psno}</td>

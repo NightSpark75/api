@@ -47,7 +47,9 @@ class WorkOrderRepository
                 select d.*, 
                     pk_mpa.fu_pno_name(d.pno) pname, 
                     pk_mpa.fu_mno_name(d.mno) mname, 
-                    pk_mpa.fu_rno_name(d.rno) rname
+                    pk_mpa.fu_rno_name(d.rno) rname,
+                    pk_mpb.fu_oredr_m_msg('1', d.sno)||chr(13)||pk_mpb.fu_oredr_m_msg('2', d.sno)||chr(13)||
+                        '用料號='||pk_mpb.fu_oredr_d_msg('1', d.sno, d.psno) as info
                 from mpb_order_d d
                 where $where
                 order by d.sno, d.psno
@@ -263,7 +265,7 @@ class WorkOrderRepository
         $result = DB::selectOne("
             select count(*) count
             from mpb_order_tw 
-            where sno = :sno and psno = :psno and empno = :mno
+            where sno = :sno and psno = :psno and empno = substr(:mno, 3, 6)
         ", [
             'sno' => $sno,
             'psno' => $psno,
@@ -312,15 +314,16 @@ class WorkOrderRepository
     private function getWaiting($sno, $psno, $rno, $mno)
     {
         $waiting = [];
-        $mno =  substr($mno, 2, 6);
         $member = $this->getItmMember($sno, $psno, $rno);
         for ($i = 0; $i < count($member); $i++) {
             $empno = $member[$i]->empno;
             $member_state = $this->memberStateCheck($sno, $psno, $empno);
             $waiting = $member_state ? $this->pushMemberInfo($waiting, $empno) : $waiting;
         }
-        $machine_state = $this->machineStateCheck($sno, $psno, $mno);
-        $waiting = $machine_state ? $this->pushMemberInfo($waiting, $mno) : $waiting;
+        if ($mno !== null) {
+            $machine_state = $this->machineStateCheck($sno, $psno, $mno);
+            $waiting = $machine_state ? $this->pushMemberInfo($waiting, substr($mno, 2, 6)) : $waiting;
+        }
         return $waiting;
     }
 
