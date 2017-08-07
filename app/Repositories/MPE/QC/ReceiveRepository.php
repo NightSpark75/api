@@ -13,6 +13,7 @@ namespace App\Repositories\MPE\QC;
 use DB;
 use Exception;
 use Auth;
+use App\Traits\Sqlexecute;
 
 /**
  * Class ReceiveRepository
@@ -21,6 +22,8 @@ use Auth;
  */
 class ReceiveRepository
 {   
+    use Sqlexecute;
+    
     public function __construct() {
 
     }

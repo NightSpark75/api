@@ -75,4 +75,18 @@ trait Sqlexecute
         $new_array = array_combine($key, $val);
         return $new_array;
     }
+
+    /**
+     * 回傳exception訊息
+     * 
+     * @param string $msg exception message
+     * @return array
+     */
+     private function exception($exception)
+     {
+         return [
+             'return' => false,
+             'msg' => $exception->getMessage(),
+         ];
+     }
 }

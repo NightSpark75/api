@@ -11,6 +11,7 @@
 namespace App\Repositories\Web;
 
 use Exception;
+use App\Traits\Sqlexecute;
 use App\Models\Web\User;
 use App\Models\Web\UserPrg;
 use Auth;
@@ -22,6 +23,7 @@ use Auth;
  */
 class AuthRepository
 {   
+    use Sqlexecute;
     private $user;
     private $prg;
 

@@ -12,6 +12,7 @@ namespace App\Repositories\MPE\QA;
 
 use DB;
 use Exception;
+use App\Traits\Sqlexecute;
 
 /**
  * Class RetainedRepository
@@ -20,6 +21,8 @@ use Exception;
  */
 class RetainedRepository
 {   
+    use Sqlexecute;
+    
     public function __construct() {
 
     }

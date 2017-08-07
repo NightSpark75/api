@@ -13,6 +13,7 @@ namespace App\Repositories\MPE\QA;
 use DB;
 use Exception;
 use Auth;
+use App\Traits\Sqlexecute;
 
 /**
  * Class StockRepository
@@ -21,6 +22,8 @@ use Auth;
  */
 class StockRepository
 {   
+    use Sqlexecute;
+    
     public function __construct() {
 
     }

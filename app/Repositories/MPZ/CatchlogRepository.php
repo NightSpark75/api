@@ -12,6 +12,7 @@ namespace App\Repositories\MPZ;
 
 use DB;
 use Exception;
+use App\Traits\Sqlexecute;
 
 use App\Models\MPZ\MPZ_CATCHLOG;
 use App\Models\MPZ\MPZ_POINT_LOG;
@@ -23,6 +24,7 @@ use App\Models\MPZ\MPZ_POINT_LOG;
  */
 class CatchlogRepository
 {   
+    use Sqlexecute;
     private $catchlog;
     private $point_log;
 

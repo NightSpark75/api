@@ -23065,9 +23065,9 @@ var Job = function (_React$Component) {
             sno: _this.props.params.sno,
             psno: _this.props.params.psno,
             waiting_list: [],
-            working_list: []
+            working_list: [],
+            updated: false
         };
-
         return _this;
     }
 
@@ -23075,10 +23075,13 @@ var Job = function (_React$Component) {
         key: 'componentDidMount',
         value: function componentDidMount() {
             this.getMember();
+            this.timer = setInterval(this.getMember.bind(this), 5000);
         }
     }, {
         key: 'componentWillUnmount',
-        value: function componentWillUnmount() {}
+        value: function componentWillUnmount() {
+            this.timer && clearInterval(this.timer);
+        }
     }, {
         key: 'getMember',
         value: function getMember() {
@@ -23089,9 +23092,16 @@ var Job = function (_React$Component) {
             var self = this;
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/web/mpb/prod/member/' + sno + '/' + psno).then(function (response) {
                 if (response.data.result) {
-                    self.setState({
-                        waiting_list: response.data.waiting
-                    });
+                    if (!self.state.updated) {
+                        self.setState({
+                            waiting_list: response.data.waiting,
+                            working_list: response.data.working
+                        });
+                    } else {
+                        self.setState({
+                            updated: false
+                        });
+                    }
                     console.log(response.data);
                 } else {
                     console.log(response.data);
@@ -23101,20 +23111,126 @@ var Job = function (_React$Component) {
             });
         }
     }, {
-        key: 'updateJobList',
-        value: function updateJobList() {
-            var ready = this.state.ready;
-            if (ready) {
-                var self = this;
-                var job_list = JSON.stringify(this.state.job_list);
-                var form_data = new FormData();
-                form_data.append('job_list', job_list);
-                __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpb/prod/compare', form_data).then(function (response) {
-                    if (response.data.result) {
-                        self.setState({
-                            job_list: response.data.job_list
+        key: 'updateWorking',
+        value: function updateWorking(empno, action, event) {
+            var _state2 = this.state,
+                waiting_list = _state2.waiting_list,
+                working_list = _state2.working_list,
+                sno = _state2.sno,
+                psno = _state2.psno;
+
+            var self = this;
+            var form_data = new FormData();
+            form_data.append('sno', sno);
+            form_data.append('psno', psno);
+            form_data.append('empno', empno);
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpb/prod/working/' + action, form_data).then(function (response) {
+                if (response.data.result) {
+                    console.log(response.data);
+                } else {
+                    console.log(response.data);
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+            if (action === 'join') {
+                self.updateList(working_list, waiting_list, action, empno);
+            } else {
+                self.updateList(waiting_list, working_list, action, empno);
+            }
+        }
+    }, {
+        key: 'updateList',
+        value: function updateList(add, remove, action, empno) {
+            for (var r = 0; r < remove.length; r++) {
+                if (remove[r]['empno'] === empno) {
+                    add.push(remove[r]);
+                    remove.splice(r, 1);
+                    if (action === 'join') {
+                        this.setState({
+                            working_list: add,
+                            waiting_list: remove,
+                            updated: true
                         });
+                    } else {
+                        this.setState({
+                            working_list: remove,
+                            waiting_list: add,
+                            updated: true
+                        });
+                    }
+                    return;
+                }
+            }
+        }
+    }, {
+        key: 'allUpdateList',
+        value: function allUpdateList(action) {
+            if (action === 'join') {
+                var add = this.state.working_list;
+                var remove = this.state.waiting_list;
+                add = add.concat(remove);
+                this.setState({
+                    working_list: add,
+                    waiting_list: [],
+                    updated: true
+                });
+            } else {
+                var _add = this.state.waiting_list;
+                var _remove = this.state.working_list;
+                _add = _add.concat(_remove);
+                this.setState({
+                    working_list: [],
+                    waiting_list: _add,
+                    updated: true
+                });
+            }
+        }
+    }, {
+        key: 'allUpdate',
+        value: function allUpdate(action, event) {
+            if (action === 'join' && this.state.waiting_list.length > 0 || action === 'leave' && this.state.working_list.length > 0) {
+
+                var self = this;
+                var _state3 = this.state,
+                    sno = _state3.sno,
+                    psno = _state3.psno,
+                    working_list = _state3.working_list,
+                    waiting_list = _state3.waiting_list;
+
+                var form_data = new FormData();
+                form_data.append('sno', sno);
+                form_data.append('psno', psno);
+                __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpb/prod/all/' + action, form_data).then(function (response) {
+                    if (response.data.result) {
                         console.log(response.data);
+                    } else {
+                        console.log(response.data);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+                self.allUpdateList(action);
+            }
+        }
+    }, {
+        key: 'workingComplete',
+        value: function workingComplete(clean, event) {
+            var msg = clean === 'N' ? '按確定後, 該製程完工(無清潔)..' : '按確定後,該製程完工(清潔)..';
+            if (confirm(msg)) {
+                var self = this;
+                var _state4 = this.state,
+                    sno = _state4.sno,
+                    psno = _state4.psno;
+
+                var form_data = new FormData();
+                form_data.append('sno', sno);
+                form_data.append('psno', psno);
+                form_data.append('clean', clean);
+                __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpb/prod/work/complete', form_data).then(function (response) {
+                    if (response.data.result) {
+                        console.log(response.data);
+                        self.props.router.push('/auth/web/mpb/prod/list');
                     } else {
                         console.log(response.data);
                     }
@@ -23126,6 +23242,8 @@ var Job = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
+            var _this2 = this;
+
             var job_list = this.state.job_list;
 
             var buttonStyle = { margin: '0px 0px 10px 0px' };
@@ -23149,22 +23267,30 @@ var Job = function (_React$Component) {
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["d" /* Button */],
-                                { bsStyle: 'success' },
+                                { bsStyle: 'success',
+                                    onClick: this.allUpdate.bind(this, 'join')
+                                },
                                 '\u6574\u6279\u5DE5\u4F5C'
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["d" /* Button */],
-                                { bsStyle: 'info' },
+                                { bsStyle: 'info',
+                                    onClick: this.allUpdate.bind(this, 'leave')
+                                },
                                 '\u6574\u6279\u9000\u51FA'
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["d" /* Button */],
-                                { bsStyle: 'primary', className: 'pull-right' },
+                                { bsStyle: 'primary', className: 'pull-right',
+                                    onClick: this.workingComplete.bind(this, 'N')
+                                },
                                 '\u7D50\u675F\u4E14\u5B8C\u5DE5(\u7121\u6E05\u6F54)'
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["d" /* Button */],
-                                { bsStyle: 'primary', className: 'pull-right' },
+                                { bsStyle: 'primary', className: 'pull-right',
+                                    onClick: this.workingComplete.bind(this, 'Y')
+                                },
                                 '\u7D50\u675F\u4E14\u5B8C\u5DE5(\u6E05\u6F54)'
                             )
                         )
@@ -23185,8 +23311,10 @@ var Job = function (_React$Component) {
                                     { className: buttonClass, style: buttonStyle, key: index },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         'button',
-                                        { className: 'btn btn-primary btn-block' },
-                                        item.empno + ' ' + item.ename
+                                        { className: 'btn btn-info btn-block',
+                                            onClick: _this2.updateWorking.bind(_this2, item.empno, 'join')
+                                        },
+                                        item.ename
                                     )
                                 );
                             })
@@ -23198,15 +23326,19 @@ var Job = function (_React$Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["a" /* Panel */],
                             { header: '\u76EE\u524D\u751F\u7522\u4EBA\u54E1', bsStyle: 'success', style: { height: '500px' } },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: buttonClass, style: buttonStyle },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'button',
-                                    { className: 'btn btn-success btn-block' },
-                                    '123'
-                                )
-                            )
+                            this.state.working_list.map(function (item, index) {
+                                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: buttonClass, style: buttonStyle, key: index },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'button',
+                                        { className: 'btn btn-success btn-block',
+                                            onClick: _this2.updateWorking.bind(_this2, item.empno, 'leave')
+                                        },
+                                        item.ename
+                                    )
+                                );
+                            })
                         )
                     )
                 )

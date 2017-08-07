@@ -51,6 +51,11 @@ Route::group(['prefix' => 'web/mpb', 'namespace' => 'MPB'], function () {
         Route::get('job', 'WorkOrderController@getJob');
         Route::post('compare', 'WorkOrderController@compare');
         Route::get('member/{sno}/{psno}', 'WorkOrderController@member');
+        Route::post('working/join', 'WorkOrderController@joinWorking');
+        Route::post('working/leave', 'WorkOrderController@leaveWorking');
+        Route::post('all/join', 'WorkOrderController@allJoinWorking');
+        Route::post('all/leave', 'WorkOrderController@allLeaveWorking');
+        Route::post('work/complete', 'WorkOrderController@workComplete');
     });
 });
 
