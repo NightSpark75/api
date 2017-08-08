@@ -12,9 +12,7 @@ namespace App\Repositories\MPE\QC;
 
 use DB;
 use Exception;
-use Auth;
 use App\Traits\Sqlexecute;
-use PDO;
 
 /**
  * Class DocumentRepository
@@ -30,8 +28,7 @@ class DocumentRepository
     }
 
     public function getDownloadUrl($file_id)
-    {
-        $user_id = auth()->user()->id;      
+    {     
         $file = DB::selectOne("
             select *
             from api_file_code
