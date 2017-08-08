@@ -18,7 +18,7 @@ use App\Traits\Sqlexecute;
 /**
  * Class ReceiveRepository
  *
- * @package App\Repositories\MPE\QA
+ * @package App\Repositories\MPE\QC
  */
 class ReceiveRepository
 {   

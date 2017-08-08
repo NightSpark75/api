@@ -254,4 +254,19 @@ class FileRepository
         ";
         $this->query($binds, $update);
     }
+
+
+    /*
+        $pdo = DB::getPdo();
+        $stmt = $pdo->prepare('begin pk_common.get_file_token(:file_id, :user_id, :token, :user, :file, :res, :msg); end;');
+        $stmt->bindParam(':file_id', $file_id, PDO::PARAM_STR, 32);
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_STR, 10);
+        $stmt->bindParam(':token', $token, PDO::PARAM_STR, 32);
+        $stmt->bindParam(':user', $user, PDO::PARAM_STR, 32);
+        $stmt->bindParam(':file', $file, PDO::PARAM_STR, 32);
+        $stmt->bindParam(':res', $res, PDO::PARAM_STR, 10);
+        $stmt->bindParam(':msg', $msg, PDO::PARAM_STR, 200);
+        $stmt->execute();
+
+    */
 }

@@ -101,6 +101,12 @@ Route::group(['prefix' => 'web/mpe', 'namespace' => 'MPE'], function () {
             Route::get('init', 'ReceiveController@init');
             Route::post('posting', 'ReceiveController@posting');
         });
+        Route::group(['prefix' => 'doc'], function () {
+            Route::post('mate', 'DocumentController@getMageInfo');
+            Route::post('batch', 'DocumentController@getBatchInfo');
+            Route::post('download', 'DocumentController@getDocument');
+            Route::get('test', 'DocumentController@testDocument');
+        });
     });
 });
 
