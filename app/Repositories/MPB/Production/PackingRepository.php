@@ -293,8 +293,12 @@ class PackingRepository
             'empno' => $empno,
         ]);
         if ($item->ename === '無') {
-            $item->ename = $item->empno;
-            $item->empno = '10'.$item->empno;
+            if (substr($item->empno, 0, 3) === '10M') {
+                $item->ename = substr($item->empno, 2, 6);
+            } else {
+                $item->ename = $item->empno;
+                $item->empno = '10'.$item->empno;
+            }
         } else {
             $item->empno.$item->ename;  
         }
@@ -434,16 +438,17 @@ class PackingRepository
             $sno = $params['sno'];
             $psno = $params['psno'];
             $prod = $this->getProcessInfo($sno, $psno);
-            $mno = substr($prod->mno, 2, 6);
             $member = $this->getItmMember($sno, $psno);
+            $mno = $prod->mno;
             for ($i = 0; $i < count($member); $i++) {
                 $empno = $member[$i]->empno;
                 $params['empno'] = $empno;
                 $this->joinWorking($params, $this->memberStateCheck($sno, $psno, $empno));
             }
-            $params['empno'] = $mno;
-            $this->joinWorking($params, $this->machineStateCheck($sno, $psno, $mno));
-
+            if ($mno !== null) {
+                $params['empno'] = substr($mno, 2, 6);
+                $this->joinWorking($params, $this->machineStateCheck($sno, $psno, substr($mno, 2, 6)));
+            }
             $result = [
                 'result' => true,
                 'msg' => '整批報工成功!(#0004)',

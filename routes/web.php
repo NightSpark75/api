@@ -15,10 +15,6 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('test', function () {
-    return view('test');
-});
-
 Route::get('/service/{msg}', function ($msg) {
     return 'msg = ' . $msg;
 });
@@ -43,10 +39,10 @@ Route::get('/web/file/upload/code/{file_id}/{user_id}',  function ($file_id, $us
 
 // ReactJs 須認證的頁面
 Route::get('/auth/{path?}', function($path = null){
-        return View::make('index');
+    return View::make('index');
 })->where('path', '.*')->middleware('auth'); 
 
 // ReactJs 一般頁面
 Route::get('/{path?}', function($path = null){
-        return View::make('index');
+    return View::make('index');
 })->where('path', '.*'); 
