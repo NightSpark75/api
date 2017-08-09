@@ -42,6 +42,11 @@ class DocumentRepository
         $extension = $file->extension;
 
         // 建構標頭
+        return \Response::make($decode, 200, [
+            'Content-Type' => $mime,
+            'Content-Disposition' => 'inline; filename="'.$name.'"'
+        ]);
+        /*
         $response = 
             response($decode)
             ->header('Content-Type', $mime) // MIME
@@ -49,5 +54,6 @@ class DocumentRepository
             ->header('Content-Transfer-Encoding', 'binary')
             ->header('Content-Disposition', 'attachment; filename=' . $name); // file_name
         return $response;
+        */
     }
 }   
