@@ -46,7 +46,8 @@ class DocumentRepository
             response($decode)
             ->header('Content-Type', $mime) // MIME
             ->header('Content-length', strlen($code)) // base64
-            ->header('Content-Transfer-Encoding', 'binary');
+            ->header('Content-Transfer-Encoding', 'binary')
+            ->header('Content-Disposition', 'attachment; filename=' . $name); // file_name
         return $response;
     }
 }   
