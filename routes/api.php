@@ -102,10 +102,10 @@ Route::group(['prefix' => 'web/mpe', 'namespace' => 'MPE'], function () {
             Route::post('posting', 'ReceiveController@posting');
         });
         Route::group(['prefix' => 'doc'], function () {
-            Route::post('mate', 'DocumentController@getMageInfo');
-            Route::post('batch', 'DocumentController@getBatchInfo');
-            Route::post('download', 'DocumentController@getDocument');
-            Route::get('test', 'DocumentController@testDocument');
+            Route::post('barcode', 'DocumentController@searchByBarcode');
+            Route::post('partno', 'DocumentController@searchByPartno');
+            Route::post('batch', 'DocumentController@searchByBatch');
+            Route::get('read/{doc}/{partno}/{batch}/{file_id}', 'DocumentController@read');
         });
     });
 });

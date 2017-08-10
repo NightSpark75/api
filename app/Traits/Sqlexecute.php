@@ -79,14 +79,25 @@ trait Sqlexecute
     /**
      * 回傳exception訊息
      * 
-     * @param string $msg exception message
+     * @param string $exception exception
      * @return array
      */
-     private function exception($exception)
-     {
-         return [
-             'return' => false,
-             'msg' => $exception->getMessage(),
-         ];
-     }
+    private function exception($exception)
+    {
+        return [
+            'return' => false,
+            'msg' => $exception->getMessage(),
+        ];
+    }
+
+    /**
+     * return error page and error message
+     * 
+     * @param string $message error message
+     * @return view
+     */
+    private function errorPage($message)
+    {
+        return view('error')->with('message', $message);
+    }
 }

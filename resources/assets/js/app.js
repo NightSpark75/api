@@ -21,6 +21,7 @@ import Packing_Job from "./components/web/mpb/packing/Job";
 import Packing_Working from "./components/web/mpb/packing/Working";
 import Package_Job from "./components/web/mpb/package/Job";
 import Package_Working from "./components/web/mpb/package/Working";
+import QCDocument from "./components/web/mpe/qc/document/Search";
 
 const app = document.getElementById('app');
 
@@ -32,6 +33,9 @@ ReactDOM.render(
         <Route path="s" component={SinglePage}>
             <Route path="file/upload/:store_type/:file_id/:user_id" component={Upload}></Route>
             <Route path="error/:msg" component={Error}></Route>
+            <Route path="qc">
+                <Route path="document" component={QCDocument}></Route>
+            </Route>
         </Route>
         <Route path="web" component={SinglePage}>
             <Route path="login/:system" component={Login}></Route>

@@ -11,7 +11,7 @@
     <link href="{{ url('/css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div class="container" style={containerStyle}>
+    <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h2>{{ $title }}</h2>

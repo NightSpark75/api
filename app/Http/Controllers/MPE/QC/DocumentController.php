@@ -16,24 +16,47 @@ class DocumentController extends Controller
         $this->doc = $doc;
     }
 
-    public function getMateInfo()
+    public function searchByBarcode()
     {
-
+        $barcode = request()->input('barcode');
+        $query = "
+            select m.partno, m.ename, m.pname, h.batch, m.sds_no sds_no, h.coa_no coa_no  
+            from mpe_house_m h, mpe_house_e e, mpe_mate m
+            where h.code = '01' and h.code = e.code and h.partno = e.partno and h.batch = e.batch
+                and h.whouse = e.whouse and h.stor = e.stor and h.grid = e.grid 
+                and m.partno = h.partno and m.partno = e.partno and e.barcode = '$barcode'
+        ";
+        $result = $this->doc->getFileInfo($query);
+        return $result;
     }
 
-    public function getBatchInfo()
+    public function searchByPartno()
     {
-
+        $partno = request()->input('partno');
+        $query = "
+            select m.partno, m.ename, m.pname, '' batch, m.sds_no sds_no, '' coa_no  
+            from mpe_mate m
+            where m.partno = '$partno'
+        ";
+        $result = $this->doc->getFileInfo($query);
+        return $result;
     }
 
-    public function getDocument()
+    public function searchByBatch()
     {
-        
+        $batch = request()->input('batch');
+        $query = "
+            select m.partno, m.ename, m.pname, h.batch, m.sds_no sds_no, h.coa_no coa_no  
+            from mpe_house_m h, mpe_mate m
+            where h.code = '01' and m.partno = h.partno and h.batch = '$batch'
+        ";
+        $result = $this->doc->getFileInfo($query);
+        return $result;
     }
-    
-    public function testDocument()
+
+    public function read($doc, $partno, $batch, $file_id)
     {
-        $file_id = '5634D84DE0004E6DE050A8C0C96474C2';
-        return $this->doc->getDownloadUrl($file_id);
+        $result = $this->doc->getFileSecurity($doc, $partno, $batch, $file_id);
+        return $result;
     }
 }

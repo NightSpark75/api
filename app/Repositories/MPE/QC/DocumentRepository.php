@@ -40,20 +40,80 @@ class DocumentRepository
         $name = mb_convert_encoding($file->name,"BIG-5","UTF-8");
         $mime = $file->mime;
         $extension = $file->extension;
+        $src = "data:$mime;base64,$code";
+        return view('service.pdfcanvas')->with('src', $src);
+    }
 
-        // 建構標頭
-        return \Response::make($decode, 200, [
-            'Content-Type' => $mime,
-            'Content-Disposition' => 'inline; filename="'.$name.'"'
-        ]);
-        /*
-        $response = 
-            response($decode)
-            ->header('Content-Type', $mime) // MIME
-            ->header('Content-length', strlen($code)) // base64
-            ->header('Content-Transfer-Encoding', 'binary')
-            ->header('Content-Disposition', 'attachment; filename=' . $name); // file_name
-        return $response;
-        */
+    public function getFileInfo($query)
+    {
+        try {
+            $info = DB::selectOne($query);
+            $result = [
+                'result' => true,
+                'msg' => '取得檔案資訊成功!(#0001)',
+                'info' => $info,
+            ];
+            return $result;
+        } catch (Exception $e) {
+            return $this->exception($e);
+        }
+    }
+
+    public function getFileSecurity($doc, $partno, $batch, $file_id)
+    {
+        switch ($doc) {
+            case 'sds':
+                $query = "
+                    select count(*) res, sds_no file_id
+                    from mpe_mate
+                    where partno = '$partno' and sds_no = '$file_id'
+                    group by sds_no
+                ";
+                return $this->checkFile($query);
+            case 'coa':
+                $query = "
+                    select count(*) res, coa_no file_id
+                    from mpe_house_m
+                    where partno = '$partno' and batch = '$batch' and coa_no = '$file_id'
+                    group by coa_no
+                ";
+                return $this->checkFile($query);
+            default:
+                return $this->errorPage('文件類型錯誤!');
+        }
+    }
+
+    private function checkFile($query)
+    {
+        try{
+            $check = DB::selectOne($query);
+
+            if ($check->res === '1') {
+                return $this->pdfToCanvas($check->file_id);
+            }
+
+            throw new Exception('找不到文件資訊!');
+        } catch (Exception $e) {
+            return $this->errorPage($e->getMessage());
+        }
+        
+    }
+
+    private function pdfToCanvas($file_id)
+    {
+        try {
+            $file = DB::selectOne("
+                select *
+                from api_file_code
+                where file_id = '$file_id'
+            ");
+            $code = $file->code;
+            $mime = $file->mime;
+            $src = "data:$mime;base64,$code";
+            return view('service.pdfcanvas')->with('src', $src);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+        
     }
 }   
