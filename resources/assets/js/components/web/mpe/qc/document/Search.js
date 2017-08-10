@@ -97,6 +97,7 @@ export default class Search extends React.Component{
                             <input type="text" className="form-control input-lg" 
                                 value={this.state.barcode}
                                 placeholder="掃描條碼"
+                                maxLength={8}
                                 autoFocus
                                 onChange={this.barcodeChange.bind(this)}
                             />
@@ -106,6 +107,7 @@ export default class Search extends React.Component{
                         <div className="col-md-4 col-sm-4 col-xs-6">
                             <input type="text" className="form-control input-lg" 
                                 value={this.state.partno}
+                                maxLength={20}
                                 placeholder="輸入料號"
                                 onChange={this.partnoChange.bind(this)}
                             />
@@ -115,6 +117,7 @@ export default class Search extends React.Component{
                         <div className="col-md-4 col-sm-4 col-xs-6">
                             <input type="text" className="form-control input-lg" 
                                 value={this.state.batch}
+                                maxLength={20}
                                 placeholder="輸入批號"
                                 onChange={this.batchChange.bind(this)}
                             />

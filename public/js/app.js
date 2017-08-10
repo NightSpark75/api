@@ -26123,6 +26123,7 @@ var Search = function (_React$Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', className: 'form-control input-lg',
                                 value: this.state.barcode,
                                 placeholder: '\u6383\u63CF\u689D\u78BC',
+                                maxLength: 8,
                                 autoFocus: true,
                                 onChange: this.barcodeChange.bind(this)
                             })
@@ -26136,6 +26137,7 @@ var Search = function (_React$Component) {
                             { className: 'col-md-4 col-sm-4 col-xs-6' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', className: 'form-control input-lg',
                                 value: this.state.partno,
+                                maxLength: 20,
                                 placeholder: '\u8F38\u5165\u6599\u865F',
                                 onChange: this.partnoChange.bind(this)
                             })
@@ -26149,6 +26151,7 @@ var Search = function (_React$Component) {
                             { className: 'col-md-4 col-sm-4 col-xs-6' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', className: 'form-control input-lg',
                                 value: this.state.batch,
+                                maxLength: 20,
                                 placeholder: '\u8F38\u5165\u6279\u865F',
                                 onChange: this.batchChange.bind(this)
                             })
