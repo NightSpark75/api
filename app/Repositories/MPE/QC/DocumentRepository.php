@@ -27,27 +27,13 @@ class DocumentRepository
 
     }
 
-    public function getDownloadUrl($file_id)
-    {     
-        $file = DB::selectOne("
-            select *
-            from api_file_code
-            where file_id = '$file_id'
-        ");
-
-        $decode = base64_decode($file->code);
-        $code = $file->code;
-        $name = mb_convert_encoding($file->name,"BIG-5","UTF-8");
-        $mime = $file->mime;
-        $extension = $file->extension;
-        $src = "data:$mime;base64,$code";
-        return view('service.pdfcanvas')->with('src', $src);
-    }
-
     public function getFileInfo($query)
     {
         try {
             $info = DB::selectOne($query);
+            if ($info === null) {
+                throw new Exception('查詢不到資料!');
+            }
             $result = [
                 'result' => true,
                 'msg' => '取得檔案資訊成功!(#0001)',

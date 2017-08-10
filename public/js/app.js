@@ -26019,7 +26019,8 @@ var Search = function (_React$Component) {
             barcode: '',
             partno: '',
             batch: '',
-            info: {}
+            info: {},
+            message: ''
         };
         return _this;
     }
@@ -26088,10 +26089,12 @@ var Search = function (_React$Component) {
             __WEBPACK_IMPORTED_MODULE_3_axios___default.a.post(url, data).then(function (response) {
                 if (response.data.result) {
                     self.setState({
-                        info: response.data.info
+                        info: response.data.info,
+                        message: ''
                     });
                     console.log(response.data);
                 } else {
+                    self.setState({ message: '查詢不到資料!!' });
                     console.log(response.data);
                 }
             }).catch(function (error) {
@@ -26105,7 +26108,8 @@ var Search = function (_React$Component) {
                 barcode = _state2.barcode,
                 partno = _state2.partno,
                 batch = _state2.batch,
-                info = _state2.info;
+                info = _state2.info,
+                message = _state2.message;
 
             var marginBottom = { marginBottom: '10px' };
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -26271,6 +26275,15 @@ var Search = function (_React$Component) {
                                 )
                             )
                         )
+                    )
+                ),
+                message.length > 0 && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["g" /* Alert */],
+                    { bsStyle: 'warning' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'strong',
+                        null,
+                        message
                     )
                 )
             );

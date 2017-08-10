@@ -16,6 +16,7 @@ export default class Search extends React.Component{
             partno: '',
             batch: '',
             info: {},
+            message: '',
         }
     }
 
@@ -76,9 +77,11 @@ export default class Search extends React.Component{
             if (response.data.result) {
                 self.setState({
                     info: response.data.info,
+                    message: '',
                 });
                 console.log(response.data);
             } else {
+                self.setState({message: '查詢不到資料!!'})
                 console.log(response.data);
             }
         }).catch(function (error) {
@@ -87,7 +90,7 @@ export default class Search extends React.Component{
     }
 
     render() { 
-        const { barcode, partno, batch, info } = this.state;
+        const { barcode, partno, batch, info, message } = this.state;
         const marginBottom = {marginBottom: '10px'};
         return(   
             <div>
@@ -172,6 +175,11 @@ export default class Search extends React.Component{
                             </div>
                         </div>
                     </Panel>
+                }
+                {message.length > 0 &&
+                    <Alert bsStyle="warning">
+                        <strong>{message}</strong>
+                    </Alert>
                 }
             </div>
         )
