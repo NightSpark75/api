@@ -14,9 +14,6 @@ use DB;
 use Exception;
 use App\Traits\Sqlexecute;
 
-use App\Models\MPZ\MPZ_POINT;
-use App\Models\MPZ\MPZ_POINT_LOG;
-
 /**
  * Class PointlogRepository
  *
@@ -25,15 +22,9 @@ use App\Models\MPZ\MPZ_POINT_LOG;
 class PointlogRepository
 {   
     use Sqlexecute;
-    private $point;
-    private $point_log;
 
-    public function __construct(
-        MPZ_POINT $point,
-        MPZ_POINT_LOG $point_log
-    ) {
-        $this->point = $point;
-        $this->point_log = $point_log;
+    public function __construct() {
+
     }
 
     public function init()
@@ -47,24 +38,21 @@ class PointlogRepository
             ];
             return $result;
         } catch (Exception $e) {
-            $result = [
-                'result' => false,
-                'msg' => $e.getMessage(),
-            ];
-            return $result;
+            return $this->exception($e);
         }
     }
 
     private function getPoint()
     {
-        $list = $this->point->join('mpz_device', 'mpz_point.device_type', '=', 'mpz_device.device_no')
-            ->where('mpz_point.state', 'Y')
-            ->select('mpz_point.point_no' ,'point_name', 'mpz_point.device_type', 'device_name', 'point_type')
-            ->get()->toArray();
-        if (isset($list)) {
-            return $list;
+        $list = DB::select("
+            select p.point_no, p.point_name, p.device_type, d.device_name, p.point_type, p.zone, p.mcu, p.mach_no, p.ch_date
+            from mpz_point p, mpz_device d
+            where p.state = 'Y' and d.device_no(+) = p.device_type
+        ");
+        if (count($list) === 0) {
+            throw new Exception('查詢不到檢查點資料!(#0002)');
         }
-        throw new Exception('查詢不到檢查點資料!(#0002)');
+        return $list;
     }
 
     public function check($point_no)
@@ -72,29 +60,26 @@ class PointlogRepository
         try {
             $msg = '';
             $today =  (int)date('Ymd');
-            $check = $this->point_log
-                ->where('point_no', $point_no)
-                ->where('ldate', $today)
-                ->first();
-            if (isset($check)) {
+            $check = DB::select("
+                select *
+                from mpz_point_log
+                where point_no = '$point_no' and ldate = $today
+            ");
+            if (count($check) > 0) {
                 $result = [
                     'result' => false,
                     'msg' => '此檢查點今日已記錄完畢!(#0004)',
                 ];
-                return $result;
+            } else {
+                $result = [
+                    'result' => true,
+                    'msg' => '此檢查點今日尚未記錄(#0005)',
+                    'ldate' => $today,
+                ];
             }
-            $result = [
-                'result' => true,
-                'msg' => '此檢查點今日尚未記錄(#0005)',
-                'ldate' => $today,
-            ];
             return $result;
         } catch (Exception $e) {
-            $result = [
-                'result' => false,
-                'msg' => $e->getMessage(),
-            ];
-            return $result;
+            return $this->exception($e);
         }
     }
 }

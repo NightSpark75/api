@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 import axios from 'axios';
 import { Button, Panel, FormControl, Alert, Col, ButtonToolbar } from "react-bootstrap";
 import Catchlog from './Catchlog';
+import Templog from './Templog';
 
 export default class Pointlog extends React.Component{
     constructor(props) {
@@ -18,6 +19,7 @@ export default class Pointlog extends React.Component{
             scan_message: '',
             point_info: [],
             catchlog_show: false,
+            templog_show: false,
         }
     }
 
@@ -67,80 +69,37 @@ export default class Pointlog extends React.Component{
                     scan: 'disabled',
                     scan_message: '資料驗證中...'
                 });
-                this.pointCheck(list[i]);
+                this.setComponent(list[i])
                 break;
             }
         }
     }
 
-    pointCheck(point) {
-        let self = this;       
-        axios.get('/api/web/mpz/pointlog/check/' + point.point_no)
-        .then(function (response) {
-            if (response.data.result) {
-                let ldate = response.data.ldate;
-                self.setState({scan_message: ''});
-                self.setComponent(point, ldate);
-                console.log(response.data);
-            } else {
-                self.setState({
-                    scan: '',
-                    scan_message: response.data.msg,
-                });
-                console.log(response.data);
-            }
-        }).catch(function (error) {
-            console.log(error);
-        });
-    }
-
-    setComponent(point, ldate) {
+    setComponent(point) {
         let point_type = point.point_type;
         switch (point_type) {
             case 'C':   // 鼠蟲防治紀錄
-                this.setCatchlog(point, ldate);
+                this.setState({catchlog_show: true, scan_message: ''});
                 break;
             case 'T':   // 溫溼紀錄
-                this.setTemperaturelog(point, ldate);
+                this.setState({templog_show: true, scan_message: ''});
                 break;
             case 'W':   // 最濕點紀錄
-                this.setHumiditylog(point, ldate);
+                this.setState({catchlog_show: true, scan_message: ''});
                 break;
             case 'R':   // 冷藏櫃操作紀錄
-                this.setRefrigerationlog(point, ldate);
+                this.setState({catchlog_show: true, scan_message: ''});
                 break;
             case 'P':   // 壓差紀錄
-                this.setPressurelog(point, ldate);
+                this.setState({catchlog_show: true, scan_message: ''});
                 break;
         }
-    }
-
-    setCatchlog(point, ldate) {
-        let point_no = point.point_no;
-        let device_type = point.device_type;
-        this.setState({catchlog_show: true});
-        this.refs.catch.init(point_no, ldate, device_type);
-    }
-
-    setTemperaturelog(point, ldate) {
-
-    }
-
-    setHumiditylog(point, ldate) {
-
-    }
-
-    setRefrigerationlog(point, ldate) {
-
-    }
-
-    setPressurelog(point, ldate) {
-        
     }
 
     onCancel() {
         this.setState({
             catchlog_show: false,
+            templog_show: false,
             point_no: '',
             scan: '',
             point_info: [],
@@ -165,7 +124,7 @@ export default class Pointlog extends React.Component{
                         </ButtonToolbar>
                     </Col>
                 </Panel> 
-                <Panel>
+                <Panel style={{marginBottom: '10px'}}>
                     <div className="row">
                         <div className="col-sm-4 col-md-3">
                             <FormControl
@@ -178,14 +137,12 @@ export default class Pointlog extends React.Component{
                             />
                         </div>
                         <div className="col-sm-8 col-md-9">
-                            {this.state.scan_message !== '' ? 
+                            {this.state.scan_message !== '' && 
                                 <strong>
                                     <h4>
                                         {this.state.scan_message}
                                     </h4>
                                 </strong>
-                            :
-                                null
                             }
                         </div>
                     </div>  
@@ -196,9 +153,17 @@ export default class Pointlog extends React.Component{
                             pointInfo={this.state.point_info}
                             onCancel={this.onCancel.bind(this)}
                             sendMsg={this.componentMsg.bind(this)}
-                            ref="catch"
                         >
                         </Catchlog>
+                    </Panel>
+                }
+                {this.state.templog_show &&
+                    <Panel>
+                        <Templog
+                            pointInfo={this.state.point_info}
+                            onCancel={this.onCancel.bind(this)}
+                            sendMsg={this.componentMsg.bind(this)}
+                        ></Templog>
                     </Panel>
                 }
             </div>

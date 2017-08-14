@@ -11,6 +11,7 @@ export default class Catchlog extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
+            log_data:{},
             point_no: '', ldate: 0, device_type: '',
             catch_num1: 0, catch_num2: 0, catch_num3: 0, catch_num4: 0, catch_num5: 0, catch_num6: 0,
             change1: 'N', change2: 'N', change3: 'N', change4: 'N', change5: 'N', change6: 'N', lamp: 'N',
@@ -26,15 +27,21 @@ export default class Catchlog extends React.Component{
         this.sendMsg = this.props.sendMsg.bind(this);
     };
 
-    init(point_no, ldate, device_type) {
+    componentDidMount() {
+        let point = this.props.pointInfo;
+        this.init(point.point_no, point.device_type);
+    }
+
+    init(point_no, device_type) {
         let self = this;
         this.setState({init: true});
-        axios.get('/api/web/mpz/pointlog/catch/count/' + point_no + '/' + ldate)
+        axios.get('/api/web/mpz/pointlog/catch/init/' + point_no)
         .then(function (response) {
             if (response.data.result) {
                 self.setState({
+                    log_data: response.data.log_data,
                     point_no: point_no,
-                    ldate: ldate,
+                    ldate: response.data.ldate,
                     device_type: device_type,
                     thisMonth: response.data.thisMonth,
                     lastMonth: response.data.lastMonth,
@@ -42,6 +49,7 @@ export default class Catchlog extends React.Component{
                     init: false,
                 });
                 self.setLayout();
+                self.setValue(response.data.log_data);
             } else {
                 self.props.sendMsg(response.data.msg);
                 self.onCancel();
@@ -82,13 +90,26 @@ export default class Catchlog extends React.Component{
         }
     }
 
-    
+    setValue(data) {
+        if (data !== null) {
+            let rmk = (data.rmk === null) ? '' : data.rmk;
+            this.setState({
+                point_no: data.point_no, ldate: data.ldate, 
+                catch_num1: data.catch_num1, catch_num2: data.catch_num2, catch_num3: data.catch_num3, 
+                catch_num4: data.catch_num4, catch_num5: data.catch_num5, catch_num6: data.catch_num6,
+                change1: data.change1, change2: data.change2, change3: data.change3, 
+                change4: data.change4, change5: data.change5, change6: data.change6, lamp: data.lamp,
+                rmk: rmk, discription: data.discription,
+            });
+        }
+    }
 
     initState() {
         this.setState({
             point_no: '', ldate: 0, device_type: '',
             catch_num1: 0, catch_num2: 0, catch_num3: 0, catch_num4: 0, catch_num5: 0, catch_num6: 0,
-            change1: 'N', change2: 'N', change3: 'N', change4: 'N', change5: 'N', change6: 'N', lapm: 'N',
+            change1: 'N', change2: 'N', change3: 'N', change4: 'N', change5: 'N', change6: 'N', lamp: 'N',
+            rmk: '', discription: '',
             changeDate: [],
             vn1: false, vn2: false, vn3: false, vn4: false, vn5: false, vn6: false, 
             vc1: false, vc2: false, vc3: false, vc4: false, vc5: false, vc6: false,  
@@ -193,7 +214,7 @@ export default class Catchlog extends React.Component{
         form_data.append('check_lamp', lamp);
         form_data.append('rmk', rmk);
         form_data.append('discription', discription);
-        axios.post('/api/web/mpz/pointlog/save', form_data)
+        axios.post('/api/web/mpz/pointlog/catch/save', form_data)
         .then(function (response) {
             if (response.data.result) {
                 self.sendMsg(point_no + '檢查點記錄成功!');
@@ -219,6 +240,7 @@ export default class Catchlog extends React.Component{
     render() {
         const isLoading = this.state.isLoading;
         const init = this.state.init;
+        const comp = (this.state.log_data === null) ? false : true;
         const CatchInput = function (props) {
             return(
                 <FormGroup controlId={props.name}>
@@ -431,14 +453,19 @@ export default class Catchlog extends React.Component{
                             <Button onClick={this.onCancel.bind(this)}>取消</Button>
                         </Col>
                         <Col sm={2}>
-                            <Button 
-                                type="submit"
-                                bsStyle="primary" 
-                                disabled={isLoading || init}
-                                onClick={!isLoading ? this.onSave.bind(this) : null}
-                            >
-                                {isLoading ? '資料儲存中...' : '儲存'}
-                            </Button>
+                            {comp ? 
+                                <Button bsStyle="primary" disabled={true}>今日已完成記錄</Button>
+                            :
+                                <Button 
+                                    type="submit"
+                                    bsStyle="primary" 
+                                    disabled={isLoading || init}
+                                    onClick={!isLoading ? this.onSave.bind(this) : null}
+                                >
+                                    {isLoading ? '資料儲存中...' : '儲存'}
+                                </Button>
+                            }
+                            
                         </Col>
                     </FormGroup>
                 </Form>
