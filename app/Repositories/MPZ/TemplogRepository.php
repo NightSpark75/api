@@ -126,19 +126,34 @@ class TemplogRepository
             where point_no = '$point_no' and ldate = $ldate
         ");
 
-        if ((!isset($log->mo_temp) || !isset($log->mo_hum)) && ($params['mo_temp'] !== null || $params['mo_hum'] !== null)) {
-            $params['mo_time'] = $date;
-            $params['mo_user'] = $user;
+        if ($params['mo_temp'] !== null || $params['mo_hum'] !== null) {
+            if (!isset($log->mo_temp) || !isset($log->mo_hum)) {
+                $params['mo_time'] = $date;
+                $params['mo_user'] = $user;
+            } else {
+                $params['mo_time'] = $log->mo_time;
+                $params['mo_user'] = $log->mo_user;
+            }
         }
 
-        if ((!isset($log->af_temp) || !isset($log->af_hum)) && ($params['af_temp'] !== null || $params['af_hum'] !== null)) {
-            $params['af_time'] = $date;
-            $params['af_user'] = $user;
+        if (($params['af_temp'] !== null || $params['af_hum'] !== null)) {
+            if ((!isset($log->af_temp) || !isset($log->af_hum))) {
+                $params['af_time'] = $date;
+                $params['af_user'] = $user;
+            } else {
+                $params['af_time'] = $log->af_time;
+                $params['af_user'] = $log->af_user;
+            }
         }
 
-        if ((!isset($log->ev_temp) || !isset($log->ev_hum)) && ($params['ev_temp'] !== null || $params['ev_hum'] !== null)) {
-            $params['ev_time'] = $date;
-            $params['ev_user'] = $user;
+        if ($params['ev_temp'] !== null || $params['ev_hum'] !== null) {
+            if (!isset($log->ev_temp) || !isset($log->ev_hum)) {
+                $params['ev_time'] = $date;
+                $params['ev_user'] = $user;
+            } else {
+                $params['ev_time'] = $log->ev_time;
+                $params['ev_user'] = $log->ev_user;
+            }
         }
 
         return $params;
