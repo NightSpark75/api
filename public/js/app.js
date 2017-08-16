@@ -27826,7 +27826,7 @@ var Templog = function (_React$Component) {
                                         null,
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             "td",
-                                            { className: "col-md-2" },
+                                            { className: "col-md-2 col-sm-2" },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "label",
                                                 { htmlFor: "mo_temp" },
@@ -27840,7 +27840,7 @@ var Templog = function (_React$Component) {
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             "td",
-                                            { className: "col-md-2" },
+                                            { className: "col-md-2 col-sm-3" },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "label",
                                                 { htmlFor: "mo_hum" },
@@ -27854,7 +27854,7 @@ var Templog = function (_React$Component) {
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             "td",
-                                            { className: "col-md-3" },
+                                            { className: "col-md-3 col-sm-3" },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "label",
                                                 { htmlFor: "mo_err" },
@@ -27904,7 +27904,7 @@ var Templog = function (_React$Component) {
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             "td",
-                                            { className: "col-md-5" },
+                                            { className: "col-md-5 col-sm-4" },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "label",
                                                 { htmlFor: "mo_rmk" },
@@ -27942,7 +27942,7 @@ var Templog = function (_React$Component) {
                                         null,
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             "td",
-                                            { className: "col-md-2" },
+                                            { className: "col-md-2 col-sm-2" },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "label",
                                                 { htmlFor: "af_temp" },
@@ -27956,7 +27956,7 @@ var Templog = function (_React$Component) {
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             "td",
-                                            { className: "col-md-2" },
+                                            { className: "col-md-2 col-sm-3" },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "label",
                                                 { htmlFor: "af_hum" },
@@ -27970,7 +27970,7 @@ var Templog = function (_React$Component) {
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             "td",
-                                            { className: "col-md-3" },
+                                            { className: "col-md-3 col-sm-3" },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "label",
                                                 { htmlFor: "af_err" },
@@ -28020,7 +28020,7 @@ var Templog = function (_React$Component) {
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             "td",
-                                            { className: "col-md-5" },
+                                            { className: "col-md-5 col-sm-4" },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "label",
                                                 { htmlFor: "af_rmk" },
@@ -28058,7 +28058,7 @@ var Templog = function (_React$Component) {
                                         null,
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             "td",
-                                            { className: "col-md-2" },
+                                            { className: "col-md-2 col-sm-2" },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "label",
                                                 { htmlFor: "ev_temp" },
@@ -28072,7 +28072,7 @@ var Templog = function (_React$Component) {
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             "td",
-                                            { className: "col-md-2" },
+                                            { className: "col-md-2 col-sm-3" },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "label",
                                                 { htmlFor: "ev_hum" },
@@ -28086,7 +28086,7 @@ var Templog = function (_React$Component) {
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             "td",
-                                            { className: "col-md-3" },
+                                            { className: "col-md-3 col-sm-3" },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "label",
                                                 { htmlFor: "ev_err" },
@@ -28136,7 +28136,7 @@ var Templog = function (_React$Component) {
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             "td",
-                                            { className: "col-md-5" },
+                                            { className: "col-md-5 col-sm-4" },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "label",
                                                 { htmlFor: "ev_rmk" },

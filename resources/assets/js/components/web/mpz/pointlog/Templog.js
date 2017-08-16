@@ -187,7 +187,7 @@ export default class Templog extends React.Component{
                             <table>
                                 <tbody>
                                     <tr>
-                                        <td className="col-md-2">
+                                        <td className="col-md-2 col-sm-2">
                                             <label htmlFor="mo_temp">溫度℃</label>
                                             <input type="text" className="form-control" id="mo_temp" maxLength={10}
                                                 disabled={mo}
@@ -195,7 +195,7 @@ export default class Templog extends React.Component{
                                                 onChange={this.mo_tempChange.bind(this)}
                                             />
                                         </td>
-                                        <td className="col-md-2">
+                                        <td className="col-md-2 col-sm-3">
                                             <label htmlFor="mo_hum">相對濕度 % R.H</label>
                                             <input type="text" className="form-control" id="mo_hum" maxLength={10}
                                                 disabled={mo}
@@ -203,7 +203,7 @@ export default class Templog extends React.Component{
                                                 onChange={this.mo_humChange.bind(this)}
                                             />
                                         </td>
-                                        <td className="col-md-3">
+                                        <td className="col-md-3 col-sm-3">
                                             <label htmlFor="mo_err">異常代碼</label>
                                             <FormControl 
                                                 componentClass="select" 
@@ -221,7 +221,7 @@ export default class Templog extends React.Component{
                                                 <option value="其它">其它</option>
                                             </FormControl>
                                         </td>
-                                        <td className="col-md-5">
+                                        <td className="col-md-5 col-sm-4">
                                             <label htmlFor="mo_rmk">備註</label>
                                             <input type="text" className="form-control" id="mo_rmk" maxLength={50}
                                                 disabled={mo}
@@ -241,7 +241,7 @@ export default class Templog extends React.Component{
                             <table>
                                 <tbody>
                                     <tr>
-                                        <td className="col-md-2">
+                                        <td className="col-md-2 col-sm-2">
                                             <label htmlFor="af_temp">溫度℃</label>
                                             <input type="text" className="form-control" id="af_temp" maxLength={10}
                                                 disabled={af}
@@ -249,7 +249,7 @@ export default class Templog extends React.Component{
                                                 onChange={this.af_tempChange.bind(this)}
                                             />
                                         </td>
-                                        <td className="col-md-2">
+                                        <td className="col-md-2 col-sm-3">
                                             <label htmlFor="af_hum">相對濕度 % R.H</label>
                                             <input type="text" className="form-control" id="af_hum" maxLength={10}
                                                 disabled={af}
@@ -257,7 +257,7 @@ export default class Templog extends React.Component{
                                                 onChange={this.af_humChange.bind(this)}
                                             />
                                         </td>
-                                        <td className="col-md-3">
+                                        <td className="col-md-3 col-sm-3">
                                             <label htmlFor="af_err">異常代碼</label>
                                             <FormControl 
                                                 componentClass="select" 
@@ -275,7 +275,7 @@ export default class Templog extends React.Component{
                                                 <option value="其它">其它</option>
                                             </FormControl>
                                         </td>
-                                        <td className="col-md-5">
+                                        <td className="col-md-5 col-sm-4">
                                             <label htmlFor="af_rmk">備註</label>
                                             <input type="text" className="form-control" id="af_rmk" maxLength={50}
                                                 disabled={af}
@@ -295,7 +295,7 @@ export default class Templog extends React.Component{
                             <table>
                                 <tbody>
                                     <tr>
-                                        <td className="col-md-2">
+                                        <td className="col-md-2 col-sm-2">
                                             <label htmlFor="ev_temp">溫度℃</label>
                                             <input type="text" className="form-control" id="ev_temp" maxLength={10}
                                                 disabled={ev}
@@ -303,7 +303,7 @@ export default class Templog extends React.Component{
                                                 onChange={this.ev_tempChange.bind(this)}
                                             />
                                         </td>
-                                        <td className="col-md-2">
+                                        <td className="col-md-2 col-sm-3">
                                             <label htmlFor="ev_hum">相對濕度 % R.H</label>
                                             <input type="text" className="form-control" id="ev_hum" maxLength={10}
                                                 disabled={ev}
@@ -311,7 +311,7 @@ export default class Templog extends React.Component{
                                                 onChange={this.ev_humChange.bind(this)}
                                             />
                                         </td>
-                                        <td className="col-md-3">
+                                        <td className="col-md-3 col-sm-3">
                                             <label htmlFor="ev_err">異常代碼</label>
                                             <FormControl 
                                                 componentClass="select" 
@@ -329,7 +329,7 @@ export default class Templog extends React.Component{
                                                 <option value="其它">其它</option>
                                             </FormControl>
                                         </td>
-                                        <td className="col-md-5">
+                                        <td className="col-md-5 col-sm-4">
                                             <label htmlFor="ev_rmk">備註</label>
                                             <input type="text" className="form-control" id="ev_rmk" maxLength={50}
                                                 disabled={ev}
