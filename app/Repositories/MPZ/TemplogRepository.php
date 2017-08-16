@@ -127,6 +127,8 @@ class TemplogRepository
         ");
 
         if ($params['mo_temp'] !== null || $params['mo_hum'] !== null) {
+            $params['mo_temp'] = (int) $params['mo_temp'];
+            $params['mo_hum'] = (int) $params['mo_hum'];
             if (!isset($log->mo_temp) || !isset($log->mo_hum)) {
                 $params['mo_time'] = $date;
                 $params['mo_user'] = $user;
@@ -136,7 +138,9 @@ class TemplogRepository
             }
         }
 
-        if (($params['af_temp'] !== null || $params['af_hum'] !== null)) {
+        if ($params['af_temp'] !== null || $params['af_hum'] !== null) {
+            $params['af_temp'] = (int) $params['af_temp'];
+            $params['af_hum'] = (int) $params['af_hum'];
             if ((!isset($log->af_temp) || !isset($log->af_hum))) {
                 $params['af_time'] = $date;
                 $params['af_user'] = $user;
@@ -147,6 +151,8 @@ class TemplogRepository
         }
 
         if ($params['ev_temp'] !== null || $params['ev_hum'] !== null) {
+            $params['ev_temp'] = (int) $params['ev_temp'];
+            $params['ev_hum'] = (int) $params['ev_hum'];
             if (!isset($log->ev_temp) || !isset($log->ev_hum)) {
                 $params['ev_time'] = $date;
                 $params['ev_user'] = $user;
