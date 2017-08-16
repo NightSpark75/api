@@ -3,7 +3,7 @@
  */
 import React from "react";
 import { Link } from "react-router";
-import { Button, Modal, Form, FormGroup, FormControl, ControlLabel, Checkbox, Col, HelpBlock, Panel } from "react-bootstrap";
+import { Button, Col, Panel, FormControl } from "react-bootstrap";
 import FieldGroup from  '../../../../components/includes/FieldGroup';
 import axios from 'axios';
 
@@ -177,7 +177,7 @@ export default class Templog extends React.Component{
                         <tr>
                             <td>區域</td><td>{zone}</td>
                             <td>溫度範圍</td><td>{temp_low + " ~ " + temp_high}</td>
-                            <td>溼度範圍</td><td>{humi_low + " ~ " + humi_high}</td>
+                            <td>濕度範圍</td><td>{humi_low + " ~ " + humi_high}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -188,7 +188,7 @@ export default class Templog extends React.Component{
                                 <tbody>
                                     <tr>
                                         <td className="col-md-2">
-                                            <label htmlFor="mo_temp">溫度</label>
+                                            <label htmlFor="mo_temp">溫度℃</label>
                                             <input type="text" className="form-control" id="mo_temp" maxLength={10}
                                                 disabled={mo}
                                                 value={this.state.mo_temp || ''}
@@ -196,22 +196,32 @@ export default class Templog extends React.Component{
                                             />
                                         </td>
                                         <td className="col-md-2">
-                                            <label htmlFor="mo_hum">溼度</label>
+                                            <label htmlFor="mo_hum">相對濕度 % R.H</label>
                                             <input type="text" className="form-control" id="mo_hum" maxLength={10}
                                                 disabled={mo}
                                                 value={this.state.mo_hum || ''}
                                                 onChange={this.mo_humChange.bind(this)}
                                             />
                                         </td>
-                                        <td className="col-md-2">
+                                        <td className="col-md-3">
                                             <label htmlFor="mo_err">異常代碼</label>
-                                            <input type="text" className="form-control" id="mo_err" maxLength={20}
+                                            <FormControl 
+                                                componentClass="select" 
+                                                placeholder="請選擇"
                                                 disabled={mo}
-                                                value={this.state.mo_err || ''}
                                                 onChange={this.mo_errChange.bind(this)}
-                                            />
+                                                value={this.state.mo_err || ''}
+                                            >
+                                                <option value=""></option>
+                                                <option value="參加集會">參加集會</option>
+                                                <option value="溫濕度異常">溫濕度異常</option>
+                                                <option value="儀器異常">儀器異常</option>
+                                                <option value="更換儀器">更換儀器</option>
+                                                <option value="更換表單">更換表單</option>
+                                                <option value="其它">其它</option>
+                                            </FormControl>
                                         </td>
-                                        <td className="col-md-6">
+                                        <td className="col-md-5">
                                             <label htmlFor="mo_rmk">備註</label>
                                             <input type="text" className="form-control" id="mo_rmk" maxLength={50}
                                                 disabled={mo}
@@ -232,7 +242,7 @@ export default class Templog extends React.Component{
                                 <tbody>
                                     <tr>
                                         <td className="col-md-2">
-                                            <label htmlFor="af_temp">溫度</label>
+                                            <label htmlFor="af_temp">溫度℃</label>
                                             <input type="text" className="form-control" id="af_temp" maxLength={10}
                                                 disabled={af}
                                                 value={this.state.af_temp || ''}
@@ -240,22 +250,32 @@ export default class Templog extends React.Component{
                                             />
                                         </td>
                                         <td className="col-md-2">
-                                            <label htmlFor="af_hum">溼度</label>
+                                            <label htmlFor="af_hum">相對濕度 % R.H</label>
                                             <input type="text" className="form-control" id="af_hum" maxLength={10}
                                                 disabled={af}
                                                 value={this.state.af_hum || ''}
                                                 onChange={this.af_humChange.bind(this)}
                                             />
                                         </td>
-                                        <td className="col-md-2">
+                                        <td className="col-md-3">
                                             <label htmlFor="af_err">異常代碼</label>
-                                            <input type="text" className="form-control" id="af_err" maxLength={20}
+                                            <FormControl 
+                                                componentClass="select" 
+                                                placeholder="請選擇"
                                                 disabled={af}
-                                                value={this.state.af_err || ''}
                                                 onChange={this.af_errChange.bind(this)}
-                                            />
+                                                value={this.state.af_err || ''}
+                                            >
+                                                <option value=""></option>
+                                                <option value="參加集會">參加集會</option>
+                                                <option value="溫濕度異常">溫濕度異常</option>
+                                                <option value="儀器異常">儀器異常</option>
+                                                <option value="更換儀器">更換儀器</option>
+                                                <option value="更換表單">更換表單</option>
+                                                <option value="其它">其它</option>
+                                            </FormControl>
                                         </td>
-                                        <td className="col-md-6">
+                                        <td className="col-md-5">
                                             <label htmlFor="af_rmk">備註</label>
                                             <input type="text" className="form-control" id="af_rmk" maxLength={50}
                                                 disabled={af}
@@ -276,7 +296,7 @@ export default class Templog extends React.Component{
                                 <tbody>
                                     <tr>
                                         <td className="col-md-2">
-                                            <label htmlFor="ev_temp">溫度</label>
+                                            <label htmlFor="ev_temp">溫度℃</label>
                                             <input type="text" className="form-control" id="ev_temp" maxLength={10}
                                                 disabled={ev}
                                                 value={this.state.ev_temp || ''}
@@ -284,22 +304,32 @@ export default class Templog extends React.Component{
                                             />
                                         </td>
                                         <td className="col-md-2">
-                                            <label htmlFor="ev_hum">溼度</label>
+                                            <label htmlFor="ev_hum">相對濕度 % R.H</label>
                                             <input type="text" className="form-control" id="ev_hum" maxLength={10}
                                                 disabled={ev}
                                                 value={this.state.ev_hum || ''}
                                                 onChange={this.ev_humChange.bind(this)}
                                             />
                                         </td>
-                                        <td className="col-md-2">
+                                        <td className="col-md-3">
                                             <label htmlFor="ev_err">異常代碼</label>
-                                            <input type="text" className="form-control" id="ev_err" maxLength={20}
+                                            <FormControl 
+                                                componentClass="select" 
+                                                placeholder="請選擇"
                                                 disabled={ev}
-                                                value={this.state.ev_err || ''}
                                                 onChange={this.ev_errChange.bind(this)}
-                                            />
+                                                value={this.state.ev_err || ''}
+                                            >
+                                                <option value=""></option>
+                                                <option value="參加集會">參加集會</option>
+                                                <option value="溫濕度異常">溫濕度異常</option>
+                                                <option value="儀器異常">儀器異常</option>
+                                                <option value="更換儀器">更換儀器</option>
+                                                <option value="更換表單">更換表單</option>
+                                                <option value="其它">其它</option>
+                                            </FormControl>
                                         </td>
-                                        <td className="col-md-6">
+                                        <td className="col-md-5">
                                             <label htmlFor="ev_rmk">備註</label>
                                             <input type="text" className="form-control" id="ev_rmk" maxLength={50}
                                                 disabled={ev}

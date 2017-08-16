@@ -27146,22 +27146,22 @@ var Catchlog = function (_React$Component) {
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", { value: "" }),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "option",
-                                    { value: "a" },
+                                    { value: "\u6578\u91CF\u8D85\u6A19" },
                                     "\u6578\u91CF\u8D85\u6A19"
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "option",
-                                    { value: "b" },
+                                    { value: "\u5668\u5177\u7570\u5E38" },
                                     "\u5668\u5177\u7570\u5E38"
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "option",
-                                    { value: "c" },
+                                    { value: "\u65B0\u8A2D\u9EDE\u4F4D" },
                                     "\u65B0\u8A2D\u9EDE\u4F4D"
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "option",
-                                    { value: "d" },
+                                    { value: "\u5176\u4ED6" },
                                     "\u5176\u4ED6"
                                 )
                             )
@@ -27796,7 +27796,7 @@ var Templog = function (_React$Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 "td",
                                 null,
-                                "\u6EBC\u5EA6\u7BC4\u570D"
+                                "\u6FD5\u5EA6\u7BC4\u570D"
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 "td",
@@ -27830,7 +27830,7 @@ var Templog = function (_React$Component) {
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "label",
                                                 { htmlFor: "mo_temp" },
-                                                "\u6EAB\u5EA6"
+                                                "\u6EAB\u5EA6\u2103"
                                             ),
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", className: "form-control", id: "mo_temp", maxLength: 10,
                                                 disabled: mo,
@@ -27844,7 +27844,7 @@ var Templog = function (_React$Component) {
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "label",
                                                 { htmlFor: "mo_hum" },
-                                                "\u6EBC\u5EA6"
+                                                "\u76F8\u5C0D\u6FD5\u5EA6 % R.H"
                                             ),
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", className: "form-control", id: "mo_hum", maxLength: 10,
                                                 disabled: mo,
@@ -27854,21 +27854,57 @@ var Templog = function (_React$Component) {
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             "td",
-                                            { className: "col-md-2" },
+                                            { className: "col-md-3" },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "label",
                                                 { htmlFor: "mo_err" },
                                                 "\u7570\u5E38\u4EE3\u78BC"
                                             ),
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", className: "form-control", id: "mo_err", maxLength: 20,
-                                                disabled: mo,
-                                                value: this.state.mo_err || '',
-                                                onChange: this.mo_errChange.bind(this)
-                                            })
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["h" /* FormControl */],
+                                                {
+                                                    componentClass: "select",
+                                                    placeholder: "\u8ACB\u9078\u64C7",
+                                                    disabled: mo,
+                                                    onChange: this.mo_errChange.bind(this),
+                                                    value: this.state.mo_err || ''
+                                                },
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", { value: "" }),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    "option",
+                                                    { value: "\u53C3\u52A0\u96C6\u6703" },
+                                                    "\u53C3\u52A0\u96C6\u6703"
+                                                ),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    "option",
+                                                    { value: "\u6EAB\u6FD5\u5EA6\u7570\u5E38" },
+                                                    "\u6EAB\u6FD5\u5EA6\u7570\u5E38"
+                                                ),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    "option",
+                                                    { value: "\u5100\u5668\u7570\u5E38" },
+                                                    "\u5100\u5668\u7570\u5E38"
+                                                ),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    "option",
+                                                    { value: "\u66F4\u63DB\u5100\u5668" },
+                                                    "\u66F4\u63DB\u5100\u5668"
+                                                ),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    "option",
+                                                    { value: "\u66F4\u63DB\u8868\u55AE" },
+                                                    "\u66F4\u63DB\u8868\u55AE"
+                                                ),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    "option",
+                                                    { value: "\u5176\u5B83" },
+                                                    "\u5176\u5B83"
+                                                )
+                                            )
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             "td",
-                                            { className: "col-md-6" },
+                                            { className: "col-md-5" },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "label",
                                                 { htmlFor: "mo_rmk" },
@@ -27910,7 +27946,7 @@ var Templog = function (_React$Component) {
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "label",
                                                 { htmlFor: "af_temp" },
-                                                "\u6EAB\u5EA6"
+                                                "\u6EAB\u5EA6\u2103"
                                             ),
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", className: "form-control", id: "af_temp", maxLength: 10,
                                                 disabled: af,
@@ -27924,7 +27960,7 @@ var Templog = function (_React$Component) {
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "label",
                                                 { htmlFor: "af_hum" },
-                                                "\u6EBC\u5EA6"
+                                                "\u76F8\u5C0D\u6FD5\u5EA6 % R.H"
                                             ),
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", className: "form-control", id: "af_hum", maxLength: 10,
                                                 disabled: af,
@@ -27934,21 +27970,57 @@ var Templog = function (_React$Component) {
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             "td",
-                                            { className: "col-md-2" },
+                                            { className: "col-md-3" },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "label",
                                                 { htmlFor: "af_err" },
                                                 "\u7570\u5E38\u4EE3\u78BC"
                                             ),
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", className: "form-control", id: "af_err", maxLength: 20,
-                                                disabled: af,
-                                                value: this.state.af_err || '',
-                                                onChange: this.af_errChange.bind(this)
-                                            })
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["h" /* FormControl */],
+                                                {
+                                                    componentClass: "select",
+                                                    placeholder: "\u8ACB\u9078\u64C7",
+                                                    disabled: af,
+                                                    onChange: this.af_errChange.bind(this),
+                                                    value: this.state.af_err || ''
+                                                },
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", { value: "" }),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    "option",
+                                                    { value: "\u53C3\u52A0\u96C6\u6703" },
+                                                    "\u53C3\u52A0\u96C6\u6703"
+                                                ),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    "option",
+                                                    { value: "\u6EAB\u6FD5\u5EA6\u7570\u5E38" },
+                                                    "\u6EAB\u6FD5\u5EA6\u7570\u5E38"
+                                                ),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    "option",
+                                                    { value: "\u5100\u5668\u7570\u5E38" },
+                                                    "\u5100\u5668\u7570\u5E38"
+                                                ),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    "option",
+                                                    { value: "\u66F4\u63DB\u5100\u5668" },
+                                                    "\u66F4\u63DB\u5100\u5668"
+                                                ),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    "option",
+                                                    { value: "\u66F4\u63DB\u8868\u55AE" },
+                                                    "\u66F4\u63DB\u8868\u55AE"
+                                                ),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    "option",
+                                                    { value: "\u5176\u5B83" },
+                                                    "\u5176\u5B83"
+                                                )
+                                            )
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             "td",
-                                            { className: "col-md-6" },
+                                            { className: "col-md-5" },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "label",
                                                 { htmlFor: "af_rmk" },
@@ -27990,7 +28062,7 @@ var Templog = function (_React$Component) {
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "label",
                                                 { htmlFor: "ev_temp" },
-                                                "\u6EAB\u5EA6"
+                                                "\u6EAB\u5EA6\u2103"
                                             ),
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", className: "form-control", id: "ev_temp", maxLength: 10,
                                                 disabled: ev,
@@ -28004,7 +28076,7 @@ var Templog = function (_React$Component) {
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "label",
                                                 { htmlFor: "ev_hum" },
-                                                "\u6EBC\u5EA6"
+                                                "\u76F8\u5C0D\u6FD5\u5EA6 % R.H"
                                             ),
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", className: "form-control", id: "ev_hum", maxLength: 10,
                                                 disabled: ev,
@@ -28014,21 +28086,57 @@ var Templog = function (_React$Component) {
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             "td",
-                                            { className: "col-md-2" },
+                                            { className: "col-md-3" },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "label",
                                                 { htmlFor: "ev_err" },
                                                 "\u7570\u5E38\u4EE3\u78BC"
                                             ),
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", className: "form-control", id: "ev_err", maxLength: 20,
-                                                disabled: ev,
-                                                value: this.state.ev_err || '',
-                                                onChange: this.ev_errChange.bind(this)
-                                            })
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["h" /* FormControl */],
+                                                {
+                                                    componentClass: "select",
+                                                    placeholder: "\u8ACB\u9078\u64C7",
+                                                    disabled: ev,
+                                                    onChange: this.ev_errChange.bind(this),
+                                                    value: this.state.ev_err || ''
+                                                },
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", { value: "" }),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    "option",
+                                                    { value: "\u53C3\u52A0\u96C6\u6703" },
+                                                    "\u53C3\u52A0\u96C6\u6703"
+                                                ),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    "option",
+                                                    { value: "\u6EAB\u6FD5\u5EA6\u7570\u5E38" },
+                                                    "\u6EAB\u6FD5\u5EA6\u7570\u5E38"
+                                                ),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    "option",
+                                                    { value: "\u5100\u5668\u7570\u5E38" },
+                                                    "\u5100\u5668\u7570\u5E38"
+                                                ),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    "option",
+                                                    { value: "\u66F4\u63DB\u5100\u5668" },
+                                                    "\u66F4\u63DB\u5100\u5668"
+                                                ),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    "option",
+                                                    { value: "\u66F4\u63DB\u8868\u55AE" },
+                                                    "\u66F4\u63DB\u8868\u55AE"
+                                                ),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    "option",
+                                                    { value: "\u5176\u5B83" },
+                                                    "\u5176\u5B83"
+                                                )
+                                            )
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             "td",
-                                            { className: "col-md-6" },
+                                            { className: "col-md-5" },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "label",
                                                 { htmlFor: "ev_rmk" },

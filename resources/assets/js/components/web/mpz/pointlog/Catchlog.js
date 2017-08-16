@@ -428,10 +428,10 @@ export default class Catchlog extends React.Component{
                                 value={this.state.rmk}
                             >
                                 <option value=""></option>
-                                <option value="a">數量超標</option>
-                                <option value="b">器具異常</option>
-                                <option value="c">新設點位</option>
-                                <option value="d">其他</option>
+                                <option value="數量超標">數量超標</option>
+                                <option value="器具異常">器具異常</option>
+                                <option value="新設點位">新設點位</option>
+                                <option value="其他">其他</option>
                             </FormControl>
                         </Col>
                     </FormGroup>

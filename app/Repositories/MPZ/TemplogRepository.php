@@ -66,10 +66,11 @@ class TemplogRepository
     {
         try{
             DB::transaction( function () use($params) {
-                $params['duser'] = auth()->user()->id;
+                $user = auth()->user()->id;
+                $params['duser'] = $user;
                 $params['ddate'] = date("Y-m-d H:i:s");
                 $params['state'] = 'Y';
-                $params = $this->setLogDate($params);
+                $params = $this->setLogDate($params, $user);
                 $check = $this->checkTemplog($params['point_no']);
                 if ($check) {
                     DB::table('mpz_templog')->insert($params);
@@ -85,14 +86,15 @@ class TemplogRepository
                     DB::update("
                         update mpz_templog
                         set duser = :duser, ddate = :ddate, ldate = :ldate, state = :state, 
-                            mo_temp = :mo_temp, mo_hum = :mo_hum, mo_time = :mo_time, mo_err = :mo_err, mo_type = :mo_type, mo_rmk = :mo_rmk,
-                            af_temp = :af_temp, af_hum = :af_hum, af_time = :af_time, af_err = :af_err, af_type = :af_type, af_rmk = :af_rmk,
-                            ev_temp = :ev_temp, ev_hum = :ev_hum, ev_time = :ev_time, ev_err = :ev_err, ev_type = :ev_type, ev_rmk = :ev_rmk
+                            mo_temp = :mo_temp, mo_hum = :mo_hum, mo_time = :mo_time, mo_err = :mo_err, 
+                                mo_type = :mo_type, mo_rmk = :mo_rmk, mo_user = :mo_user,
+                            af_temp = :af_temp, af_hum = :af_hum, af_time = :af_time, af_err = :af_err, 
+                                af_type = :af_type, af_rmk = :af_rmk, af_user = :af_user,
+                            ev_temp = :ev_temp, ev_hum = :ev_hum, ev_time = :ev_time, ev_err = :ev_err, 
+                                ev_type = :ev_type, ev_rmk = :ev_rmk , ev_user = :ev_user
                         where point_no = :point_no
                     ", $params);
                 }
-                
-                
             });
             DB::commit();
             $result = [
@@ -106,19 +108,37 @@ class TemplogRepository
         }
     }
 
-    private function setLogDate($params)
+    private function setLogDate($params, $user)
     {
-        $date = date("Hi");
-        if ($params['mo_time'] === null && ($params['mo_temp'] !== null && $params['mo_hum'] !== null)) {
+        $date = (int)date("Hi");
+        $point_no = $params['point_no'];
+        $ldate = (int)$params['ldate'];
+        $params['mo_time'] = null;
+        $params['mo_user'] = null;
+        $params['af_time'] = null;
+        $params['af_user'] = null;
+        $params['ev_time'] = null;
+        $params['ev_user'] = null;
+
+        $log = DB::selectOne("
+            select *
+            from mpz_templog
+            where point_no = '$point_no' and ldate = $ldate
+        ");
+
+        if ((!isset($log->mo_temp) || !isset($log->mo_hum)) && ($params['mo_temp'] !== null || $params['mo_hum'] !== null)) {
             $params['mo_time'] = $date;
+            $params['mo_user'] = $user;
         }
 
-        if ($params['af_time'] === null && ($params['af_temp'] !== null && $params['af_hum'] !== null)) {
+        if ((!isset($log->af_temp) || !isset($log->af_hum)) && ($params['af_temp'] !== null || $params['af_hum'] !== null)) {
             $params['af_time'] = $date;
+            $params['af_user'] = $user;
         }
 
-        if ($params['ev_time'] === null && ($params['ev_temp'] !== null && $params['ev_hum'] !== null)) {
+        if ((!isset($log->ev_temp) || !isset($log->ev_hum)) && ($params['ev_temp'] !== null || $params['ev_hum'] !== null)) {
             $params['ev_time'] = $date;
+            $params['ev_user'] = $user;
         }
 
         return $params;
