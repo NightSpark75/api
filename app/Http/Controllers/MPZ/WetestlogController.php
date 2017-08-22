@@ -5,16 +5,16 @@ namespace App\Http\Controllers\MPZ;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\Repositories\MPZ\CatchlogRepository;
+use App\Repositories\MPZ\WetestlogRepository;
 
-class CatchlogController extends Controller
+class WetestlogController extends Controller
 {
     //
-    private $catchlog;
+    private $wetestlog;
 
-    public function __construct(CatchlogRepository $catchlog)
+    public function __construct(WetestlogRepository $wetestlog)
     {
-        $this->catchlog = $catchlog;
+        $this->wetestlog = $wetestlog;
         $this->program = 'MPZW0010';
         session(['program' => $this->program]);
         $this->middleware('role');
@@ -24,14 +24,14 @@ class CatchlogController extends Controller
     {
         $this->middleware('role:insert');
         $params = request()->all();
-        $result = $this->catchlog->save($params);
+        $result = $this->wetestlog->save($params);
         $response = response()->json($result);
         return $response;
     }
 
     public function init($point_no)
     {
-        $result = $this->catchlog->init($point_no);
+        $result = $this->wetestlog->init($point_no);
         $response = response()->json($result);
         return $response;
     }

@@ -244,7 +244,7 @@ export default class Catchlog extends React.Component{
         const CatchInput = function (props) {
             return(
                 <FormGroup controlId={props.name}>
-                    <Col componentClass={ControlLabel} sm={1}>
+                    <Col componentClass={ControlLabel} sm={2}>
                         {props.label}
                     </Col>
                     <Col sm={3}>
@@ -261,7 +261,7 @@ export default class Catchlog extends React.Component{
         const ChangeDevice = function (props) {
             return(
                 <FormGroup>
-                    <Col smOffset={1} sm={11}>
+                    <Col smOffset={2} sm={10}>
                         <Checkbox
                             name={props.name} 
                             value={props.value}
@@ -282,6 +282,7 @@ export default class Catchlog extends React.Component{
         return(
             <div>
                 <Col smOffset={1}>
+                    <h4><strong>鼠蟲防治記錄表</strong></h4>
                     <h4><strong>本月累計：</strong>{this.state.thisMonth}</h4>
                     <h4><strong>上月統計：</strong>{this.state.lastMonth}</h4>
                 </Col>
@@ -417,7 +418,7 @@ export default class Catchlog extends React.Component{
                         </ChangeDevice>
                     }
                     <FormGroup controlId="rmk">
-                        <Col componentClass={ControlLabel} sm={1}>
+                        <Col componentClass={ControlLabel} sm={2}>
                             備註
                         </Col>
                         <Col sm={3}>
@@ -436,7 +437,7 @@ export default class Catchlog extends React.Component{
                         </Col>
                     </FormGroup>
                     <FormGroup controlId="discription">
-                        <Col componentClass={ControlLabel} sm={1}>
+                        <Col componentClass={ControlLabel} sm={2}>
                             其他
                         </Col>
                         <Col sm={6}>

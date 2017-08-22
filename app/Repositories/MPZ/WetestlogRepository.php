@@ -1,6 +1,6 @@
 <?php
 /**
- * 溫溼度管控記錄資料處理
+ * 最濕點管控記錄資料處理
  *
  * @version 1.0.0
  * @author spark Lin.yupin@standart.com.tw
@@ -15,11 +15,11 @@ use Exception;
 use App\Traits\Sqlexecute;
 
 /**
- * Class TemplogRepository
+ * Class WetestlogRepository
  *
  * @package App\Repositories
  */
-class TemplogRepository
+class WetestlogRepository
 {   
     use Sqlexecute;
 
@@ -33,33 +33,18 @@ class TemplogRepository
             $ldate = date('Ymd');
             $data = DB::selectOne("
                 select *
-                from mpz_templog
+                from mpz_wetestlog
                 where point_no = '$point_no' and ldate = $ldate
             ");
-            $zone = $this->getZoneInfo($point_no);
             $result = [
                 'result' => true,
                 'log_data' => $data,
                 'ldate' => $ldate,
-                'temp_high' => $zone->temp_high,
-                'temp_low' => $zone->temp_low,
-                'humi_high' => $zone->humi_high,
-                'humi_low' => $zone->humi_low,
             ];
             return $result;
         } catch (Exception $e) {
             return $this->exception($e);
         }
-    }
-
-    private function getZoneInfo($point_no)
-    {
-        $zone = DB::selectOne("
-            select z.temp_high, z.temp_low, z.humi_high, z.humi_low
-            from mpz_zone_type z, mpz_point p
-            where p.point_no = '$point_no' and p.point_type = 'T' and p.zone = z.zone_name
-        ");
-        return $zone;
     }
     
     public function save($params)
@@ -70,28 +55,26 @@ class TemplogRepository
                 $params['duser'] = $user;
                 $params['ddate'] = date("Y-m-d H:i:s");
                 $params['state'] = 'Y';
-                $params = $this->setLogDate($params, $user);
-                $check = $this->checkTemplog($params);
+                $params = $this->setLogData($params, $user);
+                $check = $this->checkWetestlog($params);
                 if ($check) {
-                    DB::table('mpz_templog')->insert($params);
+                    DB::table('mpz_wetestlog')->insert($params);
                     $params = [
                         'point_no' => $params['point_no'],
                         'ldate' => $params['ldate'],
                         'duser' => $params['duser'],
                         'ddate' => $params['ddate'],
-                        'point_type' => 'T', 
+                        'point_type' => 'W', 
                     ];
                     DB::table('mpz_point_log')->insert($params);
                 } else {
                     DB::update("
-                        update mpz_templog
+                        update mpz_wetestlog
                         set duser = :duser, ddate = :ddate, state = :state, 
-                            mo_temp = :mo_temp, mo_hum = :mo_hum, mo_time = :mo_time, mo_err = :mo_err, 
-                                mo_type = :mo_type, mo_rmk = :mo_rmk, mo_user = :mo_user,
-                            af_temp = :af_temp, af_hum = :af_hum, af_time = :af_time, af_err = :af_err, 
-                                af_type = :af_type, af_rmk = :af_rmk, af_user = :af_user,
-                            ev_temp = :ev_temp, ev_hum = :ev_hum, ev_time = :ev_time, ev_err = :ev_err, 
-                                ev_type = :ev_type, ev_rmk = :ev_rmk , ev_user = :ev_user
+                            mo_hum = :mo_hum, mo_max = :mo_max, mo_min = :mo_min, mo_time = :mo_time, mo_user = :mo_user, mo_rmk = :mo_rmk,
+                            af_hum = :af_hum, af_max = :af_max, af_min = :af_min, af_time = :af_time, af_user = :af_user, af_rmk = :af_rmk,
+                            ev_hum = :ev_hum, ev_max = :ev_max, ev_min = :ev_min, ev_time = :ev_time, ev_user = :ev_user, ev_rmk = :ev_rmk,
+                            zero = :zero, rmk = :rmk
                         where point_no = :point_no and ldate = :ldate
                     ", $params);
                 }
@@ -108,7 +91,7 @@ class TemplogRepository
         }
     }
 
-    private function setLogDate($params, $user)
+    private function setLogData($params, $user)
     {
         $point_no = $params['point_no'];
         $ldate = (int)$params['ldate'];
@@ -121,7 +104,7 @@ class TemplogRepository
 
         $log = DB::selectOne("
             select *
-            from mpz_templog
+            from mpz_wetestlog
             where point_no = '$point_no' and ldate = $ldate
         ");
 
@@ -136,10 +119,11 @@ class TemplogRepository
     {
         $date = (int)date("Hi");
         $log = json_decode(json_encode($log), true);
-        if ($params[$cls.'_temp'] !== null || $params[$cls.'_hum'] !== null) {
-            $params[$cls.'_temp'] = (int) $params[$cls.'_temp'];
+        if ($params[$cls.'_hum'] !== null || $params[$cls.'_max'] !== null || $params[$cls.'_min']) {
             $params[$cls.'_hum'] = (int) $params[$cls.'_hum'];
-            if (!isset($log[$cls.'_temp']) || !isset($log[$cls.'_hum'])) {
+            $params[$cls.'_max'] = (int) $params[$cls.'_max'];
+            $params[$cls.'_min'] = (int) $params[$cls.'_min'];
+            if (!isset($log[$cls.'_hum']) || !isset($log[$cls.'_max']) || !isset($log[$cls.'_min'])) {
                 $params[$cls.'_time'] = (int) $date;
                 $params[$cls.'_user'] = $params['duser'];
             } else {
@@ -150,14 +134,14 @@ class TemplogRepository
         return $params;
     }
 
-    private function checkTemplog($params)
+    private function checkWetestlog($params)
     {
         $point_no = $params['point_no'];
         $ldate = $params['ldate'];
         $check = DB::selectOne("
             select count(*) count
             from mpz_point_log
-            where point_no = '$point_no' and ldate = $ldate and point_type = 'T'
+            where point_no = '$point_no' and ldate = $ldate and point_type = 'W'
         ");
 
         if ($check->count === '0') {

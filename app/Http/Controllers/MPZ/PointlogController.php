@@ -16,7 +16,7 @@ class PointlogController extends Controller
     public function __construct(PointlogRepository $pointlog)
     {
         $this->pointlog = $pointlog;
-        $this->program = 'SMAF0030';
+        $this->program = 'MPZW0010';
         session(['program' => $this->program]);
         $this->middleware('role');
     }

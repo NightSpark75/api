@@ -7,6 +7,7 @@ import axios from 'axios';
 import { Button, Panel, FormControl, Alert, Col, ButtonToolbar } from "react-bootstrap";
 import Catchlog from './Catchlog';
 import Templog from './Templog';
+import Wetestlog from './Wetestlog';
 
 export default class Pointlog extends React.Component{
     constructor(props) {
@@ -20,6 +21,7 @@ export default class Pointlog extends React.Component{
             point_info: [],
             catchlog_show: false,
             templog_show: false,
+            wetestlog_show: false,
         }
     }
 
@@ -85,7 +87,7 @@ export default class Pointlog extends React.Component{
                 this.setState({templog_show: true, scan_message: ''});
                 break;
             case 'W':   // 最濕點紀錄
-                this.setState({catchlog_show: true, scan_message: ''});
+                this.setState({wetestlog_show: true, scan_message: ''});
                 break;
             case 'R':   // 冷藏櫃操作紀錄
                 this.setState({catchlog_show: true, scan_message: ''});
@@ -100,6 +102,7 @@ export default class Pointlog extends React.Component{
         this.setState({
             catchlog_show: false,
             templog_show: false,
+            wetestlog_show: false,
             point_no: '',
             scan: '',
             point_info: [],
@@ -163,7 +166,18 @@ export default class Pointlog extends React.Component{
                             pointInfo={this.state.point_info}
                             onCancel={this.onCancel.bind(this)}
                             sendMsg={this.componentMsg.bind(this)}
-                        ></Templog>
+                        >
+                        </Templog>
+                    </Panel>
+                }
+                {this.state.wetestlog_show &&
+                    <Panel>
+                        <Wetestlog
+                            pointInfo={this.state.point_info}
+                            onCancel={this.onCancel.bind(this)}
+                            sendMsg={this.componentMsg.bind(this)}
+                        >
+                        </Wetestlog>
                     </Panel>
                 }
             </div>

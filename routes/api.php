@@ -122,5 +122,8 @@ Route::group(['prefix' => 'web/mpz', 'namespace' => 'MPZ'], function () {
         // templog
         Route::post('temp/save', 'TemplogController@save');
         Route::get('temp/init/{point_no}', 'TemplogController@init');
+        // wetestlog
+        Route::post('wetest/save', 'WetestlogController@save');
+        Route::get('wetest/init/{point_no}', 'WetestlogController@init');
     });
 });

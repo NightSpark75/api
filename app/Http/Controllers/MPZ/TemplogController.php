@@ -15,7 +15,7 @@ class TemplogController extends Controller
     public function __construct(TemplogRepository $templog)
     {
         $this->templog = $templog;
-        $this->program = 'SMAF0030';
+        $this->program = 'MPZW0010';
         session(['program' => $this->program]);
         $this->middleware('role');
     }
