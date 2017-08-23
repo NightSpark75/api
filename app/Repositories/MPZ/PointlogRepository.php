@@ -45,7 +45,8 @@ class PointlogRepository
     private function getPoint()
     {
         $list = DB::select("
-            select p.point_no, p.point_name, p.device_type, d.device_name, p.point_type, p.zone, p.mcu, p.mach_no, p.ch_date
+            select p.point_no, p.point_name, p.device_type, d.device_name, p.point_type, p.zone, p.mcu, p.mach_no, p.ch_date,
+                p.hum_range, p.temp_range
             from mpz_point p, mpz_device d
             where p.state = 'Y' and d.device_no(+) = p.device_type
         ");

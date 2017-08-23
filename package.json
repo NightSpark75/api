@@ -27,6 +27,7 @@
     "babel-polyfill": "^6.23.0",
     "bootstrap": "^3.3.7",
     "bootstrap-fileinput": "^4.4.2",
+    "bulma": "^0.5.1",
     "es6-promise": "^4.1.1",
     "react-bootstrap": "^0.31.0",
     "react-modal-bootstrap": "^1.1.1",
