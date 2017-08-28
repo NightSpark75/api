@@ -23188,7 +23188,7 @@ var Job = function (_React$Component) {
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
-                                { className: 'message-body', style: { height: '600px' } },
+                                { className: 'message-body', style: { height: '500px' } },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
                                     { className: 'field is-grouped is-grouped-multiline' },
@@ -23226,7 +23226,7 @@ var Job = function (_React$Component) {
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
-                                { className: 'message-body', style: { height: '600px' } },
+                                { className: 'message-body', style: { height: '500px' } },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
                                     { className: 'field is-grouped is-grouped-multiline' },
@@ -23834,7 +23834,7 @@ var Job = function (_React$Component) {
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
-                                { className: 'message-body', style: { height: '600px' } },
+                                { className: 'message-body', style: { height: '500px' } },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
                                     { className: 'field is-grouped is-grouped-multiline' },
@@ -23872,7 +23872,7 @@ var Job = function (_React$Component) {
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
-                                { className: 'message-body', style: { height: '600px' } },
+                                { className: 'message-body', style: { height: '500px' } },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
                                     { className: 'field is-grouped is-grouped-multiline' },
@@ -24478,7 +24478,7 @@ var Job = function (_React$Component) {
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
-                                { className: 'message-body', style: { height: '600px' } },
+                                { className: 'message-body', style: { height: '500px' } },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
                                     { className: 'field is-grouped is-grouped-multiline' },
@@ -24516,7 +24516,7 @@ var Job = function (_React$Component) {
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
-                                { className: 'message-body', style: { height: '600px' } },
+                                { className: 'message-body', style: { height: '500px' } },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
                                     { className: 'field is-grouped is-grouped-multiline' },

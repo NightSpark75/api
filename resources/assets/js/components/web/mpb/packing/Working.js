@@ -203,7 +203,7 @@ export default class Job extends React.Component{
                             <div className="message-header">
                                 <h4 className="title is-4" style={{ color: '#fff'}}>待派工生產人員</h4>
                             </div>
-                            <div className="message-body"  style={{height: '600px'}}>
+                            <div className="message-body"  style={{height: '500px'}}>
                                 <div className="field is-grouped is-grouped-multiline">
                                     {this.state.waiting_list.map((item, index) => (
                                         <p className="control" key={index}>
@@ -223,7 +223,7 @@ export default class Job extends React.Component{
                             <div className="message-header">
                                 <h4 className="title is-4" style={{ color: '#fff'}}>目前生產人員</h4>
                             </div>
-                            <div className="message-body" style={{height: '600px'}}>
+                            <div className="message-body" style={{height: '500px'}}>
                                 <div className="field is-grouped is-grouped-multiline">
                                     {this.state.working_list.map((item, index) => (
                                         <p className="control" key={index}>
