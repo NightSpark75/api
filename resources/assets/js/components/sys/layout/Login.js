@@ -3,7 +3,6 @@
  */
 import React from "react";
 import axios from 'axios';
-import AlertMsg from '../../../components/includes/AlertMsg';
 
 export default class Login extends React.Component{
     constructor(props) {
@@ -77,52 +76,46 @@ export default class Login extends React.Component{
     }
     render() {
         return(   
-            <div className="row">
-                <div className="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4">
-                    <form role="form" onSubmit={this.onLogin.bind(this)}>
-                        <h4>請輸入帳號密碼登入</h4>
-                        <div className="form-group">
-                            <input 
-                                className="form-control"
-                                type="text" 
-                                id="account" 
-                                name="account" 
-                                placeholder="請輸入帳號"
-                                maxLength="20"
-                                onChange={this.onAccountChange.bind(this)}
-                            />
+            <div className="columns">
+                <div className="column is-half is-offset-one-quarter">
+                    <form onSubmit={this.onLogin.bind(this)}>
+                        <div className="field">
+                            <label className="label">請輸入帳號密碼登入</label>
+                            <div className="control has-icons-left">
+                                <input className="input" type="text" placeholder="請輸入帳號" 
+                                    placeholder="請輸入帳號"
+                                    maxLength="20"
+                                    onChange={this.onAccountChange.bind(this)}
+                                />
+                                <span className="icon is-small is-left">
+                                    <i className="fa fa-user"></i>
+                                </span>
+                            </div>
                         </div>
-                        <div className="form-group">
-                            <input 
-                                className="form-control"
-                                type="password" 
-                                id="password" 
-                                name="password" 
-                                placeholder="請輸入密碼"
-                                maxLength="30"
-                                onChange={this.onPasswordChange.bind(this)}
-                            />
+                        <div className="field">
+                            <label className="label">請輸入帳號密碼登入</label>
+                            <div className="control has-icons-left">
+                                <input className="input" type="password" placeholder="請輸入密碼" 
+                                    placeholder="請輸入帳號"
+                                    maxLength="30"
+                                    onChange={this.onPasswordChange.bind(this)}
+                                />
+                                <span className="icon is-small is-left">
+                                    <i className="fa fa-lock"></i>
+                                </span>
+                            </div>
                         </div>
                         {this.state.buttonState === 'submit' ?
-                            <button 
-                                type="button" 
-                                className="btn btn-primary btn-block disabled"  
-                            >
-                                資料驗證中......
-                            </button>
+                            <button className="button is-loading is-primary is-medium is-fullwidth"></button>
                         :
-                            <button 
-                                type="submit" 
-                                className="btn btn-primary btn-block"   
-                            >
-                                登入
-                            </button>
+                            <button type="submit" className="button is-primary is-medium is-fullwidth">登入</button>
                         }
-                        <AlertMsg 
-                            type={this.state.msg_type} 
-                            msg={this.state.msg}
-                        />
                     </form>
+                    {this.state.msg !== '' &&
+                        <div className="notification is-warning" style={{marginTop: '10px'}}>
+                            {this.state.msg}
+                        </div>
+                    }
                 </div>
             </div>    
         );

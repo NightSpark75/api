@@ -2,10 +2,8 @@
  * Receive.js
  */
 import React from 'react';
-import ReactDOM from "react-dom";
 import { Link } from 'react-router';
 import axios from 'axios';
-import { Button, ButtonToolbar, Table, Panel, Pager, FormControl, Alert, Col, ListGroup, ListGroupItem } from "react-bootstrap";
 
 export default class Receive extends React.Component{
     constructor(props) {
@@ -245,40 +243,46 @@ export default class Receive extends React.Component{
             <div>
                 {showReceive ? 
                     <div>
-                        <Panel style={{marginBottom: '10px'}}> 
-                            <Col sm={10} md={10}>
-                                <ButtonToolbar >
-                                    <Button onClick={this.goMenu.bind(this)}>&larr; 回清單頁</Button>
-                                </ButtonToolbar>
-                            </Col>
-                            <Col sm={2} md={2} >
-                                <ButtonToolbar >
-                                    <Button bsStyle={posting ? "success" : "warning"} disabled={!posting} onClick={this.goPosting.bind(this)}>領料過帳</Button>
-                                </ButtonToolbar>
-                            </Col>
-                        </Panel> 
-                        <Panel style={{marginBottom: '10px'}}>
-                            <Col sm={3} md={3}>
-                                    <input 
-                                        type="text" 
-                                        className="form-control" 
-                                        disabled={posting}
-                                        value={this.state.barcode}
-                                        autoFocus
-                                        maxLength={8}
-                                        placeholder="掃描條碼"
-                                        onChange={this.barcodeChange.bind(this)}
-                                    />
-                            </Col>
-                            <Col sm={9} md={9}>
-                                {msg && 
-                                    <div className={"alert alert-" + msgType} style={{padding: '6px', marginBottom: '0px'}}>
-                                        {msg}
+                        <div className="box" style={{ marginTop: '10px', marginBottom: '10px' }}>
+                            <div className="level">
+                                <div className="level-left">
+                                    <div className="level-item">
+                                        <Link className="button" to="/auth/web/menu">&larr; 功能選單</Link> 
                                     </div>
-                                }
-                            </Col>
-                        </Panel>
-                        <Table bordered style={{marginBottom: '10px'}}> 
+                                </div>
+                                <div className="level-right">
+                                    <div className="level-item">
+                                        <button className="button is-success" disabled={!posting} onClick={this.goPosting.bind(this)}>領料過帳</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="box" style={{ marginBottom: '10px' }}>
+                            <div className="field is-horizontal">
+                                <div className="field-body">
+                                    <div className="field is-grouped">
+                                        <div className="field" style={{marginRight: '10px'}}>
+                                            <input 
+                                                type="text" 
+                                                className="form-control" 
+                                                disabled={posting}
+                                                value={this.state.barcode}
+                                                autoFocus
+                                                maxLength={8}
+                                                placeholder="掃描條碼"
+                                                onChange={this.barcodeChange.bind(this)}
+                                            />
+                                        </div>
+                                        {this.state.msg !== '' &&
+                                            <div className="notification is-warning" style={{padding: '1rem 1rem 1rem 1rem'}}>
+                                                {this.state.msg}
+                                            </div>
+                                        } 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <table className="table is-bordered is-fullwidth" style={{marginBottom: '10px'}}> 
                             <tbody>
                                 <tr>
                                     <td>申請單號</td><td>{item_m.no}</td>
@@ -290,10 +294,10 @@ export default class Receive extends React.Component{
                                     <td>申請單位</td><td colSpan="3">{item_m.apply_unit + item_m.dname}</td>
                                 </tr>
                             </tbody>
-                        </Table>
+                        </table>
                         <div style={{height: '730px', overflow: 'auto'}}>
                             {this.state.item_d.map((item_d,index_d) => (
-                                <table className="table table-bordered table-hover" style={{marginBottom: '10px'}} key={index_d}>
+                                <table className="table is-bordered is-fullwidth" style={{marginBottom: '10px'}} key={index_d}>
                                     <thead>
                                         <tr className={item_d.status === 'N' ? "info" : "success"}>
                                             <th width="80">料號</th><th width="120">{item_d.partno}</th>
@@ -324,31 +328,40 @@ export default class Receive extends React.Component{
                     </div>
                 :
                     <div>
-                        <Panel style={{marginBottom: '10px'}}>
-                            <Col bsClass="row">
-                                <Col sm={7} md={9}>
-                                    <ButtonToolbar >
-                                        <Link className="btn btn-default" to="/auth/web/menu">&larr; 功能選單</Link> 
-                                    </ButtonToolbar>
-                                </Col>
-                                <Col sm={5} md={3}>
-                                    <div className="input-group">
-                                        <input 
-                                            type="text" 
-                                            className="form-control" 
-                                            maxLength={9}
-                                            value={this.state.search_str}
-                                            onChange={this.searchChange.bind(this)}/>
-                                        <span className="input-group-btn">
-                                            {search && <button className="btn btn-danger" onClick={this.cancelSearch.bind(this)}>取消</button>}
-                                            <button className="btn btn-default" onClick={this.onSearch.bind(this)}>查詢</button>
-                                        </span>
+                        <div className="box" style={{ marginTop: '10px', marginBottom: '10px' }}>
+                            <div className="level">
+                                <div className="level-left">
+                                    <div className="level-item">
+                                        <Link className="button" to="/auth/web/menu">&larr; 功能選單</Link> 
                                     </div>
-                                </Col>
-                            </Col> 
-                        </Panel> 
+                                </div>
+                                <div className="level-right">
+                                    <div className="level-item">
+                                        <div className="field has-addons has-addons-right">
+                                            <p className="control">
+                                                <input 
+                                                    type="text" 
+                                                    className="input" 
+                                                    maxLength={9}
+                                                    value={this.state.search_str}
+                                                    onChange={this.searchChange.bind(this)}
+                                                />
+                                            </p>
+                                            {search &&
+                                                <p className="control">
+                                                    <button className="button is-warning" onClick={this.cancelSearch.bind(this)}>取消</button>
+                                                </p>
+                                            }
+                                            <p>
+                                                <button className="button is-light" onClick={this.onSearch.bind(this)}>查詢</button>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
                         {list.length > 0 && 
-                            <Table bordered hover>
+                            <table className="table is-bordered is-fullwidth"r>
                                 <thead>
                                     <tr>
                                         <th>單號</th>
@@ -368,18 +381,17 @@ export default class Receive extends React.Component{
                                             <td>{item.apply_date}</td>
                                             <td>{item.req_date}</td>
                                             <td>
-                                                <Button 
-                                                    bsStyle="primary" 
-                                                    bsSize="small"
+                                                <button 
+                                                    className="button is-primary"
                                                     onClick={this.goReceive.bind(this, item.no)}
                                                 >
                                                     領用
-                                                </Button>
+                                                </button>
                                             </td>
                                         </tr>
                                     ))}
                                 </tbody>
-                            </Table>
+                            </table>
                         }
                     </div>
                 }    

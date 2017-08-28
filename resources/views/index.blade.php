@@ -8,6 +8,7 @@
     <meta name="author" content="">
     <title>Stardant D2K Web Api</title>
     <link href="{{ url('/css/app.css') }}" rel="stylesheet">
+    <link href="{{ url('/css/font-awesome.min.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app"></div>

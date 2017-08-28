@@ -2,10 +2,8 @@
  * Retained.js
  */
 import React from 'react';
-import ReactDOM from "react-dom";
 import { Link } from 'react-router';
 import axios from 'axios';
-import { Button, ButtonToolbar, Table, Panel, Pager, FormControl, Alert, Col, ListGroup, ListGroupItem } from "react-bootstrap";
 
 export default class Retained extends React.Component{
     constructor(props) {
@@ -56,22 +54,36 @@ export default class Retained extends React.Component{
         const { list, ldate } = this.state;
         return(   
             <div>
-                <Panel style={{marginBottom: '10px'}}> 
-                    <ButtonToolbar >
-                        <Link className="btn btn-default" to="/auth/web/menu">&larr; 功能選單</Link>
-                        <div className="pull-right col-lg-2 col-md-2 col-sm-3 col-xs-4">
-                            <input type="text" className="form-control" id="ldate" value={ldate}
-                                maxLength={8}
-                                onChange={this.ldateChange.bind(this)}
-                            />
-                        </div>  
-                        <div className="pull-right text-right">
-                            <label className="control-label" style={{margin: '6px 0 6px 0'}}>留樣日期</label>
+                <div className="box" style={{marginTop: '10px', marginBottom: '10px'}}> 
+                    <div className="level">
+                        <div className="level-left">
+                            <div className="level-item">
+                                <Link className="button" to="/auth/web/menu">&larr; 功能選單</Link>
+                            </div>
                         </div>
-                    </ButtonToolbar>
-                </Panel> 
+                        <div className="level-right">
+                            <div className="level-item">
+                                <div className="field is-expanded">
+                                    <div className="field has-addons">
+                                        <p className="control">
+                                        <a className="button is-static">
+                                            留樣日期
+                                        </a>
+                                        </p>
+                                        <p className="control is-expanded">
+                                            <input type="text" className="input" id="ldate" value={ldate}
+                                                maxLength={8}
+                                                onChange={this.ldateChange.bind(this)}
+                                            />
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
                 {list.length > 0 ?
-                    <Table bordered hover>
+                    <table className="table is-bordered is-fullwidth">
                         <thead>
                             <tr>
                                 <th>
@@ -118,11 +130,11 @@ export default class Retained extends React.Component{
                                 </tr>
                             ))}
                         </tbody>
-                    </Table>
+                    </table>
                 :
-                    <Alert bsStyle="warning">
-                        <strong>查無資料!</strong>今日尚無留樣品資訊...
-                    </Alert>
+                    <div className="notification is-warning" style={{padding: '1rem 1rem 1rem 1rem'}}>
+                        今日尚無留樣品資訊
+                    </div>
                 }
             </div>
         );

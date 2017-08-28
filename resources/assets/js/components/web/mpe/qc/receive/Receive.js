@@ -2,10 +2,8 @@
  * Receive.js
  */
 import React from 'react';
-import ReactDOM from "react-dom";
 import { Link } from 'react-router';
 import axios from 'axios';
-import { Button, ButtonToolbar, Table, Panel, Pager, FormControl, Alert, Col, ListGroup, ListGroupItem } from "react-bootstrap";
 
 export default class Receive extends React.Component{
     constructor(props) {
@@ -138,41 +136,45 @@ export default class Receive extends React.Component{
         const { barcode, barcode_list, receive, receive_list, msg, msgType } = this.state;
         return(   
             <div>
-                <Panel style={{marginBottom: '10px'}}> 
-                    <Col sm={10} md={10}>
-                        <ButtonToolbar >
-                            <Link className="btn btn-default" to="/auth/web/menu">&larr; 功能選單</Link> 
-                        </ButtonToolbar>
-                    </Col>
-                    <Col sm={2} md={2}>
-                        <ButtonToolbar>
-                            <Button bsClass="btn btn-success pull-right" disabled={receive_list.length === 0} onClick={this.goPosting.bind(this)}>領料過帳</Button>
-                        </ButtonToolbar>
-                    </Col>
-                </Panel> 
-                <Panel style={{marginBottom: '10px'}}>
-                    <Col sm={3} md={3}>
-                            <input 
-                                type="text" 
-                                className="form-control" 
-                                disabled={barcode_list.length === 0}
-                                value={this.state.barcode}
-                                autoFocus
-                                maxLength={8}
-                                placeholder="掃描條碼"
-                                onChange={this.barcodeChange.bind(this)}
-                            />
-                    </Col>
-                    <Col sm={9} md={9}>
-                        {msg && 
-                            <div className={"alert alert-" + msgType} style={{padding: '6px', marginBottom: '0px'}}>
-                                {msg}
+                <div className="box" style={{ marginTop: '10px', marginBottom: '10px' }}>
+                    <div className="level">
+                        <div className="level-left">
+                            <div className="level-item">
+                                <Link className="button" to="/auth/web/menu">&larr; 功能選單</Link> 
                             </div>
-                        }
-                    </Col>
-                </Panel>
+                        </div>
+                        <div className="level-right">
+                            <div className="level-item">
+                                <button className="button is-success" disabled={receive_list.length === 0} onClick={this.goPosting.bind(this)}>領料過帳</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="box" style={{ marginBottom: '10px' }}>
+                    <div className="field is-horizontal">
+                        <div className="field-body">
+                            <div className="field is-grouped">
+                                <div className="field" style={{marginRight: '10px'}}>
+                                    <input type="text" className="input is-large" 
+                                        disabled={barcode_list.length === 0}
+                                        value={this.state.barcode}
+                                        autoFocus
+                                        maxLength={8}
+                                        placeholder="掃描條碼"
+                                        onChange={this.barcodeChange.bind(this)}
+                                    />
+                                </div>
+                                {this.state.msg !== '' &&
+                                    <div className="notification is-warning" style={{padding: '1rem 1rem 1rem 1rem'}}>
+                                        {this.state.msg}
+                                    </div>
+                                } 
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 {receive_list.length > 0 &&
-                    <Table bordered>
+                    <table className="table is-bordered is-fullwidth">
                         <thead>
                             <tr>
                                 <td>條碼號</td>
@@ -198,12 +200,12 @@ export default class Receive extends React.Component{
                                     <td>{item.opdate}</td>
                                     <td>{item.opvl}</td>
                                     <td>
-                                        <Button bsStyle="danger" onClick={this.removeReceive.bind(this, item)}>移除</Button>
+                                        <button className="button is-danger" onClick={this.removeReceive.bind(this, item)}>移除</button>
                                     </td>
                                 </tr>
                             </tbody>
                         ))}
-                    </Table>
+                    </table>
                 }
             </div>
         );

@@ -31,24 +31,18 @@ export default class Menu extends React.Component{
     }
 
     render() {
-        const buttonStyle = {
-            margin: '0px 0px 20px 0px',
-        }
-        const buttonClass = "col-xs-12 col-sm-6 col-md-4 col-lg-3";
+        let list = this.state.list;
+        let row = list.length / 4;
         return(   
-            <div>
-                <div className="row">
-                    {this.state.list.length === 0 ? 
-                        <div className={buttonClass} style={buttonStyle}>
-                            <h3>功能清單建立中...</h3> 
-                        </div>
-                    : null}
-                    {this.state.list.map((item, index) => (
-                        <div className={buttonClass} style={buttonStyle} key={item['prg_id']}>
-                            <Link className="btn btn-primary btn-lg btn-block" to={item['web_route']}>{item['prg_name']}</Link> 
-                        </div>
-                    ))}
-                </div>    
+            <div className="columns is-multiline" style={{marginTop: '0'}}>
+                { list.map((item, index) => (
+                    <div className="column is-3" key={item['prg_id']}>
+                        <Link className="button is-info is-3 is-fullwidth" to={item['web_route']}>
+                            {item['prg_name']}
+                        </Link>
+                    </div>
+                )) }
+                { this.state.list.length === 0 && <h3>功能清單建立中...</h3> }   
             </div>
         );
     }

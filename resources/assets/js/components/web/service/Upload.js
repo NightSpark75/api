@@ -80,57 +80,49 @@ export default class Upload extends React.Component {
     }
     render() {
         return(
-            <div className="row">
-                <div className="col-md-6 col-md-offset-3">
-                    <div className="panel panel-primary">
-                        <div className="panel-heading">
-                            <h4 className="panel-title">上傳檔案</h4>
-                        </div>
-                        <div className="panel-body">
-                            <div role="form">
-                                <div className="form-group">
-                                    <input 
-                                        type="file" 
-                                        id="file_data" 
-                                        name="file_data" 
-                                        onChange={this.onFileChange.bind(this)}
-                                    />
-                                </div>
-                                {this.state.buttonState === 'default' ? 
-                                    <div className="form-group">
-                                        <button 
-                                            type="button" 
-                                            className="btn btn-primary" 
-                                            onClick={this.onUpload.bind(this)}
-                                        >
-                                            <span className="glyphicon glyphicon-upload"></span>上傳
-                                        </button>
-                                    </div>
-                                : this.state.buttonState === 'uploading' ? 
-                                    <div className="form-group">
-                                        <button 
-                                            type="button" 
-                                            className="btn btn-info disable"
-                                        >
-                                            檔案上傳中......
-                                        </button>
-                                    </div>
-                                :  this.state.buttonState === 'complete' ?
-                                    <div className="form-group">
-                                        <button 
-                                            type="button" 
-                                            className="btn btn-success disable" 
-                                        >
-                                            <span className="glyphicon glyphicon-saved"></span>檔案已上傳完成
-                                        </button>
-                                    </div>
-                                : null
-                                }
-                                <AlertMsg 
-                                    type={this.state.msg_type} 
-                                    msg={this.state.msg}
-                                />
+            <div className="columns">
+                <div className="column is-half is-offset-one-quarter">
+                    <div className="box">
+                        <div className="column">
+                            <div className="file has-name">
+                                <label className="file-label">
+                                    <input className="file-input" type="file" name="resume" onChange={this.onFileChange.bind(this)}/>
+                                    <span className="file-cta">
+                                    <span className="file-icon">
+                                        <i className="fa fa-upload"></i>
+                                    </span>
+                                    <span className="file-label">
+                                        請選擇擋案
+                                    </span>
+                                    </span>
+                                    <span className="file-name">
+                                        {this.state.file_data && this.state.file_data.name}
+                                    </span>
+                                </label>
                             </div>
+                        </div>
+                        <div className="column">
+                            {this.state.buttonState === 'default' ? 
+                                <div className="form-group">
+                                    <button type="button" className="button is-primary" onClick={this.onUpload.bind(this)}>上傳</button>
+                                </div>
+                            : this.state.buttonState === 'uploading' ? 
+                                <div className="form-group">
+                                    <button type="button" className="button is-primary is-loading"></button>
+                                </div>
+                            :  this.state.buttonState === 'complete' ?
+                                <div className="form-group">
+                                    <button type="button" className="button is-success is-static" >
+                                        檔案已上傳完成
+                                    </button>
+                                </div>
+                            : null
+                            }
+                            {this.state.msg !== '' &&
+                                <div className="notification is-warning" style={{marginTop: '10px'}}>
+                                    {this.state.msg}
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>

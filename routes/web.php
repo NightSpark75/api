@@ -15,6 +15,7 @@ Route::get('/', function () {
     return view('index');
 });
 
+
 Route::get('/service/{msg}', function ($msg) {
     return 'msg = ' . $msg;
 });

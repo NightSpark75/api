@@ -36,8 +36,7 @@ class UserRepository
 
     public function getUser()
     {
-        $result = $this->user
-            ->where('state', 'Y')->get()->toArray();
+        $result = $this->user->get()->toArray();
         return $result;
     }
 

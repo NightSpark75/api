@@ -170,56 +170,72 @@ export default class Job extends React.Component{
 
     render() {
         const { job_list } = this.state; 
-        const buttonStyle = {margin: '0px 0px 10px 0px'}
-        const buttonClass = "col-xs-12 col-sm-6 col-md-6 col-lg-6";
         return(   
             <div>
-                <Panel style={{marginBottom: '10px'}}> 
-                    <Col>
-                        <ButtonToolbar >
-                            <Link className="btn btn-default" to="/auth/web/mpb/prod/list">&larr; 回生產清單</Link>
-                            <Button bsStyle="success"
-                                onClick={this.allUpdate.bind(this, 'join')}
-                            >整批工作</Button>
-                            <Button bsStyle="info"
-                                onClick={this.allUpdate.bind(this, 'leave')}
-                            >整批退出</Button>
-                            <Button bsStyle="primary" className="pull-right"
-                                onClick={this.workingComplete.bind(this, 'N')}
-                            >結束且完工(無清潔)</Button>
-                            <Button bsStyle="primary" className="pull-right"
-                                onClick={this.workingComplete.bind(this, 'Y')}
-                            >結束且完工(清潔)</Button>
-                        </ButtonToolbar>
-                    </Col>
-                </Panel>
-                <div className="row">
-                    <Col lg={6} md={6} sm={6}>
-                        <Panel header="待派工生產人員" bsStyle="info" style={{height: '500px'}}>
-                            {this.state.waiting_list.map((item, index) => (
-                                <div className={buttonClass} style={buttonStyle} key={index}>
-                                    <button className="btn btn-info btn-block"
-                                        onClick={this.updateWorking.bind(this, item.empno, 'join')}
-                                    >
-                                        {item.ename}
-                                    </button>
+                <div className="box" style={{ marginTop: '10px', marginBottom: '10px' }}>
+                    <div className="level">
+                        <div className="level-left">
+                            <div className="level-item">
+                                <Link className="button is-medium" to="/auth/web/mpb/prod/list">&larr; 回生產清單</Link>
+                            </div>
+                            <div className="level-item">
+                                <button className="button is-success is-medium" onClick={this.allUpdate.bind(this, 'join')}>整批工作</button>
+                            </div>
+                            <div className="level-item">
+                                <button className="button is-info is-medium" onClick={this.allUpdate.bind(this, 'leave')}>整批退出</button>
+                            </div>
+                        </div>
+                        <div className="level-right">
+                            <div className="level-item">
+                                <button className="button is-primary is-medium" onClick={this.workingComplete.bind(this, 'N')}>結束且完工(無清潔)</button>
+                            </div>
+                            <div className="level-item">
+                                <button className="button is-primary is-medium" onClick={this.workingComplete.bind(this, 'Y')}>結束且完工(清潔)</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="columns">
+                    <div className="column">
+                        <article className="message is-info">
+                            <div className="message-header">
+                                <h4 className="title is-4" style={{ color: '#fff'}}>待派工生產人員</h4>
+                            </div>
+                            <div className="message-body"  style={{height: '600px'}}>
+                                <div className="field is-grouped is-grouped-multiline">
+                                    {this.state.waiting_list.map((item, index) => (
+                                        <p className="control" key={index}>
+                                            <button className="button is-info is-large"
+                                                onClick={this.updateWorking.bind(this, item.empno, 'join')}
+                                            >
+                                                {item.ename}
+                                            </button>
+                                        </p>
+                                    ))}
                                 </div>
-                            ))}
-                        </Panel>
-                    </Col>
-                    <Col lg={6} md={6} sm={6}>
-                        <Panel header="目前生產人員" bsStyle="success" style={{height: '500px'}}>
-                            {this.state.working_list.map((item, index) => (
-                                <div className={buttonClass} style={buttonStyle} key={index}>
-                                    <button className="btn btn-success btn-block"
-                                        onClick={this.updateWorking.bind(this, item.empno, 'leave')}
-                                    >
-                                        {item.ename}
-                                    </button>
+                            </div>
+                        </article>
+                    </div>
+                    <div className="column">
+                        <article className="message is-success">
+                            <div className="message-header">
+                                <h4 className="title is-4" style={{ color: '#fff'}}>目前生產人員</h4>
+                            </div>
+                            <div className="message-body" style={{height: '600px'}}>
+                                <div className="field is-grouped is-grouped-multiline">
+                                    {this.state.working_list.map((item, index) => (
+                                        <p className="control" key={index}>
+                                            <button className="button is-info is-large"
+                                                onClick={this.updateWorking.bind(this, item.empno, 'leave')}
+                                            >
+                                                {item.ename}
+                                            </button>
+                                        </p>
+                                    ))}
                                 </div>
-                            ))}
-                        </Panel>
-                    </Col>
+                            </div>
+                        </article>
+                    </div>
                 </div>
             </div>
         )

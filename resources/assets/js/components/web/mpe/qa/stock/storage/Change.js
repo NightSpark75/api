@@ -2,10 +2,8 @@
  * Change.js
  */
 import React from 'react';
-import ReactDOM from "react-dom";
 import { Link } from 'react-router';
 import axios from 'axios';
-import { Button, ButtonToolbar, Table, Panel, Pager, FormControl, Alert, Col, ListGroup, ListGroupItem, Modal } from "react-bootstrap";
 
 export default class Change extends React.Component{
     constructor(props) {
@@ -142,34 +140,40 @@ export default class Change extends React.Component{
     render() { 
         const { list, search, search_str, searching, storageShow, storage, isLoading } = this.state;
         const content = search.length > 0 ? search : list;
+        let show = storageShow ? 'is-active': '';
         return(   
             <div>
-                <Panel style={{marginBottom: '10px'}}> 
-                    <Col sm={6} md={6}>
-                        <ButtonToolbar >
-                            <Link className="btn btn-default" to="/auth/web/menu">&larr; 功能選單</Link> 
-                        </ButtonToolbar>
-                    </Col>
-                    <Col sm={6} md={6}>
-                        <form role="form" onSubmit={this.onSearch.bind(this)}>
-                            <div className="input-group">
-                                <input 
-                                    type="text" 
-                                    className="form-control" 
-                                    maxLength={30}
-                                    value={this.state.search_str}
-                                    onChange={this.searchChange.bind(this)}/>
-                                <span className="input-group-btn">
-                                    {searching && <a className="btn btn-danger" onClick={this.cancelSearch.bind(this)}>取消</a>}
-                                    <button type="submit" className="btn btn-default">查詢</button>
-                                </span>
+                <div className="box" style={{ marginTop: '10px', marginBottom: '10px' }}>
+                    <div className="level">
+                        <div className="level-left">
+                            <div className="level-item">
+                                <Link className="button" to="/auth/web/menu">&larr; 功能選單</Link> 
                             </div>
-                        </form>
-                    </Col>
-                </Panel> 
+                        </div>
+                        <div className="level-right">
+                            <div className="level-item">
+                                <div className="field has-addons">
+                                    <div className="control">
+                                        <input 
+                                            type="text" 
+                                            className="input" 
+                                            maxLength={30}
+                                            value={this.state.search_str}
+                                            onChange={this.searchChange.bind(this)}
+                                        />
+                                    </div>
+                                    <div className="control">
+                                        {searching && <a className="button is-danger" onClick={this.cancelSearch.bind(this)}>取消</a>}
+                                        <button type="submit" className="button">查詢</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 {content.length > 0 ?
                     <div>
-                        <Table bordered hover>
+                        <table className="table is-bordered is-fullwidth">
                             <thead>
                                 <tr>
 
@@ -210,73 +214,74 @@ export default class Change extends React.Component{
                                             {item.stor}
                                         </td>
                                         <td width="92.22">
-                                            <Button bsStyle="primary" bsSize="small" onClick={this.showStorage.bind(this, item)}>變更儲位</Button>
+                                            <button className="button is-primary" onClick={this.showStorage.bind(this, item)}>變更儲位</button>
                                         </td>
                                     </tr>
                                 ))}
                             </tbody>
-                        </Table>
-                        <Modal show={storageShow} onHide={this.hideStorage.bind(this)} backdrop="static">
-                            <Modal.Header closeButton>
-                                <Modal.Title>編輯使用者</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <Table bordered hover>
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                倉庫
-                                            </th>
-                                            <th>
-                                                倉庫名稱
-                                            </th>
-                                            <th>
-                                                儲位
-                                            </th>
-                                            <th>
-                                                儲位名稱
-                                            </th>
-                                            <th width="92.22"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {storage.map((item, index) => (
-                                            <tr key={index}>
-                                                <td>
-                                                    {item.whouse}
-                                                </td>
-                                                <td>
-                                                    {item.posit}
-                                                </td>
-                                                <td>
-                                                    {item.stor}
-                                                </td>
-                                                <td>
-                                                    {item.storn}
-                                                </td>
-                                                <td>
-                                                    <Button 
-                                                        bsStyle="primary" 
-                                                        disabled={isLoading}
-                                                        onClick={!isLoading ? this.onChange.bind(this, item) : null}
-                                                    >
-                                                        {isLoading ? '變更儲位中...' : '變更'}
-                                                    </Button>
-                                                </td>
+                        </table>
+                        <div className={ "modal " + show }>
+                            <div className="modal-background"></div>
+                            <div className="modal-card">
+                                <header className="modal-card-head">
+                                    <p className="modal-card-title">儲位清單</p>
+                                </header>
+                                <section className="modal-card-body">
+                                    <table className="table is-bordered is-fullwidth">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    倉庫
+                                                </th>
+                                                <th>
+                                                    倉庫名稱
+                                                </th>
+                                                <th>
+                                                    儲位
+                                                </th>
+                                                <th>
+                                                    儲位名稱
+                                                </th>
+                                                <th width="92.22"></th>
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </Table>
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <Button onClick={this.hideStorage.bind(this)}>關閉</Button>
-                            </Modal.Footer>
-                        </Modal>
+                                        </thead>
+                                        <tbody>
+                                            {storage.map((item, index) => (
+                                                <tr key={index}>
+                                                    <td>
+                                                        {item.whouse}
+                                                    </td>
+                                                    <td>
+                                                        {item.posit}
+                                                    </td>
+                                                    <td>
+                                                        {item.stor}
+                                                    </td>
+                                                    <td>
+                                                        {item.storn}
+                                                    </td>
+                                                    <td>
+                                                        {isLoading ?
+                                                            <button className="button is-loading is-warning"></button>
+                                                        :
+                                                            <button type="button" className="button is-warning" onClick={this.onChange.bind(this, item)}>變更</button>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </section>
+                                <footer className="modal-card-foot">
+                                    <button className="button" onClick={this.hideStorage.bind(this)}>關閉</button>
+                                </footer>
+                            </div>
+                        </div>
                     </div>
                 :
-                    <Alert bsStyle="warning">
-                        <strong>查無庫存資料...</strong>
-                    </Alert>
+                    <div className="notification is-warning" style={{padding: '1rem 1rem 1rem 1rem'}}>
+                        無庫存資料
+                    </div>
                 }
             </div>
         );

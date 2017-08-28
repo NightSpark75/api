@@ -86,29 +86,24 @@ export default class Job extends React.Component{
         const { job_list } = this.state; 
         return(   
             <div>
-                <Panel style={{marginBottom: '10px'}}> 
-                    <Col sm={10} md={10}>
-                        <ButtonToolbar >
-                            <Link className="btn btn-default" to="/auth/web/menu">&larr; 功能選單</Link>
-                            {/*}
-                            <Button bsStyle="primary" className="pull-right"
-
-                            >結束且完工(無清潔)</Button>
-                            <Button bsStyle="primary" className="pull-right"
-                                
-                            >結束且完工(清潔)</Button>
-                            */}
-                        </ButtonToolbar>
-                    </Col>
-                </Panel> 
+                <div className="box" style={{ marginTop: '10px', marginBottom: '10px' }}>
+                    <p className="control">
+                        <Link className="button" to="/auth/web/menu">&larr; 功能選單</Link> 
+                    </p>
+                </div>
                 {this.state.showInfo &&  
-                    <Alert bsStyle="info" onDismiss={this.hideProcessInfo.bind(this)} style={{marginBottom: '10px'}}>
-                        <h4>製程單號{this.state.item.sno}詳細資訊</h4>
-                        <p>{this.state.item.info}</p>
-                    </Alert>
+                    <article className="message is-info" style={{ marginBottom: '10px' }}>
+                        <div className="message-header">
+                            <p>製程單號{this.state.item.sno}詳細資訊</p>
+                            <button className="delete" aria-label="delete" onClick={this.hideProcessInfo.bind(this)}></button>
+                        </div>
+                        <div className="message-body">
+                            {this.state.item.info}
+                        </div>
+                    </article>
                 }
                 {job_list.length > 0 ?
-                    <Table bordered hover>
+                    <table className="table is-bordered is-fullwidth">
                         <thead>
                             <tr>
                                 <th width="65.56"></th>
@@ -118,7 +113,6 @@ export default class Job extends React.Component{
                                 <th>途程名稱</th>
                                 <th>設備編號</th>
                                 <th>工作室名稱</th>
-                                {/*<th width="92.22"></th>*/}
                                 <th width="65.56"></th>
                             </tr>
                         </thead>
@@ -126,7 +120,7 @@ export default class Job extends React.Component{
                             {job_list.map((item, index) => (
                                 <tr key={index}>
                                     <td>
-                                        <Button bsSize="small" onClick={this.showProcessInfo.bind(this, item)}>詳細資訊</Button>
+                                        <button className="button" onClick={this.showProcessInfo.bind(this, item)}>詳細資訊</button>
                                     </td>
                                     <td>{item.sno}</td>
                                     <td>{item.bno}</td>
@@ -134,26 +128,18 @@ export default class Job extends React.Component{
                                     <td>{item.pname}</td>
                                     <td>{item.mno}</td>
                                     <td>{item.rname}</td>
-                                    {/*
                                     <td>
-                                        <Button bsStyle="primary" bsSize="small"
-                                        >
-                                            料號確認
-                                        </Button>
-                                    </td>
-                                    */}
-                                    <td>
-                                        <Link className="btn btn-primary btn-sm" 
+                                        <Link className="button is-primary" 
                                             to={"/auth/web/mpb/package/working/" + item.sno + "/" + item.psno}>報工</Link>
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
-                    </Table>
+                    </table>
                 :
-                    <Alert bsStyle="warning">
-                        <strong>查無資料!</strong>目前尚無生產資訊...
-                    </Alert>
+                    <div className="notification is-warning" style={{padding: '1rem 1rem 1rem 1rem'}}>
+                        目前尚無生產資訊...
+                    </div>
                 }
             </div>
         )

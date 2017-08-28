@@ -4,7 +4,6 @@
 import React from 'react';
 import { Link } from 'react-router';
 import axios from 'axios';
-import { Button, Panel, FormControl, Alert, Col, ButtonToolbar } from "react-bootstrap";
 import Catchlog from './Catchlog';
 import Templog from './Templog';
 import Wetestlog from './Wetestlog';
@@ -120,65 +119,60 @@ export default class Pointlog extends React.Component{
     render() {
         return(   
             <div>
-                <Panel style={{marginBottom: '10px'}}> 
-                    <Col sm={10} md={10}>
-                        <ButtonToolbar >
-                            <Link className="btn btn-default" to="/auth/web/menu">&larr; 功能選單</Link> 
-                        </ButtonToolbar>
-                    </Col>
-                </Panel> 
-                <Panel style={{marginBottom: '10px'}}>
-                    <div className="row">
-                        <div className="col-sm-4 col-md-3">
-                            <FormControl
-                                type="text"
-                                className="input-lg"
-                                value={this.state.point_no}
-                                placeholder="掃描條碼"
-                                disabled={this.state.scan}
-                                onChange={this.scanChange.bind(this)}
-                            />
-                        </div>
-                        <div className="col-sm-8 col-md-9">
-                            {this.state.scan_message !== '' && 
-                                <strong>
-                                    <h4>
+                <div className="box" style={{ marginTop: '10px', marginBottom: '10px' }}>
+                    <p className="control">
+                        <Link className="button" to="/auth/web/menu">&larr; 功能選單</Link> 
+                    </p>
+                </div>
+                <div className="box" style={{ marginBottom: '10px' }}>
+                    <div className="field is-horizontal">
+                        <div className="field-body">
+                            <div className="field is-grouped">
+                                <div className="field" style={{marginRight: '10px'}}>
+                                    <input type="text" className="input is-large" placeholder="掃描條碼"
+                                        value={this.state.point_no}
+                                        disabled={this.state.scan}
+                                        onChange={this.scanChange.bind(this)}
+                                    />
+                                </div>
+                                {this.state.scan_message !== '' &&
+                                    <div className="notification is-warning" style={{padding: '1rem 1rem 1rem 1rem'}}>
                                         {this.state.scan_message}
-                                    </h4>
-                                </strong>
-                            }
+                                    </div>
+                                } 
+                            </div>
                         </div>
-                    </div>  
-                </Panel> 
+                    </div>
+                </div>
                 {this.state.catchlog_show &&
-                    <Panel>
+                    <div className="box">
                         <Catchlog
                             pointInfo={this.state.point_info}
                             onCancel={this.onCancel.bind(this)}
                             sendMsg={this.componentMsg.bind(this)}
                         >
                         </Catchlog>
-                    </Panel>
+                        </div>
                 }
                 {this.state.templog_show &&
-                    <Panel>
+                    <div className="box">
                         <Templog
                             pointInfo={this.state.point_info}
                             onCancel={this.onCancel.bind(this)}
                             sendMsg={this.componentMsg.bind(this)}
                         >
                         </Templog>
-                    </Panel>
+                        </div>
                 }
                 {this.state.wetestlog_show &&
-                    <Panel>
+                    <div className="box">
                         <Wetestlog
                             pointInfo={this.state.point_info}
                             onCancel={this.onCancel.bind(this)}
                             sendMsg={this.componentMsg.bind(this)}
                         >
                         </Wetestlog>
-                    </Panel>
+                    </div>
                 }
             </div>
         );

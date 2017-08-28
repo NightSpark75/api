@@ -76,7 +76,8 @@ class ReceiveRepository
                     and d.whouse = h.whouse and d.stor = h.stor 
                 join mpe_lsa_e e on d.partno = e.partno and d.bno = e.bno 
                     and d.whouse = e.whouse and d.stor = e.stor and d.lsa_no = e.lsa_no
-            where d.lsa_no like :lsa_no
+                join mpe_lsa_m lm on lm.no = d.lsa_no
+            where d.lsa_no like :lsa_no and lm.status = 'P'
             group by d.lsa_no, d.bno, d.qty, d.partno, d.whouse, d.stor, m.pname, h.usize, h.unit
             order by d.lsa_no, d.bno
         ", ['lsa_no' => $lsa_no]);
@@ -88,10 +89,11 @@ class ReceiveRepository
         $lsa_e = DB::select("
             select e.*, h.usize, h.unit, he.amt
             from mpe_lsa_e e
-            join mpe_house_m h on e.bno = h.batch and e.partno = h.partno 
-                    and e.whouse = h.whouse and e.stor = h.stor and h.code = '04'
-            join mpe_house_e he on e.barcode = he.barcode
-            where e.lsa_no like :lsa_no
+                join mpe_house_m h on e.bno = h.batch and e.partno = h.partno 
+                        and e.whouse = h.whouse and e.stor = h.stor and h.code = '04'
+                join mpe_house_e he on e.barcode = he.barcode
+                join mpe_lsa_m lm on lm.no = e.lsa_no
+            where e.lsa_no like :lsa_no and lm.status = 'P'
             order by e.lsa_no, e.bno
         ", ['lsa_no' => $lsa_no]);
         return $lsa_e;

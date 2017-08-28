@@ -4,7 +4,6 @@
 import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router';
-import { ButtonToolbar } from "react-bootstrap";
 import UserAdd from './UserAdd';
 import UserEdit from './UserEdit';
 
@@ -69,6 +68,7 @@ export default class User extends React.Component{
     }
 
     openAdd() {
+        this.refs.add.initState();
         this.setState({isAddShow: true});
     }
 
@@ -157,58 +157,61 @@ export default class User extends React.Component{
         const user = this.state.user;
         return(   
             <div>
-                <div className="row">
-                    <div className="row">
-                        <div className="col-lg-8 col-md-8 col-sm-6">
-                            <ButtonToolbar>
-                                <Link className="btn btn-default" to="/auth/web/menu">&larr; 功能選單</Link> 
-                                {prg['prg_ins'] === 'Y' ?
-                                    <button className="btn btn-primary" onClick={this.openAdd.bind(this)}>新增</button>
-                                :
-                                    <button className="btn btn-primary disabled">新增</button>
-                                }
-                            </ButtonToolbar>
-                        </div>
-                        <div className="col-lg-4 col-md-4 col-sm-6 text-right">
+                <div className="box" style={{ marginTop: '10px' }}>
+                    <div className="field is-horizontal">
+                        <div className="field-body">
+                            <div className="field is-grouped">
+                                <p className="control">
+                                    <Link className="button" to="/auth/web/menu">&larr; 功能選單</Link> 
+                                </p>
+                                <p className="control">
+                                    {prg['prg_ins'] === 'Y' ?
+                                        <button className="button is-primary" onClick={this.openAdd.bind(this)}>新增</button>
+                                    :
+                                        <button className="button is-primary is-static">新增</button>
+                                    }
+                                </p>
+                            </div>
+                            
                             {this.state.allList ? 
-                                <div className="input-group">
-                                    <input 
-                                        type="text" 
-                                        className="form-control" 
-                                        value={this.state.search}
-                                        onChange={this.searchChange.bind(this)}/>
-                                    <span className="input-group-btn">
-                                        <button className="btn btn-default" onClick={this.onSearch.bind(this)}>查詢</button>
-                                    </span>
+                                <div className="field has-addons has-addons-right">
+                                    <div className="control">
+                                        <input 
+                                            type="text" 
+                                            className="input" 
+                                            value={this.state.search}
+                                            onChange={this.searchChange.bind(this)}
+                                        />
+                                    </div>
+                                    <div className="control">
+                                        <button className="button is-info" onClick={this.onSearch.bind(this)}>查詢</button>
+                                    </div>
                                 </div>
                             :
-                                <div className="input-group">
-                                    <input 
-                                        type="text" 
-                                        className="form-control"
-                                        value={this.state.search}  
-                                        onChange={this.searchChange.bind(this)}
-                                    />
-                                    <span className="input-group-btn">
-                                        <button 
-                                            className="btn btn-danger" 
-                                            onClick={this.nonSearch.bind(this)}
-                                        >
-                                        取消
-                                        </button>
-                                        <button 
-                                            className="btn btn-default" 
-                                            onClick={this.onSearch.bind(this)}
-                                        >
-                                        查詢
-                                        </button>
-                                    </span>
+                                <div className="field has-addons has-addons-right">
+                                    <p className="control">
+                                        <input 
+                                            type="text" 
+                                            className="input"
+                                            value={this.state.search}  
+                                            onChange={this.searchChange.bind(this)}
+                                        />
+                                    </p>
+                                    <p className="control">
+                                        <button className="button is-warning" onClick={this.nonSearch.bind(this)}>取消</button>
+                                    </p>
+                                    <p>
+                                        <button className="button is-light" onClick={this.onSearch.bind(this)}>查詢</button>
+                                    </p>
                                 </div>
                             }
                         </div>
                     </div>
-                    <p></p>
-                    <table className="table table-bordered">
+                </div>
+                {this.state.user.length === 0 ?
+                    <h3>資料讀取中...</h3> 
+                :
+                    <table className="table is-bordered is-striped is-fullwidth">
                         <thead>
                             <tr>
                                 <td></td>
@@ -228,9 +231,9 @@ export default class User extends React.Component{
                                 <tr key={index}>
                                     <td>
                                         {prg['prg_upd'] === 'Y' ?
-                                            <button className="btn btn-sm btn-warning" onClick={this.openEdit.bind(this, item)}>編輯</button>
+                                            <button className="button is-small is-info" onClick={this.openEdit.bind(this, item)}>編輯</button>
                                         :
-                                            <button className="btn btn-sm btn-warning disabled">編輯</button>
+                                            <button className="button is-small is-primary is-static">編輯</button>
                                         }
                                     </td>
                                     <td>{item['user_id']}</td>
@@ -238,46 +241,42 @@ export default class User extends React.Component{
                                     <td>{item['pw_cday']}</td>
                                     <td>{item['pw_uday']}</td>
                                     <td>
-                                        {item['pw_ctrl'] === 'Y' ? <span className="label label-success">Y</span>
-                                        : <span className="label label-danger">N</span> }
+                                        {item['pw_ctrl'] === 'Y' ? <span className="tag is-success">Y</span>
+                                        : <span className="tag is-danger">N</span> }
                                     </td>
                                     <td>
-                                        {item['class'] === 'Y' ? <span className="label label-success">Y</span>
-                                        : <span className="label label-danger">N</span> }
+                                        {item['class'] === 'Y' ? <span className="tag is-success">Y</span>
+                                        : <span className="tag is-danger">N</span> }
                                     </td>
                                     <td>
-                                        {item['state'] === 'Y' ? <span className="label label-success">Y</span>
-                                        : <span className="label label-danger">N</span> }
+                                        {item['state'] === 'Y' ? <span className="tag is-success">Y</span>
+                                        : <span className="tag is-danger">N</span> }
                                     </td>
                                     <td>{item['rmk']}</td>
                                     <td>
                                         {prg['prg_upd'] === 'Y' ?
-                                            <button className="btn btn-sm btn-danger" onClick={this.onDelete.bind(this, item['user_id'])}>刪除</button>
+                                            <button className="button is-small is-danger" onClick={this.onDelete.bind(this, item['user_id'])}>刪除</button>
                                         :
-                                            <button className="btn btn-sm btn-danger disabled">刪除</button>
+                                            <button className="button is-small is-danger is-static">刪除</button>
                                         }
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
-                    {this.state.user.length === 0 && 
-                        <div>
-                            <h3>資料讀取中...</h3> 
-                        </div>
-                    }
+                }
                     <UserAdd 
                         showModal={this.state.isAddShow} 
                         onHide={this.hideAdd.bind(this)} 
                         addList={this.addList.bind(this)} 
+                        ref="add"
                     />
                     <UserEdit 
                         showModal={this.state.isEditShow} 
                         onHide={this.hideEdit.bind(this)}  
                         editList={this.editList.bind(this)} 
                         ref="edit"
-                    />
-                </div>    
+                    />   
             </div>
         );
     }

@@ -1,11 +1,9 @@
 /** 
- * Coa.js
+ * Search.js
  */
 import React from 'react';
-import ReactDOM from "react-dom";
 import { Link } from 'react-router';
 import axios from 'axios';
-import { Button, ButtonToolbar, Table, Panel, Pager, FormControl, Alert, Col, ListGroup, ListGroupItem } from "react-bootstrap";
 
 export default class Search extends React.Component{
     constructor(props) {
@@ -94,54 +92,48 @@ export default class Search extends React.Component{
         const marginBottom = {marginBottom: '10px'};
         return(   
             <div>
-                <Panel style={marginBottom}> 
-                    <div className="row" style={marginBottom}>
-                        <div className="col-md-4 col-sm-4 col-xs-6">
-                            <input type="text" className="form-control input-lg" 
-                                value={this.state.barcode}
-                                placeholder="掃描條碼"
-                                maxLength={8}
-                                autoFocus
-                                onChange={this.barcodeChange.bind(this)}
-                            />
-                        </div>
+                <div className="box"> 
+                    <div className="column">
+                        <input type="text" className="input is-medium" 
+                            value={this.state.barcode}
+                            placeholder="掃描條碼"
+                            maxLength={8}
+                            autoFocus
+                            onChange={this.barcodeChange.bind(this)}
+                        />
                     </div>
-                    <div className="row" style={marginBottom}>
-                        <div className="col-md-4 col-sm-4 col-xs-6">
-                            <input type="text" className="form-control input-lg" 
-                                value={this.state.partno}
-                                maxLength={20}
-                                placeholder="輸入料號"
-                                onChange={this.partnoChange.bind(this)}
-                            />
-                        </div>
+                    <div className="column">
+                        <input type="text" className="input is-medium" 
+                            value={this.state.partno}
+                            maxLength={20}
+                            placeholder="輸入料號"
+                            onChange={this.partnoChange.bind(this)}
+                        />
                     </div>
-                    <div className="row">
-                        <div className="col-md-4 col-sm-4 col-xs-6">
-                            <input type="text" className="form-control input-lg" 
-                                value={this.state.batch}
-                                maxLength={20}
-                                placeholder="輸入批號"
-                                onChange={this.batchChange.bind(this)}
-                            />
-                        </div>
-                        <div className="col-md-8 col-sm-8 col-xs-6">
-                            <button className="btn btn-primary btn-lg"
-                                onClick={this.goSearch.bind(this)}
-                            >查詢</button>
-                        </div>
+                    <div className="column">
+                        <input type="text" className="input is-medium" 
+                            value={this.state.batch}
+                            maxLength={20}
+                            placeholder="輸入批號"
+                            onChange={this.batchChange.bind(this)}
+                        />
                     </div>
-                </Panel> 
+                    <div className="column">
+                        <button className="button is-primary is-medium"
+                            onClick={this.goSearch.bind(this)}
+                        >查詢</button>
+                    </div>
+                </div> 
                 {info.partno !== undefined &&
-                    <Panel>
+                    <div className="box">
                         <div>
-                            <Table bordered>
+                            <table className="table is-bordered is-fullwidth">
                                 <tbody>
                                     <tr>
-                                        <td className="col-md-2 col-sm-2 col-xs-2">料號</td>
-                                        <td className="col-md-4 col-sm-4 col-xs-4">{ info.partno }</td>
-                                        <td className="col-md-2 col-sm-2 col-xs-2">批號</td>
-                                        <td className="col-md-4 col-sm-4 col-xs-4">{ info.batch }</td>
+                                        <td width="100">料號</td>
+                                        <td>{ info.partno }</td>
+                                        <td width="100">批號</td>
+                                        <td>{ info.batch }</td>
                                     </tr>
                                     <tr>
                                         <td>中文名稱</td><td colSpan={3}>{ info.pname }</td>
@@ -150,23 +142,23 @@ export default class Search extends React.Component{
                                         <td>英文名稱</td><td colSpan={3}>{ info.ename }</td>
                                     </tr>
                                 </tbody>
-                            </Table>
-                            <div className="row">
-                                <div className="col-md-6 col-sm-6 col-xs-6">
+                            </table>
+                            <div className="columns">
+                                <div className="column is-4">
                                     {info.sds_no === null ?
-                                        <button className="btn btn-default btn-lg btn-primary disabled">SDS文件</button>
+                                        <button className="button is-large is-primary is-static">SDS文件</button>
                                     :
-                                        <a className="btn btn-default btn-lg btn-primary"
+                                        <a className="button is-large is-primary"
                                             href={"/api/web/mpe/qc/doc/read/sds/" + info.partno + "/N/" + info.sds_no}
                                             target="_blank"
                                         >SDS文件</a>
                                     }
                                 </div>
-                                <div className="col-md-6 col-sm-6 col-xs-6">
+                                <div className="column is-4">
                                     {info.coa_no === null ?
-                                        <button className="btn btn-default btn-lg btn-primary disabled">COA文件</button>
+                                        <button className="button is-large is-primary is-static">COA文件</button>
                                     :
-                                        <a className="btn btn-default btn-lg btn-primary"
+                                        <a className="button is-large is-primary"
                                             href={"/api/web/mpe/qc/doc/read/coa/" + info.partno + "/" + info.batch + "/" + info.coa_no}
                                             target="_blank"
                                         >COA文件</a>
@@ -174,7 +166,7 @@ export default class Search extends React.Component{
                                 </div>
                             </div>
                         </div>
-                    </Panel>
+                    </div>
                 }
                 {message.length > 0 &&
                     <Alert bsStyle="warning">
