@@ -164,7 +164,7 @@ export default class Change extends React.Component{
                                     </div>
                                     <div className="control">
                                         {searching && <a className="button is-danger" onClick={this.cancelSearch.bind(this)}>取消</a>}
-                                        <button type="submit" className="button">查詢</button>
+                                        <button type="submit" className="button" onClick={this.onSearch.bind(this)}>查詢</button>
                                     </div>
                                 </div>
                             </div>
@@ -273,7 +273,7 @@ export default class Change extends React.Component{
                                     </table>
                                 </section>
                                 <footer className="modal-card-foot">
-                                    <button className="button" onClick={this.hideStorage.bind(this)}>關閉</button>
+                                    <button className="button is-primary" onClick={this.hideStorage.bind(this)}>關閉</button>
                                 </footer>
                             </div>
                         </div>

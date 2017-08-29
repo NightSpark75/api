@@ -22397,7 +22397,7 @@ var Menu = function (_React$Component) {
             var row = list.length / 4;
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
-                { className: 'columns is-multiline', style: { marginTop: '0' } },
+                { className: 'columns is-multiline', style: { margin: '0px' } },
                 list.map(function (item, index) {
                     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
@@ -23182,7 +23182,7 @@ var Job = function (_React$Component) {
                                 { className: 'message-header' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'h4',
-                                    { className: 'title is-4', style: { color: '#fff' } },
+                                    { className: 'title is-4 has-text-white-ter' },
                                     '\u5F85\u6D3E\u5DE5\u751F\u7522\u4EBA\u54E1'
                                 )
                             ),
@@ -23220,7 +23220,7 @@ var Job = function (_React$Component) {
                                 { className: 'message-header' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'h4',
-                                    { className: 'title is-4', style: { color: '#fff' } },
+                                    { className: 'title is-4 has-text-white-ter' },
                                     '\u76EE\u524D\u751F\u7522\u4EBA\u54E1'
                                 )
                             ),
@@ -23828,7 +23828,7 @@ var Job = function (_React$Component) {
                                 { className: 'message-header' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'h4',
-                                    { className: 'title is-4', style: { color: '#fff' } },
+                                    { className: 'title is-4 has-text-white-ter' },
                                     '\u5F85\u6D3E\u5DE5\u751F\u7522\u4EBA\u54E1'
                                 )
                             ),
@@ -23866,7 +23866,7 @@ var Job = function (_React$Component) {
                                 { className: 'message-header' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'h4',
-                                    { className: 'title is-4', style: { color: '#fff' } },
+                                    { className: 'title is-4 has-text-white-ter' },
                                     '\u76EE\u524D\u751F\u7522\u4EBA\u54E1'
                                 )
                             ),
@@ -24472,7 +24472,7 @@ var Job = function (_React$Component) {
                                 { className: 'message-header' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'h4',
-                                    { className: 'title is-4', style: { color: '#fff' } },
+                                    { className: 'title is-4 has-text-white-ter' },
                                     '\u5F85\u6D3E\u5DE5\u751F\u7522\u4EBA\u54E1'
                                 )
                             ),
@@ -24510,7 +24510,7 @@ var Job = function (_React$Component) {
                                 { className: 'message-header' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'h4',
-                                    { className: 'title is-4', style: { color: '#fff' } },
+                                    { className: 'title is-4 has-text-white-ter' },
                                     '\u76EE\u524D\u751F\u7522\u4EBA\u54E1'
                                 )
                             ),
@@ -25158,7 +25158,7 @@ var Receive = function (_React$Component) {
                                             null,
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 'button',
-                                                { className: 'button is-light', onClick: this.onSearch.bind(this) },
+                                                { className: 'button', onClick: this.onSearch.bind(this) },
                                                 '\u67E5\u8A62'
                                             )
                                         )
@@ -25733,7 +25733,7 @@ var Change = function (_React$Component) {
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             'button',
-                                            { type: 'submit', className: 'button' },
+                                            { type: 'submit', className: 'button', onClick: this.onSearch.bind(this) },
                                             '\u67E5\u8A62'
                                         )
                                     )
@@ -25924,7 +25924,7 @@ var Change = function (_React$Component) {
                                 { className: 'modal-card-foot' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'button',
-                                    { className: 'button', onClick: this.hideStorage.bind(this) },
+                                    { className: 'button is-primary', onClick: this.hideStorage.bind(this) },
                                     '\u95DC\u9589'
                                 )
                             )
@@ -26016,7 +26016,6 @@ var Search = function (_React$Component) {
                 batch: '',
                 info: {}
             });
-
             if (e.target.value.length === 8) {
                 var form_data = new FormData();
                 form_data.append('barcode', e.target.value);
@@ -26073,7 +26072,6 @@ var Search = function (_React$Component) {
                 info = _state2.info,
                 message = _state2.message;
 
-            var marginBottom = { marginBottom: '10px' };
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
@@ -26228,11 +26226,11 @@ var Search = function (_React$Component) {
                     )
                 ),
                 message.length > 0 && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    Alert,
-                    { bsStyle: 'warning' },
+                    'article',
+                    { 'class': 'message is-warning' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'strong',
-                        null,
+                        'div',
+                        { 'class': 'message-body' },
                         message
                     )
                 )

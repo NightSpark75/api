@@ -353,7 +353,7 @@ export default class Receive extends React.Component{
                                                 </p>
                                             }
                                             <p>
-                                                <button className="button is-light" onClick={this.onSearch.bind(this)}>查詢</button>
+                                                <button className="button" onClick={this.onSearch.bind(this)}>查詢</button>
                                             </p>
                                         </div>
                                     </div>

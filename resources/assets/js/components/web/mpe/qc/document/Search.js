@@ -41,7 +41,6 @@ export default class Search extends React.Component{
             batch: '',
             info: {},
         });
-
         if (e.target.value.length === 8) {
             let form_data = new FormData();
             form_data.append('barcode', e.target.value);
@@ -70,8 +69,7 @@ export default class Search extends React.Component{
 
     getInfo(url, data) {
         let self = this;
-        axios.post(url, data)
-        .then(function (response) {
+        axios.post(url, data).then(function (response) {
             if (response.data.result) {
                 self.setState({
                     info: response.data.info,
@@ -89,7 +87,6 @@ export default class Search extends React.Component{
 
     render() { 
         const { barcode, partno, batch, info, message } = this.state;
-        const marginBottom = {marginBottom: '10px'};
         return(   
             <div>
                 <div className="box"> 
@@ -169,9 +166,11 @@ export default class Search extends React.Component{
                     </div>
                 }
                 {message.length > 0 &&
-                    <Alert bsStyle="warning">
-                        <strong>{message}</strong>
-                    </Alert>
+                    <article class="message is-warning">
+                        <div class="message-body">
+                            {message}
+                        </div>
+                    </article>
                 }
             </div>
         )

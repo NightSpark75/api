@@ -201,7 +201,7 @@ export default class Job extends React.Component{
                     <div className="column">
                         <article className="message is-info">
                             <div className="message-header">
-                                <h4 className="title is-4" style={{ color: '#fff'}}>待派工生產人員</h4>
+                                <h4 className="title is-4 has-text-white-ter">待派工生產人員</h4>
                             </div>
                             <div className="message-body"  style={{height: '500px'}}>
                                 <div className="field is-grouped is-grouped-multiline">
@@ -221,7 +221,7 @@ export default class Job extends React.Component{
                     <div className="column">
                         <article className="message is-success">
                             <div className="message-header">
-                                <h4 className="title is-4" style={{ color: '#fff'}}>目前生產人員</h4>
+                                <h4 className="title is-4 has-text-white-ter">目前生產人員</h4>
                             </div>
                             <div className="message-body" style={{height: '500px'}}>
                                 <div className="field is-grouped is-grouped-multiline">
