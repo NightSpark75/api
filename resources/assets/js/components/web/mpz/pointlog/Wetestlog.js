@@ -171,15 +171,15 @@ export default class Wetestlog extends React.Component{
                 </div>
                 <div className="column">
                     <table className="table is-bordered" style={{marginBottom: '0px'}}>
-                    <tbody>
-                    <tr>
-                        <td>名稱</td><td>{point_info.point_name}</td><td>儀器編號</td><td>{point_info.mach_no}</td>
-                    </tr>
-                    <tr>
-                        <td>儀器校期</td><td>{point_info.ch_date}</td>
-                        <td>合格範圍</td><td>{point_info.hum_range}</td>
-                    </tr>
-                </tbody>
+                        <tbody>
+                            <tr>
+                                <td>名稱</td><td>{point_info.point_name}</td><td>儀器編號</td><td>{point_info.mach_no}</td>
+                            </tr>
+                            <tr>
+                                <td>儀器校期</td><td>{point_info.ch_date}</td>
+                                <td>合格範圍</td><td>濕度：{point_info.hum_range} R.H(%)</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
                 <div className="column">

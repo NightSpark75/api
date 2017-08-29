@@ -7,6 +7,7 @@ import axios from 'axios';
 import Catchlog from './Catchlog';
 import Templog from './Templog';
 import Wetestlog from './Wetestlog';
+import Refrilog from './Refrilog';
 
 export default class Pointlog extends React.Component{
     constructor(props) {
@@ -21,6 +22,7 @@ export default class Pointlog extends React.Component{
             catchlog_show: false,
             templog_show: false,
             wetestlog_show: false,
+            refrilog_show: false,
         }
     }
 
@@ -89,7 +91,7 @@ export default class Pointlog extends React.Component{
                 this.setState({wetestlog_show: true, scan_message: ''});
                 break;
             case 'R':   // 冷藏櫃操作紀錄
-                this.setState({catchlog_show: true, scan_message: ''});
+                this.setState({refrilog_show: true, scan_message: ''});
                 break;
             case 'P':   // 壓差紀錄
                 this.setState({catchlog_show: true, scan_message: ''});
@@ -102,6 +104,7 @@ export default class Pointlog extends React.Component{
             catchlog_show: false,
             templog_show: false,
             wetestlog_show: false,
+            refrilog_show: false,
             point_no: '',
             scan: '',
             point_info: [],
@@ -174,6 +177,16 @@ export default class Pointlog extends React.Component{
                         </Wetestlog>
                     </div>
                 }
+                {this.state.refrilog_show &&
+                    <div className="box">
+                        <Refrilog
+                            pointInfo={this.state.point_info}
+                            onCancel={this.onCancel.bind(this)}
+                            sendMsg={this.componentMsg.bind(this)}
+                        >
+                        </Refrilog>
+                    </div>
+                }   
             </div>
         );
     }

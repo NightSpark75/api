@@ -15,6 +15,9 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::get('/ip', function () {
+    return request()->ip();
+});
 
 Route::get('/service/{msg}', function ($msg) {
     return 'msg = ' . $msg;

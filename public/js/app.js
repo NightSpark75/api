@@ -23236,7 +23236,7 @@ var Job = function (_React$Component) {
                                             { className: 'control', key: index },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 'button',
-                                                { className: 'button is-info is-large',
+                                                { className: 'button is-success is-large',
                                                     onClick: _this2.updateWorking.bind(_this2, item.empno, 'leave')
                                                 },
                                                 item.ename
@@ -23882,7 +23882,7 @@ var Job = function (_React$Component) {
                                             { className: 'control', key: index },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 'button',
-                                                { className: 'button is-info is-large',
+                                                { className: 'button is-success is-large',
                                                     onClick: _this2.updateWorking.bind(_this2, item.empno, 'leave')
                                                 },
                                                 item.ename
@@ -24526,7 +24526,7 @@ var Job = function (_React$Component) {
                                             { className: 'control', key: index },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 'button',
-                                                { className: 'button is-info is-large',
+                                                { className: 'button is-success is-large',
                                                     onClick: _this2.updateWorking.bind(_this2, item.empno, 'leave')
                                                 },
                                                 item.ename
@@ -27457,6 +27457,7 @@ var Catchlog = function (_React$Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Catchlog__ = __webpack_require__(278);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Templog__ = __webpack_require__(280);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Wetestlog__ = __webpack_require__(281);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Refrilog__ = __webpack_require__(551);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -27468,6 +27469,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /** 
  * Pointlog.js
  */
+
 
 
 
@@ -27491,7 +27493,8 @@ var Pointlog = function (_React$Component) {
             point_info: [],
             catchlog_show: false,
             templog_show: false,
-            wetestlog_show: false
+            wetestlog_show: false,
+            refrilog_show: false
         };
         return _this;
     }
@@ -27580,7 +27583,7 @@ var Pointlog = function (_React$Component) {
                     break;
                 case 'R':
                     // 冷藏櫃操作紀錄
-                    this.setState({ catchlog_show: true, scan_message: '' });
+                    this.setState({ refrilog_show: true, scan_message: '' });
                     break;
                 case 'P':
                     // 壓差紀錄
@@ -27595,6 +27598,7 @@ var Pointlog = function (_React$Component) {
                 catchlog_show: false,
                 templog_show: false,
                 wetestlog_show: false,
+                refrilog_show: false,
                 point_no: '',
                 scan: '',
                 point_info: []
@@ -27681,6 +27685,15 @@ var Pointlog = function (_React$Component) {
                     'div',
                     { className: 'box' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Wetestlog__["a" /* default */], {
+                        pointInfo: this.state.point_info,
+                        onCancel: this.onCancel.bind(this),
+                        sendMsg: this.componentMsg.bind(this)
+                    })
+                ),
+                this.state.refrilog_show && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'box' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__Refrilog__["a" /* default */], {
                         pointInfo: this.state.point_info,
                         onCancel: this.onCancel.bind(this),
                         sendMsg: this.componentMsg.bind(this)
@@ -28756,7 +28769,9 @@ var Wetestlog = function (_React$Component) {
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "td",
                                     null,
-                                    point_info.hum_range
+                                    "\u6FD5\u5EA6\uFF1A",
+                                    point_info.hum_range,
+                                    " R.H(%)"
                                 )
                             )
                         )
@@ -56690,6 +56705,742 @@ function isReactComponent(component) {
 __webpack_require__(242);
 module.exports = __webpack_require__(243);
 
+
+/***/ }),
+/* 548 */,
+/* 549 */,
+/* 550 */,
+/* 551 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/** 
+ * Refrilog.js
+ */
+
+
+
+
+var Refrilog = function (_React$Component) {
+    _inherits(Refrilog, _React$Component);
+
+    function Refrilog(props) {
+        _classCallCheck(this, Refrilog);
+
+        var _this = _possibleConstructorReturn(this, (Refrilog.__proto__ || Object.getPrototypeOf(Refrilog)).call(this, props));
+
+        _this.state = {
+            point_info: {}, point_no: '', ldate: '',
+            mo_temp: '', mo_putt: '', mo_bell: '', mo_light: '', mo_time: '', mo_rmk: '',
+            af_temp: '', af_putt: '', af_bell: '', af_light: '', af_time: '', af_rmk: '',
+            rmk: '',
+            mo: false, af: false,
+            log_data: {},
+            init: false
+        };
+        _this.sendMsg = _this.props.sendMsg.bind(_this);
+        return _this;
+    }
+
+    _createClass(Refrilog, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            this.init();
+        }
+    }, {
+        key: "init",
+        value: function init() {
+            var self = this;
+            var point_info = this.props.pointInfo;
+            this.setState({ init: true });
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/web/mpz/pointlog/refri/init/' + point_info.point_no).then(function (response) {
+                if (response.data.result) {
+                    self.setState({
+                        point_info: point_info,
+                        point_no: point_info.point_no,
+                        ldate: response.data.ldate,
+                        log_data: response.data.log_data,
+                        init: false
+                    });
+                    console.log(response.data);
+                    self.setValue(response.data.log_data);
+                } else {
+                    self.props.sendMsg(response.data.msg);
+                    self.onCancel();
+                }
+            }).catch(function (error) {
+                console.log(error);
+                self.props.sendMsg(error);
+            });
+        }
+    }, {
+        key: "setValue",
+        value: function setValue(data) {
+            if (data !== null) {
+                var mo = data.mo_time !== null ? true : false;
+                var af = data.af_time !== null ? true : false;
+                this.setState({
+                    mo_temp: data.mo_temp, mo_putt: data.mo_putt, mo_bell: data.mo_bell,
+                    mo_light: data.mo_light, mo_time: data.mo_time, mo_rmk: data.mo_rmk,
+                    af_temp: data.af_temp, af_putt: data.af_putt, af_bell: data.af_bell,
+                    af_light: data.af_light, af_time: data.af_time, af_rmk: data.af_rmk,
+                    rmk: data.rmk,
+                    mo: mo, af: af
+                });
+            }
+        }
+    }, {
+        key: "onSave",
+        value: function onSave(e) {
+            var self = this;
+            this.setState({ isLoading: true });
+            var _state = this.state,
+                point_no = _state.point_no,
+                ldate = _state.ldate,
+                mo_temp = _state.mo_temp,
+                mo_putt = _state.mo_putt,
+                mo_bell = _state.mo_bell,
+                mo_light = _state.mo_light,
+                mo_time = _state.mo_time,
+                mo_rmk = _state.mo_rmk,
+                af_temp = _state.af_temp,
+                af_putt = _state.af_putt,
+                af_bell = _state.af_bell,
+                af_light = _state.af_light,
+                af_time = _state.af_time,
+                af_rmk = _state.af_rmk,
+                rmk = _state.rmk;
+
+            var form_data = new FormData();
+            form_data.append('point_no', point_no);
+            form_data.append('ldate', ldate);
+            form_data.append('mo_temp', mo_temp || '');
+            form_data.append('mo_putt', mo_putt || '');
+            form_data.append('mo_bell', mo_bell || '');
+            form_data.append('mo_light', mo_light || '');
+            form_data.append('mo_time', mo_time || '');
+            form_data.append('mo_rmk', mo_rmk || '');
+            form_data.append('af_temp', af_temp || '');
+            form_data.append('af_putt', af_putt || '');
+            form_data.append('af_bell', af_bell || '');
+            form_data.append('af_light', af_light || '');
+            form_data.append('af_time', af_time || '');
+            form_data.append('af_rmk', af_rmk || '');
+            form_data.append('rmk', rmk || '');
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpz/pointlog/refri/save', form_data).then(function (response) {
+                if (response.data.result) {
+                    self.sendMsg(point_no + '檢查點記錄成功!');
+                    self.setState({ isLoading: false });
+                    self.onCancel();
+                } else {
+                    self.sendMsg(response.data.msg);
+                    self.setState({ isLoading: false });
+                }
+            }).catch(function (error) {
+                console.log(error);
+                self.sendMsg(error);
+                self.setState({ isLoading: false });
+            });
+        }
+    }, {
+        key: "mo_tempChange",
+        value: function mo_tempChange(e) {
+            this.setState({ mo_temp: e.target.value });
+        }
+    }, {
+        key: "mo_puttChange",
+        value: function mo_puttChange(e) {
+            this.setState({ mo_putt: e.target.value });
+        }
+    }, {
+        key: "mo_bellChange",
+        value: function mo_bellChange(e) {
+            this.setState({ mo_bell: e.target.value });
+        }
+    }, {
+        key: "mo_lightChange",
+        value: function mo_lightChange(e) {
+            this.setState({ mo_light: e.target.value });
+        }
+    }, {
+        key: "mo_rmkChange",
+        value: function mo_rmkChange(e) {
+            this.setState({ mo_rmk: e.target.value });
+        }
+    }, {
+        key: "af_tempChange",
+        value: function af_tempChange(e) {
+            this.setState({ af_temp: e.target.value });
+        }
+    }, {
+        key: "af_puttChange",
+        value: function af_puttChange(e) {
+            this.setState({ af_putt: e.target.value });
+        }
+    }, {
+        key: "af_bellChange",
+        value: function af_bellChange(e) {
+            this.setState({ af_bell: e.target.value });
+        }
+    }, {
+        key: "af_lightChange",
+        value: function af_lightChange(e) {
+            this.setState({ af_light: e.target.value });
+        }
+    }, {
+        key: "af_rmkChange",
+        value: function af_rmkChange(e) {
+            this.setState({ af_rmk: e.target.value });
+        }
+    }, {
+        key: "rmkChange",
+        value: function rmkChange(e) {
+            this.setState({ rmk: e.target.value });
+        }
+    }, {
+        key: "onCancel",
+        value: function onCancel() {
+            this.props.onCancel();
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var _state2 = this.state,
+                init = _state2.init,
+                isLoading = _state2.isLoading,
+                point_info = _state2.point_info;
+            var _state3 = this.state,
+                mo = _state3.mo,
+                af = _state3.af,
+                ev = _state3.ev;
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "div",
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "column" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "h4",
+                        { className: "title is-4" },
+                        "\u51B7\u85CF\u6AC3\u64CD\u4F5C\u8A18\u9304\u8868"
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "column" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "table",
+                        { className: "table is-bordered", style: { marginBottom: '0px' } },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "tbody",
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "tr",
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    "\u540D\u7A31"
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    point_info.point_name
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    "\u5100\u5668\u7DE8\u865F"
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    point_info.mach_no
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "tr",
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    "\u5100\u5668\u6821\u671F"
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    point_info.ch_date
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    "\u5408\u683C\u7BC4\u570D"
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    "\u6EAB\u5EA6\uFF1A",
+                                    point_info.temp_range,
+                                    " \u2103"
+                                )
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "column" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "table",
+                        { className: "table is-bordered is-fullwidth", style: { marginBottom: '0px' } },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "tbody",
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "tr",
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    { colSpan: 3 },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "label is-size-4" },
+                                        "\u4E0A\u5348\u8A18\u9304"
+                                    )
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "tr",
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "span",
+                                        { className: "is-size-5" },
+                                        "\u6EAB\u5EA6\uFF1A"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { className: "input", type: "number", maxLength: 10, style: { width: '80px' },
+                                        disabled: mo,
+                                        value: this.state.mo_temp || '',
+                                        onChange: this.mo_tempChange.bind(this)
+                                    }),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "span",
+                                        { className: "is-size-5" },
+                                        "\u2103"
+                                    )
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "span",
+                                        { className: "is-size-5" },
+                                        "\u5099\u8A3B\uFF1A"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "div",
+                                        { className: "select" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            "select",
+                                            {
+                                                placeholder: "\u8ACB\u9078\u64C7",
+                                                disabled: mo,
+                                                onChange: this.mo_rmkChange.bind(this),
+                                                value: this.state.mo_rmk || ''
+                                            },
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", { value: "" }),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "\u53C3\u52A0\u96C6\u6703" },
+                                                "\u53C3\u52A0\u96C6\u6703"
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "\u6EAB\u5EA6\u7570\u5E38" },
+                                                "\u6EAB\u6FD5\u5EA6\u7570\u5E38"
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "\u8A2D\u5099\u7570\u5E38" },
+                                                "\u5100\u5668\u7570\u5E38"
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "\u5176\u5B83" },
+                                                "\u5176\u5B83"
+                                            )
+                                        )
+                                    )
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "radiobox is-size-5" },
+                                        "\u5B89\u5168\u63A8\u687F\u2003"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "radio" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "radio",
+                                            name: "putt_y",
+                                            disabled: mo,
+                                            value: 'Y',
+                                            checked: this.state.mo_putt === 'Y',
+                                            onChange: this.mo_puttChange.bind(this)
+                                        }),
+                                        "\u6B63\u5E38"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "radio" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "radio",
+                                            name: "putt_n",
+                                            disabled: mo,
+                                            value: 'N',
+                                            checked: this.state.mo_putt === 'N',
+                                            onChange: this.mo_puttChange.bind(this)
+                                        }),
+                                        "\u7570\u5E38"
+                                    )
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "tr",
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "radiobox is-size-5" },
+                                        "\u7121\u7DDA\u9580\u9234\u767C\u5831\u6A5F\u2003"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "radio" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "radio",
+                                            name: "bell_y",
+                                            disabled: mo,
+                                            value: 'Y',
+                                            checked: this.state.mo_bell === 'Y',
+                                            onChange: this.mo_bellChange.bind(this)
+                                        }),
+                                        "\u6B63\u5E38"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "radio" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "radio",
+                                            name: "bell_n",
+                                            disabled: mo,
+                                            value: 'N',
+                                            checked: this.state.mo_bell === 'N',
+                                            onChange: this.mo_bellChange.bind(this)
+                                        }),
+                                        "\u7570\u5E38"
+                                    )
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "radiobox is-size-5" },
+                                        "\u7167\u660E\u8A2D\u5099\u2003"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "radio" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "radio",
+                                            name: "light_y",
+                                            disabled: mo,
+                                            value: 'Y',
+                                            checked: this.state.mo_light === 'Y',
+                                            onChange: this.mo_lightChange.bind(this)
+                                        }),
+                                        "\u6B63\u5E38"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "radio" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "radio",
+                                            name: "light_n",
+                                            disabled: mo,
+                                            value: 'N',
+                                            checked: this.state.mo_light === 'N',
+                                            onChange: this.mo_lightChange.bind(this)
+                                        }),
+                                        "\u7570\u5E38"
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "column" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "table",
+                        { className: "table is-bordered is-fullwidth", style: { marginBottom: '0px' } },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "tbody",
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "tr",
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    { colSpan: 4 },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "label is-size-4" },
+                                        "\u4E0A\u5348\u8A18\u9304"
+                                    )
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "tr",
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "span",
+                                        { className: "is-size-5" },
+                                        "\u6EAB\u5EA6\uFF1A"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { className: "input", type: "number", maxLength: 10, style: { width: '80px' },
+                                        disabled: af,
+                                        value: this.state.af_temp || '',
+                                        onChange: this.af_tempChange.bind(this)
+                                    }),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "span",
+                                        { className: "is-size-5" },
+                                        "\u2103"
+                                    )
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    { colSpan: 2 },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "span",
+                                        { className: "is-size-5" },
+                                        "\u5099\u8A3B\uFF1A"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "div",
+                                        { className: "select" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            "select",
+                                            {
+                                                placeholder: "\u8ACB\u9078\u64C7",
+                                                disabled: af,
+                                                onChange: this.af_rmkChange.bind(this),
+                                                value: this.state.af_rmk || ''
+                                            },
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", { value: "" }),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "\u53C3\u52A0\u96C6\u6703" },
+                                                "\u53C3\u52A0\u96C6\u6703"
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "\u6EAB\u5EA6\u7570\u5E38" },
+                                                "\u6EAB\u6FD5\u5EA6\u7570\u5E38"
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "\u8A2D\u5099\u7570\u5E38" },
+                                                "\u5100\u5668\u7570\u5E38"
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "\u5176\u5B83" },
+                                                "\u5176\u5B83"
+                                            )
+                                        )
+                                    )
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "tr",
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "radiobox is-size-5" },
+                                        "\u5B89\u5168\u63A8\u687F\u2003"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "radio" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "radio",
+                                            name: "putt_y",
+                                            disabled: af,
+                                            value: 'Y',
+                                            checked: this.state.af_putt === 'Y',
+                                            onChange: this.af_puttChange.bind(this)
+                                        }),
+                                        "\u6B63\u5E38"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "radio" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "radio",
+                                            name: "putt_n",
+                                            disabled: af,
+                                            value: 'N',
+                                            checked: this.state.af_putt === 'N',
+                                            onChange: this.af_puttChange.bind(this)
+                                        }),
+                                        "\u7570\u5E38"
+                                    )
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "radiobox is-size-5" },
+                                        "\u7121\u7DDA\u9580\u9234\u767C\u5831\u6A5F\u2003"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "radio" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "radio",
+                                            name: "bell_y",
+                                            disabled: af,
+                                            value: 'Y',
+                                            checked: this.state.af_bell === 'Y',
+                                            onChange: this.af_bellChange.bind(this)
+                                        }),
+                                        "\u6B63\u5E38"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "radio" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "radio",
+                                            name: "bell_n",
+                                            disabled: af,
+                                            value: 'N',
+                                            checked: this.state.af_bell === 'N',
+                                            onChange: this.af_bellChange.bind(this)
+                                        }),
+                                        "\u7570\u5E38"
+                                    )
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "radiobox is-size-5" },
+                                        "\u7167\u660E\u8A2D\u5099\u2003"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "radio" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "radio",
+                                            name: "light_y",
+                                            disabled: af,
+                                            value: 'Y',
+                                            checked: this.state.af_light === 'Y',
+                                            onChange: this.af_lightChange.bind(this)
+                                        }),
+                                        "\u6B63\u5E38"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "radio" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "radio",
+                                            name: "light_n",
+                                            disabled: af,
+                                            value: 'N',
+                                            checked: this.state.af_light === 'N',
+                                            onChange: this.af_lightChange.bind(this)
+                                        }),
+                                        "\u7570\u5E38"
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "column" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "label",
+                        { className: "label" },
+                        "\u5099\u8A3B"
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", className: "input", maxLength: 50,
+                        disabled: mo && af,
+                        value: this.state.rmk || '',
+                        onChange: this.rmkChange.bind(this)
+                    })
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "column" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "field is-grouped" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "p",
+                            { className: "control" },
+                            mo && af ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "button",
+                                { className: "button is-primary is-static" },
+                                "\u5DF2\u8A18\u9304\u5B8C\u7562"
+                            ) : isLoading ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { className: "button is-loading is-primary" }) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "button",
+                                { type: "button", className: "button is-primary", onClick: this.onSave.bind(this) },
+                                "\u5132\u5B58"
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "p",
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "button",
+                                { className: "button", onClick: this.onCancel.bind(this) },
+                                "\u53D6\u6D88"
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Refrilog;
+}(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["a"] = (Refrilog);
 
 /***/ })
 /******/ ]);

@@ -125,5 +125,8 @@ Route::group(['prefix' => 'web/mpz', 'namespace' => 'MPZ'], function () {
         // wetestlog
         Route::post('wetest/save', 'WetestlogController@save');
         Route::get('wetest/init/{point_no}', 'WetestlogController@init');
+        // refrilog
+        Route::post('refri/save', 'RefrilogController@save');
+        Route::get('refri/init/{point_no}', 'RefrilogController@init');
     });
 });

@@ -225,7 +225,7 @@ export default class Job extends React.Component{
                                 <div className="field is-grouped is-grouped-multiline">
                                     {this.state.working_list.map((item, index) => (
                                         <p className="control" key={index}>
-                                            <button className="button is-info is-large"
+                                            <button className="button is-success is-large"
                                                 onClick={this.updateWorking.bind(this, item.empno, 'leave')}
                                             >
                                                 {item.ename}
