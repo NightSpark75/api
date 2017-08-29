@@ -57015,7 +57015,7 @@ var Refrilog = function (_React$Component) {
                                 null,
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "td",
-                                    { colSpan: 3 },
+                                    { colSpan: 4 },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         "label",
                                         { className: "label is-size-4" },
@@ -57047,7 +57047,7 @@ var Refrilog = function (_React$Component) {
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "td",
-                                    null,
+                                    { colSpan: 2 },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         "span",
                                         { className: "is-size-5" },
@@ -57087,7 +57087,11 @@ var Refrilog = function (_React$Component) {
                                             )
                                         )
                                     )
-                                ),
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "tr",
+                                null,
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "td",
                                     null,
@@ -57120,11 +57124,7 @@ var Refrilog = function (_React$Component) {
                                         }),
                                         "\u7570\u5E38"
                                     )
-                                )
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                "tr",
-                                null,
+                                ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "td",
                                     null,
@@ -57229,9 +57229,9 @@ var Refrilog = function (_React$Component) {
                                         "\u6EAB\u5EA6\uFF1A"
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { className: "input", type: "number", maxLength: 10, style: { width: '80px' },
-                                        disabled: af,
-                                        value: this.state.af_temp || '',
-                                        onChange: this.af_tempChange.bind(this)
+                                        disabled: mo,
+                                        value: this.state.mo_temp || '',
+                                        onChange: this.mo_tempChange.bind(this)
                                     }),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         "span",
@@ -57254,9 +57254,9 @@ var Refrilog = function (_React$Component) {
                                             "select",
                                             {
                                                 placeholder: "\u8ACB\u9078\u64C7",
-                                                disabled: af,
-                                                onChange: this.af_rmkChange.bind(this),
-                                                value: this.state.af_rmk || ''
+                                                disabled: mo,
+                                                onChange: this.mo_rmkChange.bind(this),
+                                                value: this.state.mo_rmk || ''
                                             },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", { value: "" }),
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -57299,10 +57299,10 @@ var Refrilog = function (_React$Component) {
                                         { className: "radio" },
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "radio",
                                             name: "putt_y",
-                                            disabled: af,
+                                            disabled: mo,
                                             value: 'Y',
-                                            checked: this.state.af_putt === 'Y',
-                                            onChange: this.af_puttChange.bind(this)
+                                            checked: this.state.mo_putt === 'Y',
+                                            onChange: this.mo_puttChange.bind(this)
                                         }),
                                         "\u6B63\u5E38"
                                     ),
@@ -57311,10 +57311,10 @@ var Refrilog = function (_React$Component) {
                                         { className: "radio" },
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "radio",
                                             name: "putt_n",
-                                            disabled: af,
+                                            disabled: mo,
                                             value: 'N',
-                                            checked: this.state.af_putt === 'N',
-                                            onChange: this.af_puttChange.bind(this)
+                                            checked: this.state.mo_putt === 'N',
+                                            onChange: this.mo_puttChange.bind(this)
                                         }),
                                         "\u7570\u5E38"
                                     )
@@ -57332,10 +57332,10 @@ var Refrilog = function (_React$Component) {
                                         { className: "radio" },
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "radio",
                                             name: "bell_y",
-                                            disabled: af,
+                                            disabled: mo,
                                             value: 'Y',
-                                            checked: this.state.af_bell === 'Y',
-                                            onChange: this.af_bellChange.bind(this)
+                                            checked: this.state.mo_bell === 'Y',
+                                            onChange: this.mo_bellChange.bind(this)
                                         }),
                                         "\u6B63\u5E38"
                                     ),
@@ -57344,10 +57344,10 @@ var Refrilog = function (_React$Component) {
                                         { className: "radio" },
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "radio",
                                             name: "bell_n",
-                                            disabled: af,
+                                            disabled: mo,
                                             value: 'N',
-                                            checked: this.state.af_bell === 'N',
-                                            onChange: this.af_bellChange.bind(this)
+                                            checked: this.state.mo_bell === 'N',
+                                            onChange: this.mo_bellChange.bind(this)
                                         }),
                                         "\u7570\u5E38"
                                     )
@@ -57365,10 +57365,10 @@ var Refrilog = function (_React$Component) {
                                         { className: "radio" },
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "radio",
                                             name: "light_y",
-                                            disabled: af,
+                                            disabled: mo,
                                             value: 'Y',
-                                            checked: this.state.af_light === 'Y',
-                                            onChange: this.af_lightChange.bind(this)
+                                            checked: this.state.mo_light === 'Y',
+                                            onChange: this.mo_lightChange.bind(this)
                                         }),
                                         "\u6B63\u5E38"
                                     ),
@@ -57377,10 +57377,10 @@ var Refrilog = function (_React$Component) {
                                         { className: "radio" },
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "radio",
                                             name: "light_n",
-                                            disabled: af,
+                                            disabled: mo,
                                             value: 'N',
-                                            checked: this.state.af_light === 'N',
-                                            onChange: this.af_lightChange.bind(this)
+                                            checked: this.state.mo_light === 'N',
+                                            onChange: this.mo_lightChange.bind(this)
                                         }),
                                         "\u7570\u5E38"
                                     )

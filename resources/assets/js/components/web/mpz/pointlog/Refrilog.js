@@ -168,7 +168,7 @@ export default class Refrilog extends React.Component{
                     <table className="table is-bordered is-fullwidth" style={{marginBottom: '0px'}}>
                         <tbody>
                             <tr>
-                                <td colSpan={3}>
+                                <td colSpan={4}>
                                     <label className="label is-size-4">上午記錄</label>
                                 </td>
                             </tr>
@@ -182,8 +182,8 @@ export default class Refrilog extends React.Component{
                                     />
                                     <span className="is-size-5">℃</span>
                                 </td>
-                                <td>
-                                    <span className="is-size-5">備註：</span>
+                                <td colSpan={2}>
+                                <span className="is-size-5">備註：</span>
                                     <div className="select">
                                         <select
                                             placeholder="請選擇"
@@ -199,6 +199,8 @@ export default class Refrilog extends React.Component{
                                         </select>
                                     </div>
                                 </td>
+                            </tr>
+                            <tr>
                                 <td>
                                     <label className="radiobox is-size-5">安全推桿&emsp;</label>
                                     <label className="radio">
@@ -222,8 +224,6 @@ export default class Refrilog extends React.Component{
                                         異常
                                     </label>
                                 </td>
-                            </tr>
-                            <tr>
                                 <td>
                                     <label className="radiobox is-size-5">無線門鈴發報機&emsp;</label>
                                     <label className="radio">
@@ -286,9 +286,9 @@ export default class Refrilog extends React.Component{
                                 <td>
                                     <span className="is-size-5">溫度：</span>
                                     <input className="input" type="number" maxLength={10} style={{width: '80px'}}
-                                        disabled={af}
-                                        value={this.state.af_temp || ''}
-                                        onChange={this.af_tempChange.bind(this)}
+                                        disabled={mo}
+                                        value={this.state.mo_temp || ''}
+                                        onChange={this.mo_tempChange.bind(this)}
                                     />
                                     <span className="is-size-5">℃</span>
                                 </td>
@@ -297,9 +297,9 @@ export default class Refrilog extends React.Component{
                                     <div className="select">
                                         <select
                                             placeholder="請選擇"
-                                            disabled={af}
-                                            onChange={this.af_rmkChange.bind(this)}
-                                            value={this.state.af_rmk || ''}
+                                            disabled={mo}
+                                            onChange={this.mo_rmkChange.bind(this)}
+                                            value={this.state.mo_rmk || ''}
                                         >
                                             <option value=""></option>
                                             <option value="參加集會">參加集會</option>
@@ -316,20 +316,20 @@ export default class Refrilog extends React.Component{
                                     <label className="radio">
                                         <input type="radio"
                                             name="putt_y" 
-                                            disabled={af}
+                                            disabled={mo}
                                             value={'Y'}
-                                            checked={this.state.af_putt === 'Y'}
-                                            onChange={this.af_puttChange.bind(this)}
+                                            checked={this.state.mo_putt === 'Y'}
+                                            onChange={this.mo_puttChange.bind(this)}
                                         />
                                         正常
                                     </label>
                                     <label className="radio">
                                         <input type="radio" 
                                             name="putt_n" 
-                                            disabled={af}
+                                            disabled={mo}
                                             value={'N'}
-                                            checked={this.state.af_putt === 'N'}
-                                            onChange={this.af_puttChange.bind(this)}
+                                            checked={this.state.mo_putt === 'N'}
+                                            onChange={this.mo_puttChange.bind(this)}
                                         />
                                         異常
                                     </label>
@@ -339,20 +339,20 @@ export default class Refrilog extends React.Component{
                                     <label className="radio">
                                         <input type="radio"
                                             name="bell_y" 
-                                            disabled={af}
+                                            disabled={mo}
                                             value={'Y'}
-                                            checked={this.state.af_bell === 'Y'}
-                                            onChange={this.af_bellChange.bind(this)}
+                                            checked={this.state.mo_bell === 'Y'}
+                                            onChange={this.mo_bellChange.bind(this)}
                                         />
                                         正常
                                     </label>
                                     <label className="radio">
                                         <input type="radio" 
                                             name="bell_n" 
-                                            disabled={af}
+                                            disabled={mo}
                                             value={'N'}
-                                            checked={this.state.af_bell === 'N'}
-                                            onChange={this.af_bellChange.bind(this)}
+                                            checked={this.state.mo_bell === 'N'}
+                                            onChange={this.mo_bellChange.bind(this)}
                                         />
                                         異常
                                     </label>
@@ -362,20 +362,20 @@ export default class Refrilog extends React.Component{
                                     <label className="radio">
                                         <input type="radio"
                                             name="light_y" 
-                                            disabled={af}
+                                            disabled={mo}
                                             value={'Y'}
-                                            checked={this.state.af_light === 'Y'}
-                                            onChange={this.af_lightChange.bind(this)}
+                                            checked={this.state.mo_light === 'Y'}
+                                            onChange={this.mo_lightChange.bind(this)}
                                         />
                                         正常
                                     </label>
                                     <label className="radio">
                                         <input type="radio" 
                                             name="light_n" 
-                                            disabled={af}
+                                            disabled={mo}
                                             value={'N'}
-                                            checked={this.state.af_light === 'N'}
-                                            onChange={this.af_lightChange.bind(this)}
+                                            checked={this.state.mo_light === 'N'}
+                                            onChange={this.mo_lightChange.bind(this)}
                                         />
                                         異常
                                     </label>
