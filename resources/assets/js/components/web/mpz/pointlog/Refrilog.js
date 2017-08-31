@@ -12,7 +12,7 @@ export default class Refrilog extends React.Component{
             point_info: {}, point_no: '', ldate: '', 
             mo_temp: '', mo_putt: '', mo_bell: '', mo_light: '', mo_time: '', mo_rmk: '',
             af_temp: '', af_putt: '', af_bell: '', af_light: '', af_time: '', af_rmk: '',
-            rmk: '',
+            rmk: '', error_item: '',
             mo: false, af: false,
             log_data: {},
             init: false,
@@ -59,7 +59,7 @@ export default class Refrilog extends React.Component{
                 mo_light: data.mo_light, mo_time: data.mo_time, mo_rmk: data.mo_rmk,
                 af_temp: data.af_temp, af_putt: data.af_putt, af_bell: data.af_bell, 
                 af_light: data.af_light, af_time: data.af_time, af_rmk: data.af_rmk,
-                rmk: data.rmk,
+                rmk: data.rmk, error_item: data.error_item,
                 mo: mo, af: af,
             });
         }
@@ -71,7 +71,7 @@ export default class Refrilog extends React.Component{
         const {
             point_no, ldate, 
             mo_temp, mo_putt, mo_bell, mo_light, mo_time, mo_rmk,
-            af_temp, af_putt, af_bell, af_light, af_time, af_rmk, rmk
+            af_temp, af_putt, af_bell, af_light, af_time, af_rmk, rmk, error_item,
         } = this.state;
         let form_data = new FormData();
         form_data.append('point_no', point_no);
@@ -88,6 +88,7 @@ export default class Refrilog extends React.Component{
         form_data.append('af_light', af_light || '');
         form_data.append('af_time', af_time || '');
         form_data.append('af_rmk', af_rmk || '');
+        form_data.append('error_item', error_item || '');
         form_data.append('rmk', rmk || '');
         axios.post('/api/web/mpz/pointlog/refri/save', form_data).then(function (response) {
             if (response.data.result) {
@@ -134,6 +135,9 @@ export default class Refrilog extends React.Component{
     }
     af_rmkChange(e) {
         this.setState({af_rmk: e.target.value});
+    }
+    error_itemChange(e) {
+        this.setState({error_item: e.target.value});
     }
     rmkChange(e) {
         this.setState({rmk: e.target.value});
@@ -195,7 +199,7 @@ export default class Refrilog extends React.Component{
                                             <option value="參加集會">參加集會</option>
                                             <option value="溫度異常">溫濕度異常</option>
                                             <option value="設備異常">儀器異常</option>
-                                            <option value="其它">其它</option>
+                                            <option value="其他">其他</option>
                                         </select>
                                     </div>
                                 </td>
@@ -292,8 +296,8 @@ export default class Refrilog extends React.Component{
                                     />
                                     <span className="is-size-5">℃</span>
                                 </td>
-                                <td colSpan={2}>
-                                <span className="is-size-5">備註：</span>
+                                <td>
+                                    <span className="is-size-5">備註：</span>
                                     <div className="select">
                                         <select
                                             placeholder="請選擇"
@@ -305,11 +309,28 @@ export default class Refrilog extends React.Component{
                                             <option value="參加集會">參加集會</option>
                                             <option value="溫度異常">溫濕度異常</option>
                                             <option value="設備異常">儀器異常</option>
-                                            <option value="其它">其它</option>
+                                            <option value="其他">其他</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span className="is-size-5">異常事項：</span>
+                                    <div className="select">
+                                        <select
+                                            placeholder="請選擇"
+                                            disabled={af}
+                                            onChange={this.error_itemChange.bind(this)}
+                                            value={this.state.error_item || ''}
+                                        >
+                                            <option value=""></option>
+                                            <option value="1">超溫警報</option>
+                                            <option value="2">超時警報</option>
+                                            <option value="3">其他</option>
                                         </select>
                                     </div>
                                 </td>
                             </tr>
+                            {/*
                             <tr>
                                 <td>
                                     <label className="radiobox is-size-5">安全推桿&emsp;</label>
@@ -381,6 +402,7 @@ export default class Refrilog extends React.Component{
                                     </label>
                                 </td>
                             </tr>
+                            */}
                         </tbody>
                     </table>
                 </div>

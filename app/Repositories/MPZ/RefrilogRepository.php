@@ -70,7 +70,7 @@ class RefrilogRepository
                 } else {
                     DB::update("
                         update mpz_refrilog
-                        set duser = :duser, ddate = :ddate, state = :state, rmk = :rmk,
+                        set duser = :duser, ddate = :ddate, state = :state, rmk = :rmk, error_item = :error_item
                             mo_temp = :mo_temp, mo_putt = :mo_putt, mo_bell = :mo_bell, mo_light = :mo_light, 
                                 mo_time = :mo_time, mo_user = :mo_user, mo_rmk = :mo_rmk,
                             af_temp = :af_temp, af_putt = :af_putt, af_bell = :af_bell, af_light = :af_light, 

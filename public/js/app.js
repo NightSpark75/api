@@ -56746,7 +56746,7 @@ var Refrilog = function (_React$Component) {
             point_info: {}, point_no: '', ldate: '',
             mo_temp: '', mo_putt: '', mo_bell: '', mo_light: '', mo_time: '', mo_rmk: '',
             af_temp: '', af_putt: '', af_bell: '', af_light: '', af_time: '', af_rmk: '',
-            rmk: '',
+            rmk: '', error_item: '',
             mo: false, af: false,
             log_data: {},
             init: false
@@ -56797,7 +56797,7 @@ var Refrilog = function (_React$Component) {
                     mo_light: data.mo_light, mo_time: data.mo_time, mo_rmk: data.mo_rmk,
                     af_temp: data.af_temp, af_putt: data.af_putt, af_bell: data.af_bell,
                     af_light: data.af_light, af_time: data.af_time, af_rmk: data.af_rmk,
-                    rmk: data.rmk,
+                    rmk: data.rmk, error_item: data.error_item,
                     mo: mo, af: af
                 });
             }
@@ -56822,7 +56822,8 @@ var Refrilog = function (_React$Component) {
                 af_light = _state.af_light,
                 af_time = _state.af_time,
                 af_rmk = _state.af_rmk,
-                rmk = _state.rmk;
+                rmk = _state.rmk,
+                error_item = _state.error_item;
 
             var form_data = new FormData();
             form_data.append('point_no', point_no);
@@ -56839,6 +56840,7 @@ var Refrilog = function (_React$Component) {
             form_data.append('af_light', af_light || '');
             form_data.append('af_time', af_time || '');
             form_data.append('af_rmk', af_rmk || '');
+            form_data.append('error_item', error_item || '');
             form_data.append('rmk', rmk || '');
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpz/pointlog/refri/save', form_data).then(function (response) {
                 if (response.data.result) {
@@ -56904,6 +56906,11 @@ var Refrilog = function (_React$Component) {
         key: "af_rmkChange",
         value: function af_rmkChange(e) {
             this.setState({ af_rmk: e.target.value });
+        }
+    }, {
+        key: "error_itemChange",
+        value: function error_itemChange(e) {
+            this.setState({ error_item: e.target.value });
         }
     }, {
         key: "rmkChange",
@@ -57082,8 +57089,8 @@ var Refrilog = function (_React$Component) {
                                             ),
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "option",
-                                                { value: "\u5176\u5B83" },
-                                                "\u5176\u5B83"
+                                                { value: "\u5176\u4ED6" },
+                                                "\u5176\u4ED6"
                                             )
                                         )
                                     )
@@ -57241,7 +57248,7 @@ var Refrilog = function (_React$Component) {
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "td",
-                                    { colSpan: 2 },
+                                    null,
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         "span",
                                         { className: "is-size-5" },
@@ -57276,113 +57283,48 @@ var Refrilog = function (_React$Component) {
                                             ),
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 "option",
-                                                { value: "\u5176\u5B83" },
-                                                "\u5176\u5B83"
+                                                { value: "\u5176\u4ED6" },
+                                                "\u5176\u4ED6"
                                             )
                                         )
                                     )
-                                )
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                "tr",
-                                null,
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    "td",
-                                    null,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        "label",
-                                        { className: "radiobox is-size-5" },
-                                        "\u5B89\u5168\u63A8\u687F\u2003"
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        "label",
-                                        { className: "radio" },
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "radio",
-                                            name: "af_putt_y",
-                                            disabled: af,
-                                            value: 'Y',
-                                            checked: this.state.af_putt === 'Y',
-                                            onChange: this.af_puttChange.bind(this)
-                                        }),
-                                        "\u6B63\u5E38"
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        "label",
-                                        { className: "radio" },
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "radio",
-                                            name: "af_putt_n",
-                                            disabled: af,
-                                            value: 'N',
-                                            checked: this.state.af_putt === 'N',
-                                            onChange: this.af_puttChange.bind(this)
-                                        }),
-                                        "\u7570\u5E38"
-                                    )
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "td",
                                     null,
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        "label",
-                                        { className: "radiobox is-size-5" },
-                                        "\u7121\u7DDA\u9580\u9234\u767C\u5831\u6A5F\u2003"
+                                        "span",
+                                        { className: "is-size-5" },
+                                        "\u7570\u5E38\u4E8B\u9805\uFF1A"
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        "label",
-                                        { className: "radio" },
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "radio",
-                                            name: "af_bell_y",
-                                            disabled: af,
-                                            value: 'Y',
-                                            checked: this.state.af_bell === 'Y',
-                                            onChange: this.af_bellChange.bind(this)
-                                        }),
-                                        "\u6B63\u5E38"
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        "label",
-                                        { className: "radio" },
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "radio",
-                                            name: "af_bell_n",
-                                            disabled: af,
-                                            value: 'N',
-                                            checked: this.state.af_bell === 'N',
-                                            onChange: this.af_bellChange.bind(this)
-                                        }),
-                                        "\u7570\u5E38"
-                                    )
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    "td",
-                                    null,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        "label",
-                                        { className: "radiobox is-size-5" },
-                                        "\u7167\u660E\u8A2D\u5099\u2003"
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        "label",
-                                        { className: "radio" },
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "radio",
-                                            name: "af_light_y",
-                                            disabled: af,
-                                            value: 'Y',
-                                            checked: this.state.af_light === 'Y',
-                                            onChange: this.af_lightChange.bind(this)
-                                        }),
-                                        "\u6B63\u5E38"
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        "label",
-                                        { className: "radio" },
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "radio",
-                                            name: "af_light_n",
-                                            disabled: af,
-                                            value: 'N',
-                                            checked: this.state.af_light === 'N',
-                                            onChange: this.af_lightChange.bind(this)
-                                        }),
-                                        "\u7570\u5E38"
+                                        "div",
+                                        { className: "select" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            "select",
+                                            {
+                                                placeholder: "\u8ACB\u9078\u64C7",
+                                                disabled: af,
+                                                onChange: this.error_itemChange.bind(this),
+                                                value: this.state.error_item || ''
+                                            },
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", { value: "" }),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "1" },
+                                                "\u8D85\u6EAB\u8B66\u5831"
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "2" },
+                                                "\u8D85\u6642\u8B66\u5831"
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "3" },
+                                                "\u5176\u4ED6"
+                                            )
+                                        )
                                     )
                                 )
                             )
