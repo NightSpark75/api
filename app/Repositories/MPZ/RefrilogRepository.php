@@ -109,6 +109,16 @@ class RefrilogRepository
         $params = $this->setLogTime($params, $log, 'mo');
         $params = $this->setLogTime($params, $log, 'af');
 
+        $params = $this->setErrorItem($params, $log);
+
+        return $params;
+    }
+
+    private function setErrorItem($params, $log)
+    {
+        if ($params['error_item'] !== $log['error_item']) {
+            $params['error_user'] = $params['duser'];
+        }
         return $params;
     }
 

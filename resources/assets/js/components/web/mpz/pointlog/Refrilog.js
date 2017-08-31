@@ -296,7 +296,7 @@ export default class Refrilog extends React.Component{
                                     />
                                     <span className="is-size-5">℃</span>
                                 </td>
-                                <td>
+                                <td colSpan={2}>
                                     <span className="is-size-5">備註：</span>
                                     <div className="select">
                                         <select
@@ -310,22 +310,6 @@ export default class Refrilog extends React.Component{
                                             <option value="溫度異常">溫濕度異常</option>
                                             <option value="設備異常">儀器異常</option>
                                             <option value="其他">其他</option>
-                                        </select>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span className="is-size-5">異常事項：</span>
-                                    <div className="select">
-                                        <select
-                                            placeholder="請選擇"
-                                            disabled={af}
-                                            onChange={this.error_itemChange.bind(this)}
-                                            value={this.state.error_item || ''}
-                                        >
-                                            <option value=""></option>
-                                            <option value="1">超溫警報</option>
-                                            <option value="2">超時警報</option>
-                                            <option value="3">其他</option>
                                         </select>
                                     </div>
                                 </td>
@@ -405,6 +389,22 @@ export default class Refrilog extends React.Component{
                             */}
                         </tbody>
                     </table>
+                </div>
+                <div className="column">
+                    <span className="is-size-5">異常事項：</span>
+                    <div className="select">
+                        <select
+                            placeholder="請選擇"
+                            disabled={af}
+                            onChange={this.error_itemChange.bind(this)}
+                            value={this.state.error_item || ''}
+                        >
+                            <option value=""></option>
+                            <option value="1">超溫警報</option>
+                            <option value="2">超時警報</option>
+                            <option value="3">其他</option>
+                        </select>
+                    </div>
                 </div>
                 <div className="column">
                     <label className="label">備註</label>

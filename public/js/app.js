@@ -57248,7 +57248,7 @@ var Refrilog = function (_React$Component) {
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "td",
-                                    null,
+                                    { colSpan: 2 },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         "span",
                                         { className: "is-size-5" },
@@ -57288,45 +57288,45 @@ var Refrilog = function (_React$Component) {
                                             )
                                         )
                                     )
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    "td",
-                                    null,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        "span",
-                                        { className: "is-size-5" },
-                                        "\u7570\u5E38\u4E8B\u9805\uFF1A"
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        "div",
-                                        { className: "select" },
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            "select",
-                                            {
-                                                placeholder: "\u8ACB\u9078\u64C7",
-                                                disabled: af,
-                                                onChange: this.error_itemChange.bind(this),
-                                                value: this.state.error_item || ''
-                                            },
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", { value: "" }),
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                "option",
-                                                { value: "1" },
-                                                "\u8D85\u6EAB\u8B66\u5831"
-                                            ),
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                "option",
-                                                { value: "2" },
-                                                "\u8D85\u6642\u8B66\u5831"
-                                            ),
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                "option",
-                                                { value: "3" },
-                                                "\u5176\u4ED6"
-                                            )
-                                        )
-                                    )
                                 )
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "column" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "span",
+                        { className: "is-size-5" },
+                        "\u7570\u5E38\u4E8B\u9805\uFF1A"
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "select" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "select",
+                            {
+                                placeholder: "\u8ACB\u9078\u64C7",
+                                disabled: af,
+                                onChange: this.error_itemChange.bind(this),
+                                value: this.state.error_item || ''
+                            },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", { value: "" }),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "option",
+                                { value: "1" },
+                                "\u8D85\u6EAB\u8B66\u5831"
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "option",
+                                { value: "2" },
+                                "\u8D85\u6642\u8B66\u5831"
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "option",
+                                { value: "3" },
+                                "\u5176\u4ED6"
                             )
                         )
                     )
