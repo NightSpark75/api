@@ -127,7 +127,7 @@ class RefrilogRepository
         $date = (int)date("Hi");
         $log = json_decode(json_encode($log), true);
         if ($params[$cls.'_temp'] !== null) {
-            $params[$cls.'_temp'] = (int) $params[$cls.'_temp'];
+            $params[$cls.'_temp'] = (float) $params[$cls.'_temp'];
             if (!isset($log[$cls.'_temp'])) {
                 $params[$cls.'_time'] = (int) $date;
                 $params[$cls.'_user'] = $params['duser'];

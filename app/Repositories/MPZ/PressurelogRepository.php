@@ -120,9 +120,9 @@ class PressurelogRepository
         $date = (int)date("Hi");
         $log = json_decode(json_encode($log), true);
         if ($params[$cls.'_pa'] !== null || $params[$cls.'_aq']) {
-            $params[$cls.'_pa'] = (int) $params[$cls.'_pa'];
-            $params[$cls.'_aq'] = (int) $params[$cls.'_aq'];
-            if (!isset($log[$cls.'_pa']) || !isset($log[$cls.'_aq'])])) {
+            $params[$cls.'_pa'] = (float) $params[$cls.'_pa'];
+            $params[$cls.'_aq'] = (float) $params[$cls.'_aq'];
+            if (!isset($log[$cls.'_pa']) || !isset($log[$cls.'_aq'])) {
                 $params[$cls.'_time'] = (int) $date;
                 $params[$cls.'_user'] = $params['duser'];
             } else {

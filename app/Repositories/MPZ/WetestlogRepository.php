@@ -120,9 +120,9 @@ class WetestlogRepository
         $date = (int)date("Hi");
         $log = json_decode(json_encode($log), true);
         if ($params[$cls.'_hum'] !== null || $params[$cls.'_max'] !== null || $params[$cls.'_min']) {
-            $params[$cls.'_hum'] = (int) $params[$cls.'_hum'];
-            $params[$cls.'_max'] = (int) $params[$cls.'_max'];
-            $params[$cls.'_min'] = (int) $params[$cls.'_min'];
+            $params[$cls.'_hum'] = (float) $params[$cls.'_hum'];
+            $params[$cls.'_max'] = (float) $params[$cls.'_max'];
+            $params[$cls.'_min'] = (float) $params[$cls.'_min'];
             if (!isset($log[$cls.'_hum']) || !isset($log[$cls.'_max']) || !isset($log[$cls.'_min'])) {
                 $params[$cls.'_time'] = (int) $date;
                 $params[$cls.'_user'] = $params['duser'];

@@ -89,7 +89,7 @@ export default class Pressurelog extends React.Component{
         form_data.append('af_err', af_err || '');
         form_data.append('ev_pa', ev_pa || '');
         form_data.append('ev_aq', ev_aq || '');
-        form_data.append('ev_min', ev_min || '');
+        form_data.append('ev_time', ev_time || '');
         form_data.append('ev_err', ev_err || '');
         form_data.append('rmk', rmk || '');
         axios.post('/api/web/mpz/pointlog/pressure/save', form_data)
@@ -156,11 +156,14 @@ export default class Pressurelog extends React.Component{
                     <table className="table is-bordered" style={{marginBottom: '0px'}}>
                         <tbody>
                             <tr>
-                                <td>名稱</td><td>{point_info.point_name}</td><td>儀器編號</td><td>{point_info.mach_no}</td>
+                                <td>名稱</td><td>{point_info.point_name}</td>
+                                <td>儀器編號</td><td>{point_info.mach_no}</td>
+                                <td>合格範圍Pa</td><td>{point_info.pa_range}</td>
                             </tr>
                             <tr>
+                                <td colSpan={2}></td>
                                 <td>儀器校期</td><td>{point_info.ch_date}</td>
-                                <td>合格範圍</td><td>濕度：{point_info.pres_range} R.H(%)</td>
+                                <td>合格範圍mmAq</td><td>{point_info.aq_range}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -175,7 +178,7 @@ export default class Pressurelog extends React.Component{
                             </tr>
                             <tr>
                                 <td>
-                                    <label className="label">顯示值</label>
+                                    <label className="label">壓差(Pa)</label>
                                     <input className="input" type="number" maxLength={10}
                                         disabled={mo}
                                         value={this.state.mo_pa || ''}
@@ -183,7 +186,7 @@ export default class Pressurelog extends React.Component{
                                     />
                                 </td>
                                 <td>
-                                    <label className="label">MAX</label>
+                                    <label className="label">壓差(mmAq)</label>
                                     <input className="input" type="number" maxLength={10}
                                         disabled={mo}
                                         value={this.state.mo_aq || ''}
@@ -222,7 +225,7 @@ export default class Pressurelog extends React.Component{
                             </tr>
                             <tr>
                                 <td>
-                                    <label className="label">顯示值</label>
+                                    <label className="label">壓差(Pa)</label>
                                     <input className="input" type="number" maxLength={10}
                                         disabled={af}
                                         value={this.state.af_pa || ''}
@@ -230,7 +233,7 @@ export default class Pressurelog extends React.Component{
                                     />
                                 </td>
                                 <td>
-                                    <label className="label">MAX</label>
+                                    <label className="label">壓差(mmAq)</label>
                                     <input className="input" type="number" maxLength={10}
                                         disabled={af}
                                         value={this.state.af_aq || ''}
@@ -269,7 +272,7 @@ export default class Pressurelog extends React.Component{
                             </tr>
                             <tr>
                                 <td>
-                                    <label className="label">顯示值</label>
+                                    <label className="label">壓差(Pa)</label>
                                     <input className="input" type="number" maxLength={10}
                                         disabled={ev}
                                         value={this.state.ev_pa || ''}
@@ -277,7 +280,7 @@ export default class Pressurelog extends React.Component{
                                     />
                                 </td>
                                 <td>
-                                    <label className="label">MAX</label>
+                                    <label className="label">壓差(mmAq)</label>
                                     <input className="input" type="number" maxLength={10}
                                         disabled={ev}
                                         value={this.state.ev_aq || ''}

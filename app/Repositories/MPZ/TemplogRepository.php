@@ -137,8 +137,8 @@ class TemplogRepository
         $date = (int)date("Hi");
         $log = json_decode(json_encode($log), true);
         if ($params[$cls.'_temp'] !== null || $params[$cls.'_hum'] !== null) {
-            $params[$cls.'_temp'] = (int) $params[$cls.'_temp'];
-            $params[$cls.'_hum'] = (int) $params[$cls.'_hum'];
+            $params[$cls.'_temp'] = (float) $params[$cls.'_temp'];
+            $params[$cls.'_hum'] = (float) $params[$cls.'_hum'];
             if (!isset($log[$cls.'_temp']) || !isset($log[$cls.'_hum'])) {
                 $params[$cls.'_time'] = (int) $date;
                 $params[$cls.'_user'] = $params['duser'];
