@@ -24,6 +24,7 @@ export default class Pointlog extends React.Component{
             templog_show: false,
             wetestlog_show: false,
             refrilog_show: false,
+            pressurelog_show: false,
         }
     }
 
@@ -106,6 +107,7 @@ export default class Pointlog extends React.Component{
             templog_show: false,
             wetestlog_show: false,
             refrilog_show: false,
+            pressurelog_show: false,
             point_no: '',
             scan: '',
             point_info: [],
