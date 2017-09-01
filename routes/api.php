@@ -128,5 +128,8 @@ Route::group(['prefix' => 'web/mpz', 'namespace' => 'MPZ'], function () {
         // refrilog
         Route::post('refri/save', 'RefrilogController@save');
         Route::get('refri/init/{point_no}', 'RefrilogController@init');
+        // pressurelog
+        Route::post('pressure/save', 'PressurelogController@save');
+        Route::get('pressure/init/{point_no}', 'PressurelogController@init');
     });
 });

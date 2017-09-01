@@ -1,10 +1,10 @@
 <?php
 /**
- * 最濕點管控記錄資料處理
+ * 壓差管控記錄資料處理
  *
  * @version 1.0.0
  * @author spark Lin.yupin@standart.com.tw
- * @date 17/07/21
+ * @date 17/09/01
  * @since 1.0.0 spark: 建立檔案寫入與讀取相關的資料處理
  * 
  */
@@ -15,11 +15,11 @@ use Exception;
 use App\Traits\Sqlexecute;
 
 /**
- * Class WetestlogRepository
+ * Class PressurelogRepository
  *
  * @package App\Repositories
  */
-class WetestlogRepository
+class PressurelogRepository
 {   
     use Sqlexecute;
 
@@ -33,7 +33,7 @@ class WetestlogRepository
             $ldate = date('Ymd');
             $data = DB::selectOne("
                 select *
-                from mpz_wetestlog
+                from mpz_pressurelog
                 where point_no = '$point_no' and ldate = $ldate
             ");
             $result = [
@@ -56,25 +56,25 @@ class WetestlogRepository
                 $params['ddate'] = date("Y-m-d H:i:s");
                 $params['state'] = 'Y';
                 $params = $this->setLogData($params, $user);
-                $check = $this->checkWetestlog($params);
+                $check = $this->checkPressurelog($params);
                 if ($check) {
-                    DB::table('mpz_wetestlog')->insert($params);
+                    DB::table('mpz_pressurelog')->insert($params);
                     $params = [
                         'point_no' => $params['point_no'],
                         'ldate' => $params['ldate'],
                         'duser' => $params['duser'],
                         'ddate' => $params['ddate'],
-                        'point_type' => 'W', 
+                        'point_type' => 'P', 
                     ];
                     DB::table('mpz_point_log')->insert($params);
                 } else {
                     DB::update("
-                        update mpz_wetestlog
+                        update mpz_pressurelog
                         set duser = :duser, ddate = :ddate, state = :state, 
-                            mo_hum = :mo_hum, mo_max = :mo_max, mo_min = :mo_min, mo_time = :mo_time, mo_user = :mo_user, mo_rmk = :mo_rmk,
-                            af_hum = :af_hum, af_max = :af_max, af_min = :af_min, af_time = :af_time, af_user = :af_user, af_rmk = :af_rmk,
-                            ev_hum = :ev_hum, ev_max = :ev_max, ev_min = :ev_min, ev_time = :ev_time, ev_user = :ev_user, ev_rmk = :ev_rmk,
-                            zero = :zero, rmk = :rmk
+                            mo_pa = :mo_pa, mo_aq = :mo_aq, mo_time = :mo_time, mo_user = :mo_user, mo_err = :mo_err,
+                            af_pa = :af_pa, af_aq = :af_aq, af_time = :af_time, af_user = :af_user, af_err = :af_err,
+                            ev_pa = :ev_pa, ev_aq = :ev_aq, ev_time = :ev_time, ev_user = :ev_user, ev_err = :ev_err,
+                            rmk = :rmk
                         where point_no = :point_no and ldate = :ldate
                     ", $params);
                 }
@@ -104,7 +104,7 @@ class WetestlogRepository
 
         $log = DB::selectOne("
             select *
-            from mpz_wetestlog
+            from mpz_pressurelog
             where point_no = '$point_no' and ldate = $ldate
         ");
 
@@ -119,11 +119,10 @@ class WetestlogRepository
     {
         $date = (int)date("Hi");
         $log = json_decode(json_encode($log), true);
-        if ($params[$cls.'_hum'] !== null || $params[$cls.'_max'] !== null || $params[$cls.'_min']) {
-            $params[$cls.'_hum'] = (int) $params[$cls.'_hum'];
-            $params[$cls.'_max'] = (int) $params[$cls.'_max'];
-            $params[$cls.'_min'] = (int) $params[$cls.'_min'];
-            if (!isset($log[$cls.'_hum']) || !isset($log[$cls.'_max']) || !isset($log[$cls.'_min'])) {
+        if ($params[$cls.'_pa'] !== null || $params[$cls.'_aq']) {
+            $params[$cls.'_pa'] = (int) $params[$cls.'_pa'];
+            $params[$cls.'_aq'] = (int) $params[$cls.'_aq'];
+            if (!isset($log[$cls.'_pa']) || !isset($log[$cls.'_aq'])])) {
                 $params[$cls.'_time'] = (int) $date;
                 $params[$cls.'_user'] = $params['duser'];
             } else {
@@ -134,14 +133,14 @@ class WetestlogRepository
         return $params;
     }
 
-    private function checkWetestlog($params)
+    private function checkPressurelog($params)
     {
         $point_no = $params['point_no'];
         $ldate = $params['ldate'];
         $check = DB::selectOne("
             select count(*) count
             from mpz_point_log
-            where point_no = '$point_no' and ldate = $ldate and point_type = 'W'
+            where point_no = '$point_no' and ldate = $ldate and point_type = 'P'
         ");
 
         if ($check->count === '0') {

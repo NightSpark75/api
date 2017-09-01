@@ -8,6 +8,7 @@ import Catchlog from './Catchlog';
 import Templog from './Templog';
 import Wetestlog from './Wetestlog';
 import Refrilog from './Refrilog';
+import Pressurelog from './Pressurelog';
 
 export default class Pointlog extends React.Component{
     constructor(props) {
@@ -94,7 +95,7 @@ export default class Pointlog extends React.Component{
                 this.setState({refrilog_show: true, scan_message: ''});
                 break;
             case 'P':   // 壓差紀錄
-                this.setState({catchlog_show: true, scan_message: ''});
+                this.setState({pressurelog_show: true, scan_message: ''});
                 break;
         }
     }
@@ -185,6 +186,16 @@ export default class Pointlog extends React.Component{
                             sendMsg={this.componentMsg.bind(this)}
                         >
                         </Refrilog>
+                    </div>
+                }   
+                {this.state.pressurelog_show &&
+                    <div className="box">
+                        <Pressurelog
+                            pointInfo={this.state.point_info}
+                            onCancel={this.onCancel.bind(this)}
+                            sendMsg={this.componentMsg.bind(this)}
+                        >
+                        </Pressurelog>
                     </div>
                 }   
             </div>

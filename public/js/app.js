@@ -27458,6 +27458,7 @@ var Catchlog = function (_React$Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Templog__ = __webpack_require__(280);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Wetestlog__ = __webpack_require__(281);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Refrilog__ = __webpack_require__(551);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Pressurelog__ = __webpack_require__(552);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -27469,6 +27470,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /** 
  * Pointlog.js
  */
+
 
 
 
@@ -27587,7 +27589,7 @@ var Pointlog = function (_React$Component) {
                     break;
                 case 'P':
                     // 壓差紀錄
-                    this.setState({ catchlog_show: true, scan_message: '' });
+                    this.setState({ pressurelog_show: true, scan_message: '' });
                     break;
             }
         }
@@ -27694,6 +27696,15 @@ var Pointlog = function (_React$Component) {
                     'div',
                     { className: 'box' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__Refrilog__["a" /* default */], {
+                        pointInfo: this.state.point_info,
+                        onCancel: this.onCancel.bind(this),
+                        sendMsg: this.componentMsg.bind(this)
+                    })
+                ),
+                this.state.pressurelog_show && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'box' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__Pressurelog__["a" /* default */], {
                         pointInfo: this.state.point_info,
                         onCancel: this.onCancel.bind(this),
                         sendMsg: this.componentMsg.bind(this)
@@ -56888,21 +56899,6 @@ var Refrilog = function (_React$Component) {
             this.setState({ af_temp: e.target.value });
         }
     }, {
-        key: "af_puttChange",
-        value: function af_puttChange(e) {
-            this.setState({ af_putt: e.target.value });
-        }
-    }, {
-        key: "af_bellChange",
-        value: function af_bellChange(e) {
-            this.setState({ af_bell: e.target.value });
-        }
-    }, {
-        key: "af_lightChange",
-        value: function af_lightChange(e) {
-            this.setState({ af_light: e.target.value });
-        }
-    }, {
         key: "af_rmkChange",
         value: function af_rmkChange(e) {
             this.setState({ af_rmk: e.target.value });
@@ -57383,6 +57379,661 @@ var Refrilog = function (_React$Component) {
 }(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
 
 /* harmony default export */ __webpack_exports__["a"] = (Refrilog);
+
+/***/ }),
+/* 552 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/** 
+ * Pressurelog.js
+ */
+
+
+
+
+var Pressurelog = function (_React$Component) {
+    _inherits(Pressurelog, _React$Component);
+
+    function Pressurelog(props) {
+        _classCallCheck(this, Pressurelog);
+
+        var _this = _possibleConstructorReturn(this, (Pressurelog.__proto__ || Object.getPrototypeOf(Pressurelog)).call(this, props));
+
+        _this.state = {
+            point_info: {}, point_no: '', ldate: '',
+            mo_pa: '', mo_aq: '', mo_err: '', mo_time: '',
+            af_pa: '', af_aq: '', af_err: '', af_time: '',
+            ev_pa: '', ev_aq: '', ev_err: '', ev_time: '',
+            rmk: '',
+            mo: false, af: false, ev: false,
+            log_data: {},
+            init: false
+        };
+        _this.sendMsg = _this.props.sendMsg.bind(_this);
+        return _this;
+    }
+
+    _createClass(Pressurelog, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            this.init();
+        }
+    }, {
+        key: "init",
+        value: function init() {
+            var self = this;
+            var point_info = this.props.pointInfo;
+            this.setState({ init: true });
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/web/mpz/pointlog/pressure/init/' + point_info.point_no).then(function (response) {
+                if (response.data.result) {
+                    self.setState({
+                        point_info: point_info,
+                        point_no: point_info.point_no,
+                        ldate: response.data.ldate,
+                        log_data: response.data.log_data,
+                        init: false
+                    });
+                    console.log(response.data);
+                    self.setValue(response.data.log_data);
+                } else {
+                    self.props.sendMsg(response.data.msg);
+                    self.onCancel();
+                }
+            }).catch(function (error) {
+                console.log(error);
+                self.props.sendMsg(error);
+            });
+        }
+    }, {
+        key: "setValue",
+        value: function setValue(data) {
+            if (data !== null) {
+                var mo = data.mo_time !== null ? true : false;
+                var af = data.af_time !== null ? true : false;
+                var ev = data.ev_time !== null ? true : false;
+                this.setState({
+                    mo_pa: data.mo_pa, mo_aq: data.mo_aq, mo_err: data.mo_err, mo_time: data.mo_time,
+                    af_pa: data.af_pa, af_aq: data.af_aq, af_err: data.af_err, af_time: data.af_time,
+                    ev_pa: data.ev_pa, ev_aq: data.ev_aq, ev_err: data.ev_err, ev_time: data.ev_time,
+                    rmk: data.rmk,
+                    mo: mo, af: af, ev: ev
+                });
+            }
+        }
+    }, {
+        key: "onSave",
+        value: function onSave(e) {
+            var self = this;
+            this.setState({ isLoading: true });
+            var _state = this.state,
+                point_no = _state.point_no,
+                ldate = _state.ldate,
+                mo_pa = _state.mo_pa,
+                mo_aq = _state.mo_aq,
+                mo_err = _state.mo_err,
+                mo_time = _state.mo_time,
+                af_pa = _state.af_pa,
+                af_aq = _state.af_aq,
+                af_err = _state.af_err,
+                af_time = _state.af_time,
+                ev_pa = _state.ev_pa,
+                ev_aq = _state.ev_aq,
+                ev_err = _state.ev_err,
+                ev_time = _state.ev_time,
+                rmk = _state.rmk;
+
+            var form_data = new FormData();
+            form_data.append('point_no', point_no);
+            form_data.append('ldate', ldate);
+            form_data.append('mo_pa', mo_pa || '');
+            form_data.append('mo_aq', mo_aq || '');
+            form_data.append('mo_time', mo_time || '');
+            form_data.append('mo_err', mo_err || '');
+            form_data.append('af_pa', af_pa || '');
+            form_data.append('af_aq', af_aq || '');
+            form_data.append('af_time', af_time || '');
+            form_data.append('af_err', af_err || '');
+            form_data.append('ev_pa', ev_pa || '');
+            form_data.append('ev_aq', ev_aq || '');
+            form_data.append('ev_min', ev_min || '');
+            form_data.append('ev_err', ev_err || '');
+            form_data.append('rmk', rmk || '');
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpz/pointlog/pressure/save', form_data).then(function (response) {
+                if (response.data.result) {
+                    self.sendMsg(point_no + '檢查點記錄成功!');
+                    self.setState({ isLoading: false });
+                    self.onCancel();
+                } else {
+                    self.sendMsg(response.data.msg);
+                    self.setState({ isLoading: false });
+                }
+            }).catch(function (error) {
+                console.log(error);
+                self.sendMsg(error);
+                self.setState({ isLoading: false });
+            });
+        }
+    }, {
+        key: "mo_aqChange",
+        value: function mo_aqChange(e) {
+            this.setState({ mo_aq: e.target.value });
+        }
+    }, {
+        key: "mo_paChange",
+        value: function mo_paChange(e) {
+            this.setState({ mo_pa: e.target.value });
+        }
+    }, {
+        key: "mo_errChange",
+        value: function mo_errChange(e) {
+            this.setState({ mo_err: e.target.value });
+        }
+    }, {
+        key: "af_aqChange",
+        value: function af_aqChange(e) {
+            this.setState({ af_aq: e.target.value });
+        }
+    }, {
+        key: "af_paChange",
+        value: function af_paChange(e) {
+            this.setState({ af_pa: e.target.value });
+        }
+    }, {
+        key: "af_errChange",
+        value: function af_errChange(e) {
+            this.setState({ af_err: e.target.value });
+        }
+    }, {
+        key: "ev_aqChange",
+        value: function ev_aqChange(e) {
+            this.setState({ ev_aq: e.target.value });
+        }
+    }, {
+        key: "ev_paChange",
+        value: function ev_paChange(e) {
+            this.setState({ ev_pa: e.target.value });
+        }
+    }, {
+        key: "ev_errChange",
+        value: function ev_errChange(e) {
+            this.setState({ ev_err: e.target.value });
+        }
+    }, {
+        key: "rmkChange",
+        value: function rmkChange(e) {
+            this.setState({ rmk: e.target.value });
+        }
+    }, {
+        key: "onCancel",
+        value: function onCancel() {
+            this.props.onCancel();
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var _state2 = this.state,
+                init = _state2.init,
+                isLoading = _state2.isLoading,
+                point_info = _state2.point_info;
+            var _state3 = this.state,
+                mo = _state3.mo,
+                af = _state3.af,
+                ev = _state3.ev;
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "div",
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "column" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "h4",
+                        { className: "title is-4" },
+                        "\u58D3\u5DEE\u8A18\u9304\u8868"
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "column" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "table",
+                        { className: "table is-bordered", style: { marginBottom: '0px' } },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "tbody",
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "tr",
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    "\u540D\u7A31"
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    point_info.point_name
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    "\u5100\u5668\u7DE8\u865F"
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    point_info.mach_no
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "tr",
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    "\u5100\u5668\u6821\u671F"
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    point_info.ch_date
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    "\u5408\u683C\u7BC4\u570D"
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    "\u6FD5\u5EA6\uFF1A",
+                                    point_info.pres_range,
+                                    " R.H(%)"
+                                )
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "column" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "table",
+                        { className: "table is-bordered", style: { marginBottom: '0px' } },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "tbody",
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "tr",
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    { colSpan: 4 },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "label" },
+                                        "\u4E0A\u5348(1)\u58D3\u5DEE\u8A18\u9304"
+                                    )
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "tr",
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "label" },
+                                        "\u986F\u793A\u503C"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { className: "input", type: "number", maxLength: 10,
+                                        disabled: mo,
+                                        value: this.state.mo_pa || '',
+                                        onChange: this.mo_paChange.bind(this)
+                                    })
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "label" },
+                                        "MAX"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { className: "input", type: "number", maxLength: 10,
+                                        disabled: mo,
+                                        value: this.state.mo_aq || '',
+                                        onChange: this.mo_aqChange.bind(this)
+                                    })
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "label" },
+                                        "\u5099\u8A3B"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "div",
+                                        { className: "select" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            "select",
+                                            {
+                                                placeholder: "\u8ACB\u9078\u64C7",
+                                                disabled: mo,
+                                                onChange: this.mo_errChange.bind(this),
+                                                value: this.state.mo_err || ''
+                                            },
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", { value: "" }),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "\u53C3\u52A0\u96C6\u6703" },
+                                                "\u53C3\u52A0\u96C6\u6703"
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "\u6EAB\u6FD5\u5EA6\u7570\u5E38" },
+                                                "\u6EAB\u6FD5\u5EA6\u7570\u5E38"
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "\u5100\u5668\u7570\u5E38" },
+                                                "\u5100\u5668\u7570\u5E38"
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "\u66F4\u63DB\u5100\u5668" },
+                                                "\u66F4\u63DB\u5100\u5668"
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "\u5176\u5B83" },
+                                                "\u5176\u5B83"
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "column" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "table",
+                        { className: "table is-bordered", style: { marginBottom: '0px' } },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "tbody",
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "tr",
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    { colSpan: 4 },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "label" },
+                                        "\u4E0B\u5348(1)\u58D3\u5DEE\u8A18\u9304"
+                                    )
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "tr",
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "label" },
+                                        "\u986F\u793A\u503C"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { className: "input", type: "number", maxLength: 10,
+                                        disabled: af,
+                                        value: this.state.af_pa || '',
+                                        onChange: this.af_paChange.bind(this)
+                                    })
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "label" },
+                                        "MAX"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { className: "input", type: "number", maxLength: 10,
+                                        disabled: af,
+                                        value: this.state.af_aq || '',
+                                        onChange: this.af_aqChange.bind(this)
+                                    })
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "label" },
+                                        "\u5099\u8A3B"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "div",
+                                        { className: "select" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            "select",
+                                            {
+                                                placeholder: "\u8ACB\u9078\u64C7",
+                                                disabled: af,
+                                                onChange: this.af_errChange.bind(this),
+                                                value: this.state.af_err || ''
+                                            },
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", { value: "" }),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "\u53C3\u52A0\u96C6\u6703" },
+                                                "\u53C3\u52A0\u96C6\u6703"
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "\u6EAB\u6FD5\u5EA6\u7570\u5E38" },
+                                                "\u6EAB\u6FD5\u5EA6\u7570\u5E38"
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "\u5100\u5668\u7570\u5E38" },
+                                                "\u5100\u5668\u7570\u5E38"
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "\u66F4\u63DB\u5100\u5668" },
+                                                "\u66F4\u63DB\u5100\u5668"
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "\u5176\u5B83" },
+                                                "\u5176\u5B83"
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "column" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "table",
+                        { className: "table is-bordered", style: { marginBottom: '0px' } },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "tbody",
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "tr",
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    { colSpan: 4 },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "label" },
+                                        "\u4E0B\u5348(2)\u58D3\u5DEE\u8A18\u9304"
+                                    )
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "tr",
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "label" },
+                                        "\u986F\u793A\u503C"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { className: "input", type: "number", maxLength: 10,
+                                        disabled: ev,
+                                        value: this.state.ev_pa || '',
+                                        onChange: this.ev_paChange.bind(this)
+                                    })
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "label" },
+                                        "MAX"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { className: "input", type: "number", maxLength: 10,
+                                        disabled: ev,
+                                        value: this.state.ev_aq || '',
+                                        onChange: this.ev_aqChange.bind(this)
+                                    })
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "td",
+                                    null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "label",
+                                        { className: "label" },
+                                        "\u5099\u8A3B"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "div",
+                                        { className: "select" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            "select",
+                                            {
+                                                placeholder: "\u8ACB\u9078\u64C7",
+                                                disabled: ev,
+                                                onChange: this.ev_errChange.bind(this),
+                                                value: this.state.ev_err || ''
+                                            },
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", { value: "" }),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "\u53C3\u52A0\u96C6\u6703" },
+                                                "\u53C3\u52A0\u96C6\u6703"
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "\u6EAB\u6FD5\u5EA6\u7570\u5E38" },
+                                                "\u6EAB\u6FD5\u5EA6\u7570\u5E38"
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "\u5100\u5668\u7570\u5E38" },
+                                                "\u5100\u5668\u7570\u5E38"
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "\u66F4\u63DB\u5100\u5668" },
+                                                "\u66F4\u63DB\u5100\u5668"
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "option",
+                                                { value: "\u5176\u5B83" },
+                                                "\u5176\u5B83"
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "column" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "label",
+                        { className: "label" },
+                        "\u5099\u8A3B"
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", className: "input", maxLength: 50,
+                        value: this.state.rmk || '',
+                        onChange: this.rmkChange.bind(this)
+                    })
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "column" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "field is-grouped" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "p",
+                            { className: "control" },
+                            mo && af && ev ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "button",
+                                { className: "button is-primary is-static" },
+                                "\u5DF2\u8A18\u9304\u5B8C\u7562"
+                            ) : isLoading ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { className: "button is-loading is-primary" }) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "button",
+                                { type: "button", className: "button is-primary", onClick: this.onSave.bind(this) },
+                                "\u5132\u5B58"
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "p",
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "button",
+                                { className: "button", onClick: this.onCancel.bind(this) },
+                                "\u53D6\u6D88"
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Pressurelog;
+}(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["a"] = (Pressurelog);
 
 /***/ })
 /******/ ]);

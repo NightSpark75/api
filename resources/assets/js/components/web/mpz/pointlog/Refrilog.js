@@ -124,15 +124,6 @@ export default class Refrilog extends React.Component{
     af_tempChange(e) {
         this.setState({af_temp: e.target.value});
     }
-    af_puttChange(e) {
-        this.setState({af_putt: e.target.value});
-    }
-    af_bellChange(e) {
-        this.setState({af_bell: e.target.value});
-    }
-    af_lightChange(e) {
-        this.setState({af_light: e.target.value});
-    }
     af_rmkChange(e) {
         this.setState({af_rmk: e.target.value});
     }
@@ -314,79 +305,6 @@ export default class Refrilog extends React.Component{
                                     </div>
                                 </td>
                             </tr>
-                            {/*
-                            <tr>
-                                <td>
-                                    <label className="radiobox is-size-5">安全推桿&emsp;</label>
-                                    <label className="radio">
-                                        <input type="radio"
-                                            name="af_putt_y" 
-                                            disabled={af}
-                                            value={'Y'}
-                                            checked={this.state.af_putt === 'Y'}
-                                            onChange={this.af_puttChange.bind(this)}
-                                        />
-                                        正常
-                                    </label>
-                                    <label className="radio">
-                                        <input type="radio" 
-                                            name="af_putt_n" 
-                                            disabled={af}
-                                            value={'N'}
-                                            checked={this.state.af_putt === 'N'}
-                                            onChange={this.af_puttChange.bind(this)}
-                                        />
-                                        異常
-                                    </label>
-                                </td>
-                                <td>
-                                    <label className="radiobox is-size-5">無線門鈴發報機&emsp;</label>
-                                    <label className="radio">
-                                        <input type="radio"
-                                            name="af_bell_y" 
-                                            disabled={af}
-                                            value={'Y'}
-                                            checked={this.state.af_bell === 'Y'}
-                                            onChange={this.af_bellChange.bind(this)}
-                                        />
-                                        正常
-                                    </label>
-                                    <label className="radio">
-                                        <input type="radio" 
-                                            name="af_bell_n" 
-                                            disabled={af}
-                                            value={'N'}
-                                            checked={this.state.af_bell === 'N'}
-                                            onChange={this.af_bellChange.bind(this)}
-                                        />
-                                        異常
-                                    </label>
-                                </td>
-                                <td>
-                                    <label className="radiobox is-size-5">照明設備&emsp;</label>
-                                    <label className="radio">
-                                        <input type="radio"
-                                            name="af_light_y" 
-                                            disabled={af}
-                                            value={'Y'}
-                                            checked={this.state.af_light === 'Y'}
-                                            onChange={this.af_lightChange.bind(this)}
-                                        />
-                                        正常
-                                    </label>
-                                    <label className="radio">
-                                        <input type="radio" 
-                                            name="af_light_n" 
-                                            disabled={af}
-                                            value={'N'}
-                                            checked={this.state.af_light === 'N'}
-                                            onChange={this.af_lightChange.bind(this)}
-                                        />
-                                        異常
-                                    </label>
-                                </td>
-                            </tr>
-                            */}
                         </tbody>
                     </table>
                 </div>
