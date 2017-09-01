@@ -11,14 +11,18 @@
     <link href="{{ url('/css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h2>{{ $title }}</h2>
-                <h4>{{ $message}}</h4>
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-half is-offset-one-quarter">
+                    <h1 class="title is-1">{{ $title }}</h1>
+                    <div class="notification is-success">
+                        <h4>{{ $message}}</h4>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 </body>
 </html>
     

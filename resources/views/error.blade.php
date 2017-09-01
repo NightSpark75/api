@@ -10,23 +10,17 @@
     <link href="{{ url('/css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div class="container" style="margin-top: 40px;">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="row">
-                    <div class="col-md-6 col-md-offset-3">
-                        <div class="panel panel-warning">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">error page</h4>
-                            </div>
-                            <div class="panel-body">
-                                <h4>{{ isset($message) ? $message : session('message') }}</h4>
-                            </div>
-                        </div>
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-half is-offset-one-quarter">
+                    <h1 class="title is-1">error!!</h1>
+                    <div class="notification is-warning">
+                        <h4>{{ isset($message) ? $message : session('message') }}</h4>
                     </div>
-                </div>    
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 </body>
 </html>

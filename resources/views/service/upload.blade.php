@@ -9,38 +9,34 @@
     <meta name="author" content="">
     <title>Stardant D2K Web Api</title>
     <link href="{{ url('/css/app.css') }}" rel="stylesheet">
+    <link href="{{ url('/css/font-awesome.min.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div class="container" style={containerStyle}>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="row">
-                    <div class="col-md-6 col-md-offset-3">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">上傳檔案</h4>
-                            </div>
-                            <div class="panel-body">
-                                <form role="form" action="/api/file/upload/old/code" method="post" enctype="multipart/form-data">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="hidden" name="file_id" value="{{ $file_id }}"/>
-                                        <input type="hidden" name="user_id" value="{{ $user_id }}"/>
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-half is-offset-one-quarter">
+                    <div class="box">
+                        <div class="column">
+                            <form role="form" action="/api/file/upload/old/code" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="file_id" value="{{ $file_id }}"/>
+                                <input type="hidden" name="user_id" value="{{ $user_id }}"/>
+                                <div class="column"> 
+                                    <input type="file" name="file"/>
+                                </div>
+                                <div class="column"> 
                                     <div class="form-group">
-                                        <input type="file" name="file_data"/>
+                                        <button type="submit" class="button is-primary">上傳</button>
                                     </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-primary">
-                                            <span class="glyphicon glyphicon-upload"></span>上傳
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </body>
 </html>
     

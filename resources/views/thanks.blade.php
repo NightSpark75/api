@@ -8,27 +8,22 @@
     <meta name="author" content="">
     <title>Stardant D2K Web Api</title>
     <link href="{{ url('/css/app.css') }}" rel="stylesheet">
+    <link href="{{ url('/css/font-awesome.min.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div class="container" style="margin-top: 40px;">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="row">
-                    <div class="col-md-6 col-md-offset-3">
-                        <div class="panel panel-warning">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">您已登出系統</h4>
-                            </div>
-                            <div class="panel-body">
-                                <h5>感謝您的使用</h5>
-                                <h5><a href="{{ url('/web/login/ppm') }}">需要重新登入請按此</a></h5>
-                            </div>
-                        </div>
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-half is-offset-one-quarter">
+                    <h1 class="title is-1">您已登出系統</h1>
+                    <div class="notification is-success">
+                        <h5>感謝您的使用</h5>
+                        <h5><a href="{{ url('/web/login/ppm') }}">需要重新登入請按此</a></h5>
                     </div>
-                </div>    
+                </div>
             </div>
         </div>
-    </div>
+    </section>
     <script src="{{ url('/js/app.js') }}"></script>
 </body>
 </html>

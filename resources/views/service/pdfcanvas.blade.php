@@ -10,13 +10,15 @@
     <link href="{{ url('/css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
-                <div id="pdf-container"></div>
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column has-text-centered">
+                    <div id="pdf-container"></div>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
     <script src="{{ url('/js/pdf.js') }}"></script>
     <script src="{{ url('/js/pdf.worker.js') }}"></script>
     <script>
