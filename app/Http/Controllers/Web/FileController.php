@@ -59,7 +59,7 @@ class FileController extends Controller
      */
     public function uploadOldFile($store_type = 'code')
     {
-        $file = request()->file('file_data');
+        $file = request()->file('file');
         $id = request()->input('file_id');
         $user = request()->input('user_id');
         $result = $this->file->uploadFile($id, $user, $file, $store_type);
