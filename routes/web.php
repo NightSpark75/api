@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::get('/apk/download', function () {
+    return response()->download('app-release.apk');
+});
+
 Route::get('/ip', function () {
     return request()->ip();
 });
