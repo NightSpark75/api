@@ -1,3 +1,4 @@
+// v 1.23.5
 import React from "react";
 import ReactDOM from "react-dom";
 import {Router, Route, browserHistory, IndexRoute, hashHistory} from "react-router";
