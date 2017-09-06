@@ -28,6 +28,15 @@ Route::group(['prefix' => 'web', 'namespace' => 'Web'], function () {
     Route::middleware('web')->get('user/info', 'AuthController@user');
 });
 
+// react native api
+Route::group(['prefix' => 'native', 'namespace' => 'native'], function () {
+    Route::group(['prefix' => 'pad'], function () {
+        Route::get('/bundle/download', 'PadController@download');
+        Route::get('/bundle/version', 'PadController@version');
+        Route::post('/bundle/save', 'PadController@save');
+    });
+});
+
 // web user
 Route::group(['prefix' => 'web/user', 'namespace' => 'Web'], function () {
     Route::get('init', 'UserController@init');

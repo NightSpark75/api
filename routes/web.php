@@ -15,10 +15,6 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/apk/download', function () {
-    return response()->download('app-release.apk');
-});
-
 Route::get('/ip', function () {
     return request()->ip();
 });
@@ -44,6 +40,8 @@ Route::get('/web/file/upload/code/{file_id}/{user_id}',  function ($file_id, $us
         ->with('file_id', $file_id)
         ->with('user_id', $user_id);
 });
+
+Route::get('/native/pad/bundle/upload', 'Native\PadController@upload');
 
 // ReactJs 須認證的頁面
 Route::get('/auth/{path?}', function($path = null){

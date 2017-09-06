@@ -4,9 +4,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateApiFileToken extends Migration
+class CreateApiApkVersion extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -15,11 +14,12 @@ class CreateApiFileToken extends Migration
     public function up()
     {
         //
-        Schema::create('api_file_token', function($table)
+        Schema::create('api_bundle_version', function($table)
         {
-            $table->string('file_token', 32)->primary()->comment('取檔token');
-            $table->string('load_user', 32)->comment('檔案取用人員'); 
-            $table->longText('code')->nullable()->comment('base64編碼');
+            // ex: version 1.23.1 = 1001023001
+            $table->string('version', 32)->primary()->comment('版本號');
+            $table->longText('bundle_file')->nullable()->comment('base64編碼');
+            $table->timestamps();
 
             $table->index(['file_token', 'load_user', 'file_id']);
         });
@@ -33,6 +33,6 @@ class CreateApiFileToken extends Migration
     public function down()
     {
         //
-        Schema::dropIfExists('api_file_token');
+        Schema::dropIfExists('api_bundle_version');
     }
 }
