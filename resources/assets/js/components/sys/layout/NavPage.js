@@ -48,6 +48,11 @@ export default class NavPage extends React.Component{
                 <nav className="navbar">
                     <div className="container">
                         <div className="navbar-brand">
+                            <div className="navbar-item">
+                                <label className="label is-medium has-text-white-ter">
+                                    {this.state.user.length === 0 ? '資料讀取中...': this.state.user['user_name'] + ' 您好'}
+                                </label>
+                            </div>
                             <div className="navbar-burger burger" data-target="navMenu" onClick={this.navMenu.bind(this)}>
                                 <span></span>
                                 <span></span>
@@ -55,12 +60,13 @@ export default class NavPage extends React.Component{
                             </div>
                         </div>
                         <div id="navMenu" className={this.state.nav + " navbar-menu"}>
-                            <div className="navbar-start">
-                                <span className="navbar-item">{this.state.user.length === 0 ? '資料讀取中...': this.state.user['user_name'] + ' 您好'}</span>
-                            </div>
                             <div className="navbar-end">
-                                <Link className="navbar-item" to="/auth/web/menu">回功能頁</Link>
-                                <a className="navbar-item" onClick={this.onLogout.bind(this)} href="#">登出</a>
+                                <Link className="navbar-item" to="/auth/web/menu">
+                                    <label className="label is-medium has-text-white-ter">回功能頁</label>
+                                </Link>
+                                <a className="navbar-item" onClick={this.onLogout.bind(this)} href="#">
+                                    <label className="label is-medium has-text-white-ter">登出</label>
+                                </a>
                             </div>
                         </div>
                     </div>

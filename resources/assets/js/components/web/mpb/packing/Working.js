@@ -4,7 +4,6 @@
 import React from 'react';
 import { Link } from 'react-router';
 import axios from 'axios';
-import { Button, ButtonToolbar, Table, Panel, Pager, FormControl, Alert, Col, ListGroup, ListGroupItem } from "react-bootstrap";
 
 export default class Job extends React.Component{
     constructor(props) {
@@ -178,32 +177,35 @@ export default class Job extends React.Component{
                     <div className="level">
                         <div className="level-left">
                             <div className="level-item">
-                                <Link className="button is-medium" to="/auth/web/mpb/packing/list">&larr; 回生產清單</Link>
+                                <Link className="button is-medium " to="/auth/web/mpb/packing/list">&larr; 回生產清單</Link>
                             </div>
-                            <div className="level-item">
-                                <button className="button is-success is-medium" onClick={this.allUpdate.bind(this, 'join')}>整批工作</button>
+                            <div className="level-item is-hidden-touch">
+                                <button className="button is-success is-large" onClick={this.allUpdate.bind(this, 'join')}>整批工作</button>
                             </div>
-                            <div className="level-item">
-                                <button className="button is-info is-medium" onClick={this.allUpdate.bind(this, 'leave')}>整批退出</button>
+                            <div className="level-item is-hidden-touch">
+                                <button className="button is-info is-large" onClick={this.allUpdate.bind(this, 'leave')}>整批退出</button>
                             </div>
                         </div>
                         <div className="level-right">
-                            <div className="level-item">
-                                <button className="button is-primary is-medium" onClick={this.workingComplete.bind(this, 'N')}>結束且完工(無清潔)</button>
+                            <div className="level-item is-hidden-touch">
+                                <button className="button is-primary is-large" onClick={this.workingComplete.bind(this, 'N')}>結束且完工(無清潔)</button>
                             </div>
                             <div className="level-item">
-                                <button className="button is-primary is-medium" onClick={this.workingComplete.bind(this, 'Y')}>結束且完工(清潔)</button>
+                                <button className="button is-primary is-large" onClick={this.workingComplete.bind(this, 'Y')}>結束且完工(清潔)</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="columns">
+                <div className="column is-hidden-desktop">
+                    <label className="is-size-4">請將畫面轉橫</label>
+                </div>
+                <div className="columns is-hidden-touch">
                     <div className="column">
                         <article className="message is-info">
                             <div className="message-header">
-                                <h4 className="title is-4 has-text-white-ter">待派工生產人員</h4>
+                                <h4 className="title is-3 has-text-white-ter">待派工生產人員</h4>
                             </div>
-                            <div className="message-body"  style={{height: '500px'}}>
+                            <div className="message-body"  style={{height: '450px'}}>
                                 <div className="field is-grouped is-grouped-multiline">
                                     {this.state.waiting_list.map((item, index) => (
                                         <p className="control" key={index}>
@@ -221,9 +223,9 @@ export default class Job extends React.Component{
                     <div className="column">
                         <article className="message is-success">
                             <div className="message-header">
-                                <h4 className="title is-4 has-text-white-ter">目前生產人員</h4>
+                                <h4 className="title is-3 has-text-white-ter">目前生產人員</h4>
                             </div>
-                            <div className="message-body" style={{height: '500px'}}>
+                            <div className="message-body" style={{height: '450px'}}>
                                 <div className="field is-grouped is-grouped-multiline">
                                     {this.state.working_list.map((item, index) => (
                                         <p className="control" key={index}>

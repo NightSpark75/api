@@ -36,13 +36,15 @@ export default class Menu extends React.Component{
         return(   
             <div className="columns is-multiline" style={{margin: '0px'}}>
                 { list.map((item, index) => (
-                    <div className="column is-3" key={item['prg_id']}>
-                        <Link className="button is-info is-3 is-fullwidth" to={item['web_route']}>
+                    <div className="column is-4" key={item['prg_id']}>
+                        <Link className="button is-info is-4 is-fullwidth is-large" to={item['web_route']}>
                             {item['prg_name']}
                         </Link>
                     </div>
                 )) }
-                { this.state.list.length === 0 && <h3>功能清單建立中...</h3> }   
+                { this.state.list.length === 0 && 
+                    <label className="label is-large">功能清單建立中...</label> 
+                }   
             </div>
         );
     }

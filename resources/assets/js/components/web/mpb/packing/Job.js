@@ -87,56 +87,61 @@ export default class Job extends React.Component{
             <div>
                 <div className="box" style={{ marginTop: '10px', marginBottom: '10px' }}>
                     <p className="control">
-                        <Link className="button" to="/auth/web/menu">&larr; 功能選單</Link>
+                        <Link className="button is-medium" to="/auth/web/menu">&larr; 功能選單</Link>
                     </p>
                 </div>
                 {this.state.showInfo &&  
                     <article className="message is-info" style={{ marginBottom: '10px' }}>
-                        <div className="message-header">
+                        <div className="message-header is-size-4">
                             <p>製程單號{this.state.item.sno}詳細資訊</p>
-                            <button className="delete" aria-label="delete" onClick={this.hideProcessInfo.bind(this)}></button>
+                            <button className="delete " aria-label="delete" onClick={this.hideProcessInfo.bind(this)}></button>
                         </div>
-                        <div className="message-body">
+                        <div className="message-body is-size-4">
                             {this.state.item.info}
                         </div>
                     </article>
                 }
                 {job_list.length > 0 ?
-                    <table className="table is-bordered is-fullwidth">
-                        <thead>
-                            <tr>
-                                <th width="65.56"></th>
-                                <th>製程單號</th>
-                                <th>批號</th>
-                                <th>順序</th>
-                                <th>途程名稱</th>
-                                <th>設備編號</th>
-                                <th>工作室名稱</th>
-                                <th width="65.56"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {job_list.map((item, index) => (
-                                <tr key={index}>
-                                    <td>
-                                        <button className="button" onClick={this.showProcessInfo.bind(this, item)}>詳細資訊</button>
-                                    </td>
-                                    <td>{item.sno}</td>
-                                    <td>{item.bno}</td>
-                                    <td>{item.psno}</td>
-                                    <td>{item.pname}</td>
-                                    <td>{item.mno}</td>
-                                    <td>{item.rname}</td>
-                                    <td>
-                                        <Link className="button is-primary" 
-                                            to={"/auth/web/mpb/packing/working/" + item.sno + "/" + item.psno}>報工</Link>
-                                    </td>
+                    <div>
+                        <div className="column is-hidden-desktop">
+                            <label className="is-size-4">請將畫面轉橫</label>
+                        </div>
+                        <table className="table is-bordered is-fullwidth is-size-4 is-hidden-touch">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>製程單號</th>
+                                    <th>批號</th>
+                                    <th>順序</th>
+                                    <th>途程名稱</th>
+                                    <th>設備編號</th>
+                                    <th>工作室名稱</th>
+                                    <th></th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {job_list.map((item, index) => (
+                                    <tr key={index}>
+                                        <td>
+                                            <button className="button is-medium" onClick={this.showProcessInfo.bind(this, item)}>詳細資訊</button>
+                                        </td>
+                                        <td>{item.sno}</td>
+                                        <td>{item.bno}</td>
+                                        <td>{item.psno}</td>
+                                        <td>{item.pname}</td>
+                                        <td>{item.mno}</td>
+                                        <td>{item.rname}</td>
+                                        <td>
+                                            <Link className="button is-primary is-medium" 
+                                                to={"/auth/web/mpb/packing/working/" + item.sno + "/" + item.psno}>報工</Link>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 :
-                    <div className="notification is-warning" style={{padding: '1rem 1rem 1rem 1rem'}}>
+                    <div className="notification is-warning is-size-4" style={{padding: '1rem 1rem 1rem 1rem'}}>
                         目前尚無生產資訊...
                     </div>
                 }

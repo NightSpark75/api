@@ -80,9 +80,9 @@ export default class Login extends React.Component{
                 <div className="column is-half is-offset-one-quarter">
                     <form onSubmit={this.onLogin.bind(this)}>
                         <div className="field">
-                            <label className="label">請輸入帳號密碼登入</label>
+                            <label className="label is-medium">請輸入帳號密碼登入</label>
                             <div className="control has-icons-left">
-                                <input className="input" type="text" placeholder="請輸入帳號" 
+                                <input className="input is-medium" type="text"
                                     placeholder="請輸入帳號"
                                     maxLength="20"
                                     onChange={this.onAccountChange.bind(this)}
@@ -93,10 +93,9 @@ export default class Login extends React.Component{
                             </div>
                         </div>
                         <div className="field">
-                            <label className="label">請輸入帳號密碼登入</label>
                             <div className="control has-icons-left">
-                                <input className="input" type="password" placeholder="請輸入密碼" 
-                                    placeholder="請輸入帳號"
+                                <input className="input is-medium" type="password"
+                                    placeholder="請輸入密碼"
                                     maxLength="30"
                                     onChange={this.onPasswordChange.bind(this)}
                                 />

@@ -67,7 +67,7 @@ export default class Receive extends React.Component{
             if (list[i]['barcode'] === barcode) {
                 item = list[i];
                 this.addReceive(item);
-                return ;
+                return;
             }
         }
         this.setState({
