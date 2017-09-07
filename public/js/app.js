@@ -14992,8 +14992,8 @@ var NavPage = function (_React$Component) {
                                     __WEBPACK_IMPORTED_MODULE_1_react_router__["e" /* Link */],
                                     { className: "navbar-item", to: "/auth/web/menu" },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        "label",
-                                        { className: "label is-medium has-text-white-ter" },
+                                        "span",
+                                        { className: "is-size-4" },
                                         "\u56DE\u529F\u80FD\u9801"
                                     )
                                 ),
@@ -15001,8 +15001,8 @@ var NavPage = function (_React$Component) {
                                     "a",
                                     { className: "navbar-item", onClick: this.onLogout.bind(this), href: "#" },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        "label",
-                                        { className: "label is-medium has-text-white-ter" },
+                                        "span",
+                                        { className: "is-size-4" },
                                         "\u767B\u51FA"
                                     )
                                 )
