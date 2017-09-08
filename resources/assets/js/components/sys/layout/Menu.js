@@ -37,7 +37,7 @@ export default class Menu extends React.Component{
             <div className="columns is-multiline" style={{margin: '0px'}}>
                 { list.map((item, index) => (
                     <div className="column is-4" key={item['prg_id']}>
-                        <Link className="button is-info is-4 is-fullwidth is-large" to={item['web_route']}>
+                        <Link className="button is-orange is-4 is-fullwidth is-large" to={item['web_route']}>
                             {item['prg_name']}
                         </Link>
                     </div>
