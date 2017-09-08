@@ -117,11 +117,26 @@ class ReceiveRepository
                         'valid' => $item->valid,
                         'buydate' => $item->buydate,
                     ]);
-
                     DB::update("
-                        update mpe_house_e h
-                            set sta = 'Y', amt = 0
-                        where barcode = :barcode
+                        update mpe_house_e e
+                        set sta = 'Y'
+                          , opdate = to_number(to_char(sysdate, 'YYYYMMDD'))
+                          , opvl = (
+                            select 
+                            case 
+                              when e.valid > (
+                                case 
+                                  when typ = 'A' then to_number(to_char(add_months(sysdate, 24)-1, 'YYYYMMDD'))
+                                  when typ = 'B' then to_number(to_char(add_months(sysdate, 12)-1, 'YYYYMMDD'))
+                                end) 
+                                then (case when typ = 'A' then to_number(to_char(add_months(sysdate, 24)-1, 'YYYYMMDD'))
+                                  when typ = 'B' then to_number(to_char(add_months(sysdate, 12)-1, 'YYYYMMDD')) end)
+                              else e.valid 
+                            end
+                            from mpe_mate m
+                            where e.partno = m.partno
+                          )
+                        where e.barcode = :barcode
                     ", ['barcode' => $item->barcode]);
                 }
             });
