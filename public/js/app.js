@@ -13677,7 +13677,7 @@ __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 /* 124 */
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed: ModuleBuildError: Module build failed: \r\n    \"light\": ($light, $light-invert), \r\n                     ^\r\n      Undefined variable: \"$light-invert\".\r\n      in D:\\SourceCode\\stdapi\\resources\\assets\\sass\\_variables.scss (line 152, column 23)\n    at runLoaders (D:\\SourceCode\\stdapi\\node_modules\\webpack\\lib\\NormalModule.js:192:19)\n    at D:\\SourceCode\\stdapi\\node_modules\\loader-runner\\lib\\LoaderRunner.js:364:11\n    at D:\\SourceCode\\stdapi\\node_modules\\loader-runner\\lib\\LoaderRunner.js:230:18\n    at context.callback (D:\\SourceCode\\stdapi\\node_modules\\loader-runner\\lib\\LoaderRunner.js:111:13)\n    at Object.asyncSassJobQueue.push [as callback] (D:\\SourceCode\\stdapi\\node_modules\\sass-loader\\lib\\loader.js:57:13)\n    at Object.<anonymous> (D:\\SourceCode\\stdapi\\node_modules\\sass-loader\\node_modules\\async\\dist\\async.js:2243:31)\n    at Object.callback (D:\\SourceCode\\stdapi\\node_modules\\sass-loader\\node_modules\\async\\dist\\async.js:906:16)\n    at options.error (D:\\SourceCode\\stdapi\\node_modules\\node-sass\\lib\\index.js:294:32)");
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 125 */

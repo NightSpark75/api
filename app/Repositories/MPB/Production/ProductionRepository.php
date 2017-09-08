@@ -194,18 +194,18 @@ class ProductionRepository
     {
         $list = DB::select("
             select unique empno from (
-                select empno 
-                from mpa_proc_itm_f 
-                where itm = pk_mpb.fu_oredr_d_msg('2',:sno,:psno) and 
-                    bachno = pk_mpb.fu_oredr_d_msg('3',:sno,:psno) and psno = :psno
+                select empno from mpb_order_f 
+                    where sno = :sno and psno = :psno 
                 union
-                select empno 
-                from mpa_room_emp 
-                where rno = :rno)
+                select mno empno from mpb_order_g 
+                    where sno = :sno and psno = :psno
+                )
         ", [
             'sno' => $sno,
             'psno' => $psno,
-            'rno' => $rno,
+            'sno' => $sno,
+            'psno' => $psno,
+
         ]);
         return $list;
     }
@@ -327,10 +327,12 @@ class ProductionRepository
             $member_state = $this->memberStateCheck($sno, $psno, $empno);
             $waiting = $member_state ? $this->pushMemberInfo($waiting, $empno) : $waiting;
         }
+        /*
         if ($mno !== null) {
             $machine_state = $this->machineStateCheck($sno, $psno, $mno);
             $waiting = $machine_state ? $this->pushMemberInfo($waiting, substr($mno, 2, 6)) : $waiting;
         }
+        */
         return $waiting;
     }
 
