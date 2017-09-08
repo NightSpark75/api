@@ -34,11 +34,6 @@ class AuthController extends Controller
         $this->auth = $auth;
     }
 
-    /**
-     * 使用者登入
-     * 
-     * @return Response->json()
-     */
     public function login()
     {
         $account = request()->input('account');
@@ -49,11 +44,6 @@ class AuthController extends Controller
         return $response;
     }
 
-    /**
-     * 使用者登出
-     * 
-     * @return Redirect('/web/login/'.$system)
-     */
     public function logout()
     {
         $system = session('system');
@@ -61,11 +51,6 @@ class AuthController extends Controller
         return redirect('/web/login/'.$system);
     }
 
-    /**
-     * 取得使用者功能清單
-     * 
-     * @return Response->json()
-     */
     public function menu()
     {
         if (auth()->check()) {
@@ -79,11 +64,6 @@ class AuthController extends Controller
         return $response;
     }
 
-    /**
-     * 取得登入使用者資料
-     * 
-     * @return App\Models\User
-     */
     public function user()
     {
         $info = $this->auth->getUser();

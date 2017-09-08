@@ -74,10 +74,10 @@ class ProductionRepository
     private function getProductionWhere($user_id) {
         $type = DB::selectOne("
             select count(*) as count
-            from mpa_dept_emp 
+            from mpa_dept_emp
             where empno = '$user_id' 
         ");
-        if ($type->count === 0) {
+        if ((int)$type->count === 0) {
             $where = DB::selectOne("
                 select pk_mpb.fu_order_where('1', '%', '$user_id') as str
                 from dual
@@ -203,9 +203,6 @@ class ProductionRepository
         ", [
             'sno' => $sno,
             'psno' => $psno,
-            'sno' => $sno,
-            'psno' => $psno,
-
         ]);
         return $list;
     }

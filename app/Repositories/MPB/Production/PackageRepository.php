@@ -77,7 +77,7 @@ class PackageRepository
             from mpa_dept_emp 
             where empno = '$user_id' 
         ");
-        if ($type->count === 0) {
+        if ((int)$type->count === 0) {
             $where = DB::selectOne("
                 select pk_mpb.fu_order_where_52('1', '%', '$user_id') as str;
                 from dual

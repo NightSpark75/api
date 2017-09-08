@@ -44,35 +44,37 @@ class AuthRepository
     public function login($account, $password, $system)
     {
         try {
-            if (auth()->check()) {
-                return ['result' => true, 'msg' => '登入成功!(#0000)'];
-            }
-            $auth = 
-                $this->user
-                    ->where('id', $account)
-                    ->where('pwd', $password)
-                    ->where('sys', $system)
-                    ->where('state', 'Y')
-                    ->first();
-            if ($auth) {
-                Auth::login($auth);
-                $user_info = [
-                    'system' => $system,
-                    'sys' => $auth->sys,
-                    'co' => $auth->co,
-                    'user_id' => $auth->id,
-                    'user_name' => $auth->name,
-                ];
-                session([
-                    'user_info' => $user_info,
-                    'system' => $system,
-                ]);
-                return ['result' => true, 'msg' => '登入成功!(#0000)'];
-            }
-            throw new Exception('帳號或密碼錯誤!(#0001)');
+            return $this->userLogin($account, $password, $system);
         } catch (Exception $e) {
             return ['result' => false, 'msg' => $e->getMessage()];
         }
+    }
+
+    private function userLogin($account, $password, $system)
+    {
+        $auth = 
+            $this->user
+                ->where('id', $account)
+                ->where('pwd', $password)
+                ->where('sys', $system)
+                ->where('state', 'Y')
+                ->first();
+        if ($auth) {
+            Auth::login($auth);
+            $user_info = [
+                'system' => $system,
+                'sys' => $auth->sys,
+                'co' => $auth->co,
+                'user_id' => $auth->id,
+                'user_name' => $auth->name,
+            ];
+            session([
+                'user_info' => $user_info,
+                'system' => $system,
+            ]);
+            return ['result' => true, 'msg' => '登入成功!(#0000)'];
+        }
+        throw new Exception('帳號或密碼錯誤!(#0001)');
     }
 
     /**
