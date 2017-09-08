@@ -340,11 +340,19 @@ class ProductionRepository
      * @param string $sno 製程代號
      * @param string $psno 途程代號
      * @return array
+     * 
+     * :WARNING: 20170908 發現會有工作人員無法移出情形
+     * 詳細為 PPMADM.TR_MPB_ORDER_TW_D 會判斷 mpb_order_tw.rmk = '1' 
+     * 才能刪除工作中人員資料
+     * 故在此增加程式以致可以順利刪除
      */
     private function getWorking($sno, $psno)
     {
         $working = [];
         $member = $this->getWorkingMember($sno, $psno);
+        
+        
+        
         for ($i = 0; $i < count($member); $i++) {
             $empno = $member[$i]->empno;
             $working = $this->pushMemberInfo($working, $empno);

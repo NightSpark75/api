@@ -13677,7 +13677,7 @@ __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 /* 124 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+throw new Error("Module build failed: ModuleBuildError: Module build failed: \r\n    \"light\": ($light, $light-invert), \r\n                     ^\r\n      Undefined variable: \"$light-invert\".\r\n      in D:\\SourceCode\\stdapi\\resources\\assets\\sass\\_variables.scss (line 152, column 23)\n    at runLoaders (D:\\SourceCode\\stdapi\\node_modules\\webpack\\lib\\NormalModule.js:192:19)\n    at D:\\SourceCode\\stdapi\\node_modules\\loader-runner\\lib\\LoaderRunner.js:364:11\n    at D:\\SourceCode\\stdapi\\node_modules\\loader-runner\\lib\\LoaderRunner.js:230:18\n    at context.callback (D:\\SourceCode\\stdapi\\node_modules\\loader-runner\\lib\\LoaderRunner.js:111:13)\n    at Object.asyncSassJobQueue.push [as callback] (D:\\SourceCode\\stdapi\\node_modules\\sass-loader\\lib\\loader.js:57:13)\n    at Object.<anonymous> (D:\\SourceCode\\stdapi\\node_modules\\sass-loader\\node_modules\\async\\dist\\async.js:2243:31)\n    at Object.callback (D:\\SourceCode\\stdapi\\node_modules\\sass-loader\\node_modules\\async\\dist\\async.js:906:16)\n    at options.error (D:\\SourceCode\\stdapi\\node_modules\\node-sass\\lib\\index.js:294:32)");
 
 /***/ }),
 /* 125 */
@@ -15396,7 +15396,8 @@ var Job = function (_React$Component) {
             psno: _this.props.params.psno,
             waiting_list: [],
             working_list: [],
-            updated: false
+            updated: false,
+            lock: false
         };
         return _this;
     }
@@ -15451,12 +15452,14 @@ var Job = function (_React$Component) {
 
             var self = this;
             var form_data = new FormData();
+            this.setState({ lock: true });
             form_data.append('sno', sno);
             form_data.append('psno', psno);
             form_data.append('empno', empno);
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpb/prod/package/working/' + action, form_data).then(function (response) {
                 if (response.data.result) {
                     console.log(response.data);
+                    self.setState({ lock: false });
                 } else {
                     console.log(response.data);
                 }
@@ -15520,7 +15523,7 @@ var Job = function (_React$Component) {
         key: 'allUpdate',
         value: function allUpdate(action, event) {
             if (action === 'join' && this.state.waiting_list.length > 0 || action === 'leave' && this.state.working_list.length > 0) {
-
+                this.setState({ lock: true });
                 var self = this;
                 var _state3 = this.state,
                     sno = _state3.sno,
@@ -15534,6 +15537,7 @@ var Job = function (_React$Component) {
                 __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpb/prod/package/all/' + action, form_data).then(function (response) {
                     if (response.data.result) {
                         console.log(response.data);
+                        self.setState({ lock: false });
                     } else {
                         console.log(response.data);
                     }
@@ -15554,6 +15558,7 @@ var Job = function (_React$Component) {
                     psno = _state4.psno;
 
                 var form_data = new FormData();
+                this.setState({ lock: true });
                 form_data.append('sno', sno);
                 form_data.append('psno', psno);
                 form_data.append('clean', clean);
@@ -15574,10 +15579,10 @@ var Job = function (_React$Component) {
         value: function render() {
             var _this2 = this;
 
-            var job_list = this.state.job_list;
+            var _state5 = this.state,
+                job_list = _state5.job_list,
+                lock = _state5.lock;
 
-            var buttonStyle = { margin: '0px 0px 10px 0px' };
-            var buttonClass = "col-xs-12 col-sm-6 col-md-6 col-lg-6";
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
@@ -15604,7 +15609,7 @@ var Job = function (_React$Component) {
                                 { className: 'level-item is-hidden-touch' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'button',
-                                    { className: 'button is-success is-large', onClick: this.allUpdate.bind(this, 'join') },
+                                    { className: 'button is-primary is-large', onClick: this.allUpdate.bind(this, 'join'), disabled: lock },
                                     '\u6574\u6279\u5DE5\u4F5C'
                                 )
                             ),
@@ -15613,7 +15618,7 @@ var Job = function (_React$Component) {
                                 { className: 'level-item is-hidden-touch' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'button',
-                                    { className: 'button is-info is-large', onClick: this.allUpdate.bind(this, 'leave') },
+                                    { className: 'button is-success is-large', onClick: this.allUpdate.bind(this, 'leave'), disabled: lock },
                                     '\u6574\u6279\u9000\u51FA'
                                 )
                             )
@@ -15626,7 +15631,7 @@ var Job = function (_React$Component) {
                                 { className: 'level-item' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'button',
-                                    { className: 'button is-primary is-large', onClick: this.workingComplete.bind(this, 'N') },
+                                    { className: 'button is-primary is-large', onClick: this.workingComplete.bind(this, 'N'), disabled: lock },
                                     '\u7D50\u675F\u4E14\u5B8C\u5DE5(\u7121\u6E05\u6F54)'
                                 )
                             ),
@@ -15635,7 +15640,7 @@ var Job = function (_React$Component) {
                                 { className: 'level-item' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'button',
-                                    { className: 'button is-primary is-large', onClick: this.workingComplete.bind(this, 'Y') },
+                                    { className: 'button is-primary is-large', onClick: this.workingComplete.bind(this, 'Y'), disabled: lock },
                                     '\u7D50\u675F\u4E14\u5B8C\u5DE5(\u6E05\u6F54)'
                                 )
                             )
@@ -15659,7 +15664,7 @@ var Job = function (_React$Component) {
                         { className: 'column' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'article',
-                            { className: 'message is-info' },
+                            { className: 'message is-success' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
                                 { className: 'message-header' },
@@ -15681,7 +15686,7 @@ var Job = function (_React$Component) {
                                             { className: 'control', key: index },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 'button',
-                                                { className: 'button is-info is-large',
+                                                { className: 'button is-success is-large', disabled: lock,
                                                     onClick: _this2.updateWorking.bind(_this2, item.empno, 'join')
                                                 },
                                                 item.ename
@@ -15697,7 +15702,7 @@ var Job = function (_React$Component) {
                         { className: 'column' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'article',
-                            { className: 'message is-success' },
+                            { className: 'message is-primary' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
                                 { className: 'message-header' },
@@ -15719,7 +15724,7 @@ var Job = function (_React$Component) {
                                             { className: 'control', key: index },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 'button',
-                                                { className: 'button is-success is-large',
+                                                { className: 'button is-primary is-large', disabled: lock,
                                                     onClick: _this2.updateWorking.bind(_this2, item.empno, 'leave')
                                                 },
                                                 item.ename
@@ -16062,7 +16067,8 @@ var Job = function (_React$Component) {
             psno: _this.props.params.psno,
             waiting_list: [],
             working_list: [],
-            updated: false
+            updated: false,
+            lock: false
         };
         return _this;
     }
@@ -16117,12 +16123,14 @@ var Job = function (_React$Component) {
 
             var self = this;
             var form_data = new FormData();
+            this.setState({ lock: true });
             form_data.append('sno', sno);
             form_data.append('psno', psno);
             form_data.append('empno', empno);
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpb/prod/packing/working/' + action, form_data).then(function (response) {
                 if (response.data.result) {
                     console.log(response.data);
+                    self.setState({ lock: false });
                 } else {
                     console.log(response.data);
                 }
@@ -16187,6 +16195,7 @@ var Job = function (_React$Component) {
         value: function allUpdate(action, event) {
             if (action === 'join' && this.state.waiting_list.length > 0 || action === 'leave' && this.state.working_list.length > 0) {
 
+                this.setState({ lock: true });
                 var self = this;
                 var _state3 = this.state,
                     sno = _state3.sno,
@@ -16200,6 +16209,7 @@ var Job = function (_React$Component) {
                 __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpb/prod/packing/all/' + action, form_data).then(function (response) {
                     if (response.data.result) {
                         console.log(response.data);
+                        self.setState({ lock: false });
                     } else {
                         console.log(response.data);
                     }
@@ -16220,6 +16230,7 @@ var Job = function (_React$Component) {
                     psno = _state4.psno;
 
                 var form_data = new FormData();
+                this.setState({ lock: true });
                 form_data.append('sno', sno);
                 form_data.append('psno', psno);
                 form_data.append('clean', clean);
@@ -16240,10 +16251,10 @@ var Job = function (_React$Component) {
         value: function render() {
             var _this2 = this;
 
-            var job_list = this.state.job_list;
+            var _state5 = this.state,
+                job_list = _state5.job_list,
+                lock = _state5.lock;
 
-            var buttonStyle = { margin: '0px 0px 10px 0px' };
-            var buttonClass = "col-xs-12 col-sm-6 col-md-6 col-lg-6";
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
@@ -16270,7 +16281,7 @@ var Job = function (_React$Component) {
                                 { className: 'level-item is-hidden-touch' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'button',
-                                    { className: 'button is-success is-large', onClick: this.allUpdate.bind(this, 'join') },
+                                    { className: 'button is-primary is-large', onClick: this.allUpdate.bind(this, 'join'), disabled: lock },
                                     '\u6574\u6279\u5DE5\u4F5C'
                                 )
                             ),
@@ -16279,7 +16290,7 @@ var Job = function (_React$Component) {
                                 { className: 'level-item is-hidden-touch' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'button',
-                                    { className: 'button is-info is-large', onClick: this.allUpdate.bind(this, 'leave') },
+                                    { className: 'button is-success is-large', onClick: this.allUpdate.bind(this, 'leave'), disabled: lock },
                                     '\u6574\u6279\u9000\u51FA'
                                 )
                             )
@@ -16292,7 +16303,7 @@ var Job = function (_React$Component) {
                                 { className: 'level-item is-hidden-touch' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'button',
-                                    { className: 'button is-primary is-large', onClick: this.workingComplete.bind(this, 'N') },
+                                    { className: 'button is-primary is-large', onClick: this.workingComplete.bind(this, 'N'), disabled: lock },
                                     '\u7D50\u675F\u4E14\u5B8C\u5DE5(\u7121\u6E05\u6F54)'
                                 )
                             ),
@@ -16301,7 +16312,7 @@ var Job = function (_React$Component) {
                                 { className: 'level-item' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'button',
-                                    { className: 'button is-primary is-large', onClick: this.workingComplete.bind(this, 'Y') },
+                                    { className: 'button is-primary is-large', onClick: this.workingComplete.bind(this, 'Y'), disabled: lock },
                                     '\u7D50\u675F\u4E14\u5B8C\u5DE5(\u6E05\u6F54)'
                                 )
                             )
@@ -16325,7 +16336,7 @@ var Job = function (_React$Component) {
                         { className: 'column' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'article',
-                            { className: 'message is-info' },
+                            { className: 'message is-success' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
                                 { className: 'message-header' },
@@ -16347,7 +16358,7 @@ var Job = function (_React$Component) {
                                             { className: 'control', key: index },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 'button',
-                                                { className: 'button is-info is-large',
+                                                { className: 'button is-success is-large', disabled: lock,
                                                     onClick: _this2.updateWorking.bind(_this2, item.empno, 'join')
                                                 },
                                                 item.ename
@@ -16363,7 +16374,7 @@ var Job = function (_React$Component) {
                         { className: 'column' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'article',
-                            { className: 'message is-success' },
+                            { className: 'message is-primary' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
                                 { className: 'message-header' },
@@ -16385,7 +16396,7 @@ var Job = function (_React$Component) {
                                             { className: 'control', key: index },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 'button',
-                                                { className: 'button is-success is-large',
+                                                { className: 'button is-primary is-large', disabled: lock,
                                                     onClick: _this2.updateWorking.bind(_this2, item.empno, 'leave')
                                                 },
                                                 item.ename
@@ -16728,7 +16739,8 @@ var Job = function (_React$Component) {
             psno: _this.props.params.psno,
             waiting_list: [],
             working_list: [],
-            updated: false
+            updated: false,
+            lock: false
         };
         return _this;
     }
@@ -16781,6 +16793,7 @@ var Job = function (_React$Component) {
                 sno = _state2.sno,
                 psno = _state2.psno;
 
+            this.setState({ lock: true });
             var self = this;
             var form_data = new FormData();
             form_data.append('sno', sno);
@@ -16789,6 +16802,7 @@ var Job = function (_React$Component) {
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpb/prod/production/working/' + action, form_data).then(function (response) {
                 if (response.data.result) {
                     console.log(response.data);
+                    self.setState({ lock: false });
                 } else {
                     console.log(response.data);
                 }
@@ -16852,7 +16866,7 @@ var Job = function (_React$Component) {
         key: 'allUpdate',
         value: function allUpdate(action, event) {
             if (action === 'join' && this.state.waiting_list.length > 0 || action === 'leave' && this.state.working_list.length > 0) {
-
+                this.setState({ lock: true });
                 var self = this;
                 var _state3 = this.state,
                     sno = _state3.sno,
@@ -16866,6 +16880,7 @@ var Job = function (_React$Component) {
                 __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpb/prod/production/all/' + action, form_data).then(function (response) {
                     if (response.data.result) {
                         console.log(response.data);
+                        self.setState({ lock: false });
                     } else {
                         console.log(response.data);
                     }
@@ -16880,6 +16895,7 @@ var Job = function (_React$Component) {
         value: function workingComplete(clean, event) {
             var msg = clean === 'N' ? '按確定後, 該製程完工(無清潔)..' : '按確定後,該製程完工(清潔)..';
             if (confirm(msg)) {
+                this.setState({ lock: true });
                 var self = this;
                 var _state4 = this.state,
                     sno = _state4.sno,
@@ -16906,7 +16922,9 @@ var Job = function (_React$Component) {
         value: function render() {
             var _this2 = this;
 
-            var job_list = this.state.job_list;
+            var _state5 = this.state,
+                job_list = _state5.job_list,
+                lock = _state5.lock;
 
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
@@ -16934,7 +16952,7 @@ var Job = function (_React$Component) {
                                 { className: 'level-item is-hidden-touch' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'button',
-                                    { className: 'button is-success is-large', onClick: this.allUpdate.bind(this, 'join') },
+                                    { className: 'button is-primary is-large', onClick: this.allUpdate.bind(this, 'join'), disabled: lock },
                                     '\u6574\u6279\u5DE5\u4F5C'
                                 )
                             ),
@@ -16943,7 +16961,7 @@ var Job = function (_React$Component) {
                                 { className: 'level-item is-hidden-touch' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'button',
-                                    { className: 'button is-info is-large', onClick: this.allUpdate.bind(this, 'leave') },
+                                    { className: 'button is-success is-large', onClick: this.allUpdate.bind(this, 'leave'), disabled: lock },
                                     '\u6574\u6279\u9000\u51FA'
                                 )
                             )
@@ -16956,7 +16974,7 @@ var Job = function (_React$Component) {
                                 { className: 'level-item' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'button',
-                                    { className: 'button is-primary is-large', onClick: this.workingComplete.bind(this, 'N') },
+                                    { className: 'button is-primary is-large', onClick: this.workingComplete.bind(this, 'N'), disabled: lock },
                                     '\u7D50\u675F\u4E14\u5B8C\u5DE5(\u7121\u6E05\u6F54)'
                                 )
                             ),
@@ -16965,7 +16983,7 @@ var Job = function (_React$Component) {
                                 { className: 'level-item' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'button',
-                                    { className: 'button is-primary is-large', onClick: this.workingComplete.bind(this, 'Y') },
+                                    { className: 'button is-primary is-large', onClick: this.workingComplete.bind(this, 'Y'), disabled: lock },
                                     '\u7D50\u675F\u4E14\u5B8C\u5DE5(\u6E05\u6F54)'
                                 )
                             )
@@ -16989,7 +17007,7 @@ var Job = function (_React$Component) {
                         { className: 'column' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'article',
-                            { className: 'message is-info' },
+                            { className: 'message is-success' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
                                 { className: 'message-header' },
@@ -17011,7 +17029,7 @@ var Job = function (_React$Component) {
                                             { className: 'control', key: index },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 'button',
-                                                { className: 'button is-info is-large',
+                                                { className: 'button is-success is-large', disabled: lock,
                                                     onClick: _this2.updateWorking.bind(_this2, item.empno, 'join')
                                                 },
                                                 item.ename
@@ -17027,7 +17045,7 @@ var Job = function (_React$Component) {
                         { className: 'column' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'article',
-                            { className: 'message is-success' },
+                            { className: 'message is-primary' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
                                 { className: 'message-header' },
@@ -17049,7 +17067,7 @@ var Job = function (_React$Component) {
                                             { className: 'control', key: index },
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                                 'button',
-                                                { className: 'button is-success is-large',
+                                                { className: 'button is-primary is-large', disabled: lock,
                                                     onClick: _this2.updateWorking.bind(_this2, item.empno, 'leave')
                                                 },
                                                 item.ename

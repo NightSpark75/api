@@ -15,6 +15,7 @@ export default class Job extends React.Component{
             waiting_list: [],
             working_list: [],
             updated: false,
+            lock: false,
         }
     }
     
@@ -54,6 +55,7 @@ export default class Job extends React.Component{
 
     updateWorking(empno, action, event) {
         const { waiting_list, working_list, sno, psno } = this.state;
+        this.setState({lock: true});
         let self = this;    
         let form_data = new FormData();   
         form_data.append('sno', sno); 
@@ -63,6 +65,7 @@ export default class Job extends React.Component{
         .then(function (response) {
             if (response.data.result) {
                 console.log(response.data);
+                self.setState({ lock: false });
             } else {
                 console.log(response.data);
             }
@@ -124,7 +127,7 @@ export default class Job extends React.Component{
     allUpdate(action, event) {
         if ((action === 'join' && this.state.waiting_list.length > 0) ||
             (action === 'leave' && this.state.working_list.length > 0)) {
-
+            this.setState({lock: true});
             let self = this;
             let {sno, psno, working_list, waiting_list} = this.state;
             let form_data = new FormData();   
@@ -134,6 +137,7 @@ export default class Job extends React.Component{
             .then(function (response) {
                 if (response.data.result) {
                     console.log(response.data);
+                    self.setState({ lock: false });
                 } else {
                     console.log(response.data);
                 }
@@ -147,6 +151,7 @@ export default class Job extends React.Component{
     workingComplete(clean, event) {
         let msg =  (clean === 'N') ? '按確定後, 該製程完工(無清潔)..' : '按確定後,該製程完工(清潔)..';
         if(confirm(msg)) {
+            this.setState({ lock: true });
             let self = this;
             let {sno, psno} = this.state;
             let form_data = new FormData();   
@@ -168,7 +173,7 @@ export default class Job extends React.Component{
     }
 
     render() {
-        const { job_list } = this.state; 
+        const { job_list, lock } = this.state; 
         return(   
             <div>
                 <div className="box" style={{ marginTop: '10px', marginBottom: '10px' }}>
@@ -178,18 +183,18 @@ export default class Job extends React.Component{
                                 <Link className="button is-medium" to="/auth/web/mpb/prod/list">&larr; 回生產清單</Link>
                             </div>
                             <div className="level-item is-hidden-touch">
-                                <button className="button is-success is-large" onClick={this.allUpdate.bind(this, 'join')}>整批工作</button>
+                                <button className="button is-primary is-large" onClick={this.allUpdate.bind(this, 'join')} disabled={ lock }>整批工作</button>
                             </div>
                             <div className="level-item is-hidden-touch">
-                                <button className="button is-info is-large" onClick={this.allUpdate.bind(this, 'leave')}>整批退出</button>
+                                <button className="button is-success is-large" onClick={this.allUpdate.bind(this, 'leave')} disabled={ lock }>整批退出</button>
                             </div>
                         </div>
                         <div className="level-right is-hidden-touch">
                             <div className="level-item">
-                                <button className="button is-primary is-large" onClick={this.workingComplete.bind(this, 'N')}>結束且完工(無清潔)</button>
+                                <button className="button is-primary is-large" onClick={this.workingComplete.bind(this, 'N')} disabled={ lock }>結束且完工(無清潔)</button>
                             </div>
                             <div className="level-item">
-                                <button className="button is-primary is-large" onClick={this.workingComplete.bind(this, 'Y')}>結束且完工(清潔)</button>
+                                <button className="button is-primary is-large" onClick={this.workingComplete.bind(this, 'Y')} disabled={ lock }>結束且完工(清潔)</button>
                             </div>
                         </div>
                     </div>
@@ -199,7 +204,7 @@ export default class Job extends React.Component{
                 </div>
                 <div className="columns is-hidden-touch">
                     <div className="column">
-                        <article className="message is-info">
+                        <article className="message is-success">
                             <div className="message-header">
                                 <h4 className="title is-3 has-text-white-ter">待派工生產人員</h4>
                             </div>
@@ -207,7 +212,7 @@ export default class Job extends React.Component{
                                 <div className="field is-grouped is-grouped-multiline">
                                     {this.state.waiting_list.map((item, index) => (
                                         <p className="control" key={index}>
-                                            <button className="button is-info is-large"
+                                            <button className="button is-success is-large" disabled={ lock }
                                                 onClick={this.updateWorking.bind(this, item.empno, 'join')}
                                             >
                                                 {item.ename}
@@ -219,7 +224,7 @@ export default class Job extends React.Component{
                         </article>
                     </div>
                     <div className="column">
-                        <article className="message is-success">
+                        <article className="message is-primary">
                             <div className="message-header">
                                 <h4 className="title is-3 has-text-white-ter">目前生產人員</h4>
                             </div>
@@ -227,7 +232,7 @@ export default class Job extends React.Component{
                                 <div className="field is-grouped is-grouped-multiline">
                                     {this.state.working_list.map((item, index) => (
                                         <p className="control" key={index}>
-                                            <button className="button is-success is-large"
+                                            <button className="button is-primary is-large" disabled={ lock }
                                                 onClick={this.updateWorking.bind(this, item.empno, 'leave')}
                                             >
                                                 {item.ename}
