@@ -29,7 +29,7 @@ Route::group(['prefix' => 'web', 'namespace' => 'Web'], function () {
 });
 
 // react native api
-Route::group(['prefix' => 'native', 'namespace' => 'native'], function () {
+Route::group(['prefix' => 'native', 'namespace' => 'Native'], function () {
     Route::group(['prefix' => 'pad'], function () {
         Route::get('/bundle/download', 'PadController@download');
         Route::get('/bundle/version', 'PadController@version');
