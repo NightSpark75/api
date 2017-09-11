@@ -34,6 +34,8 @@ Route::group(['prefix' => 'native', 'namespace' => 'Native'], function () {
         Route::get('/bundle/download', 'PadController@download');
         Route::get('/bundle/version', 'PadController@version');
         Route::post('/bundle/save', 'PadController@save');
+        Route::get('/apk/download', 'PadController@apkDownload');
+        Route::post('/apk/save', 'PadController@apkSave');
     });
 });
 

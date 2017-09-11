@@ -29,11 +29,7 @@ class PadController extends Controller
             $response = response($decode)->header('Content-Disposition', 'attachment; filename=' . $name);
             return $response;
         }
-        
-        return response()->json([
-            'result' => $result['result'],
-            'msg' => $result['msg'],
-        ]);
+        return $result['msg'];
     }
 
     public function version()
@@ -47,6 +43,26 @@ class PadController extends Controller
         return view('service.bundleUpload');
     }
 
+    public function apkUpload()
+    {
+        return view('service.apkUPload');
+    }
+
+    public function apkDownload()
+    {
+        $result = $this->pad->downloadApk();
+        
+        if ($result['result']) {
+            $file = $result['file'];
+            $decode = base64_decode($file);
+            $name = 'index.android.bundle';
+    
+            $response = response($decode)->header('Content-Disposition', 'attachment; filename=' . $name);
+            return $response;
+        }
+        return $result['msg'];
+    }
+
     public function save()
     {
         $version = request()->input('version');
@@ -55,4 +71,11 @@ class PadController extends Controller
         return response()->json($result);
     }
 
+    public function apkSave()
+    {
+        $version = request()->input('version');
+        $file = request()->file('apk');
+        $result = $this->pad->saveApk($version, $file);
+        return response()->json($result);
+    }
 }

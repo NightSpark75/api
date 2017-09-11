@@ -18,14 +18,14 @@
                 <div class="column is-half is-offset-one-quarter">
                     <div class="box">
                         <div class="column">
-                            <form role="form" action="/api/native/pad/bundle/save" method="post" enctype="multipart/form-data">
+                            <form role="form" action="/api/native/pad/apk/save" method="post" enctype="multipart/form-data">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <div class="column">
                                     <input type="text" class="input" name="version" placeholder="請輸入版本號"/>
-                                    <small>bundle版本號開頭{1}</small>
+                                    <small>apk版本號開頭{3}</small>
                                 </div>
                                 <div class="column"> 
-                                    <input type="file" name="bundle"/>
+                                    <input type="file" name="apk"/>
                                 </div>
                                 <div class="column"> 
                                     <div class="form-group">
