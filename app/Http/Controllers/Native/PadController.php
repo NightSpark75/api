@@ -45,7 +45,7 @@ class PadController extends Controller
 
     public function apkUpload()
     {
-        return view('service.apkUPload');
+        return view('service.apkUpload');
     }
 
     public function apkDownload()
