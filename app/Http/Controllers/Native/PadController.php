@@ -55,7 +55,7 @@ class PadController extends Controller
         if ($result['result']) {
             $file = $result['file'];
             $decode = base64_decode($file);
-            $name = 'index.android.bundle';
+            $name = 'stdnative.apk';
     
             $response = response($decode)->header('Content-Disposition', 'attachment; filename=' . $name);
             return $response;
