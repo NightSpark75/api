@@ -19,8 +19,11 @@
                     <div class="box">
                         <div class="column">
                             <form role="form" action="/api/native/pad/apk/save" method="post" enctype="multipart/form-data">
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <div class="column">
+                                    <h2>上傳apk檔</h2>
+                                </div>
+                                <div class="column">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <input type="text" class="input" name="version" placeholder="請輸入版本號"/>
                                     <small>apk版本號開頭{3}</small>
                                 </div>

@@ -56,7 +56,7 @@ class PadRepository
             $this->query($bindings, $query);
             return [
                 'result' => true,
-                'msg' => 'bundle upload success!',
+                'msg' => 'apk upload success!',
             ];
         } catch (Exception $e) {
             return $this->exception($e);

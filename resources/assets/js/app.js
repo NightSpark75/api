@@ -23,6 +23,7 @@ import Packing_Working from "./components/web/mpb/packing/Working";
 import Package_Job from "./components/web/mpb/package/Job";
 import Package_Working from "./components/web/mpb/package/Working";
 import QCDocument from "./components/web/mpe/qc/document/Search";
+import QCPartInfo from "./components/web/mpe/qc/part/Info";
 
 const app = document.getElementById('app');
 
@@ -36,6 +37,7 @@ ReactDOM.render(
             <Route path="error/:msg" component={Error}></Route>
             <Route path="qc">
                 <Route path="document" component={QCDocument}></Route>
+                <Route path="partinfo" component={QCPartInfo}></Route>
             </Route>
         </Route>
         <Route path="web" component={SinglePage}>
