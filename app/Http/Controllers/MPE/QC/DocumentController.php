@@ -20,7 +20,13 @@ class DocumentController extends Controller
     {
         $barcode = request()->input('barcode');
         $query = "
-            select m.partno, m.ename, m.pname, h.batch, m.sds_no sds_no, h.coa_no coa_no  
+            select m.partno, m.ename, m.pname, h.batch, m.sds_no sds_no, h.coa_no coa_no, m.sfty
+                ,(
+                    select sum(amt) 
+                    from mpe_house_e ee 
+                    where ee.partno = h.partno and sta = 'N' and ee.batch = h.batch and ee.whouse = h.whouse
+                        and ee.stor = h.stor and ee.grid = h.grid
+                ) total 
             from mpe_house_m h, mpe_house_e e, mpe_mate m
             where h.code = '01' and h.code = e.code and h.partno = e.partno and h.batch = e.batch
                 and h.whouse = e.whouse and h.stor = e.stor and h.grid = e.grid 
@@ -34,7 +40,8 @@ class DocumentController extends Controller
     {
         $partno = request()->input('partno');
         $query = "
-            select m.partno, m.ename, m.pname, '' batch, m.sds_no sds_no, '' coa_no  
+            select m.partno, m.ename, m.pname, '' batch, m.sds_no sds_no, '' coa_no, m.sfty
+                ,(select sum(amt) from mpe_house_e e where e.partno = m.partno and sta = 'N') total 
             from mpe_mate m
             where m.partno = '$partno'
         ";
@@ -46,7 +53,13 @@ class DocumentController extends Controller
     {
         $batch = request()->input('batch');
         $query = "
-            select m.partno, m.ename, m.pname, h.batch, m.sds_no sds_no, h.coa_no coa_no  
+            select m.partno, m.ename, m.pname, h.batch, m.sds_no sds_no, h.coa_no coa_no, m.sfty
+                ,(
+                    select sum(amt) 
+                    from mpe_house_e ee 
+                    where ee.partno = h.partno and sta = 'N' and ee.batch = h.batch and ee.whouse = h.whouse
+                        and ee.stor = h.stor and ee.grid = h.grid
+                ) total 
             from mpe_house_m h, mpe_mate m
             where h.code = '01' and m.partno = h.partno and h.batch = '$batch'
         ";

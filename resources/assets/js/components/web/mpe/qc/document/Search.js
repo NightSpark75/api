@@ -131,12 +131,16 @@ export default class Search extends React.Component{
                                         <td>{ info.partno }</td>
                                         <td width="100">批號</td>
                                         <td>{ info.batch }</td>
+                                        <td>安全庫存</td>
+                                        <td>{ info.sfty }</td>
+                                        <td>總庫存</td>
+                                        <td>{ info.total }</td>
                                     </tr>
                                     <tr>
-                                        <td>中文名稱</td><td colSpan={3}>{ info.pname }</td>
+                                        <td>中文名稱</td><td colSpan={7}>{ info.pname }</td>
                                     </tr>
                                     <tr>
-                                        <td>英文名稱</td><td colSpan={3}>{ info.ename }</td>
+                                        <td>英文名稱</td><td colSpan={7}>{ info.ename }</td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -18699,6 +18699,26 @@ var Search = function (_React$Component) {
                                         'td',
                                         null,
                                         info.batch
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'td',
+                                        null,
+                                        '\u5B89\u5168\u5EAB\u5B58'
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'td',
+                                        null,
+                                        info.sfty
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'td',
+                                        null,
+                                        '\u7E3D\u5EAB\u5B58'
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'td',
+                                        null,
+                                        info.total
                                     )
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -18711,7 +18731,7 @@ var Search = function (_React$Component) {
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         'td',
-                                        { colSpan: 3 },
+                                        { colSpan: 7 },
                                         info.pname
                                     )
                                 ),
@@ -18725,7 +18745,7 @@ var Search = function (_React$Component) {
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         'td',
-                                        { colSpan: 3 },
+                                        { colSpan: 7 },
                                         info.ename
                                     )
                                 )
