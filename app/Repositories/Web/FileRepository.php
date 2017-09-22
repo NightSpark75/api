@@ -48,34 +48,67 @@ class FileRepository
                     where id = '$id'
                 ");
                 if ((int)$check->count > 0) {
-                    DB::transaction( function () use($id, $file_name, $user, $file_code, $file_extension, $file_mime) {
-                        DB::update("
-                            update api_file_base
-                        set name = '$file_name', updated_by = '$user', updated_at = sysdate
-                            where id = '$id'
-                        ");
-                        DB::update("
-                            update api_file_code
-                            set name = '$file_name', extension = '$file_extension', mime = '$file_mime'
-                                , code = '$file_code', updated_by = '$user', updated_at = sysdate
-                            where file_id = '$id'
-                        ");
+                    DB::transaction( function () use($id, $user, $file) {
+                        $bindings['v_name'] = $file->getClientOriginalName();
+                        $bindings['v_user'] = $user;
+                        $bindings['v_id'] = $id;
+                        
+                        $query = 
+                            "update api_file_base
+                                set name = :v_name, updated_by = :v_user, updated_at = CURRENT_TIMESTAMP
+                                where id = :v_id
+                        ";
+                        $this->query($bindings, $query);
+                        
+                        $bindings = [];
+                        $bindings['name'] = $file->getClientOriginalName();
+                        $bindings['extension'] = $file->getClientOriginalExtension();
+                        $bindings['mime'] = $file->getMimeType();
+                        $bindings['code'] = base64_encode(file_get_contents($file));
+                        $bindings['updated_by'] = $created_user;
+                        $bindings['file_id'] = $id;
+                        
+                        $query = 
+                            "update api_file_code 
+                                set name = :name, extension = :extension, mime = :mime, code = :code, 
+                                    store_type = 'C', updated_by = :updated_by, updated_at = CURRENT_TIMESTAMP
+                                where file_id = :file_id
+                        ";
+                        $this->query($bindings, $query);
+                        
                     });
                     DB::commit();
                 } else {
-                    DB::transaction( function () use($id, $file_name, $user, $file_code, $file_extension, $file_mime) {
-                        DB::insert("
-                            insert into api_file_base
+                    DB::transaction( function () use($id, $user, $file) {
+                        $bindings['v_id'] = $id;
+                        $bindings['v_name'] = $file->getClientOriginalName();
+                        $bindings['v_user'] = $user;
+
+                        $query = 
+                            "insert into api_file_base
                                 (id, name, status, created_at, created_by)
                             values 
-                                ('$id', '$file_name', 'S', sysdate, '$user'     )
-                        ");
-                        DB::insert("
-                            insert into api_file_code
+                                (:v_id, :v_name, 'S', CURRENT_TIMESTAMP, :v_user)
+                        ";
+                        
+                        $this->query($bindings, $query);
+                        
+                        $bindings = [];
+                        $bindings['file_id'] = $id;
+                        $bindings['name'] = $file->getClientOriginalName();
+                        $bindings['extension'] = $file->getClientOriginalExtension();
+                        $bindings['mime'] = $file->getMimeType();
+                        $bindings['code'] = base64_encode(file_get_contents($file));
+                        $bindings['created_by'] = $user;
+                        
+                        
+                        $query = 
+                            "insert into api_file_code
                                 (file_id, name, extension, mime, code, store_type, created_at, created_by)
                             values
-                                ('$id', '$file_name', '$file_extension', '$file_mime', '$file_code', 'C', sysdate, '$user')
-                        ");
+                                (:file_id, :name, :extension, :mime, :code, 'C', CURRENT_TIMESTAMP, :created_by)
+                        ";
+                        $this->query($bindings, $query);
                     });
                     DB::commit(); 
                 }
