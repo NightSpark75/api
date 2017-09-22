@@ -10,6 +10,7 @@
  */
 namespace App\Repositories\Web;
 
+use DB;
 use Exception;
 use App\Traits\Sqlexecute;
 
@@ -31,6 +32,61 @@ class FileRepository
      * @param boolean $store_type 以路徑方式儲存
      * @return array
      */
+    public function new_uploadFIle($id, $user, $file, $store_type)
+    {
+        try {
+            $file_name = $file->getClientOriginalName();
+            $file_extension = $file->getClientOriginalExtension();
+            $file_mime = $file->getMimeType();
+            $file_code = base64_encode(file_get_contents($file));
+            if ($store_type === 'path') { // path
+                
+            } else {    // code
+                $check = DB::selectOne("
+                    select count(*) as count
+                    from api_file_base
+                    where id = '$id'
+                ");
+                if ((int)$check->count > 0) {
+                    DB::transaction( function () use($id, $file_name, $user, $file_code, $file_extension, $file_mime) {
+                        DB::update("
+                            update api_file_base
+                        set name = '$file_name', updated_by = '$user', updated_at = sysdate
+                            where id = '$id'
+                        ");
+                        DB::update("
+                            update api_file_code
+                            set name = '$file_name', extension = '$file_extension', mime = '$file_mime'
+                                , code = '$file_code', updated_by = '$user', updated_at = sysdate
+                            where file_id = '$id'
+                        ");
+                    });
+                    DB::commit();
+                } else {
+                    DB::transaction( function () use($id, $file_name, $user, $file_code, $file_extension, $file_mime) {
+                        DB::insert("
+                            insert into api_file_base
+                                (id, name, status, created_at, created_by)
+                            values 
+                                ('$id', '$file_name', 'S', sysdate, '$user'     )
+                        ");
+                        DB::insert("
+                            insert into api_file_code
+                                (file_id, name, extension, mime, code, store_type, created_at, created_by)
+                            values
+                                ('$id', '$file_name', '$file_extension', '$file_mime', '$file_code', 'C', sysdate, '$user')
+                        ");
+                    });
+                    DB::commit(); 
+                }
+            }
+            return ['result' => true, 'msg' => '檔案上傳成功!(#0000)'];
+        } catch (Exception $e) {
+            DB::rollback();
+            return $this->exception($e);
+        }
+        
+    }
     public function uploadFile($id, $user, $file, $store_type)
     {
         try {

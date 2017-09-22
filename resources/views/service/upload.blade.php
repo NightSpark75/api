@@ -18,10 +18,11 @@
                 <div class="column is-half is-offset-one-quarter">
                     <div class="box">
                         <div class="column">
-                            <form role="form" action="/api/file/upload/old/code" method="post" enctype="multipart/form-data">
+                            <form role="form" action="/api/file/ez/upload" method="post" enctype="multipart/form-data">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <input type="hidden" name="file_id" value="{{ $file_id }}"/>
                                 <input type="hidden" name="user_id" value="{{ $user_id }}"/>
+                                <input type="hidden" name="store_type" value="{{ $store_type }}"/>
                                 <div class="column"> 
                                     <input type="file" name="file"/>
                                 </div>

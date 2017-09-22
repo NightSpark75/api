@@ -85,7 +85,7 @@ trait Sqlexecute
     private function exception($exception)
     {
         return [
-            'return' => false,
+            'result' => false,
             'msg' => $exception->getMessage(),
         ];
     }

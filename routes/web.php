@@ -35,10 +35,11 @@ Route::get('thanks', function () {
     return view('thanks');
 })->name('thanks');
 
-Route::get('/web/file/upload/code/{file_id}/{user_id}',  function ($file_id, $user_id) {
+Route::get('/web/file/upload/{store_type}/{file_id}/{user_id}',  function ($store_type, $file_id, $user_id) {
     return view('service.upload')
         ->with('file_id', $file_id)
-        ->with('user_id', $user_id);
+        ->with('user_id', $user_id)
+        ->with('store_type', $store_type);
 });
 
 Route::get('/native/pad/bundle/upload', 'Native\PadController@upload');
