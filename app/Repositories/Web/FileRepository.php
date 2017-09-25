@@ -27,6 +27,7 @@ class FileRepository
     private $path = '';
     private $transform = '';
     private $store_type = '';
+    private $size_limit = 20 * 1024 * 1024; //20MB
 
     /**
      * 檔案上傳
@@ -38,6 +39,7 @@ class FileRepository
     public function new_uploadFIle($req, $version)
     {
         try {
+            $this->checkFileSize($req);
             $data = $this->setFileData($req, $version);
             if ($data['store_type'] === 'path') {
                 $this->store_type = 'P';
@@ -47,6 +49,14 @@ class FileRepository
             return $this->uploadByCode($data, $version);
         } catch (Exception $e) {
             return $this->exception($e);
+        }
+    }
+
+    private function checkFileSize($req)
+    {
+        $size = $req->file('file')->getClientSize();
+        if ($size > $this->size_limit) {
+            throw new Exception('檔案大小不得超超過20MB, 您的檔案大小為：' . (string)round($size / (1024 * 1024), 2) . 'MB');
         }
     }
 
