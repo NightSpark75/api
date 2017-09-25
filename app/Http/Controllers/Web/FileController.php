@@ -24,6 +24,7 @@ class FileController extends Controller
 {
     private $file;
     private $online_open = ['pdf'];
+    private $size_limit = 20 * 1024 * 1024; //20MB
 
     /**
      * 建構式
@@ -43,6 +44,12 @@ class FileController extends Controller
      */
     public function ezUploadFile() 
     {
+        $size = request()->file('file')->getClientSize();
+        if ($size > $this->size_limit) {
+            return view('service.complete')
+                ->with('title', '檔案上傳失敗')
+                ->with('message', '檔案大小不得超超過20MB, 您的檔案大小為：' . (string)round($size / (1024 * 1024), 2) . 'MB');
+        }
         $version = request()->input('version') === 'true'? true: false;
         $result = $this->file->new_uploadFIle(request(), $version);
         return $this->ezUploadResult($result);
