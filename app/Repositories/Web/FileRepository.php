@@ -52,6 +52,12 @@ class FileRepository
         }
     }
 
+    /**
+     * 檢查檔案大小
+     * 
+     * @param Request $req resquest()
+     * @return mixed
+     */
     private function checkFileSize($req)
     {
         $size = $req->file('file')->getClientSize();
@@ -76,6 +82,7 @@ class FileRepository
         $res['extension'] = $file->getClientOriginalExtension();
         $res['mime'] = $file->getMimeType();
         $res['code'] = base64_encode(file_get_contents($file));
+        $res['file_size'] = $file->getClientSize();
         return $res;
     }
 
@@ -174,7 +181,7 @@ class FileRepository
             ")->version;
             DB::insert("
                 insert into api_file_version 
-                select file_id, $version, extension, mime, code, path, transform, store_type, created_by, updated_by, created_at, updated_at
+                select file_id, $version, extension, mime, code, path, transform, store_type, created_by, updated_by, created_at, updated_at, file_size 
                 from api_file_code
                 where file_id = '$file_id'
             ");
@@ -225,6 +232,7 @@ class FileRepository
             'code' => $data['code'],
             'path' => $this->path,
             'transform' => $this->transform,
+            'file_size' => $data['file_size'],
             'store_type' => $this->store_type,
             'v_user' => $data['user'],
             'v_id' => $data['id'],
@@ -255,8 +263,8 @@ class FileRepository
                     "insert into api_file_base (name, status, created_at, created_by, id)
                     values (:v_name, 'S', CURRENT_TIMESTAMP, :v_user, :v_id)",
                 'code' => 
-                    "insert into api_file_code (name, extension, mime, code, path, transform, store_type, created_at, created_by, file_id)
-                    values (:v_name, :extension, :mime, :code, :path, :transform, :store_type, CURRENT_TIMESTAMP, :v_user, :v_id)",
+                    "insert into api_file_code (name, extension, mime, code, path, transform, file_size, store_type, created_at, created_by, file_id)
+                    values (:v_name, :extension, :mime, :code, :path, :transform, :file_size, :store_type, CURRENT_TIMESTAMP, :v_user, :v_id)",
             ];
         }
         return [
@@ -266,7 +274,7 @@ class FileRepository
                 where id = :v_id",
             'code' => 
                 "update api_file_code 
-                set name = :v_name, extension = :extension, mime = :mime, code = :code, path = :path, transform = :transform, 
+                set name = :v_name, extension = :extension, mime = :mime, code = :code, path = :path, transform = :transform, file_size = :file_size, 
                     store_type = :store_type, updated_by = :v_user, updated_at = CURRENT_TIMESTAMP
                 where file_id = :v_id",
         ];
