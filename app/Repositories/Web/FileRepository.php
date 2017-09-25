@@ -28,6 +28,13 @@ class FileRepository
     private $transform = '';
     private $store_type = '';
 
+    /**
+     * 檔案上傳
+     * 
+     * @param Request $req resquest()
+     * @param bool $version version control
+     * @return mixed
+     */
     public function new_uploadFIle($req, $version)
     {
         try {
@@ -43,6 +50,12 @@ class FileRepository
         }
     }
 
+    /**
+     * 初始化檔案上傳資料
+     * 
+     * @param Request $req resquest()
+     * @return array
+     */
     private function setFileData($req)
     {
         $file = $req->file('file');
@@ -56,6 +69,13 @@ class FileRepository
         return $res;
     }
 
+    /**
+     * 上傳檔案以路徑方式儲存
+     * 
+     * @param array $data data
+     * @param bool $version version control
+     * @return mixed
+     */
     private function uploadByPath($data, $version)
     {
         $this->path = storage_path().'/app/public';
@@ -68,6 +88,13 @@ class FileRepository
         return insertFile($data);
     }
 
+    /**
+     * 上傳檔案以編碼方式儲存
+     * 
+     * @param array $data data
+     * @param bool $version version control
+     * @return mixed
+     */
     private function uploadByCode($data, $version)
     {
         if ($this->checkDataExists($data['id'])) {
@@ -76,6 +103,12 @@ class FileRepository
         return $this->insertFileData($data);
     }
 
+    /**
+     * 檢查檔案資料是否存在
+     * 
+     * @param string $id file id
+     * @return bool
+     */
     private function checkDataExists($id)
     {
         $check = DB::selectOne("
@@ -89,6 +122,13 @@ class FileRepository
         return false;
     }
 
+    /**
+     * 更新檔案資料
+     * 
+     * @param array $data data
+     * @param bool $version version control
+     * @return mixed
+     */
     private function updateFileData($data, $version)
     {
         try {
@@ -107,6 +147,12 @@ class FileRepository
         }
     }
 
+    /**
+     * 寫入版本資料
+     * 
+     * @param array $data data
+     * @return mixed
+     */
     private function InsertVersion($data)
     {
         try {
@@ -127,6 +173,12 @@ class FileRepository
         }
     }
 
+    /**
+     * 新增檔案資訊
+     * 
+     * @param array $data data
+     * @return mixed
+     */
     private function insertFileData($data)
     {
         try {
@@ -142,6 +194,13 @@ class FileRepository
         }
     }
 
+    /**
+     * 回傳SQL語法與資料參數
+     * 
+     * @param array $data data
+     * @param bool $ins insert or update
+     * @return array
+     */
     private function setSqlCommand($data, $ins)
     {
         $bind_base = [
@@ -172,6 +231,12 @@ class FileRepository
         return $command;
     }
 
+    /**
+     * 回傳SQL語句
+     * 
+     * @param bool $ins insert or update
+     * @return array
+     */
     private function getSql($ins)
     {
         if ($ins) {

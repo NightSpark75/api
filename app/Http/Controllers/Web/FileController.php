@@ -36,6 +36,11 @@ class FileController extends Controller
         $this->file = $file;
     }
 
+    /**
+     * 檔案上傳
+     * 
+     * @return array
+     */
     public function ezUploadFile() 
     {
         $version = request()->input('version') === 'true'? true: false;
@@ -43,6 +48,12 @@ class FileController extends Controller
         return $this->ezUploadResult($result);
     }
 
+    /**
+     * 檔案上傳傳回訊息
+     * 
+     * @param array $res result
+     * @return array
+     */
     private function ezUploadResult($res)
     {
         if ($res['result']) {
