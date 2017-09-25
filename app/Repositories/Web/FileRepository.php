@@ -23,6 +23,180 @@ class FileRepository
 {   
     use Sqlexecute;
 
+    //private $FILE_PATH = storage_path().'/app/public';
+    private $path = '';
+    private $transform = '';
+    private $store_type = '';
+
+    public function new_uploadFIle($req, $version)
+    {
+        try {
+            $data = $this->setFileData($req, $version);
+            if ($data['store_type'] === 'path') {
+                $this->store_type = 'P';
+                return $this->uploadByPath($data, $version);
+            }
+            $this->store_type = 'C';
+            return $this->uploadByCode($data, $version);
+        } catch (Exception $e) {
+            return $this->exception($e);
+        }
+    }
+
+    private function setFileData($req)
+    {
+        $file = $req->file('file');
+        $res['id'] = $req->input('file_id');
+        $res['user'] = $req->input('user_id');
+        $res['store_type'] = $req->input('store_type');
+        $res['name'] = $file->getClientOriginalName();
+        $res['extension'] = $file->getClientOriginalExtension();
+        $res['mime'] = $file->getMimeType();
+        $res['code'] = base64_encode(file_get_contents($file));
+        return $res;
+    }
+
+    private function uploadByPath($data, $version)
+    {
+        $this->path = storage_path().'/app/public';
+        $this->transform = strtoupper(md5(uniqid(mt_rand(), true)));
+        $tmp_name = $transform.'.tmp';
+        $file->move($this->path, $tmp_name);
+        if ($this->checkDataExists($data['id'])) {
+            return updateFile($data, $version);
+        }
+        return insertFile($data);
+    }
+
+    private function uploadByCode($data, $version)
+    {
+        if ($this->checkDataExists($data['id'])) {
+            return $this->updateFileData($data, $version);
+        }
+        return $this->insertFileData($data);
+    }
+
+    private function checkDataExists($id)
+    {
+        $check = DB::selectOne("
+            select count(*) as count
+            from api_file_base
+            where id = '$id'
+        ");
+        if ((int)$check->count > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    private function updateFileData($data, $version)
+    {
+        try {
+            DB::transaction( function () use($data, $version) {
+                $command = $this->setSqlCommand($data, false);
+                if ($version) {
+                    $this->insertVersion($data);
+                }
+                $this->query($command['bind_base'], $command['sql_base']);
+                $this->query($command['bind_code'], $command['sql_code']);
+            });
+            DB::commit();
+            return ['result' => true, 'msg' => '檔案上傳成功!(#0000)'];
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    private function InsertVersion($data)
+    {
+        try {
+            $file_id = $data['id']; 
+            $version = DB::selectOne("
+                select nvl(max(version) + 1, 1) version
+                from api_file_version
+                where file_id = '$file_id'
+            ")->version;
+            DB::insert("
+                insert into api_file_version 
+                select file_id, $version, extension, mime, code, path, transform, store_type, created_by, updated_by, created_at, updated_at
+                from api_file_code
+                where file_id = '$file_id'
+            ");
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    private function insertFileData($data)
+    {
+        try {
+            $command = $this->setSqlCommand($data, true);
+            DB::transaction( function () use($command) {
+                $this->query($command['bind_base'], $command['sql_base']);
+                $this->query($command['bind_code'], $command['sql_code']);
+            });
+            DB::commit();
+            return ['result' => true, 'msg' => '檔案上傳成功!(#0000)'];
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    private function setSqlCommand($data, $ins)
+    {
+        $bind_base = [
+            'v_name' => $data['name'],
+            'v_user' => $data['user'],
+            'v_id' => $data['id'],
+        ];
+        $bind_code = [
+            'v_name' => $data['name'],
+            'extension' => $data['extension'],
+            'mime' => $data['mime'],
+            'code' => $data['code'],
+            'path' => $this->path,
+            'transform' => $this->transform,
+            'store_type' => $this->store_type,
+            'v_user' => $data['user'],
+            'v_id' => $data['id'],
+        ];
+        $sql = $this->getSql($ins);
+        $sql_base = $sql['base'];
+        $sql_code = $sql['code'];
+        $command = [
+            'sql_base' => $sql_base,
+            'sql_code' => $sql_code,
+            'bind_base' => $bind_base,
+            'bind_code' => $bind_code,
+        ];
+        return $command;
+    }
+
+    private function getSql($ins)
+    {
+        if ($ins) {
+            return [
+                'base' => 
+                    "insert into api_file_base (name, status, created_at, created_by, id)
+                    values (:v_name, 'S', CURRENT_TIMESTAMP, :v_user, :v_id)",
+                'code' => 
+                    "insert into api_file_code (name, extension, mime, code, path, transform, store_type, created_at, created_by, file_id)
+                    values (:v_name, :extension, :mime, :code, :path, :transform, :store_type, CURRENT_TIMESTAMP, :v_user, :v_id)",
+            ];
+        }
+        return [
+            'base' => 
+                "update api_file_base
+                set name = :v_name, updated_by = :v_user, updated_at = CURRENT_TIMESTAMP
+                where id = :v_id",
+            'code' => 
+                "update api_file_code 
+                set name = :v_name, extension = :extension, mime = :mime, code = :code, path = :path, transform = :transform, 
+                    store_type = :store_type, updated_by = :v_user, updated_at = CURRENT_TIMESTAMP
+                where file_id = :v_id",
+        ];
+    }
+
     /**
      * 檔案上傳
      * 
@@ -32,94 +206,6 @@ class FileRepository
      * @param boolean $store_type 以路徑方式儲存
      * @return array
      */
-    public function new_uploadFIle($id, $user, $file, $store_type)
-    {
-        try {
-            $file_name = $file->getClientOriginalName();
-            $file_extension = $file->getClientOriginalExtension();
-            $file_mime = $file->getMimeType();
-            $file_code = base64_encode(file_get_contents($file));
-            if ($store_type === 'path') { // path
-                
-            } else {    // code
-                $check = DB::selectOne("
-                    select count(*) as count
-                    from api_file_base
-                    where id = '$id'
-                ");
-                if ((int)$check->count > 0) {
-                    DB::transaction( function () use($id, $user, $file) {
-                        $bindings['v_name'] = $file->getClientOriginalName();
-                        $bindings['v_user'] = $user;
-                        $bindings['v_id'] = $id;
-                        
-                        $query = 
-                            "update api_file_base
-                                set name = :v_name, updated_by = :v_user, updated_at = CURRENT_TIMESTAMP
-                                where id = :v_id
-                        ";
-                        $this->query($bindings, $query);
-                        
-                        $bindings = [];
-                        $bindings['name'] = $file->getClientOriginalName();
-                        $bindings['extension'] = $file->getClientOriginalExtension();
-                        $bindings['mime'] = $file->getMimeType();
-                        $bindings['code'] = base64_encode(file_get_contents($file));
-                        $bindings['updated_by'] = $created_user;
-                        $bindings['file_id'] = $id;
-                        
-                        $query = 
-                            "update api_file_code 
-                                set name = :name, extension = :extension, mime = :mime, code = :code, 
-                                    store_type = 'C', updated_by = :updated_by, updated_at = CURRENT_TIMESTAMP
-                                where file_id = :file_id
-                        ";
-                        $this->query($bindings, $query);
-                        
-                    });
-                    DB::commit();
-                } else {
-                    DB::transaction( function () use($id, $user, $file) {
-                        $bindings['v_id'] = $id;
-                        $bindings['v_name'] = $file->getClientOriginalName();
-                        $bindings['v_user'] = $user;
-
-                        $query = 
-                            "insert into api_file_base
-                                (id, name, status, created_at, created_by)
-                            values 
-                                (:v_id, :v_name, 'S', CURRENT_TIMESTAMP, :v_user)
-                        ";
-                        
-                        $this->query($bindings, $query);
-                        
-                        $bindings = [];
-                        $bindings['file_id'] = $id;
-                        $bindings['name'] = $file->getClientOriginalName();
-                        $bindings['extension'] = $file->getClientOriginalExtension();
-                        $bindings['mime'] = $file->getMimeType();
-                        $bindings['code'] = base64_encode(file_get_contents($file));
-                        $bindings['created_by'] = $user;
-                        
-                        
-                        $query = 
-                            "insert into api_file_code
-                                (file_id, name, extension, mime, code, store_type, created_at, created_by)
-                            values
-                                (:file_id, :name, :extension, :mime, :code, 'C', CURRENT_TIMESTAMP, :created_by)
-                        ";
-                        $this->query($bindings, $query);
-                    });
-                    DB::commit(); 
-                }
-            }
-            return ['result' => true, 'msg' => '檔案上傳成功!(#0000)'];
-        } catch (Exception $e) {
-            DB::rollback();
-            return $this->exception($e);
-        }
-        
-    }
     public function uploadFile($id, $user, $file, $store_type)
     {
         try {
@@ -343,19 +429,4 @@ class FileRepository
         ";
         $this->query($binds, $update);
     }
-
-
-    /*
-        $pdo = DB::getPdo();
-        $stmt = $pdo->prepare('begin pk_common.get_file_token(:file_id, :user_id, :token, :user, :file, :res, :msg); end;');
-        $stmt->bindParam(':file_id', $file_id, PDO::PARAM_STR, 32);
-        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_STR, 10);
-        $stmt->bindParam(':token', $token, PDO::PARAM_STR, 32);
-        $stmt->bindParam(':user', $user, PDO::PARAM_STR, 32);
-        $stmt->bindParam(':file', $file, PDO::PARAM_STR, 32);
-        $stmt->bindParam(':res', $res, PDO::PARAM_STR, 10);
-        $stmt->bindParam(':msg', $msg, PDO::PARAM_STR, 200);
-        $stmt->execute();
-
-    */
 }

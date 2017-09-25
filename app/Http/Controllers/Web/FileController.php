@@ -38,20 +38,21 @@ class FileController extends Controller
 
     public function ezUploadFile() 
     {
-        $file = request()->file('file');
-        $id = request()->input('file_id');
-        $user = request()->input('user_id');
-        $store_type = request()->input('store_type');
-        $result = $this->file->new_uploadFile($id, $user, $file, $store_type);
-        //return response()->json($result);
-        if ($result['result']) {
+        $version = request()->input('version') === 'true'? true: false;
+        $result = $this->file->new_uploadFIle(request(), $version);
+        return $this->ezUploadResult($result);
+    }
+
+    private function ezUploadResult($res)
+    {
+        if ($res['result']) {
             return view('service.complete')
                 ->with('title', '檔案上傳成功!')
                 ->with('message', '請關閉此視窗');
         }
         return view('service.complete')
-            ->with('title', '檔案上傳失敗，請洽資訊課#6078')
-            ->with('message', $result['msg']);
+            ->with('title', '檔案上傳失敗')
+            ->with('message', $res['msg']);
     }
 
     /**
@@ -87,7 +88,7 @@ class FileController extends Controller
                 ->with('message', '請關閉此視窗');
         }
         return view('service.complete')
-            ->with('title', '檔案上傳失敗，請洽資訊課#6078')
+            ->with('title', '檔案上傳失敗')
             ->with('message', $result['msg']);
     }
 

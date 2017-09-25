@@ -23,6 +23,7 @@
                                 <input type="hidden" name="file_id" value="{{ $file_id }}"/>
                                 <input type="hidden" name="user_id" value="{{ $user_id }}"/>
                                 <input type="hidden" name="store_type" value="{{ $store_type }}"/>
+                                <input type="hidden" name="version" value="{{ $version }}"/>
                                 <div class="column"> 
                                     <input type="file" name="file"/>
                                 </div>
