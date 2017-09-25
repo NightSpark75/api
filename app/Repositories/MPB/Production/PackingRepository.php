@@ -379,7 +379,7 @@ class PackingRepository
             if (!$check) {
                 return null;
             }
-            $params['empno'] = $this->formatNo($params['empno']);
+            //$params['empno'] = $this->formatNo($params['empno']);
             DB::insert("
                 insert into mpb_order_tw 
                 values (:sno, :psno, :empno, '', sysdate)
@@ -403,7 +403,7 @@ class PackingRepository
     public function leaveWorking($params)
     {
         try{
-            $params['empno'] = $this->formatNo($params['empno']);
+            //$params['empno'] = $this->formatNo($params['empno']);
             DB::delete("
                 delete from mpb_order_tw 
                 where sno = :sno and psno = :psno and empno = :empno
