@@ -71,6 +71,10 @@ export default class Templog extends React.Component{
                 ev_err: data.ev_err, ev_type: data.ev_type, ev_rmk: data.ev_rmk, 
                 mo: mo, af: af, ev: ev,
             });
+        } else {
+            this.setState({
+                mo: false, af: false, ev: false,
+            });
         }
     }
     
@@ -177,7 +181,7 @@ export default class Templog extends React.Component{
                                 <td>名稱</td><td>{point_name}</td><td>儀器編號</td><td>{mach_no}</td><td>儀器校期</td><td>{ch_date}</td>
                             </tr>
                             <tr>
-                                <td>區域</td><td>{zone}</td>
+                                <td colSpan={2}></td>
                                 <td>溫度範圍</td><td>{temp_low + " ~ " + temp_high}</td>
                                 <td>濕度範圍</td><td>{humi_low + " ~ " + humi_high}</td>
                             </tr>

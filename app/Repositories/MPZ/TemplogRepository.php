@@ -55,9 +55,9 @@ class TemplogRepository
     private function getZoneInfo($point_no)
     {
         $zone = DB::selectOne("
-            select z.temp_high, z.temp_low, z.humi_high, z.humi_low
-            from mpz_zone_type z, mpz_point p
-            where p.point_no = '$point_no' and p.point_type = 'T' and p.zone = z.zone_name
+            select nvl(temp_high, 0) temp_high, nvl(temp_low, 0) temp_low, nvl(humi_high, 0) humi_high, nvl(humi_low, 0) humi_low
+            from mpz_point p
+            where p.point_no = '$point_no' and p.point_type = 'T'
         ");
         return $zone;
     }
