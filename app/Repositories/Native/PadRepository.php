@@ -88,15 +88,16 @@ class PadRepository
         try {
             $file = DB::selectOne("
                 select bundle_file
-                from(select bundle_file, rownum
+                from(select bundle_file, version, rownum
                     from api_bundle_version
                     where version between 3000000000 and 3999999999
                     order by version desc)
                 where rownum = 1
-            ")->bundle_file;
+            ");
             return [
                 'result' => true,
-                'file' => $file,
+                'file' => $file->bundle_file,
+                'ver' => $file->version,
             ];
         } catch (Exception $e) {
             return $this->exception($e);
