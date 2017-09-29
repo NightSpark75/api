@@ -120,10 +120,18 @@ export default class Receive extends React.Component{
                     });
                     console.log(response.data);
                 } else {
+                    self.setState({
+                        msgType: 'danger',
+                        msg: response.data.msg,
+                    });
                     console.log(response.data);
                 }
             }).catch(function (error) {
                 console.log(error);
+                self.setState({
+                    msgType: 'danger',
+                    msg: error,
+                });
             });
         }
     }

@@ -127,6 +127,25 @@ class ReceiveRepository
                                 and e.lsa_no = :no
                         )
                 ", ['no' => $no]);
+                
+                $rec_no = DB::selectOne("select pk_mpe.fu_create_no('PI') rec_no from dual")->rec_no;
+                $dept_no = DB::selectOne("select deptno from stdadm.v_hra_emp_dept1 where empno = '$user'")->deptno;
+        
+                DB::insert("
+                    insert into mpe_rec_m
+                        (code, sinnum, typ, stat, rmk, ouser, odept, odate, post, duser, ddate, ldate)
+                    values 
+                        ('04', '$rec_no', 'A', '', '領料單號：$no', '$user', '$dept_no', to_number(to_char(sysdate, 'YYYYMMDD'))
+                            ,'Y', '$user', sysdate, to_number(to_char(sysdate, 'YYYYMMDD')))
+                ");
+                
+                DB::insert("
+                    insert into mpe_rec_d
+                        (code, sinnum, barcode, partno, whouse, stor, grid, batch, rmk, duser, ddate, usize)
+                    select '04', '$rec_no', h.barcode, h.partno, h.whouse, h.stor, h.grid, h.batch,  '領用:'||h.amt, '$user', sysdate, h.amt
+                        from mpe_lsa_e e, mpe_house_e h
+                        where e.barcode = h.barcode and e.lsa_no = '$no'
+                ");
             });
             DB::commit();
             $result = [

@@ -77,46 +77,45 @@ class ReceiveRepository
             } else {
                 $no = 'R'.$select[0]->no;
             }
+
             DB::transaction( function () use($no, $receive_list) {
                 $user = auth()->user()->id;
                 $today = date('Ymd');
+
+                $rec_no = DB::selectOne("select pk_mpe.fu_create_no('PI') rec_no from dual")->rec_no;
+                $dept_no = DB::selectOne("select deptno from stdadm.v_hra_emp_dept1 where empno = '$user'")->deptno;
                 
                 DB::insert("
-                    insert into mpe_receive_m 
-                        (code, no, rdate, duser, ddate, rmk)
-                    values
-                        ('01', '$no', $today, '$user', sysdate, '')
+                    insert into mpe_rec_m
+                        (code, sinnum, typ, ouser, odept, odate, post, duser, ddate, ldate)
+                    values 
+                        ('01', '$rec_no', 'A', '$user', '$dept_no', to_number(to_char(sysdate, 'YYYYMMDD'))
+                            ,'Y', '$user', sysdate, to_number(to_char(sysdate, 'YYYYMMDD')))
                 ");
+
                 for ($i = 0; $i < count($receive_list); $i++) {
                     $item = $receive_list[$i];
                     $item->receive_no = $no;
+
                     DB::insert("
-                        insert into mpe_receive_d
-                            (code, receive_no, barcode, partno, whouse, stor, grid, batch, 
-                                opvl, amt, rmk, sta, duser, ddate, pmun, opdate, valid, buydate)
+                        insert into mpe_rec_d
+                            (code, sinnum, barcode, partno, whouse, stor, grid, batch, rmk, duser, ddate, usize)
                         values
-                            (:code, :receive_no, :barcode, :partno, :whouse, :stor, :grid, :batch, 
-                                :opvl, :amt, :rmk, :sta, :duser, :ddate, :pmun, :opdate, :valid, :buydate)
+                            (:code, :sinnum, :barcode, :partno, :whouse, :stor, :grid, :batch, :rmk, :duser, sysdate, :usize)
                     ", [
                         'code' => $item->code,
-                        'receive_no' => $item->receive_no,
+                        'sinnum' => $rec_no,
                         'barcode' => $item->barcode,
                         'partno' => $item->partno,
                         'whouse' => $item->whouse,
                         'stor' => $item->stor,
                         'grid' => $item->grid,
                         'batch' => $item->batch,
-                        'opvl' => $item->opvl,
-                        'amt' => $item->amt,
                         'rmk' => $item->rmk,
-                        'sta' => $item->sta,
-                        'duser' => $item->duser,
-                        'ddate' => $item->ddate,
-                        'pmun' => $item->pmun,
-                        'opdate' => $item->opdate,
-                        'valid' => $item->valid,
-                        'buydate' => $item->buydate,
+                        'duser' => $user,
+                        'usize' => $item->amt,
                     ]);
+
                     DB::update("
                         update mpe_house_e e
                         set sta = 'Y'
