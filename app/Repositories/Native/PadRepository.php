@@ -87,7 +87,7 @@ class PadRepository
     {
         try {
             $file = DB::selectOne("
-                select bundle_file
+                select bundle_file, version
                 from(select bundle_file, version, rownum
                     from api_bundle_version
                     where version between 3000000000 and 3999999999
