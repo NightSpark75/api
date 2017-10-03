@@ -97,12 +97,7 @@ class ReceiveRepository
                     $item = $receive_list[$i];
                     $item->receive_no = $no;
 
-                    DB::insert("
-                        insert into mpe_rec_d
-                            (code, sinnum, barcode, partno, whouse, stor, grid, batch, rmk, duser, ddate, usize)
-                        values
-                            (:code, :sinnum, :barcode, :partno, :whouse, :stor, :grid, :batch, :rmk, :duser, sysdate, :usize)
-                    ", [
+                    $binds = [
                         'code' => $item->code,
                         'sinnum' => $rec_no,
                         'barcode' => $item->barcode,
@@ -113,8 +108,15 @@ class ReceiveRepository
                         'batch' => $item->batch,
                         'rmk' => $item->rmk,
                         'duser' => $user,
-                        'usize' => $item->amt,
-                    ]);
+                        'usize' => $item->qty,
+                    ];
+
+                    DB::insert("
+                        insert into mpe_rec_d
+                            (code, sinnum, barcode, partno, whouse, stor, grid, batch, rmk, duser, ddate, usize)
+                        values
+                            (:code, :sinnum, :barcode, :partno, :whouse, :stor, :grid, :batch, :rmk, :duser, sysdate, :amt)
+                    ", $binds);
 
                     DB::update("
                         update mpe_house_e e
