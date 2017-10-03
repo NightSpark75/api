@@ -107,18 +107,24 @@ class PadRepository
     public function getVersion()
     {
         try {
-            $version_number = DB::selectOne("
-                select max(version) version_number
-                from api_bundle_version
-                where version between 1000000000 and 1999999999
-            ")->version_number;
-            $version =  (int)substr($version_number, 1, 3) . '.' .
-                        (int)substr($version_number, 4, 3) . '.' .
-                        (int)substr($version_number, 7, 3);
+            $version_info = DB::selectOne("
+                select version_number, file_size
+                from (  
+                    select version version_number, file_size, rownum
+                    from api_bundle_version
+                    where version between 1000000000 and 1999999999
+                    order by version desc
+                )
+                where rownum = 1;            
+            ");
+            $version =  (int)substr($version_info->version_number, 1, 3) . '.' .
+                        (int)substr($version_info->version_number, 4, 3) . '.' .
+                        (int)substr($version_info->version_number, 7, 3);
             return [
                 'result' => true,
                 'version' => $version,
                 'version_number' => $version_number,
+                'size' => $version->file_size
             ];
         } catch (Exception $e) {
             return $this->exception($e);
