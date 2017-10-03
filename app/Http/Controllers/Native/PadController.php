@@ -27,7 +27,6 @@ class PadController extends Controller
             $name = 'index.android.bundle';
     
             $response = response($decode)
-                ->header('Content-length', strlen($file))
                 ->header('Content-Disposition', 'attachment; filename=' . $name);
             return $response;
         }
