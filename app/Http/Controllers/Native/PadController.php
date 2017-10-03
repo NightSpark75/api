@@ -26,7 +26,9 @@ class PadController extends Controller
             $decode = base64_decode($file);
             $name = 'index.android.bundle';
     
-            $response = response($decode)->header('Content-Disposition', 'attachment; filename=' . $name);
+            $response = response($decode)
+                ->header('Content-length', strlen($file))
+                ->header('Content-Disposition', 'attachment; filename=' . $name);
             return $response;
         }
         return $result['msg'];
