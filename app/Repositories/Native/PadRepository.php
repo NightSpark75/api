@@ -124,7 +124,7 @@ class PadRepository
                 'result' => true,
                 'version' => $version,
                 'version_number' => $version_number,
-                'size' => $version->file_size
+                'size' => $version_info->file_size
             ];
         } catch (Exception $e) {
             return $this->exception($e);
