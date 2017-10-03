@@ -115,7 +115,7 @@ class PadRepository
                     where version between 1000000000 and 1999999999
                     order by version desc
                 )
-                where rownum = 1;            
+                where rownum = 1           
             ");
             $version =  (int)substr($version_info->version_number, 1, 3) . '.' .
                         (int)substr($version_info->version_number, 4, 3) . '.' .
