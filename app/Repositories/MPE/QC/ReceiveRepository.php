@@ -108,7 +108,7 @@ class ReceiveRepository
                         'batch' => $item->batch,
                         'rmk' => $item->rmk,
                         'duser' => $user,
-                        'usize' => $item->qty,
+                        'amt' => $item->amt,
                     ];
 
                     DB::insert("
