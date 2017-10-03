@@ -123,7 +123,7 @@ class PadRepository
             return [
                 'result' => true,
                 'version' => $version,
-                'version_number' => $version_number,
+                'version_number' => $version_info->version_number,
                 'size' => $version_info->file_size
             ];
         } catch (Exception $e) {
