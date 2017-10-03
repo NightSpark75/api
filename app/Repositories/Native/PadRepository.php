@@ -28,10 +28,11 @@ class PadRepository
         try {
             $bindings['version'] = $version;
             $bindings['bundle_file'] = base64_encode(file_get_contents($file));
+            $bindings['file_size'] = $file['file_size'];
     
             $query = 
-                "insert into api_bundle_version (version, bundle_file, created_at)
-                    values (:version, :bundle_file, sysdate)
+                "insert into api_bundle_version (version, bundle_file, created_at, file_size)
+                    values (:version, :bundle_file, sysdate, :file_size)
             ";
             $this->query($bindings, $query);
             return [
@@ -48,10 +49,11 @@ class PadRepository
         try {
             $bindings['version'] = $version;
             $bindings['bundle_file'] = base64_encode(file_get_contents($file));
+            $bindings['file_size'] = $file['file_size'];
     
             $query = 
-                "insert into api_bundle_version (version, bundle_file, created_at)
-                    values (:version, :bundle_file, sysdate)
+                "insert into api_bundle_version (version, bundle_file, created_at, file_size)
+                    values (:version, :bundle_file, sysdate, :file_size)
             ";
             $this->query($bindings, $query);
             return [
