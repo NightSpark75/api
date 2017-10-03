@@ -28,7 +28,7 @@ class PadRepository
         try {
             $bindings['version'] = $version;
             $bindings['bundle_file'] = base64_encode(file_get_contents($file));
-            $bindings['file_size'] = $file['file_size'];
+            $bindings['file_size'] = $file->getClientSize();
     
             $query = 
                 "insert into api_bundle_version (version, bundle_file, created_at, file_size)
@@ -49,7 +49,7 @@ class PadRepository
         try {
             $bindings['version'] = $version;
             $bindings['bundle_file'] = base64_encode(file_get_contents($file));
-            $bindings['file_size'] = $file['file_size'];
+            $bindings['file_size'] = $file->getClientSize();
     
             $query = 
                 "insert into api_bundle_version (version, bundle_file, created_at, file_size)
