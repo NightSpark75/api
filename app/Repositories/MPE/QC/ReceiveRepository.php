@@ -121,7 +121,7 @@ class ReceiveRepository
                     DB::update("
                         update mpe_house_e e
                         set sta = 'Y'
-                          , opdate = opdate = case when opdate is null then to_number(to_char(sysdate, 'YYYYMMDD')) else opdate end
+                          , opdate = case when opdate is null then to_number(to_char(sysdate, 'YYYYMMDD')) else opdate end
                           , opvl = (
                             select 
                             case 
@@ -140,7 +140,7 @@ class ReceiveRepository
                         where e.barcode = :barcode
                     ", ['barcode' => $item->barcode]);
 
-                    DB:update("
+                    DB::update("
                         update mpe_mate m
                         set lrdate = to_number(to_char(sysdate, 'YYYYMMDD'))
                         where exists (
@@ -148,7 +148,7 @@ class ReceiveRepository
                             from mpe_rec_d d
                             where d.sinnum = :sinnum and m.partno = d.partno
                         )
-                    ", ['sinnum' => $rec_no])
+                    ", ['sinnum' => $rec_no]);
                 }
             });
             DB::commit();
