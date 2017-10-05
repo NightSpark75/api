@@ -121,7 +121,7 @@ class ReceiveRepository
                     DB::update("
                         update mpe_house_e e
                         set sta = 'Y'
-                          , opdate = to_number(to_char(sysdate, 'YYYYMMDD'))
+                          , opdate = opdate = case when opdate is null then to_number(to_char(sysdate, 'YYYYMMDD')) else opdate end
                           , opvl = (
                             select 
                             case 
