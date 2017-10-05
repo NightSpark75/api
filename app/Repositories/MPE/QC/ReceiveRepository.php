@@ -139,6 +139,16 @@ class ReceiveRepository
                           )
                         where e.barcode = :barcode
                     ", ['barcode' => $item->barcode]);
+
+                    DB:update("
+                        update mpe_mate m
+                        set lrdate = to_number(to_char(sysdate, 'YYYYMMDD'))
+                        where exists (
+                            select *
+                            from mpe_rec_d d
+                            where d.sinnum = :sinnum and m.partno = d.partno
+                        )
+                    ", ['sinnum' => $rec_no])
                 }
             });
             DB::commit();
