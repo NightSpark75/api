@@ -46,7 +46,7 @@ class AuthRepository
         try {
             return $this->userLogin($account, $password, $system);
         } catch (Exception $e) {
-            return ['result' => false, 'msg' => $e->getMessage()];
+            return $this->exception($e);
         }
     }
 
@@ -61,12 +61,14 @@ class AuthRepository
                 ->first();
         if ($auth) {
             Auth::login($auth);
+            //$user_role =  $this->getUserRole($auth);
             $user_info = [
                 'system' => $system,
                 'sys' => $auth->sys,
                 'co' => $auth->co,
                 'user_id' => $auth->id,
                 'user_name' => $auth->name,
+                //'user_role' => $user_role,
             ];
             session([
                 'user_info' => $user_info,
@@ -96,7 +98,11 @@ class AuthRepository
     public function getMenu($user_id)
     {
         $menu = $this->prg->where('user_id', $user_id)->get()->toArray();
-        $result = ['result' => true, 'msg' => '已取得清單!(#0000)', 'menu' => $menu];
+        $result = [
+            'result' => true, 
+            'msg' => '已取得清單!(#0000)', 
+            'menu' => $menu
+        ];
         return $result;
     }
 
@@ -126,5 +132,26 @@ class AuthRepository
             'info' => session('user_info'),
         ];
         return $response;
+    }
+
+    /**
+     * 取得登入者的角色
+     * 
+     * @return Mix
+     */
+    
+    public function getUserRole($user)
+    {
+        //$user = auth()->user();
+        $binds = [
+            'co' => $user->co,
+            'user_id' => $user->id,
+        ];
+        $user_role = DB::select("
+            select *
+            from sma_user_role_d
+            where co = :co and user_id = :user_id
+        ", $binds);
+        return $user_role;
     }
 }
