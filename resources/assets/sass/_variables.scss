@@ -18,14 +18,14 @@ $white-ter:    hsl(0, 0%, 96%) ;
 $white-bis:    hsl(0, 0%, 98%) ;
 $white:        hsl(0, 0%, 100%) ;
 
-$orange:       hsl(14,  100%, 53%) ;
-$yellow:       hsl(48,  100%, 67%) ;
-$green:        hsl(141, 71%,  48%) ;
-$turquoise:    hsl(171, 100%, 41%) ;
-$blue:         hsl(217, 71%,  53%) ;
-$purple:       hsl(271, 100%, 71%) ;
-$red:          hsl(348, 100%, 61%) ;
-$newBlue:      hsl(200, 80%, 65%) ;
+$orange:       rgb(255, 71, 15) ;
+$yellow:       rgb(254, 221, 86) ;
+$green:        rgb(7, 219, 81) ;
+$turquoise:    rgb(55, 171, 233) ;
+$blue:         rgb(36, 102, 207) ;
+$purple:       rgb(183, 107, 255) ;
+$red:          rgb(226, 17, 59) ;
+$newBlue:      rgb(94, 189, 237) ;
 
 // Typography
 $family-sans-serif: "微軟正黑體", "BlinkMacSystemFont", "-apple-system", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
@@ -93,8 +93,8 @@ $purple-invert: findColorInvert($purple) ;
 $red-invert: findColorInvert($red) ;
 $newBlue-invert: findColorInvert($newBlue) ;
 
-$primary-invert: $turquoise-invert ;
-$info-invert: $blue-invert ;
+$primary-invert: $blue-invert ;
+$info-invert: $turquoise-invert ;
 $success-invert: $green-invert ;
 $warning-invert: $yellow-invert ;
 $danger-invert: $red-invert ;
