@@ -167,3 +167,29 @@ $navbar-background-color: $blue;
 $navbar-item-color: $white;
 
 $box-padding: 1rem;
+
+// customer
+// table 
+table tr.is-success td, table tr.is-success th{
+    border-color: $success;
+}
+
+table.is-success tr td, table.is-success tr th {
+    border-color: $success;
+}
+
+table tr.is-info td, table tr.is-info th {
+    border-color: $info;
+}
+
+table.is-info tr td, table.is-info tr th {
+    border-color: $info;
+}
+
+table tr.is-orange td, table tr.is-orange th {
+    border-color: $orange;
+}
+
+table.is-orange tr td, table.is-orange tr th {
+    border-color: $orange;
+}

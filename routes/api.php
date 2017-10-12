@@ -97,6 +97,7 @@ Route::group(['prefix' => 'web/mpe', 'namespace' => 'MPE'], function () {
     Route::group(['prefix' => 'qa', 'namespace' => 'QA'], function () {
         Route::group(['prefix' => 'receive'], function () {
             Route::get('list', 'ReceiveController@getList');
+            Route::get('detail/{lsa_no}', 'ReceiveController@getDetail');
             Route::post('posting', 'ReceiveController@posting');
         });
         Route::group(['prefix' => 'retained'], function () {

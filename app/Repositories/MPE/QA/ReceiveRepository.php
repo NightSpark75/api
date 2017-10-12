@@ -31,12 +31,21 @@ class ReceiveRepository
     public function getList()
     {
         $lsa_m = $this->get_lsa_m();
-        $lsa_d = $this->get_lsa_d();
-        $lsa_e = $this->get_lsa_e();
         $result = [
             'result' => true,
             'msg' => '取得領用資料成功!(#0001)',
             'lsa_m' => $lsa_m,
+        ];
+        return $result;
+    }
+
+    public function getDetail($lsa_no)
+    {
+        $lsa_d = $this->get_lsa_d($lsa_no);
+        $lsa_e = $this->get_lsa_e($lsa_no);
+        $result = [
+            'result' => true,
+            'msg' => '取得領用詳細資料成功!(#0003)',
             'lsa_d' => $lsa_d,
             'lsa_e' => $lsa_e,
         ];
@@ -46,21 +55,15 @@ class ReceiveRepository
     private function get_lsa_m($lsa_no = '%%')
     {
         $lsa_m = DB::select("
-            select m.no, m.apply_user, au.ename uname, m.apply_unit, ad.dname dname,
-                m.check_user, cu.ename cname, m.back_user, bu.empno bname, m.apply_date, 
-                req_date, reason, doc_class, doc_no, back_date, back_reason, rdate, m.status
-                , case when sum(case when e.status = 'Y' then 1 else 0 end) = count(e.barcode) then 'Y' else 'N' end posting
-            from mpe_lsa_m m
-                left join stdadm.v_hra_emp_dept1 au on m.apply_user = au.empno
-                left join stdadm.v_hra_emp_dept1 ad on m.apply_unit = ad.deptno
-                left join stdadm.v_hra_emp_dept1 cu on m.check_user = cu.empno
-                left join stdadm.v_hra_emp_dept1 bu on m.back_user = bu.empno
-                join mpe_lsa_e e on m.no = e.lsa_no
-            where m.status = 'P' and m.no like :lsa_no
-            group by m.no, m.apply_user, au.ename, m.apply_unit, ad.dname,
-                m.check_user, cu.ename, m.back_user, bu.empno, m.apply_date, 
-                req_date, reason, doc_class, doc_no, back_date, back_reason, rdate, m.status
-            order by m.req_date, m.no
+        select m.no, m.apply_user, stdadm.pk_hra.fu_emp_name(m.apply_user) uname, m.apply_unit, stdadm.pk_hra.fu_dept_name(m.apply_unit) dname,
+            m.check_user, stdadm.pk_hra.fu_emp_name(m.check_user) cname, m.back_user, stdadm.pk_hra.fu_emp_name(m.back_user) bname, m.apply_date, 
+            req_date, reason, doc_class, doc_no, back_date, back_reason, rdate, m.status
+        from mpe_lsa_m m
+        where m.status = 'P' and m.no like :lsa_no
+        group by m.no, m.apply_user, m.apply_unit,
+            m.check_user, m.back_user, m.apply_date, 
+            req_date, reason, doc_class, doc_no, back_date, back_reason, rdate, m.status
+        order by m.req_date, m.no
         ", ['lsa_no' => $lsa_no]);
         return $lsa_m;
     }
@@ -69,16 +72,14 @@ class ReceiveRepository
     {
         $lsa_d = DB::select("
             select d.lsa_no, d.bno, d.qty, d.partno, d.whouse, d.stor, m.pname, h.usize, h.unit 
-                , case when sum(case when e.status = 'Y' then 1 else 0 end) = count(e.barcode) then 'Y' else 'N' end status
+                , d.status
             from mpe_lsa_d d
                 join mpe_mate m on d.partno = m.partno
                 join mpe_house_m h on d.bno = h.batch and d.partno = h.partno 
                     and d.whouse = h.whouse and d.stor = h.stor 
-                join mpe_lsa_e e on d.partno = e.partno and d.bno = e.bno 
-                    and d.whouse = e.whouse and d.stor = e.stor and d.lsa_no = e.lsa_no
                 join mpe_lsa_m lm on lm.no = d.lsa_no
             where d.lsa_no like :lsa_no and lm.status = 'P'
-            group by d.lsa_no, d.bno, d.qty, d.partno, d.whouse, d.stor, m.pname, h.usize, h.unit
+            group by d.lsa_no, d.bno, d.qty, d.partno, d.whouse, d.stor, m.pname, h.usize, h.unit, d.status
             order by d.lsa_no, d.bno
         ", ['lsa_no' => $lsa_no]);
         return $lsa_d;
@@ -87,22 +88,23 @@ class ReceiveRepository
     private function get_lsa_e($lsa_no = '%%')
     {
         $lsa_e = DB::select("
-            select e.*, h.usize, h.unit, he.amt
-            from mpe_lsa_e e
-                join mpe_house_m h on e.bno = h.batch and e.partno = h.partno 
-                        and e.whouse = h.whouse and e.stor = h.stor and h.code = '04'
-                join mpe_house_e he on e.barcode = he.barcode
-                join mpe_lsa_m lm on lm.no = e.lsa_no
-            where e.lsa_no like :lsa_no and lm.status = 'P'
-            order by e.lsa_no, e.bno
+            select m.no lsa_no, e.*, h.usize, h.unit
+            from mpe_house_e e, mpe_lsa_m m, mpe_lsa_d d, mpe_house_m h
+            where e.sta = 'N'
+                and m.status = 'P' and m.no = d.lsa_no and m.no like :lsa_no
+                and e.partno = h.partno and e.batch = h.batch
+                and e.whouse = h.whouse and e.stor = h.stor
+                and e.partno = d.partno and e.batch = d.bno
+                and e.whouse = d.whouse and e.stor = d.stor
+                order by m.no, e.batch
         ", ['lsa_no' => $lsa_no]);
         return $lsa_e;
     }
 
-    public function posting($no) 
+    public function posting($no, $item_e) 
     {
         try{
-            DB::transaction( function () use($no) {
+            DB::transaction( function () use($no, $item_e) {
                 $user = auth()->user()->id;
                 $today = date('Ymd');
                 DB::update("
@@ -111,15 +113,31 @@ class ReceiveRepository
                         where no = :no
                 ", ['no' => $no]);
 
-                DB::update("
-                    update mpe_lsa_e
-                        set status = 'Y'
-                        where lsa_no = :no
-                ", ['no' => $no]);
+                for ($i = 0; $i < count($item_e); $i++) {
+                    $item = $item_e[$i];
+                    if ($item['sta'] === 'Y') {
+                        $binds = [
+                            'lsa_no' => $item['lsa_no'],
+                            'bno' => $item['batch'],
+                            'barcode' => $item['barcode'],
+                            'status' => $item['sta'],
+                            'partno' => $item['partno'],
+                            'whouse' => $item['whouse'],
+                            'stor' => $item['stor'],
+                            'qty' => $item['amt'],
+                        ];
+                        DB::insert("
+                            insert into mpe_lsa_e
+                                (lsa_no, bno, barcode, status, partno, whouse, stor, qty)
+                            values
+                                (:lsa_no, :bno, :barcode, :status, :partno, :whouse, :stor, :qty)
+                        ", $binds);
+                    }
+                } 
 
                 DB::update("
                     update mpe_house_e h
-                        set sta = 'Z', duser = '$user'
+                        set sta = 'Y', duser = '$user', ddate = sysdate, rmk = '領用單：$no'
                         where exists (
                             select barcode
                             from mpe_lsa_e e

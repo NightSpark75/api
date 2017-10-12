@@ -26,11 +26,18 @@ class ReceiveController extends Controller
         return $result;
     }
 
+    public function getDetail($lsa_no)
+    {
+        $result = $this->receive->getDetail($lsa_no);
+        return $result;
+    }
+
     public function posting() 
     {
         $input = request()->all();
         $no = $input['no'];
-        $result = $this->receive->posting($no);
+        $item_e = json_decode($input['item_e'], true);
+        $result = $this->receive->posting($no, $item_e);
         return $result;
     }
 }
