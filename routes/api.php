@@ -116,6 +116,7 @@ Route::group(['prefix' => 'web/mpe', 'namespace' => 'MPE'], function () {
             Route::post('posting', 'ReceiveController@posting');
         });
         Route::group(['prefix' => 'doc'], function () {
+            Route::get('info/{search}', 'DocumentController@getInfo');
             Route::post('barcode', 'DocumentController@searchByBarcode');
             Route::post('partno', 'DocumentController@searchByPartno');
             Route::post('batch', 'DocumentController@searchByBatch');

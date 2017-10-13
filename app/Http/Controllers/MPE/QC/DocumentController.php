@@ -16,6 +16,12 @@ class DocumentController extends Controller
         $this->doc = $doc;
     }
 
+    public function getInfo($search)
+    {
+        $result = $this->doc->getInfo($search);
+        return response()->json($result);
+    }
+
     public function searchByBarcode()
     {
         $barcode = request()->input('barcode');

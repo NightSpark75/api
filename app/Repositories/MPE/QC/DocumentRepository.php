@@ -27,6 +27,27 @@ class DocumentRepository
 
     }
 
+    public function getInfo($search)
+    {
+        try {
+            $info = DB::select("
+                select hm.partno, hm.batch, m.ename, hm.qty||m.unit qty, m.sfty||m.unit sfty, hm.coa_no, m.sds_no
+                from mpe_house_m hm, mpe_house_e he, mpe_mate m
+                where (hm.partno like '%$search%' or hm.batch like '%$search%' or m.ename like '%$search%' or m.pname like '%$search%' or he.barcode = '$search')
+                    and m.code = '01' and hm.code = '01' and he.code = '01'
+                    and hm.partno = he.partno and hm.batch = he.batch and hm.whouse = he.whouse and hm.stor = he.stor and hm.grid = he.grid
+                    and hm.partno = m.partno
+                group by hm.partno, hm.batch, m.ename, hm.qty, m.sfty, hm.coa_no, m.sds_no, m.unit
+            ");
+            return $this->success([
+                'msg' => '查詢成功',
+                'info' => $info,
+            ]);
+        } catch (Exception $e) {
+            return $this->exception($e);
+        }
+    }
+
     public function getFileInfo($query)
     {
         try {

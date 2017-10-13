@@ -64,6 +64,13 @@ class AuthController extends Controller
         return $response;
     }
 
+    public function commonMenu($class)
+    {
+        $result = $this->auth->getCommonMenu($class);
+        $response = response()->json($result);
+        return $response;
+    }
+
     public function user()
     {
         $info = $this->auth->getUser();

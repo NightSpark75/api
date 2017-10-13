@@ -107,6 +107,23 @@ class AuthRepository
     }
 
     /**
+     * 取得公用程式清單
+     * 
+     * @param string $class
+     * @return Mix
+     */
+    public function getMenu($class)
+    {
+        $menu = $this->prg->where('user_id', $user_id)->get()->toArray();
+        $result = [
+            'result' => true, 
+            'msg' => '已取得清單!(#0000)', 
+            'menu' => $menu
+        ];
+        return $result;
+    }
+
+    /**
      * 取得登入使用者資料
      * 
      * @return App\Models\User

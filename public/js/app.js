@@ -13561,10 +13561,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__components_web_mpb_packing_Working__ = __webpack_require__(151);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__components_web_mpb_package_Job__ = __webpack_require__(148);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__components_web_mpb_package_Working__ = __webpack_require__(149);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__components_web_mpe_qc_document_Search__ = __webpack_require__(157);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__components_web_mpe_qc_part_Info__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__components_web_mpe_qc_part_Info__ = __webpack_require__(158);
 // v 1.23.5
-
 
 
 
@@ -13608,8 +13606,7 @@ __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             __WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */],
             { path: "qc" },
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "document", component: __WEBPACK_IMPORTED_MODULE_22__components_web_mpe_qc_document_Search__["a" /* default */] }),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "partinfo", component: __WEBPACK_IMPORTED_MODULE_23__components_web_mpe_qc_part_Info__["a" /* default */] })
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "document", component: __WEBPACK_IMPORTED_MODULE_22__components_web_mpe_qc_part_Info__["a" /* default */] })
         )
     ),
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -18582,325 +18579,7 @@ var Change = function (_React$Component) {
 /* harmony default export */ __webpack_exports__["a"] = (Change);
 
 /***/ }),
-/* 157 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/** 
- * Search.js
- */
-
-
-
-
-var Search = function (_React$Component) {
-    _inherits(Search, _React$Component);
-
-    function Search(props) {
-        _classCallCheck(this, Search);
-
-        var _this = _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).call(this, props));
-
-        _this.state = {
-            barcode: '',
-            partno: '',
-            batch: '',
-            info: {},
-            message: ''
-        };
-        return _this;
-    }
-
-    _createClass(Search, [{
-        key: 'goSearch',
-        value: function goSearch() {
-            var _state = this.state,
-                partno = _state.partno,
-                batch = _state.batch;
-
-            if (partno.length > 0) {
-                var form_data = new FormData();
-                form_data.append('partno', partno);
-                var url = '/api/web/mpe/qc/doc/partno';
-                this.getInfo(url, form_data);
-            }
-            if (batch.length > 0) {
-                var _form_data = new FormData();
-                _form_data.append('batch', batch);
-                var _url = '/api/web/mpe/qc/doc/batch';
-                this.getInfo(_url, _form_data);
-            }
-        }
-    }, {
-        key: 'barcodeChange',
-        value: function barcodeChange(e) {
-            this.setState({
-                barcode: e.target.value,
-                partno: '',
-                batch: '',
-                info: {}
-            });
-            if (e.target.value.length === 8) {
-                var form_data = new FormData();
-                form_data.append('barcode', e.target.value);
-                var url = '/api/web/mpe/qc/doc/barcode';
-                this.getInfo(url, form_data);
-            }
-        }
-    }, {
-        key: 'partnoChange',
-        value: function partnoChange(e) {
-            this.setState({
-                barcode: '',
-                partno: e.target.value,
-                batch: '',
-                info: {}
-            });
-        }
-    }, {
-        key: 'batchChange',
-        value: function batchChange(e) {
-            this.setState({
-                barcode: '',
-                partno: '',
-                batch: e.target.value,
-                info: {}
-            });
-        }
-    }, {
-        key: 'getInfo',
-        value: function getInfo(url, data) {
-            var self = this;
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(url, data).then(function (response) {
-                if (response.data.result) {
-                    self.setState({
-                        info: response.data.info,
-                        message: ''
-                    });
-                    console.log(response.data);
-                } else {
-                    self.setState({ message: '查詢不到資料!!' });
-                    console.log(response.data);
-                }
-            }).catch(function (error) {
-                console.log(error);
-            });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _state2 = this.state,
-                barcode = _state2.barcode,
-                partno = _state2.partno,
-                batch = _state2.batch,
-                info = _state2.info,
-                message = _state2.message;
-
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                null,
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'box' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'column' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', className: 'input is-medium',
-                            value: this.state.barcode,
-                            placeholder: '\u6383\u63CF\u689D\u78BC',
-                            maxLength: 8,
-                            autoFocus: true,
-                            onChange: this.barcodeChange.bind(this)
-                        })
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'column' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', className: 'input is-medium',
-                            value: this.state.partno,
-                            maxLength: 20,
-                            placeholder: '\u8F38\u5165\u6599\u865F',
-                            onChange: this.partnoChange.bind(this)
-                        })
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'column' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', className: 'input is-medium',
-                            value: this.state.batch,
-                            maxLength: 20,
-                            placeholder: '\u8F38\u5165\u6279\u865F',
-                            onChange: this.batchChange.bind(this)
-                        })
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'column' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'button',
-                            { className: 'button is-primary is-medium',
-                                onClick: this.goSearch.bind(this)
-                            },
-                            '\u67E5\u8A62'
-                        )
-                    )
-                ),
-                info.partno !== undefined && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'box' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        null,
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'table',
-                            { className: 'table is-bordered is-fullwidth' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'tbody',
-                                null,
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'tr',
-                                    null,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'td',
-                                        { width: '100' },
-                                        '\u6599\u865F'
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'td',
-                                        null,
-                                        info.partno
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'td',
-                                        { width: '100' },
-                                        '\u6279\u865F'
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'td',
-                                        null,
-                                        info.batch
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'td',
-                                        null,
-                                        '\u5B89\u5168\u5EAB\u5B58'
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'td',
-                                        null,
-                                        info.sfty
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'td',
-                                        null,
-                                        '\u7E3D\u5EAB\u5B58'
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'td',
-                                        null,
-                                        info.total
-                                    )
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'tr',
-                                    null,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'td',
-                                        null,
-                                        '\u4E2D\u6587\u540D\u7A31'
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'td',
-                                        { colSpan: 7 },
-                                        info.pname
-                                    )
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'tr',
-                                    null,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'td',
-                                        null,
-                                        '\u82F1\u6587\u540D\u7A31'
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'td',
-                                        { colSpan: 7 },
-                                        info.ename
-                                    )
-                                )
-                            )
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'columns' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'column is-4' },
-                                info.sds_no === null ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'button',
-                                    { className: 'button is-large is-primary is-static' },
-                                    'SDS\u6587\u4EF6'
-                                ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'a',
-                                    { className: 'button is-large is-primary',
-                                        href: "/api/web/mpe/qc/doc/read/sds/" + info.partno + "/N/" + info.sds_no,
-                                        target: '_blank'
-                                    },
-                                    'SDS\u6587\u4EF6'
-                                )
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'column is-4' },
-                                info.coa_no === null ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'button',
-                                    { className: 'button is-large is-primary is-static' },
-                                    'COA\u6587\u4EF6'
-                                ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'a',
-                                    { className: 'button is-large is-primary',
-                                        href: "/api/web/mpe/qc/doc/read/coa/" + info.partno + "/" + info.batch + "/" + info.coa_no,
-                                        target: '_blank'
-                                    },
-                                    'COA\u6587\u4EF6'
-                                )
-                            )
-                        )
-                    )
-                ),
-                message.length > 0 && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'article',
-                    { 'class': 'message is-warning' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { 'class': 'message-body' },
-                        message
-                    )
-                )
-            );
-        }
-    }]);
-
-    return Search;
-}(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
-
-/* harmony default export */ __webpack_exports__["a"] = (Search);
-
-/***/ }),
+/* 157 */,
 /* 158 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -18934,29 +18613,200 @@ var Info = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Info.__proto__ || Object.getPrototypeOf(Info)).call(this, props));
 
         _this.state = {
-            barcode: '',
-            partno: '',
-            batch: '',
-            info: {},
-            message: ''
+            info: null,
+            search: '',
+            searching: false
         };
         return _this;
     }
 
     _createClass(Info, [{
+        key: 'searchChange',
+        value: function searchChange(e) {
+            this.setState({ search: e.target.value });
+        }
+    }, {
+        key: 'getInfo',
+        value: function getInfo() {
+            var self = this;
+            var search = this.state.search;
+            this.setState({ searching: true });
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/web/mpe/qc/doc/info/' + search).then(function (response) {
+                if (response.data.result) {
+                    if (response.data.info.length > 0) {
+                        self.setState({
+                            info: response.data.info
+                        });
+                    } else {
+                        alert('查詢不到任何資料');
+                    }
+                    console.log(response.data);
+                } else {
+                    console.log(response.data);
+                }
+                self.setState({ searching: false });
+            }).catch(function (error) {
+                console.log(error);
+                self.setState({ searching: false });
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _state = this.state,
-                barcode = _state.barcode,
-                partno = _state.partno,
-                batch = _state.batch,
                 info = _state.info,
-                message = _state.message;
+                search = _state.search,
+                searching = _state.searching;
 
+            var loading = searching ? 'is-loading' : '';
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
-                'partinfo'
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'box' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'column is-7', style: { padding: 0 } },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'field has-addons' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'control is-expanded' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', {
+                                    className: 'input is-medium',
+                                    type: 'text',
+                                    placeholder: '\u8ACB\u8F38\u5165\u689D\u78BC\u3001\u6599\u865F\u3001\u6279\u865F\u3001\u54C1\u540D\u9032\u884C\u67E5\u8A62...',
+                                    onChange: this.searchChange.bind(this)
+                                })
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'control' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'button',
+                                    {
+                                        className: "button is-info is-medium " + loading,
+                                        onClick: this.getInfo.bind(this)
+                                    },
+                                    '\u67E5\u8A62'
+                                )
+                            )
+                        )
+                    )
+                ),
+                info && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'table',
+                    { className: 'table is-bordered is-hoverable is-fullwidth' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'thead',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'tr',
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'td',
+                                null,
+                                '\u6599\u865F'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'td',
+                                null,
+                                '\u6279\u865F'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'td',
+                                null,
+                                '\u54C1\u540D'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'td',
+                                null,
+                                '\u5EAB\u5B58\u91CF'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'td',
+                                null,
+                                '\u5B89\u5168\u5EAB\u5B58\u91CF'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'td',
+                                { width: '63' },
+                                'SDS'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'td',
+                                { width: '63' },
+                                'COA'
+                            )
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'tbody',
+                        null,
+                        info.map(function (item, index) {
+                            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'tr',
+                                { key: index },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'td',
+                                    null,
+                                    item.partno
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'td',
+                                    null,
+                                    item.batch
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'td',
+                                    null,
+                                    item.ename
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'td',
+                                    { width: '120' },
+                                    item.qty
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'td',
+                                    { width: '120' },
+                                    item.sfty
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'td',
+                                    { width: '83' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'a',
+                                        { className: 'button',
+                                            href: "/api/web/mpe/qc/doc/read/sds/" + item.partno + "/N/" + item.sds_no,
+                                            target: '_blank'
+                                        },
+                                        '\u4E0B\u8F09'
+                                    )
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'td',
+                                    { width: '83' },
+                                    item.coa_no ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'a',
+                                        { className: 'button',
+                                            href: "/api/web/mpe/qc/doc/read/coa/" + item.partno + "/" + item.batch + "/" + item.coa_no,
+                                            target: '_blank',
+                                            disabled: item.coa_no ? "false" : "true"
+                                        },
+                                        '\u4E0B\u8F09'
+                                    ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'a',
+                                        { className: 'button', title: 'Disabled button', disabled: true },
+                                        '\u4E0B\u8F09'
+                                    )
+                                )
+                            );
+                        })
+                    )
+                )
             );
         }
     }]);
