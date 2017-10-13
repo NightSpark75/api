@@ -15,6 +15,7 @@ use App\Traits\Sqlexecute;
 use App\Models\Web\User;
 use App\Models\Web\UserPrg;
 use Auth;
+use DB;
 
 /**
  * Class AuthRepository
@@ -112,9 +113,13 @@ class AuthRepository
      * @param string $class
      * @return Mix
      */
-    public function getMenu($class)
+    public function getCommonMenu($class)
     {
-        $menu = $this->prg->where('user_id', $user_id)->get()->toArray();
+        $menu = DB::select("
+            select w.co, w.prg_id, w.web_route, w.rmk, w.prg_name
+            from api_web_prg w, api_common_prg c
+            where w.co = c.co and w.prg_id = c.prg_id and c.cls = '$class'
+        ")
         $result = [
             'result' => true, 
             'msg' => '已取得清單!(#0000)', 

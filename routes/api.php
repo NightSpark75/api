@@ -24,6 +24,7 @@ Route::middleware('web')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'web', 'namespace' => 'Web'], function () {
     Route::post('login', 'AuthController@login');
     Route::get('logout', 'AuthController@logout');
+    Route::get('commonMenu/{class}', 'AuthController@commonMenu');
     Route::middleware('web')->get('menu', 'AuthController@menu');
     Route::middleware('web')->get('user/info', 'AuthController@user');
 });
