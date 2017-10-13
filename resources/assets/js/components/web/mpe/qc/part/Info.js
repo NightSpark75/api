@@ -94,12 +94,16 @@ export default class Info extends React.Component{
                                     <td width="120">{item.qty}</td>
                                     <td width="120">{item.sfty}</td>
                                     <td width="83">
-                                        <a className="button"
-                                            href={"/api/web/mpe/qc/doc/read/sds/" + item.partno + "/N/" + item.sds_no}
-                                            target="_blank"
-                                        >
-                                            下載
-                                        </a>
+                                        {item.sds_no ?
+                                            <a className="button"
+                                                href={"/api/web/mpe/qc/doc/read/sds/" + item.partno + "/N/" + item.sds_no}
+                                                target="_blank"
+                                            >
+                                                下載
+                                            </a>
+                                        :
+                                        <a className="button" title="Disabled button" disabled>下載</a>
+                                        }
                                     </td>
                                     <td width="83">
                                         {item.coa_no ?

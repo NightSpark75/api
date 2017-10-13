@@ -18777,12 +18777,16 @@ var Info = function (_React$Component) {
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'td',
                                     { width: '83' },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    item.sds_no ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         'a',
                                         { className: 'button',
                                             href: "/api/web/mpe/qc/doc/read/sds/" + item.partno + "/N/" + item.sds_no,
                                             target: '_blank'
                                         },
+                                        '\u4E0B\u8F09'
+                                    ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'a',
+                                        { className: 'button', title: 'Disabled button', disabled: true },
                                         '\u4E0B\u8F09'
                                     )
                                 ),
