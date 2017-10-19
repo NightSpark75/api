@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Stardant D2K Web Api</title>
+    <title>Standard web</title>
     <link href="{{ url('/css/app.css?x=1') }}" rel="stylesheet">
     <link href="{{ url('/css/font-awesome.min.css') }}" rel="stylesheet">
 </head>

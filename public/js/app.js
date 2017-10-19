@@ -17495,7 +17495,7 @@ var Receive = function (_React$Component) {
                                     { className: 'level-item' },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         'button',
-                                        { className: 'button is-success', disabled: !posting, onClick: this.goPosting.bind(this) },
+                                        { className:  true ? "is-success" : "", disabled: !posting, onClick: this.goPosting.bind(this) },
                                         '\u9818\u6599\u904E\u5E33'
                                     )
                                 )
