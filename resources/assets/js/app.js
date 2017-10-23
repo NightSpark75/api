@@ -13,6 +13,7 @@ import Menu from "./components/sys/layout/Menu";
 import User from "./components/web/user/User";
 import Pointlog from "./components/web/mpz/pointlog/Pointlog";
 import QAReceive from "./components/web/mpe/qa/receive/Receive";
+import QARestore from "./components/web/mpe/qa/restore/Restore";
 import Retained from "./components/web/mpe/qa/retained/Retained";
 import Change from "./components/web/mpe/qa/stock/storage/Change";
 import QCReceive from "./components/web/mpe/qc/receive/Receive";
@@ -65,6 +66,7 @@ ReactDOM.render(
                 <Route path="mpe">
                     <Route path="qa">
                         <Route path="receive/list" component={QAReceive}></Route>
+                        <Route path="restore/list" component={QARestore}></Route>
                         <Route path="retained/list" component={Retained}></Route>
                         <Route path="stock">
                             <Route path="storage/Change" component={Change}></Route>
