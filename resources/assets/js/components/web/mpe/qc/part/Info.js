@@ -37,6 +37,7 @@ export default class Info extends React.Component{
                 console.log(response.data);
             } else {
                 console.log(response.data);
+                alert(response.data.msg)
             }
             self.setState({searching: false});
         }).catch(function (error) {
