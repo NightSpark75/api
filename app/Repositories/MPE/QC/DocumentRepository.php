@@ -33,7 +33,14 @@ class DocumentRepository
             $info = DB::select("
                 select hm.partno, hm.batch, m.ename, hm.qty||m.unit qty, m.sfty||m.unit sfty, hm.coa_no, m.sds_no
                 from mpe_house_m hm, mpe_house_e he, mpe_mate m
-                where (hm.partno like '%$search%' or hm.batch like '%$search%' or m.ename like '%$search%' or m.pname like '%$search%' or he.barcode = '$search')
+                where (hm.partno like '%$search%' 
+                        or hm.batch like '%$search%' 
+                        or m.ename like '%$search%' 
+                        or m.pname like '%$search%' 
+                        or m.reagent like '%$search%'
+                        or m.casno like '%$search%'
+                        or m.molef like '%$search%'
+                        or he.barcode = '$search')
                     and m.code = '01' and hm.code = '01' and he.code = '01'
                     and hm.partno = he.partno and hm.batch = he.batch and hm.whouse = he.whouse and hm.stor = he.stor and hm.grid = he.grid
                     and hm.partno = m.partno
