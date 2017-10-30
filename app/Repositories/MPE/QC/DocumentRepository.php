@@ -45,7 +45,21 @@ class DocumentRepository
                     and hm.partno = he.partno and hm.batch = he.batch and hm.whouse = he.whouse and hm.stor = he.stor and hm.grid = he.grid
                     and hm.partno = m.partno
                 group by hm.partno, hm.batch, m.ename, hm.qty, m.sfty, hm.coa_no, m.sds_no, m.unit
-                order by hm.partno
+                union
+                select m.partno, null batch, m.ename, '0' qty, m.sfty||m.unit sfty, null coa_no, m.sds_no
+                from mpe_mate m
+                where m.code = '01'
+                    and (m.ename like '%$search%' 
+                        or m.pname like '%$search%' 
+                        or m.reagent like '%$search%'
+                        or m.casno like '%$search%'
+                        or m.molef like '%$search%')
+                    and not exists(
+                        select *
+                        from mpe_house_m hh
+                        where hh.partno = m.partno
+                      )
+                order by 1
             ");
             if (count($info) === 0) {
                 $info = DB::select("
