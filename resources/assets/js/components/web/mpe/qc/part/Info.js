@@ -77,13 +77,14 @@ export default class Info extends React.Component{
                     <table className="table is-bordered is-hoverable is-fullwidth">
                         <thead>
                             <tr>
-                                <td>料號</td>
+                                <td width="80">料號</td>
                                 <td>批號</td>
                                 <td>品名</td>
-                                <td>庫存量</td>
-                                <td>安全庫存量</td>
-                                <td width="63">SDS</td>
-                                <td width="63">COA</td>
+                                <td width="130">儲位</td>
+                                <td width="120">庫存量</td>
+                                <td width="120">安全庫存量</td>
+                                <td width="83">SDS</td>
+                                <td width="83">COA</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -92,9 +93,10 @@ export default class Info extends React.Component{
                                     <td>{item.partno}</td>
                                     <td>{item.batch}</td>
                                     <td>{item.ename}</td>
-                                    <td width="120">{item.qty}</td>
-                                    <td width="120">{item.sfty}</td>
-                                    <td width="83">
+                                    <td>{item.storn}</td>
+                                    <td>{item.qty}</td>
+                                    <td>{item.sfty}</td>
+                                    <td>
                                         {item.sds_no ?
                                             <a className="button"
                                                 href={"/api/web/mpe/qc/doc/read/sds/" + item.partno + "/N/" + item.sds_no}
@@ -106,7 +108,7 @@ export default class Info extends React.Component{
                                         <a className="button" title="Disabled button" disabled>下載</a>
                                         }
                                     </td>
-                                    <td width="83">
+                                    <td>
                                         {item.coa_no ?
                                             <a className="button"
                                                 href={"/api/web/mpe/qc/doc/read/coa/" + item.partno + "/" + item.batch + "/" + item.coa_no}

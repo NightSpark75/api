@@ -31,27 +31,28 @@ class DocumentRepository
     {
         try {
             $info = DB::select("
-                select hm.partno, hm.batch, m.ename, hm.qty||m.unit qty, m.sfty||m.unit sfty, hm.coa_no, m.sds_no
+                select hm.partno, hm.batch, m.ename, pk_mpe.fu_storn(hm.whouse, hm.stor) storn, hm.qty||m.unit qty, m.sfty||m.unit sfty, hm.coa_no, m.sds_no
                 from mpe_house_m hm, mpe_house_e he, mpe_mate m
                 where (hm.partno like '%$search%' 
                         or hm.batch like '%$search%' 
-                        or m.ename like '%$search%' 
-                        or m.pname like '%$search%' 
-                        or m.reagent like '%$search%'
+                        or UPPER(m.ename) like '%$search%' or LOWER(m.ename) like '%$search%'
+                        or UPPER(m.pname) like '%$search%' or LOWER(m.pname) like '%$search%'
+                        or UPPER(m.reagent) like '%$search%' or LOWER(m.reagent) like '%$search%'
                         or m.casno like '%$search%'
                         or m.molef like '%$search%'
                         or he.barcode = '$search')
                     and m.code = '01' and hm.code = '01' and he.code = '01'
                     and hm.partno = he.partno and hm.batch = he.batch and hm.whouse = he.whouse and hm.stor = he.stor and hm.grid = he.grid
                     and hm.partno = m.partno
-                group by hm.partno, hm.batch, m.ename, hm.qty, m.sfty, hm.coa_no, m.sds_no, m.unit
+                group by hm.partno, hm.batch, m.ename, hm.whouse, hm.stor, hm.qty, m.sfty, hm.coa_no, m.sds_no, m.unit
                 union
-                select m.partno, null batch, m.ename, '0' qty, m.sfty||m.unit sfty, null coa_no, m.sds_no
+                select m.partno, null batch, m.ename, '' storn, '0' qty, m.sfty||m.unit sfty, null coa_no, m.sds_no
                 from mpe_mate m
                 where m.code = '01'
-                    and (m.ename like '%$search%' 
-                        or m.pname like '%$search%' 
-                        or m.reagent like '%$search%'
+                    and (m.partno like '%$search%' 
+                        or UPPER(m.ename) like '%$search%' or LOWER(m.ename) like '%$search%'
+                        or UPPER(m.pname) like '%$search%' or LOWER(m.pname) like '%$search%'
+                        or UPPER(m.reagent) like '%$search%' or LOWER(m.reagent) like '%$search%'
                         or m.casno like '%$search%'
                         or m.molef like '%$search%')
                     and not exists(
@@ -63,12 +64,13 @@ class DocumentRepository
             ");
             if (count($info) === 0) {
                 $info = DB::select("
-                    select m.partno, null batch, m.ename, 0 qty, m.sfty||m.unit sfty, null coa_no, m.sds_no
+                    select m.partno, null batch, m.ename, '' storn, 0 qty, m.sfty||m.unit sfty, null coa_no, m.sds_no
                     from mpe_mate m
                     where m.code = '01'
-                        and (m.ename like '%$search%' 
-                        or m.pname like '%$search%' 
-                        or m.reagent like '%$search%'
+                        and (m.partno like '%$search%' 
+                        or UPPER(m.ename) like '%$search%' or LOWER(m.ename) like '%$search%'
+                        or UPPER(m.pname) like '%$search%' or LOWER(m.pname) like '%$search%'
+                        or UPPER(m.reagent) like '%$search%' or LOWER(m.reagent) like '%$search%'
                         or m.casno like '%$search%'
                         or m.molef like '%$search%')
                     order by m.partno
