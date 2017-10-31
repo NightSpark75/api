@@ -55,7 +55,7 @@ class AuthRepository
     public function nativeLogin($account, $password, $system)
     {
         try {
-            $user_info = $this->userLogin;
+            $user_info = $this->userLogin($account, $password, $system);
             $user_menu = $this->getMenu($account);
             return $this->success([
                 'user_info' => $user_info['user_info'],
