@@ -14705,12 +14705,12 @@ var Login = function (_React$Component) {
             form_data.append('account', account);
             form_data.append('password', password);
             form_data.append('system', system);
-            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post('/api/web/nativeLogin', form_data, {
+            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post('/api/web/login', form_data, {
                 method: 'post'
             }).then(function (response) {
                 if (response.data.result === true) {
                     console.log(response.data);
-                    //window.location = '/auth/web/menu';
+                    window.location = '/auth/web/menu';
                 } else {
                     console.log(response.data);
                     self.setMsg('danger', response.data.msg);
