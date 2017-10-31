@@ -23,6 +23,7 @@ Route::middleware('web')->get('/user', function (Request $request) {
 // login
 Route::group(['prefix' => 'web', 'namespace' => 'Web'], function () {
     Route::post('login', 'AuthController@login');
+    Route::post('nativeLogin', 'AuthController@nativeLogin');
     Route::get('logout', 'AuthController@logout');
     Route::get('commonMenu/{class}', 'AuthController@commonMenu');
     Route::middleware('web')->get('menu', 'AuthController@menu');

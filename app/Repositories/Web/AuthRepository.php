@@ -16,8 +16,6 @@ use App\Models\Web\User;
 use App\Models\Web\UserPrg;
 use Auth;
 use DB;
-//use JWTAuth;
-//use JWTException;
 
 
 /**
@@ -54,6 +52,20 @@ class AuthRepository
         }
     }
 
+    public function nativeLogin($account, $password, $system)
+    {
+        try {
+            $user_info = $this->userLogin;
+            $user_menu = $this->getMenu($account);
+            return $this->success([
+                'user_info' => $user_info['user_info'],
+                'user_menu' => $user_menu['menu'],
+            ]);
+        } catch (Exception $e) {
+            return $this->exception($e);
+        }
+    }
+
     private function userLogin($account, $password, $system)
     {
         $auth = 
@@ -76,7 +88,7 @@ class AuthRepository
                 'user_info' => $user_info,
                 'system' => $system,
             ]);
-            return ['result' => true, 'msg' => '登入成功!(#0000)'];
+            return ['result' => true, 'msg' => '登入成功!(#0000)', 'user_info' => $user_info];
         }
         throw new Exception('帳號或密碼錯誤!(#0001)');
     }

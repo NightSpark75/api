@@ -46,6 +46,16 @@ class AuthController extends Controller
         return $response;
     }
 
+    public function nativeLogin()
+    {
+        $account = request()->input('account');
+        $password = strtoupper(request()->input('password'));
+        $system = request()->input('system');
+        $result = $this->auth->nativeLogin($account, $password, $system);
+        $response = response()->json($result);
+        return $response;
+    }
+
     public function logout()
     {
         $system = session('system');
