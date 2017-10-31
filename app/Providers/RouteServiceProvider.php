@@ -67,7 +67,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::prefix('api')
              //->middleware(['web', 'cors']) // 20170704:修正為以web認證
-             ->middleware('cors') 
+             ->middleware('web') 
              ->namespace($this->namespace)
              ->group(base_path('routes/api.php'));
     }
