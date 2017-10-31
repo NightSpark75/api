@@ -59,7 +59,7 @@ class Kernel extends HttpKernel
         'role:insert' => \App\Http\Middleware\InsertMiddleware::class,   // 驗證使用者程式權限Insert
         'role:update' => \App\Http\Middleware\UpdateMiddleware::class,   // 驗證使用者程式權限Update
         'role:delete' => \App\Http\Middleware\DeleteMiddleware::class,   // 驗證使用者程式權限Delete
-        'jwt.auth' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
-        'jwt.refresh' => \Tymon\JWTAuth\Middleware\RefreshToken::class,
+        //'jwt.auth' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
+        //'jwt.refresh' => \Tymon\JWTAuth\Middleware\RefreshToken::class,
     ];
 }
