@@ -14712,6 +14712,7 @@ var Login = function (_React$Component) {
                     console.log(response.data);
                     //window.location = '/auth/web/menu';
                 } else {
+                    console.log(response.data);
                     self.setMsg('danger', response.data.msg);
                     self.setState({ buttonState: '' });
                 }
