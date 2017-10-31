@@ -80,8 +80,9 @@ class AuthRepository
         throw new Exception('帳號或密碼錯誤!(#0001)');
     }
 
-    private function setJWT()
-
+    private function setJWT() {
+        
+    }
     /**
      * 使用者登出
      * 
