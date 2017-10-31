@@ -56,7 +56,7 @@ class AuthRepository
         $auth = 
             $this->user
                 ->where('id', $account)
-                ->where('pwd', $password)
+                ->where('password', $password)
                 ->where('sys', $system)
                 ->where('state', 'Y')
                 ->first();
@@ -79,6 +79,8 @@ class AuthRepository
         }
         throw new Exception('帳號或密碼錯誤!(#0001)');
     }
+
+    private function setJWT()
 
     /**
      * 使用者登出

@@ -12,6 +12,8 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Web\AuthRepository;
+use JWTAuth;
+use JWTException;
 
 /**
  * Class AuthController
