@@ -12,6 +12,6 @@
 </head>
 <body>
     <div id="app"></div>
-    <script src="{{ url('/js/app.js?x=4') }}"></script>
+    <script src="{{ url('/js/app.js?x=5') }}"></script>
 </body>
 </html>

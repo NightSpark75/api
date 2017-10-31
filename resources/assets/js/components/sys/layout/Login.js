@@ -63,7 +63,8 @@ export default class Login extends React.Component{
             method: 'post',
         }).then(function (response) {
             if (response.data.result === true) {
-                window.location = '/auth/web/menu';
+                console.log(response.data);
+                //window.location = '/auth/web/menu';
             } else {
                 self.setMsg('danger', response.data.msg);
                 self.setState({buttonState: ''});

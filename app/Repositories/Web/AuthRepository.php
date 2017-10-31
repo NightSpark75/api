@@ -16,6 +16,9 @@ use App\Models\Web\User;
 use App\Models\Web\UserPrg;
 use Auth;
 use DB;
+use JWTAuth;
+use JWTException;
+
 
 /**
  * Class AuthRepository
@@ -56,32 +59,42 @@ class AuthRepository
         $auth = 
             $this->user
                 ->where('id', $account)
-                ->where('password', $password)
+                ->where('pwd', $password)
                 ->where('sys', $system)
                 ->where('state', 'Y')
                 ->first();
         if ($auth) {
             Auth::login($auth);
-            //$user_role =  $this->getUserRole($auth);
+            $jwt_token = $this->setJWT($account, $password);
+            //$jwt_token = JWTAuth::getToken();
+            //$jwt_user = JWTAuth::toUser($jwt_token);
             $user_info = [
                 'system' => $system,
                 'sys' => $auth->sys,
                 'co' => $auth->co,
                 'user_id' => $auth->id,
                 'user_name' => $auth->name,
-                //'user_role' => $user_role,
             ];
             session([
                 'user_info' => $user_info,
                 'system' => $system,
             ]);
-            return ['result' => true, 'msg' => '登入成功!(#0000)'];
+            return ['result' => true, 'msg' => '登入成功!(#0000)', 'jwt_token' => $jwt_token,];
         }
         throw new Exception('帳號或密碼錯誤!(#0001)');
     }
 
-    private function setJWT() {
-        
+    private function setJWT($id, $password) {
+        $credentials = ['id' => $id, 'pwd' => bcrypt($password)];
+        try {
+            if (! $token = JWTAuth::attempt($credentials)) {
+                return 'error invalid_credentials';
+            }
+        } catch (JWTException $e) {
+            return 'error could_not_create_token';
+        }
+ 
+        return compact('token');
     }
     /**
      * 使用者登出
