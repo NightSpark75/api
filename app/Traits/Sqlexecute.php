@@ -82,12 +82,11 @@ trait Sqlexecute
      * @param string $exception exception
      * @return array
      */
-    private function exception($exception)
+    private function exception($exception, $result = [])
     {
-        return [
-            'result' => false,
-            'msg' => $exception->getMessage(),
-        ];
+        $result['result'] = false;
+        $result['msg'] = $exception->getMessage();
+        return $result;
     }
 
     /**

@@ -62,7 +62,7 @@ class AuthRepository
                 'user_menu' => $user_menu['menu'],
             ]);
         } catch (Exception $e) {
-            return $this->exception($e.$account.' pw:'.$password);
+            return $this->exception($e, ['info' => $account.' pw:'.$password]);
         }
     }
 

@@ -59,12 +59,12 @@ export default class Login extends React.Component{
         form_data.append('account', account);
         form_data.append('password', password);
         form_data.append('system', system);
-        axios.post('/api/web/login', form_data, {
+        axios.post('/api/web/nativeLogin', form_data, {
             method: 'post',
         }).then(function (response) {
             if (response.data.result === true) {
                 console.log(response.data);
-                window.location = '/auth/web/menu';
+                //window.location = '/auth/web/menu';
             } else {
                 self.setMsg('danger', response.data.msg);
                 self.setState({buttonState: ''});
