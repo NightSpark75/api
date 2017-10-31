@@ -35,9 +35,9 @@ class DocumentRepository
                 from mpe_house_m hm, mpe_house_e he, mpe_mate m
                 where (hm.partno like '%$search%' 
                         or hm.batch like '%$search%' 
-                        or UPPER(m.ename) like '%$search%' or LOWER(m.ename) like '%$search%'
-                        or UPPER(m.pname) like '%$search%' or LOWER(m.pname) like '%$search%'
-                        or UPPER(m.reagent) like '%$search%' or LOWER(m.reagent) like '%$search%'
+                        or UPPER(m.ename) like UPPER('%$search%')
+                        or UPPER(m.pname) like UPPER('%$search%')
+                        or UPPER(m.reagent) like UPPER('%$search%')
                         or m.casno like '%$search%'
                         or m.molef like '%$search%'
                         or he.barcode = '$search')
@@ -50,9 +50,9 @@ class DocumentRepository
                 from mpe_mate m
                 where m.code = '01'
                     and (m.partno like '%$search%' 
-                        or UPPER(m.ename) like '%$search%' or LOWER(m.ename) like '%$search%'
-                        or UPPER(m.pname) like '%$search%' or LOWER(m.pname) like '%$search%'
-                        or UPPER(m.reagent) like '%$search%' or LOWER(m.reagent) like '%$search%'
+                        or UPPER(m.ename) like UPPER('%$search%')
+                        or UPPER(m.pname) like UPPER('%$search%')
+                        or UPPER(m.reagent) like UPPER('%$search%')
                         or m.casno like '%$search%'
                         or m.molef like '%$search%')
                     and not exists(
@@ -68,9 +68,9 @@ class DocumentRepository
                     from mpe_mate m
                     where m.code = '01'
                         and (m.partno like '%$search%' 
-                        or UPPER(m.ename) like '%$search%' or LOWER(m.ename) like '%$search%'
-                        or UPPER(m.pname) like '%$search%' or LOWER(m.pname) like '%$search%'
-                        or UPPER(m.reagent) like '%$search%' or LOWER(m.reagent) like '%$search%'
+                        or UPPER(m.ename) like UPPER('%$search%')
+                        or UPPER(m.pname) like UPPER('%$search%')
+                        or UPPER(m.reagent) like UPPER('%$search%')
                         or m.casno like '%$search%'
                         or m.molef like '%$search%')
                     order by m.partno
