@@ -67,18 +67,7 @@ class ReceiveRepository
     {
         
         try{
-            $select = DB::select("
-                select to_number(substr(max(no), 2, 11) + 1) no
-                from mpe_receive_m
-                where code = '01' and substr(no, 2, 8) = to_char(sysdate, 'YYYYMMDD')
-            ");
-            if (!isset($select[0]->no)) {
-                $no = 'R'.date('Ymd').'001';
-            } else {
-                $no = 'R'.$select[0]->no;
-            }
-
-            DB::transaction( function () use($no, $receive_list) {
+            DB::transaction( function () use($receive_list) {
                 $user = auth()->user()->id;
                 $today = date('Ymd');
 
@@ -95,7 +84,6 @@ class ReceiveRepository
 
                 for ($i = 0; $i < count($receive_list); $i++) {
                     $item = $receive_list[$i];
-                    $item->receive_no = $no;
 
                     $binds = [
                         'code' => $item->code,
