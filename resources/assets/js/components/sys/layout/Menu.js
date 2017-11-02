@@ -45,7 +45,7 @@ export default class Menu extends React.Component{
                 { this.state.list.length === 0 && 
                     <label className="label is-large">功能清單建立中...</label> 
                 }   
-                <div className="column is-4" key={item['prg_id']}>
+                <div className="column is-4">
                     <Link className="button is-orange is-4 is-fullwidth is-large" to={'/s/qc/document'}>
                         {'test rwd'}
                     </Link>
