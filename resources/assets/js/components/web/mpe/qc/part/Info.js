@@ -31,6 +31,7 @@ export default class Info extends React.Component{
                     self.setState({
                         info: response.data.info,
                     });
+                    console.log(response.data.info)
                 } else {
                     alert('查詢不到任何資料');
                 }

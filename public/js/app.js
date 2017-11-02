@@ -14875,6 +14875,15 @@ var Menu = function (_React$Component) {
                     'label',
                     { className: 'label is-large' },
                     '\u529F\u80FD\u6E05\u55AE\u5EFA\u7ACB\u4E2D...'
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'column is-4', key: item['prg_id'] },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_1_react_router__["e" /* Link */],
+                        { className: 'button is-orange is-4 is-fullwidth is-large', to: '/s/qc/document' },
+                        item['prg_name']
+                    )
                 )
             );
         }
@@ -19041,6 +19050,7 @@ var Info = function (_React$Component) {
                         self.setState({
                             info: response.data.info
                         });
+                        console.log(response.data.info);
                     } else {
                         alert('查詢不到任何資料');
                     }
