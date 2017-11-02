@@ -47,7 +47,7 @@ export default class Menu extends React.Component{
                 }   
                 <div className="column is-4" key={item['prg_id']}>
                     <Link className="button is-orange is-4 is-fullwidth is-large" to={'/s/qc/document'}>
-                        {item['prg_name']}
+                        {'test rwd'}
                     </Link>
                 </div>
             </div>
