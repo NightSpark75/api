@@ -14893,7 +14893,14 @@ var Menu = function (_React$Component) {
                         { className: 'button is-orange is-4 is-fullwidth is-large', href: '/native/pad/bundle/upload' },
                         'test upload'
                     )
-                )
+                ),
+                "window.screen.height " + window.screen.height,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
+                "window.screen.width " + window.screen.width,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
+                "window.screen.colorDepth(位彩色) " + window.screen.colorDepth,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
+                "window.screen.deviceXDPI(像素/英寸) " + window.screen.deviceXDPI
             );
         }
     }]);

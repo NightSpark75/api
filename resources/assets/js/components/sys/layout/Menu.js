@@ -55,6 +55,10 @@ export default class Menu extends React.Component{
                         {'test upload'}
                     </a>
                 </div>
+                {"window.screen.height " + window.screen.height}<br/>
+                {"window.screen.width " + window.screen.width}<br/>
+                {"window.screen.colorDepth(位彩色) " + window.screen.colorDepth}<br/>
+                {"window.screen.deviceXDPI(像素/英寸) " + window.screen.deviceXDPI}
             </div>
         );
     }
