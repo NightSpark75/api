@@ -51,9 +51,9 @@ export default class Menu extends React.Component{
                     </Link>
                 </div>
                 <div className="column is-4">
-                    <Link className="button is-orange is-4 is-fullwidth is-large" to={'/native/pad/bundle/upload'}>
+                    <a className="button is-orange is-4 is-fullwidth is-large" href={'/native/pad/bundle/upload'}>
                         {'test upload'}
-                    </Link>
+                    </a>
                 </div>
             </div>
         );

@@ -14889,8 +14889,8 @@ var Menu = function (_React$Component) {
                     'div',
                     { className: 'column is-4' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_react_router__["e" /* Link */],
-                        { className: 'button is-orange is-4 is-fullwidth is-large', to: '/native/pad/bundle/upload' },
+                        'a',
+                        { className: 'button is-orange is-4 is-fullwidth is-large', href: '/native/pad/bundle/upload' },
                         'test upload'
                     )
                 )
