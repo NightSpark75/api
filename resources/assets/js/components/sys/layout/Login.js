@@ -29,6 +29,7 @@ export default class Login extends React.Component{
         this.setState({
             system: this.props.params.system,
         })
+        this.checkLogin()
     }
 
     checkLogin() {
