@@ -190,9 +190,11 @@ export default class Job extends React.Component{
                             </div>
                         </div>
                         <div className="level-right is-hidden-touch">
+                            {/*
                             <div className="level-item">
                                 <button className="button is-primary is-large" onClick={this.workingComplete.bind(this, 'N')} disabled={ lock }>結束且完工(無清潔)</button>
                             </div>
+                            */}
                             <div className="level-item">
                                 <button className="button is-primary is-large" onClick={this.workingComplete.bind(this, 'Y')} disabled={ lock }>結束且完工(清潔)</button>
                             </div>
