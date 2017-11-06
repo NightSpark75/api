@@ -1,12 +1,12 @@
 /** 
  * Login.js
  */
-import React from "react";
-import axios from 'axios';
+import React from "react"
+import axios from 'axios'
 
 export default class Login extends React.Component{
     constructor(props) {
-        super(props);
+        super(props)
 
         this.state = {
             system: '',
@@ -22,59 +22,73 @@ export default class Login extends React.Component{
         this.setState({
             msg_type: type,
             msg: msg,
-        });
+        })
     }
 
     componentDidMount() {
         this.setState({
             system: this.props.params.system,
-        });
+        })
+    }
+
+    checkLogin() {
+        axios.get('/api/web/checkLogin')
+        .then(function (response) {
+            if (response.data.result === true) {
+                console.log(response.data)
+                window.location = '/auth/web/menu'
+            } else {
+                console.log(response.data)
+            }
+        }).catch(function (error) {
+            console.log(error)
+        })
     }
 
     onAccountChange(event) {
-        event.preventDefault();
+        event.preventDefault()
         this.setState({account: event.target.value})
     }
 
     onPasswordChange(event) {
-        event.preventDefault();
+        event.preventDefault()
         this.setState({password: event.target.value})
     }
 
     onLogin(event) {
-        event.preventDefault();
-        const {account, password, system} = this.state;
-        let self = this;
+        event.preventDefault()
+        const {account, password, system} = this.state
+        let self = this
         if (account === '') {
-            this.setMsg('warning', '請輸入帳號');
-            return;
+            this.setMsg('warning', '請輸入帳號')
+            return
         } else if (password === '') {
-            this.setMsg('warning', '請輸入密碼');
-            return;
+            this.setMsg('warning', '請輸入密碼')
+            return
         } else {
-            this.setMsg('', '');
+            this.setMsg('', '')
         }
-        this.setState({buttonState: 'submit'});
-        let form_data = new FormData();
-        form_data.append('account', account);
-        form_data.append('password', password);
-        form_data.append('system', system);
+        this.setState({buttonState: 'submit'})
+        let form_data = new FormData()
+        form_data.append('account', account)
+        form_data.append('password', password)
+        form_data.append('system', system)
         axios.post('/api/web/login', form_data, {
             method: 'post',
         }).then(function (response) {
             if (response.data.result === true) {
-                console.log(response.data);
-                window.location = '/auth/web/menu';
+                console.log(response.data)
+                window.location = '/auth/web/menu'
             } else {
-                console.log(response.data);
-                self.setMsg('danger', response.data.msg);
-                self.setState({buttonState: ''});
+                console.log(response.data)
+                self.setMsg('danger', response.data.msg)
+                self.setState({buttonState: ''})
             }
         }).catch(function (error) {
-            console.log(error);
-            self.setMsg('danger', error.message);
-            self.setState({buttonState: ''});
-        });
+            console.log(error)
+            self.setMsg('danger', error.message)
+            self.setState({buttonState: ''})
+        })
     }
     render() {
         return(   
@@ -119,6 +133,6 @@ export default class Login extends React.Component{
                     }
                 </div>
             </div>    
-        );
+        )
     }
 }

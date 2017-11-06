@@ -88,4 +88,13 @@ class AuthController extends Controller
         $info = $this->auth->getUser();
         return response()->json($info);
     }
+
+    public function checkLogin()
+    {
+        if (auth()->check()) {
+            return response()->json(['result' => true]);
+        } else {
+            return response()->json(['result' => false]);
+        }
+    }
 }

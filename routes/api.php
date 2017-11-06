@@ -28,6 +28,7 @@ Route::group(['prefix' => 'web', 'namespace' => 'Web'], function () {
     Route::get('commonMenu/{class}', 'AuthController@commonMenu');
     Route::middleware('web')->get('menu', 'AuthController@menu');
     Route::middleware('web')->get('user/info', 'AuthController@user');
+    Route::get('checkLogin', 'AuthController@checkLogin');
 });
 
 // react native api

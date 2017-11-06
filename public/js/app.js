@@ -14670,6 +14670,20 @@ var Login = function (_React$Component) {
             });
         }
     }, {
+        key: 'checkLogin',
+        value: function checkLogin() {
+            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get('/api/web/checkLogin').then(function (response) {
+                if (response.data.result === true) {
+                    console.log(response.data);
+                    window.location = '/auth/web/menu';
+                } else {
+                    console.log(response.data);
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }, {
         key: 'onAccountChange',
         value: function onAccountChange(event) {
             event.preventDefault();
