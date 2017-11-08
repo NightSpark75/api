@@ -1,13 +1,13 @@
 /** 
  * Wetestlog.js
  */
-import React from "react";
-import { Link } from "react-router";
-import axios from 'axios';
+import React from "react"
+import { Link } from "react-router"
+import axios from 'axios'
 
 export default class Wetestlog extends React.Component{
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             point_info: {}, point_no: '', ldate: '', 
             mo_hum: '', mo_max: '', mo_min: '', mo_rmk: '', mo_time: '', 
@@ -17,18 +17,18 @@ export default class Wetestlog extends React.Component{
             mo: false, af: false, ev: false,
             log_data: {},
             init: false,
-        };
-        this.sendMsg = this.props.sendMsg.bind(this);
-    };
+        }
+        this.sendMsg = this.props.sendMsg.bind(this)
+    }
 
     componentDidMount() {
-        this.init();
+        this.init()
     }
 
     init() {
-        let self = this;
-        let point_info = this.props.pointInfo;
-        this.setState({init: true});
+        let self = this
+        let point_info = this.props.pointInfo
+        this.setState({init: true})
         axios.get('/api/web/mpz/pointlog/wetest/init/' + point_info.point_no)
         .then(function (response) {
             if (response.data.result) {
@@ -38,132 +38,132 @@ export default class Wetestlog extends React.Component{
                     ldate: response.data.ldate,
                     log_data: response.data.log_data,
                     init: false,
-                });
-                console.log(response.data);
-                self.setValue(response.data.log_data);
+                })
+                console.log(response.data)
+                self.setValue(response.data.log_data)
             } else {
-                self.props.sendMsg(response.data.msg);
-                self.onCancel();
+                self.props.sendMsg(response.data.msg)
+                self.onCancel()
             }
         }).catch(function (error) {
-            console.log(error);
-            self.props.sendMsg(error);
-        });
+            console.log(error)
+            self.props.sendMsg(error)
+        })
     }
 
     setValue(data) {
         if (data !== null) {
-            let mo = data.mo_time !== null ? true : false;
-            let af = data.af_time !== null ? true : false;
-            let ev = data.ev_time !== null ? true : false;
+            let mo = data.mo_time !== null ? true : false
+            let af = data.af_time !== null ? true : false
+            let ev = data.ev_time !== null ? true : false
             this.setState({
                 mo_hum: data.mo_hum, mo_max: data.mo_max, mo_min: data.mo_min, mo_rmk: data.mo_rmk, mo_time: data.mo_time,  
                 af_hum: data.af_hum, af_max: data.af_max, af_min: data.af_min, af_rmk: data.af_rmk, af_time: data.af_time,  
                 ev_hum: data.ev_hum, ev_max: data.ev_max, ev_min: data.ev_min, ev_rmk: data.ev_rmk, ev_time: data.ev_time,  
                 zero: data.zero, rmk: data.rmk,
                 mo: mo, af: af, ev: ev,
-            });
+            })
         }
     }
     
     onSave(e) {
-        let self = this;
-        this.setState({isLoading: true});
+        let self = this
+        this.setState({isLoading: true})
         const {
             point_no, ldate, 
             mo_hum, mo_max, mo_min, mo_rmk, mo_time,  
             af_hum, af_max, af_min, af_rmk, af_time,  
             ev_hum, ev_max, ev_min, ev_rmk, ev_time, 
             zero, rmk
-        } = this.state;
-        let form_data = new FormData();
-        form_data.append('point_no', point_no);
-        form_data.append('ldate', ldate);
-        form_data.append('mo_hum', mo_hum || '');
-        form_data.append('mo_max', mo_max || '');
-        form_data.append('mo_min', mo_min || '');
-        form_data.append('mo_time', mo_time || '');
-        form_data.append('mo_rmk', mo_rmk || '');
-        form_data.append('af_hum', af_hum || '');
-        form_data.append('af_max', af_max || '');
-        form_data.append('af_time', af_time || '');
-        form_data.append('af_min', af_min || '');
-        form_data.append('af_rmk', af_rmk || '');
-        form_data.append('ev_hum', ev_hum || '');
-        form_data.append('ev_max', ev_max || '');
-        form_data.append('ev_time', ev_time || '');
-        form_data.append('ev_min', ev_min || '');
-        form_data.append('ev_rmk', ev_rmk || '');
-        form_data.append('zero', zero || 'N');
-        form_data.append('rmk', rmk || '');
+        } = this.state
+        let form_data = new FormData()
+        form_data.append('point_no', point_no)
+        form_data.append('ldate', ldate)
+        form_data.append('mo_hum', mo_hum || '')
+        form_data.append('mo_max', mo_max || '')
+        form_data.append('mo_min', mo_min || '')
+        form_data.append('mo_time', mo_time || '')
+        form_data.append('mo_rmk', mo_rmk || '')
+        form_data.append('af_hum', af_hum || '')
+        form_data.append('af_max', af_max || '')
+        form_data.append('af_time', af_time || '')
+        form_data.append('af_min', af_min || '')
+        form_data.append('af_rmk', af_rmk || '')
+        form_data.append('ev_hum', ev_hum || '')
+        form_data.append('ev_max', ev_max || '')
+        form_data.append('ev_time', ev_time || '')
+        form_data.append('ev_min', ev_min || '')
+        form_data.append('ev_rmk', ev_rmk || '')
+        form_data.append('zero', zero || 'N')
+        form_data.append('rmk', rmk || '')
         axios.post('/api/web/mpz/pointlog/wetest/save', form_data)
         .then(function (response) {
             if (response.data.result) {
-                self.sendMsg(point_no + '檢查點記錄成功!');
-                self.setState({isLoading: false});
-                self.onCancel();
+                self.sendMsg(point_no + '檢查點記錄成功!')
+                self.setState({isLoading: false})
+                self.onCancel()
             } else {
-                self.sendMsg(response.data.msg);
-                self.setState({isLoading: false});
+                self.sendMsg(response.data.msg)
+                self.setState({isLoading: false})
             }
         }).catch(function (error) {
-            console.log(error);
-            self.sendMsg(error);
-            self.setState({isLoading: false});
-        });
+            console.log(error)
+            self.sendMsg(error)
+            self.setState({isLoading: false})
+        })
     }
 
     mo_maxChange(e) {
-        this.setState({mo_max: e.target.value});
+        this.setState({mo_max: e.target.value})
     }
     mo_humChange(e) {
-        this.setState({mo_hum: e.target.value});
+        this.setState({mo_hum: e.target.value})
     }
     mo_minChange(e) {
-        this.setState({mo_min: e.target.value});
+        this.setState({mo_min: e.target.value})
     }
     mo_rmkChange(e) {
-        this.setState({mo_rmk: e.target.value});
+        this.setState({mo_rmk: e.target.value})
     }
     af_maxChange(e) {
-        this.setState({af_max: e.target.value});
+        this.setState({af_max: e.target.value})
     }
     af_humChange(e) {
-        this.setState({af_hum: e.target.value});
+        this.setState({af_hum: e.target.value})
     }
     af_minChange(e) {
-        this.setState({af_min: e.target.value});
+        this.setState({af_min: e.target.value})
     }
     af_rmkChange(e) {
-        this.setState({af_rmk: e.target.value});
+        this.setState({af_rmk: e.target.value})
     }
     ev_maxChange(e) {
-        this.setState({ev_max: e.target.value});
+        this.setState({ev_max: e.target.value})
     }
     ev_humChange(e) {
-        this.setState({ev_hum: e.target.value});
+        this.setState({ev_hum: e.target.value})
     }
     ev_minChange(e) {
-        this.setState({ev_min: e.target.value});
+        this.setState({ev_min: e.target.value})
     }
     ev_rmkChange(e) {
-        this.setState({ev_rmk: e.target.value});
+        this.setState({ev_rmk: e.target.value})
     }
     zeroChange(e) {
-        let value = this.state.zero === 'Y' ? 'N' : 'Y';
-        this.setState({zero: value});
+        let value = this.state.zero === 'Y' ? 'N' : 'Y'
+        this.setState({zero: value})
     }
     rmkChange(e) {
-        this.setState({rmk: e.target.value});
+        this.setState({rmk: e.target.value})
     }
 
     onCancel() {
-        this.props.onCancel();
+        this.props.onCancel()
     }
 
     render() {
-        const { init, isLoading, point_info} = this.state;
-        const { mo, af, ev } = this.state;
+        const { init, isLoading, point_info} = this.state
+        const { mo, af, ev } = this.state
         return(
             <div>
                 <div className="column">
@@ -384,7 +384,7 @@ export default class Wetestlog extends React.Component{
                     </div>
                 </div>
             </div>
-        );
-    };
+        )
+    }
 }
 

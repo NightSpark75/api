@@ -1,13 +1,13 @@
 /** 
  * Refrilog.js
  */
-import React from "react";
-import { Link } from "react-router";
-import axios from 'axios';
+import React from "react"
+import { Link } from "react-router"
+import axios from 'axios'
 
 export default class Refrilog extends React.Component{
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             point_info: {}, point_no: '', ldate: '', 
             mo_temp: '', mo_putt: '', mo_bell: '', mo_light: '', mo_time: '', mo_rmk: '',
@@ -16,18 +16,18 @@ export default class Refrilog extends React.Component{
             mo: false, af: false,
             log_data: {},
             init: false,
-        };
-        this.sendMsg = this.props.sendMsg.bind(this);
-    };
+        }
+        this.sendMsg = this.props.sendMsg.bind(this)
+    }
 
     componentDidMount() {
-        this.init();
+        this.init()
     }
 
     init() {
-        let self = this;
-        let point_info = this.props.pointInfo;
-        this.setState({init: true});
+        let self = this
+        let point_info = this.props.pointInfo
+        this.setState({init: true})
         axios.get('/api/web/mpz/pointlog/refri/init/' + point_info.point_no)
         .then(function (response) {
             if (response.data.result) {
@@ -37,23 +37,23 @@ export default class Refrilog extends React.Component{
                     ldate: response.data.ldate,
                     log_data: response.data.log_data,
                     init: false,
-                });
-                console.log(response.data);
-                self.setValue(response.data.log_data);
+                })
+                console.log(response.data)
+                self.setValue(response.data.log_data)
             } else {
-                self.props.sendMsg(response.data.msg);
-                self.onCancel();
+                self.props.sendMsg(response.data.msg)
+                self.onCancel()
             }
         }).catch(function (error) {
-            console.log(error);
-            self.props.sendMsg(error);
-        });
+            console.log(error)
+            self.props.sendMsg(error)
+        })
     }
 
     setValue(data) {
         if (data !== null) {
-            let mo = data.mo_time !== null ? true : false;
-            let af = data.af_time !== null ? true : false;
+            let mo = data.mo_time !== null ? true : false
+            let af = data.af_time !== null ? true : false
             this.setState({
                 mo_temp: data.mo_temp, mo_putt: data.mo_putt, mo_bell: data.mo_bell, 
                 mo_light: data.mo_light, mo_time: data.mo_time, mo_rmk: data.mo_rmk,
@@ -61,86 +61,86 @@ export default class Refrilog extends React.Component{
                 af_light: data.af_light, af_time: data.af_time, af_rmk: data.af_rmk,
                 rmk: data.rmk, error_item: data.error_item,
                 mo: mo, af: af,
-            });
+            })
         }
     }
     
     onSave(e) {
-        let self = this;
-        this.setState({isLoading: true});
+        let self = this
+        this.setState({isLoading: true})
         const {
             point_no, ldate, 
             mo_temp, mo_putt, mo_bell, mo_light, mo_time, mo_rmk,
             af_temp, af_putt, af_bell, af_light, af_time, af_rmk, rmk, error_item,
-        } = this.state;
-        let form_data = new FormData();
-        form_data.append('point_no', point_no);
-        form_data.append('ldate', ldate);
-        form_data.append('mo_temp', mo_temp || '');
-        form_data.append('mo_putt', mo_putt || '');
-        form_data.append('mo_bell', mo_bell || '');
-        form_data.append('mo_light', mo_light || '');
-        form_data.append('mo_time', mo_time || '');
-        form_data.append('mo_rmk', mo_rmk || '');
-        form_data.append('af_temp', af_temp || '');
-        form_data.append('af_putt', af_putt || '');
-        form_data.append('af_bell', af_bell || '');
-        form_data.append('af_light', af_light || '');
-        form_data.append('af_time', af_time || '');
-        form_data.append('af_rmk', af_rmk || '');
-        form_data.append('error_item', error_item || '');
-        form_data.append('rmk', rmk || '');
+        } = this.state
+        let form_data = new FormData()
+        form_data.append('point_no', point_no)
+        form_data.append('ldate', ldate)
+        form_data.append('mo_temp', mo_temp || '')
+        form_data.append('mo_putt', mo_putt || '')
+        form_data.append('mo_bell', mo_bell || '')
+        form_data.append('mo_light', mo_light || '')
+        form_data.append('mo_time', mo_time || '')
+        form_data.append('mo_rmk', mo_rmk || '')
+        form_data.append('af_temp', af_temp || '')
+        form_data.append('af_putt', af_putt || '')
+        form_data.append('af_bell', af_bell || '')
+        form_data.append('af_light', af_light || '')
+        form_data.append('af_time', af_time || '')
+        form_data.append('af_rmk', af_rmk || '')
+        form_data.append('error_item', error_item || '')
+        form_data.append('rmk', rmk || '')
         axios.post('/api/web/mpz/pointlog/refri/save', form_data).then(function (response) {
             if (response.data.result) {
-                self.sendMsg(point_no + '檢查點記錄成功!');
-                self.setState({isLoading: false});
-                self.onCancel();
+                self.sendMsg(point_no + '檢查點記錄成功!')
+                self.setState({isLoading: false})
+                self.onCancel()
             } else {
-                self.sendMsg(response.data.msg);
-                self.setState({isLoading: false});
+                self.sendMsg(response.data.msg)
+                self.setState({isLoading: false})
             }
         }).catch(function (error) {
-            console.log(error);
-            self.sendMsg(error);
-            self.setState({isLoading: false});
-        });
+            console.log(error)
+            self.sendMsg(error)
+            self.setState({isLoading: false})
+        })
     }
 
     mo_tempChange(e) {
-        this.setState({mo_temp: e.target.value});
+        this.setState({mo_temp: e.target.value})
     }
     mo_puttChange(e) {
-        this.setState({mo_putt: e.target.value});
+        this.setState({mo_putt: e.target.value})
     }
     mo_bellChange(e) {
-        this.setState({mo_bell: e.target.value});
+        this.setState({mo_bell: e.target.value})
     }
     mo_lightChange(e) {
-        this.setState({mo_light: e.target.value});
+        this.setState({mo_light: e.target.value})
     }
     mo_rmkChange(e) {
-        this.setState({mo_rmk: e.target.value});
+        this.setState({mo_rmk: e.target.value})
     }
     af_tempChange(e) {
-        this.setState({af_temp: e.target.value});
+        this.setState({af_temp: e.target.value})
     }
     af_rmkChange(e) {
-        this.setState({af_rmk: e.target.value});
+        this.setState({af_rmk: e.target.value})
     }
     error_itemChange(e) {
-        this.setState({error_item: e.target.value});
+        this.setState({error_item: e.target.value})
     }
     rmkChange(e) {
-        this.setState({rmk: e.target.value});
+        this.setState({rmk: e.target.value})
     }
 
     onCancel() {
-        this.props.onCancel();
+        this.props.onCancel()
     }
 
     render() {
-        const { init, isLoading, point_info} = this.state;
-        const { mo, af, ev } = this.state;
+        const { init, isLoading, point_info} = this.state
+        const { mo, af, ev } = this.state
         return(
             <div>
                 <div className="column">
@@ -197,7 +197,7 @@ export default class Refrilog extends React.Component{
                             </tr>
                             <tr>
                                 <td>
-                                    <label className="radiobox is-size-5">安全推桿&emsp;</label>
+                                    <label className="radiobox is-size-5">安全推桿&emsp</label>
                                     <label className="radio">
                                         <input type="radio"
                                             name="mo_putt_y" 
@@ -220,7 +220,7 @@ export default class Refrilog extends React.Component{
                                     </label>
                                 </td>
                                 <td>
-                                    <label className="radiobox is-size-5">無線門鈴發報機&emsp;</label>
+                                    <label className="radiobox is-size-5">無線門鈴發報機&emsp</label>
                                     <label className="radio">
                                         <input type="radio"
                                             name="mo_bell_y" 
@@ -243,7 +243,7 @@ export default class Refrilog extends React.Component{
                                     </label>
                                 </td>
                                 <td>
-                                    <label className="radiobox is-size-5">照明設備&emsp;</label>
+                                    <label className="radiobox is-size-5">照明設備&emsp</label>
                                     <label className="radio">
                                         <input type="radio"
                                             name="mo_light_y" 
@@ -349,7 +349,7 @@ export default class Refrilog extends React.Component{
                     </div>
                 </div>
             </div>
-        );
-    };
+        )
+    }
 }
 

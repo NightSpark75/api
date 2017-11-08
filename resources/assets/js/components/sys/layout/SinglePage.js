@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 export default class SinglePage extends React.Component{
     render(){
@@ -8,6 +8,6 @@ export default class SinglePage extends React.Component{
                     {this.props.children}
                 </div>
             </section>
-        );
+        )
     }
 }

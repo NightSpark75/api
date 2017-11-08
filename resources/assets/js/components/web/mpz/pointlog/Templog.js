@@ -1,13 +1,13 @@
 /** 
  * Templog.js
  */
-import React from "react";
-import { Link } from "react-router";
-import axios from 'axios';
+import React from "react"
+import { Link } from "react-router"
+import axios from 'axios'
 
 export default class Templog extends React.Component{
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             point_no: '', ldate: '', zone: '', mach_no: '', ch_date: '', temp_high: '', temp_low: '', humi_high: '', humi_low: '', 
             mo_temp: '', mo_hum: '', mo_time: '', mo_err: '', mo_type: '', mo_rmk: '', 
@@ -16,18 +16,18 @@ export default class Templog extends React.Component{
             mo: true, af: true, ev: true,
             log_data: {},
             init: false,
-        };
-        this.sendMsg = this.props.sendMsg.bind(this);
-    };
+        }
+        this.sendMsg = this.props.sendMsg.bind(this)
+    }
 
     componentDidMount() {
-        this.init();
+        this.init()
     }
 
     init() {
-        let self = this;
-        let point_info = this.props.pointInfo;
-        this.setState({init: true});
+        let self = this
+        let point_info = this.props.pointInfo
+        this.setState({init: true})
         axios.get('/api/web/mpz/pointlog/temp/init/' + point_info.point_no)
         .then(function (response) {
             if (response.data.result) {
@@ -44,24 +44,24 @@ export default class Templog extends React.Component{
                     humi_high: response.data.humi_high,
                     humi_low: response.data.humi_low,
                     init: false,
-                });
-                console.log(response.data);
-                self.setValue(response.data.log_data);
+                })
+                console.log(response.data)
+                self.setValue(response.data.log_data)
             } else {
-                self.props.sendMsg(response.data.msg);
-                self.onCancel();
+                self.props.sendMsg(response.data.msg)
+                self.onCancel()
             }
         }).catch(function (error) {
-            console.log(error);
-            self.props.sendMsg(error);
-        });
+            console.log(error)
+            self.props.sendMsg(error)
+        })
     }
 
     setValue(data) {
         if (data !== null) {
-            let mo = data.mo_time !== null ? true : false;
-            let af = data.af_time !== null ? true : false;
-            let ev = data.ev_time !== null ? true : false;
+            let mo = data.mo_time !== null ? true : false
+            let af = data.af_time !== null ? true : false
+            let ev = data.ev_time !== null ? true : false
             this.setState({
                 mo_temp: data.mo_temp, mo_hum: data.mo_hum, mo_time: data.mo_time, 
                 mo_err: data.mo_err, mo_type: data.mo_type, mo_rmk: data.mo_rmk, 
@@ -70,105 +70,105 @@ export default class Templog extends React.Component{
                 ev_temp: data.ev_temp, ev_hum: data.ev_hum, ev_time: data.ev_time, 
                 ev_err: data.ev_err, ev_type: data.ev_type, ev_rmk: data.ev_rmk, 
                 mo: mo, af: af, ev: ev,
-            });
+            })
         } else {
             this.setState({
                 mo: false, af: false, ev: false,
-            });
+            })
         }
     }
     
     onSave(e) {
-        let self = this;
-        this.setState({isLoading: true});
+        let self = this
+        this.setState({isLoading: true})
         const {
             point_no, ldate, 
             mo_temp, mo_hum, mo_err, mo_time, mo_type, mo_rmk, 
             af_temp, af_hum, af_err, af_time, af_type, af_rmk,
             ev_temp, ev_hum, ev_err, ev_time, ev_type, ev_rmk,
-        } = this.state;
-        let form_data = new FormData();
-        form_data.append('point_no', point_no);
-        form_data.append('ldate', ldate);
-        form_data.append('mo_temp', mo_temp || '');
-        form_data.append('mo_hum', mo_hum || '');
-        form_data.append('mo_err', mo_err || '');
-        form_data.append('mo_time', mo_time || '');
-        form_data.append('mo_type', mo_type || '');
-        form_data.append('mo_rmk', mo_rmk || '');
-        form_data.append('af_temp', af_temp || '');
-        form_data.append('af_hum', af_hum || '');
-        form_data.append('af_err', af_err || '');
-        form_data.append('af_time', af_time || '');
-        form_data.append('af_type', af_type || '');
-        form_data.append('af_rmk', af_rmk || '');
-        form_data.append('ev_temp', ev_temp || '');
-        form_data.append('ev_hum', ev_hum || '');
-        form_data.append('ev_err', ev_err || '');
-        form_data.append('ev_time', ev_time || '');
-        form_data.append('ev_type', ev_type || '');
-        form_data.append('ev_rmk', ev_rmk || '');
+        } = this.state
+        let form_data = new FormData()
+        form_data.append('point_no', point_no)
+        form_data.append('ldate', ldate)
+        form_data.append('mo_temp', mo_temp || '')
+        form_data.append('mo_hum', mo_hum || '')
+        form_data.append('mo_err', mo_err || '')
+        form_data.append('mo_time', mo_time || '')
+        form_data.append('mo_type', mo_type || '')
+        form_data.append('mo_rmk', mo_rmk || '')
+        form_data.append('af_temp', af_temp || '')
+        form_data.append('af_hum', af_hum || '')
+        form_data.append('af_err', af_err || '')
+        form_data.append('af_time', af_time || '')
+        form_data.append('af_type', af_type || '')
+        form_data.append('af_rmk', af_rmk || '')
+        form_data.append('ev_temp', ev_temp || '')
+        form_data.append('ev_hum', ev_hum || '')
+        form_data.append('ev_err', ev_err || '')
+        form_data.append('ev_time', ev_time || '')
+        form_data.append('ev_type', ev_type || '')
+        form_data.append('ev_rmk', ev_rmk || '')
         axios.post('/api/web/mpz/pointlog/temp/save', form_data)
         .then(function (response) {
             if (response.data.result) {
-                self.sendMsg(point_no + '檢查點記錄成功!');
-                self.setState({isLoading: false});
-                self.onCancel();
+                self.sendMsg(point_no + '檢查點記錄成功!')
+                self.setState({isLoading: false})
+                self.onCancel()
             } else {
-                self.sendMsg(response.data.msg);
-                self.setState({isLoading: false});
+                self.sendMsg(response.data.msg)
+                self.setState({isLoading: false})
             }
         }).catch(function (error) {
-            console.log(error);
-            self.sendMsg(error);
-            self.setState({isLoading: false});
-        });
+            console.log(error)
+            self.sendMsg(error)
+            self.setState({isLoading: false})
+        })
     }
 
     mo_tempChange(e) {
-        this.setState({mo_temp: e.target.value});
+        this.setState({mo_temp: e.target.value})
     }
     mo_humChange(e) {
-        this.setState({mo_hum: e.target.value});
+        this.setState({mo_hum: e.target.value})
     }
     mo_errChange(e) {
-        this.setState({mo_err: e.target.value});
+        this.setState({mo_err: e.target.value})
     }
     mo_rmkChange(e) {
-        this.setState({mo_rmk: e.target.value});
+        this.setState({mo_rmk: e.target.value})
     }
     af_tempChange(e) {
-        this.setState({af_temp: e.target.value});
+        this.setState({af_temp: e.target.value})
     }
     af_humChange(e) {
-        this.setState({af_hum: e.target.value});
+        this.setState({af_hum: e.target.value})
     }
     af_errChange(e) {
-        this.setState({af_err: e.target.value});
+        this.setState({af_err: e.target.value})
     }
     af_rmkChange(e) {
-        this.setState({af_rmk: e.target.value});
+        this.setState({af_rmk: e.target.value})
     }
     ev_tempChange(e) {
-        this.setState({ev_temp: e.target.value});
+        this.setState({ev_temp: e.target.value})
     }
     ev_humChange(e) {
-        this.setState({ev_hum: e.target.value});
+        this.setState({ev_hum: e.target.value})
     }
     ev_errChange(e) {
-        this.setState({ev_err: e.target.value});
+        this.setState({ev_err: e.target.value})
     }
     ev_rmkChange(e) {
-        this.setState({ev_rmk: e.target.value});
+        this.setState({ev_rmk: e.target.value})
     }
 
     onCancel() {
-        this.props.onCancel();
+        this.props.onCancel()
     }
 
     render() {
-        const { init, isLoading, point_name, zone, mach_no, ch_date, temp_high, temp_low, humi_high, humi_low } = this.state;
-        const { mo, af, ev } = this.state;
+        const { init, isLoading, point_name, zone, mach_no, ch_date, temp_high, temp_low, humi_high, humi_low } = this.state
+        const { mo, af, ev } = this.state
         return(
             <div>
                 <div className="column">
@@ -373,7 +373,7 @@ export default class Templog extends React.Component{
                     </div>
                 </div>
             </div>
-        );
-    };
+        )
+    }
 }
 

@@ -1,12 +1,12 @@
 /** 
  * Upload.js
  */
-import React from 'react';
-import axios from 'axios';
+import React from 'react'
+import axios from 'axios'
 
 export default class Upload extends React.Component {
     constructor(props) {
-        super(props);
+        super(props)
 
         this.state = {
             file_id: '',
@@ -23,7 +23,7 @@ export default class Upload extends React.Component {
         this.setState({
             msg_type: type,
             msg: msg,
-        });
+        })
     }
 
     componentDidMount() {
@@ -31,51 +31,51 @@ export default class Upload extends React.Component {
             file_id: this.props.params.file_id,
             user_id: this.props.params.user_id,
             sotre_type: this.props.params.store_type,
-        });
+        })
     }
 
     onFileChange(event) {
-        event.preventDefault();
+        event.preventDefault()
         this.setState({file_data: event.target.files[0]})
     }
 
     onUpload(event) {
-        const {file_id, user_id, file_data, store_type} = this.state;
-        let self = this;
-        let url = '';
+        const {file_id, user_id, file_data, store_type} = this.state
+        let self = this
+        let url = ''
         if (file_data === undefined) {
-            this.setMsg('danger', '請選擇檔案!');
-            return;
+            this.setMsg('danger', '請選擇檔案!')
+            return
         } else {
-            this.setMsg('', '');
+            this.setMsg('', '')
         }
 
         if (store_type === 'c') {
-            url = '/api/file/upload/code';
+            url = '/api/file/upload/code'
         } else {
-            url = '/api/file/upload/path';
+            url = '/api/file/upload/path'
         }
-        this.setState({buttonState: 'uploading'});
-        let form_data = new FormData();
-        form_data.append('file_id', file_id);
-        form_data.append('user_id', user_id);
-        form_data.append('file_data', file_data);
+        this.setState({buttonState: 'uploading'})
+        let form_data = new FormData()
+        form_data.append('file_id', file_id)
+        form_data.append('user_id', user_id)
+        form_data.append('file_data', file_data)
         axios.post(url, form_data, {
             method: 'post',
             headers: {'Content-Type': 'multipart/form-data'}
         }).then(function (response) {
             if (response.data.result) {
-                self.setMsg('success', response.data.msg);
+                self.setMsg('success', response.data.msg)
                 self.setState({buttonState: 'complete'})
             } else {
-                self.setMsg('danger', response.data.msg);
+                self.setMsg('danger', response.data.msg)
                 self.setState({buttonState: 'default'})
             }
         }).catch(function (error) {
-            console.log(error);
-            self.setMsg('danger', error);
+            console.log(error)
+            self.setMsg('danger', error)
             self.setState({buttonState: 'default'})
-        });
+        })
     }
     render() {
         return(
@@ -126,6 +126,6 @@ export default class Upload extends React.Component {
                     </div>
                 </div>
             </div>
-        );
+        )
     }
 }

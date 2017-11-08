@@ -1,64 +1,68 @@
 /** 
  * Retained.js
  */
-import React from 'react';
-import { Link } from 'react-router';
-import axios from 'axios';
+import React from 'react'
+import { Link } from 'react-router'
+import axios from 'axios'
 
 export default class Retained extends React.Component{
     constructor(props) {
-        super(props);
+        super(props)
 
         this.state = {
             list: [],
             ldate: 999999,
+            loading: false,
         }
     }
 
     componentDidMount() {
-        let today = new Date();
+        let today = new Date()
         var yyyy = today.toLocaleDateString().slice(0,4)
-        var MM = (today.getMonth()+1<10 ? '0' : '')+(today.getMonth()+1);
-        var dd = (today.getDate()<10 ? '0' : '')+today.getDate();
-        let ldate =  yyyy+MM+dd;
-        this.setState({ldate: ldate});
-        this.init(ldate);
+        var MM = (today.getMonth()+1<10 ? '0' : '')+(today.getMonth()+1)
+        var dd = (today.getDate()<10 ? '0' : '')+today.getDate()
+        let ldate =  yyyy+MM+dd
+        this.setState({ldate: ldate})
+        this.init(ldate)
     }
 
     init(ldate) {
-        let self = this;       
+        let self = this
+        this.setState({loading: true})
         axios.get('/api/web/mpe/qa/retained/list/' + ldate)
         .then(function (response) {
             if (response.data.result) {
                 self.setState({
                     list: response.data.list,
-                });
-                console.log(response.data);
+                })
+                console.log(response.data)
             } else {
-                console.log(response.data);
+                console.log(response.data)
             }
+            self.setState({loading: false})
         }).catch(function (error) {
-            console.log(error);
-        });
+            console.log(error)
+            self.setState({loading: false})
+        })
     }
 
     ldateChange(e) {
-        let ldate  = e.target.value;
-        this.setState({ldate: ldate});
+        let ldate  = e.target.value
+        this.setState({ldate: ldate})
         if (ldate.length === 8) {
-            this.init(ldate);
+            this.init(ldate)
         }
     }
 
     render() { 
-        const { list, ldate } = this.state;
+        const { list, ldate, loading } = this.state
         return(   
             <div>
                 <div className="box" style={{marginTop: '10px', marginBottom: '10px'}}> 
                     <div className="level">
                         <div className="level-left">
                             <div className="level-item">
-                                <Link className="button" to="/auth/web/menu">&larr; 功能選單</Link>
+                                <Link className="button" to="/auth/web/menu">&larr 功能選單</Link>
                             </div>
                         </div>
                         <div className="level-right">
@@ -82,7 +86,12 @@ export default class Retained extends React.Component{
                         </div>
                     </div>
                 </div> 
-                {list.length > 0 ?
+                {loading &&
+                    <div className="notification is-primary">
+                        <strong>資料讀取中請稍候...</strong>
+                    </div>
+                }
+                {!loading && list.length > 0 &&
                     <table className="table is-bordered is-fullwidth">
                         <thead>
                             <tr>
@@ -131,12 +140,13 @@ export default class Retained extends React.Component{
                             ))}
                         </tbody>
                     </table>
-                :
+                }
+                {!loading && list.length === 0 &&
                     <div className="notification is-warning" style={{padding: '1rem 1rem 1rem 1rem'}}>
                         今日尚無留樣品資訊
                     </div>
                 }
             </div>
-        );
-    };
+        )
+    }
 }

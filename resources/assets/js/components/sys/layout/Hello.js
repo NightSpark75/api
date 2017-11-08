@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 export default class Hello extends React.Component{
     render(){
@@ -6,6 +6,6 @@ export default class Hello extends React.Component{
             <div>
                 <span>🎨Standart D2K API🎨</span>
             </div>
-        );
+        )
     }
 }

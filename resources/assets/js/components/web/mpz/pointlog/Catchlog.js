@@ -1,13 +1,13 @@
 /** 
  * Catchlog.js
  */
-import React from "react";
-import { Link } from "react-router";
-import axios from 'axios';
+import React from "react"
+import { Link } from "react-router"
+import axios from 'axios'
 
 export default class Catchlog extends React.Component{
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             log_data: {},
             point_no: '', ldate: 0, device_type: '',
@@ -21,18 +21,18 @@ export default class Catchlog extends React.Component{
             thisMonth: 0, lastMonth: 0,
             isLoading: false, init: false,
             msg_type: '', msg: '',
-        };
-        this.sendMsg = this.props.sendMsg.bind(this);
-    };
+        }
+        this.sendMsg = this.props.sendMsg.bind(this)
+    }
 
     componentDidMount() {
-        let point = this.props.pointInfo;
-        this.init(point.point_no, point.device_type);
+        let point = this.props.pointInfo
+        this.init(point.point_no, point.device_type)
     }
 
     init(point_no, device_type) {
-        let self = this;
-        this.setState({init: true});
+        let self = this
+        this.setState({init: true})
         axios.get('/api/web/mpz/pointlog/catch/init/' + point_no)
         .then(function (response) {
             if (response.data.result) {
@@ -45,52 +45,52 @@ export default class Catchlog extends React.Component{
                     lastMonth: response.data.lastMonth,
                     changeDate: response.data.changeDate,
                     init: false,
-                });
-                self.setLayout();
-                self.setValue(response.data.log_data);
+                })
+                self.setLayout()
+                self.setValue(response.data.log_data)
             } else {
-                self.props.sendMsg(response.data.msg);
-                self.onCancel();
+                self.props.sendMsg(response.data.msg)
+                self.onCancel()
             }
         }).catch(function (error) {
-            console.log(error);
-            self.props.sendMsg(error);
-        });
+            console.log(error)
+            self.props.sendMsg(error)
+        })
     }
 
     setLayout() {
-        let device = this.state.device_type;
+        let device = this.state.device_type
         switch(device) {
             case '1':
                 this.setState({
                     vn3: true, vn4: true, vn5: true, vn6: true,
                     vc5: true
-                });
-                break;
+                })
+                break
             case '2':
                 this.setState({
                     vn1: true, vn2: true,
                     vc1: true, vc2: true, vc4: true, 
-                });
-                break;
+                })
+                break
             case '3':
                 this.setState({
                     vn3: true, vn4: true, vn5: true, vn6: true,
                     vc5: true, vc6: true, 
-                });
-                break;
+                })
+                break
             case '4':
                 this.setState({
                     vn1: true, vn2: true, vlp: true,
                     vc1: true, vc2: true, vc3: true, vc4: true,
-                });
-                break;
+                })
+                break
         }
     }
 
     setValue(data) {
         if (data !== null) {
-            let rmk = (data.rmk === null) ? '' : data.rmk;
+            let rmk = (data.rmk === null) ? '' : data.rmk
             this.setState({
                 point_no: data.point_no, ldate: data.ldate, 
                 catch_num1: data.catch_num1, catch_num2: data.catch_num2, catch_num3: data.catch_num3, 
@@ -98,7 +98,7 @@ export default class Catchlog extends React.Component{
                 change1: data.change1, change2: data.change2, change3: data.change3, 
                 change4: data.change4, change5: data.change5, change6: data.change6, lamp: data.lamp,
                 rmk: rmk, discription: data.discription,
-            });
+            })
         }
     }
 
@@ -115,130 +115,130 @@ export default class Catchlog extends React.Component{
             thisMonth: 0, lastMonth: 0,
             isLoading: false, init: false,
             msg_type: '', msg: '',
-        });
+        })
     }
 
     catchChange(item, e) {
         switch(item) {
             case '1':
-                this.setState({catch_num1: e.target.value});
-                break;
+                this.setState({catch_num1: e.target.value})
+                break
             case '2':
-                this.setState({catch_num2: e.target.value});
-                break;
+                this.setState({catch_num2: e.target.value})
+                break
             case '3':
-                this.setState({catch_num3: e.target.value});
-                break;
+                this.setState({catch_num3: e.target.value})
+                break
             case '4':
-                this.setState({catch_num4: e.target.value});
-                break;
+                this.setState({catch_num4: e.target.value})
+                break
             case '5':
-                this.setState({catch_num5: e.target.value});
-                break;
+                this.setState({catch_num5: e.target.value})
+                break
             case '6':
-                this.setState({catch_num6: e.target.value});
-                break;
+                this.setState({catch_num6: e.target.value})
+                break
             case 'rmk':
-                this.setState({rmk: e.target.value});
-                break;
+                this.setState({rmk: e.target.value})
+                break
             case 'dis':
-                this.setState({discription: e.target.value});
-                break;
+                this.setState({discription: e.target.value})
+                break
         }
     }
     
     checkboxChange(item, e) {
-        let state, value;
+        let state, value
         switch(item) {
             case '1':
-                state = this.state.change1;
-                value = state === 'Y' ? 'N' : 'Y';
-                this.setState({change1: value});
-                break;
+                state = this.state.change1
+                value = state === 'Y' ? 'N' : 'Y'
+                this.setState({change1: value})
+                break
             case '2':
-                state = this.state.change2;
-                value = state === 'Y' ? 'N' : 'Y';
-                this.setState({change2: value});
-                break;
+                state = this.state.change2
+                value = state === 'Y' ? 'N' : 'Y'
+                this.setState({change2: value})
+                break
             case '3':
-                state = this.state.change3;
-                value = state === 'Y' ? 'N' : 'Y';
-                this.setState({change3: value});
-                break;
+                state = this.state.change3
+                value = state === 'Y' ? 'N' : 'Y'
+                this.setState({change3: value})
+                break
             case '4':
-                state = this.state.change4;
-                value = state === 'Y' ? 'N' : 'Y';
-                this.setState({change4: value});
-                break;
+                state = this.state.change4
+                value = state === 'Y' ? 'N' : 'Y'
+                this.setState({change4: value})
+                break
             case '5':
-                state = this.state.change5;
-                value = state === 'Y' ? 'N' : 'Y';
-                this.setState({change5: value});
-                break;
+                state = this.state.change5
+                value = state === 'Y' ? 'N' : 'Y'
+                this.setState({change5: value})
+                break
             case '6':
-                state = this.state.change6;
-                value = state === 'Y' ? 'N' : 'Y';
-                this.setState({change6: value});
-                break;
+                state = this.state.change6
+                value = state === 'Y' ? 'N' : 'Y'
+                this.setState({change6: value})
+                break
             case 'lamp':
-                state = this.state.lamp;
-                value = state === 'Y' ? 'N' : 'Y';
-                this.setState({lamp: value});
-                break;
+                state = this.state.lamp
+                value = state === 'Y' ? 'N' : 'Y'
+                this.setState({lamp: value})
+                break
         }
     }
 
     onSave(e) {
-        let self = this;
-        this.setState({isLoading: true});
+        let self = this
+        this.setState({isLoading: true})
         const {
             point_no, ldate, catch_num1, catch_num2, catch_num3, catch_num4, catch_num5, catch_num6, 
-            change1, change2, change3, change4, change5, change6, lamp, rmk, discription} = this.state;
-        let form_data = new FormData();
-        form_data.append('point_no', point_no);
-        form_data.append('ldate', ldate);
-        form_data.append('catch_num1', catch_num1);
-        form_data.append('catch_num2', catch_num2);
-        form_data.append('catch_num3', catch_num3);
-        form_data.append('catch_num4', catch_num4);
-        form_data.append('catch_num5', catch_num5);
-        form_data.append('catch_num6', catch_num6);
-        form_data.append('change1', change1);
-        form_data.append('change2', change2);
-        form_data.append('change3', change3);
-        form_data.append('change4', change4);
-        form_data.append('change5', change5);
-        form_data.append('change6', change6);
-        form_data.append('check_lamp', lamp);
-        form_data.append('rmk', rmk);
-        form_data.append('discription', discription);
+            change1, change2, change3, change4, change5, change6, lamp, rmk, discription} = this.state
+        let form_data = new FormData()
+        form_data.append('point_no', point_no)
+        form_data.append('ldate', ldate)
+        form_data.append('catch_num1', catch_num1)
+        form_data.append('catch_num2', catch_num2)
+        form_data.append('catch_num3', catch_num3)
+        form_data.append('catch_num4', catch_num4)
+        form_data.append('catch_num5', catch_num5)
+        form_data.append('catch_num6', catch_num6)
+        form_data.append('change1', change1)
+        form_data.append('change2', change2)
+        form_data.append('change3', change3)
+        form_data.append('change4', change4)
+        form_data.append('change5', change5)
+        form_data.append('change6', change6)
+        form_data.append('check_lamp', lamp)
+        form_data.append('rmk', rmk)
+        form_data.append('discription', discription)
         axios.post('/api/web/mpz/pointlog/catch/save', form_data)
         .then(function (response) {
             if (response.data.result) {
-                self.sendMsg(point_no + '檢查點記錄成功!');
-                self.setState({isLoading: false});
-                self.initState();
-                self.onCancel();
+                self.sendMsg(point_no + '檢查點記錄成功!')
+                self.setState({isLoading: false})
+                self.initState()
+                self.onCancel()
             } else {
-                self.sendMsg(response.data.msg);
-                self.setState({isLoading: false});
+                self.sendMsg(response.data.msg)
+                self.setState({isLoading: false})
             }
         }).catch(function (error) {
-            console.log(error);
-            self.sendMsg(error);
-            self.setState({isLoading: false});
-        });
+            console.log(error)
+            self.sendMsg(error)
+            self.setState({isLoading: false})
+        })
     }
 
     onCancel() {
-        this.initState();
-        this.props.onCancel();
+        this.initState()
+        this.props.onCancel()
     }
 
     render() {
-        const isLoading = this.state.isLoading;
-        const init = this.state.init;
-        const comp = (this.state.log_data === null) ? false : true;
+        const isLoading = this.state.isLoading
+        const init = this.state.init
+        const comp = (this.state.log_data === null) ? false : true
         return(
             <div>
                 <div className="column is-offset-1">
@@ -545,7 +545,7 @@ export default class Catchlog extends React.Component{
                     </div>
                 </form>
             </div>
-        );
-    };
+        )
+    }
 }
 

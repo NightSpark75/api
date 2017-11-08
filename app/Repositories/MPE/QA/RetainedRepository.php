@@ -30,11 +30,11 @@ class RetainedRepository
     public function getList($ldate) {
         try {
             $list = DB::select("
-                select *
+                select vm.*, case when vm.imsrp9 = 'Y' then 'ANDA' else '' end anda, pk_mpe.fu_get_spec(vm.irlitm) spec
                 from v_mpe_erp_mate vm
                 where iratdt = $ldate
                     and IRSQ03 > 0
-                    and not exists (select * from mpe_house_m m where m.batch = vm.irlotn) 
+                    and not exists (select * from mpe_house_m m where m.batch = vm.irlotn and m.partno = vm.irlitm) 
             ");
             $result = [
                 'result' => true,

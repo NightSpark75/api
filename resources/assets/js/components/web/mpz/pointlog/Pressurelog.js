@@ -1,13 +1,13 @@
 /** 
  * Pressurelog.js
  */
-import React from "react";
-import { Link } from "react-router";
-import axios from 'axios';
+import React from "react"
+import { Link } from "react-router"
+import axios from 'axios'
 
 export default class Pressurelog extends React.Component{
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             point_info: {}, point_no: '', ldate: '', 
             mo_pa: '', mo_aq: '', mo_err: '', mo_time: '', 
@@ -17,18 +17,18 @@ export default class Pressurelog extends React.Component{
             mo: false, af: false, ev: false,
             log_data: {},
             init: false,
-        };
-        this.sendMsg = this.props.sendMsg.bind(this);
-    };
+        }
+        this.sendMsg = this.props.sendMsg.bind(this)
+    }
 
     componentDidMount() {
-        this.init();
+        this.init()
     }
 
     init() {
-        let self = this;
-        let point_info = this.props.pointInfo;
-        this.setState({init: true});
+        let self = this
+        let point_info = this.props.pointInfo
+        this.setState({init: true})
         axios.get('/api/web/mpz/pointlog/pressure/init/' + point_info.point_no)
         .then(function (response) {
             if (response.data.result) {
@@ -38,115 +38,115 @@ export default class Pressurelog extends React.Component{
                     ldate: response.data.ldate,
                     log_data: response.data.log_data,
                     init: false,
-                });
-                console.log(response.data);
-                self.setValue(response.data.log_data);
+                })
+                console.log(response.data)
+                self.setValue(response.data.log_data)
             } else {
-                self.props.sendMsg(response.data.msg);
-                self.onCancel();
+                self.props.sendMsg(response.data.msg)
+                self.onCancel()
             }
         }).catch(function (error) {
-            console.log(error);
-            self.props.sendMsg(error);
-        });
+            console.log(error)
+            self.props.sendMsg(error)
+        })
     }
 
     setValue(data) {
         if (data !== null) {
-            let mo = data.mo_time !== null ? true : false;
-            let af = data.af_time !== null ? true : false;
-            let ev = data.ev_time !== null ? true : false;
+            let mo = data.mo_time !== null ? true : false
+            let af = data.af_time !== null ? true : false
+            let ev = data.ev_time !== null ? true : false
             this.setState({
                 mo_pa: data.mo_pa, mo_aq: data.mo_aq, mo_err: data.mo_err, mo_time: data.mo_time,  
                 af_pa: data.af_pa, af_aq: data.af_aq, af_err: data.af_err, af_time: data.af_time,  
                 ev_pa: data.ev_pa, ev_aq: data.ev_aq, ev_err: data.ev_err, ev_time: data.ev_time,  
                 rmk: data.rmk,
                 mo: mo, af: af, ev: ev,
-            });
+            })
         }
     }
     
     onSave(e) {
-        let self = this;
-        this.setState({isLoading: true});
+        let self = this
+        this.setState({isLoading: true})
         const {
             point_no, ldate, 
             mo_pa, mo_aq, mo_err, mo_time,  
             af_pa, af_aq, af_err, af_time,  
             ev_pa, ev_aq, ev_err, ev_time, 
             rmk
-        } = this.state;
-        let form_data = new FormData();
-        form_data.append('point_no', point_no);
-        form_data.append('ldate', ldate);
-        form_data.append('mo_pa', mo_pa || '');
-        form_data.append('mo_aq', mo_aq || '');
-        form_data.append('mo_time', mo_time || '');
-        form_data.append('mo_err', mo_err || '');
-        form_data.append('af_pa', af_pa || '');
-        form_data.append('af_aq', af_aq || '');
-        form_data.append('af_time', af_time || '');
-        form_data.append('af_err', af_err || '');
-        form_data.append('ev_pa', ev_pa || '');
-        form_data.append('ev_aq', ev_aq || '');
-        form_data.append('ev_time', ev_time || '');
-        form_data.append('ev_err', ev_err || '');
-        form_data.append('rmk', rmk || '');
+        } = this.state
+        let form_data = new FormData()
+        form_data.append('point_no', point_no)
+        form_data.append('ldate', ldate)
+        form_data.append('mo_pa', mo_pa || '')
+        form_data.append('mo_aq', mo_aq || '')
+        form_data.append('mo_time', mo_time || '')
+        form_data.append('mo_err', mo_err || '')
+        form_data.append('af_pa', af_pa || '')
+        form_data.append('af_aq', af_aq || '')
+        form_data.append('af_time', af_time || '')
+        form_data.append('af_err', af_err || '')
+        form_data.append('ev_pa', ev_pa || '')
+        form_data.append('ev_aq', ev_aq || '')
+        form_data.append('ev_time', ev_time || '')
+        form_data.append('ev_err', ev_err || '')
+        form_data.append('rmk', rmk || '')
         axios.post('/api/web/mpz/pointlog/pressure/save', form_data)
         .then(function (response) {
             if (response.data.result) {
-                self.sendMsg(point_no + '檢查點記錄成功!');
-                self.setState({isLoading: false});
-                self.onCancel();
+                self.sendMsg(point_no + '檢查點記錄成功!')
+                self.setState({isLoading: false})
+                self.onCancel()
             } else {
-                self.sendMsg(response.data.msg);
-                self.setState({isLoading: false});
+                self.sendMsg(response.data.msg)
+                self.setState({isLoading: false})
             }
         }).catch(function (error) {
-            console.log(error);
-            self.sendMsg(error);
-            self.setState({isLoading: false});
-        });
+            console.log(error)
+            self.sendMsg(error)
+            self.setState({isLoading: false})
+        })
     }
 
     mo_aqChange(e) {
-        this.setState({mo_aq: e.target.value});
+        this.setState({mo_aq: e.target.value})
     }
     mo_paChange(e) {
-        this.setState({mo_pa: e.target.value});
+        this.setState({mo_pa: e.target.value})
     }
     mo_errChange(e) {
-        this.setState({mo_err: e.target.value});
+        this.setState({mo_err: e.target.value})
     }
     af_aqChange(e) {
-        this.setState({af_aq: e.target.value});
+        this.setState({af_aq: e.target.value})
     }
     af_paChange(e) {
-        this.setState({af_pa: e.target.value});
+        this.setState({af_pa: e.target.value})
     }
     af_errChange(e) {
-        this.setState({af_err: e.target.value});
+        this.setState({af_err: e.target.value})
     }
     ev_aqChange(e) {
-        this.setState({ev_aq: e.target.value});
+        this.setState({ev_aq: e.target.value})
     }
     ev_paChange(e) {
-        this.setState({ev_pa: e.target.value});
+        this.setState({ev_pa: e.target.value})
     }
     ev_errChange(e) {
-        this.setState({ev_err: e.target.value});
+        this.setState({ev_err: e.target.value})
     }
     rmkChange(e) {
-        this.setState({rmk: e.target.value});
+        this.setState({rmk: e.target.value})
     }
 
     onCancel() {
-        this.props.onCancel();
+        this.props.onCancel()
     }
 
     render() {
-        const { init, isLoading, point_info} = this.state;
-        const { mo, af, ev } = this.state;
+        const { init, isLoading, point_info} = this.state
+        const { mo, af, ev } = this.state
         return(
             <div>
                 <div className="column">
@@ -333,7 +333,7 @@ export default class Pressurelog extends React.Component{
                     </div>
                 </div>
             </div>
-        );
-    };
+        )
+    }
 }
 

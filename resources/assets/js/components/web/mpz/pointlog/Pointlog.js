@@ -1,18 +1,18 @@
 /** 
  * Pointlog.js
  */
-import React from 'react';
-import { Link } from 'react-router';
-import axios from 'axios';
-import Catchlog from './Catchlog';
-import Templog from './Templog';
-import Wetestlog from './Wetestlog';
-import Refrilog from './Refrilog';
-import Pressurelog from './Pressurelog';
+import React from 'react'
+import { Link } from 'react-router'
+import axios from 'axios'
+import Catchlog from './Catchlog'
+import Templog from './Templog'
+import Wetestlog from './Wetestlog'
+import Refrilog from './Refrilog'
+import Pressurelog from './Pressurelog'
 
 export default class Pointlog extends React.Component{
     constructor(props) {
-        super(props);
+        super(props)
 
         this.state = {
             point: [],
@@ -29,7 +29,7 @@ export default class Pointlog extends React.Component{
     }
 
     init() {
-        let self = this;       
+        let self = this       
         axios.get('/api/web/mpz/pointlog/init', null, {
             method: 'get',
         }).then(function (response) {
@@ -37,67 +37,67 @@ export default class Pointlog extends React.Component{
                 self.setState({
                     point: response.data.point,
                     scan: ''
-                });
-                console.log(response.data);
+                })
+                console.log(response.data)
             } else {
-                console.log(response.data);
-                window.location = '/web/login/ppm';
+                console.log(response.data)
+                window.location = '/web/login/ppm'
             }
         }).catch(function (error) {
-            console.log(error);
-        });
+            console.log(error)
+        })
     }
 
     componentDidMount() {
-        this.init();
+        this.init()
     }
 
     scanChange(e) {
-        let point_no = e.target.value;
+        let point_no = e.target.value
         this.setState({
             point_no: point_no,
-        });
-        this.pointSearch(point_no);
+        })
+        this.pointSearch(point_no)
     }
 
     pointSearch(point_no) {
-        let list  = this.state.point;
+        let list  = this.state.point
         for (var i = 0; i < list.length; i++) {
-            let item = [];
+            let item = []
             Object.keys(list[i]).map(function(e) {
-                item[e] = list[i][e];
-            });         
+                item[e] = list[i][e]
+            })         
             if (item['point_no'] === point_no) {
-                let device_type = list[i]['device_type'];
+                let device_type = list[i]['device_type']
                 this.setState({
                     point_info: list[i],
                     scan: 'disabled',
                     scan_message: '資料驗證中...'
-                });
+                })
                 this.setComponent(list[i])
-                break;
+                break
             }
         }
     }
 
     setComponent(point) {
-        let point_type = point.point_type;
+        let point_type = point.point_type
         switch (point_type) {
             case 'C':   // 鼠蟲防治紀錄
-                this.setState({catchlog_show: true, scan_message: ''});
-                break;
+                this.setState({catchlog_show: true, scan_message: ''})
+                break
             case 'T':   // 溫溼紀錄
-                this.setState({templog_show: true, scan_message: ''});
-                break;
+                this.setState({templog_show: true, scan_message: ''})
+                break
             case 'W':   // 最濕點紀錄
-                this.setState({wetestlog_show: true, scan_message: ''});
-                break;
+                this.setState({wetestlog_show: true, scan_message: ''})
+                break
             case 'R':   // 冷藏櫃操作紀錄
-                this.setState({refrilog_show: true, scan_message: ''});
-                break;
+                this.setState({refrilog_show: true, scan_message: ''})
+                break
             case 'P':   // 壓差紀錄
-                this.setState({pressurelog_show: true, scan_message: ''});
-                break;
+                this.setState({pressurelog_show: true, scan_message: ''})
+                break
         }
     }
 
@@ -111,15 +111,15 @@ export default class Pointlog extends React.Component{
             point_no: '',
             scan: '',
             point_info: [],
-        });
+        })
     }
 
     componentMsg(msg) {
-        this.setState({scan_message: msg});
+        this.setState({scan_message: msg})
     }
 
     goMenu() {
-        window.location = '/auth/web/menu';
+        window.location = '/auth/web/menu'
     }
 
     render() {
@@ -127,7 +127,7 @@ export default class Pointlog extends React.Component{
             <div>
                 <div className="box" style={{ marginTop: '10px', marginBottom: '10px' }}>
                     <p className="control">
-                        <Link className="button" to="/auth/web/menu">&larr; 功能選單</Link> 
+                        <Link className="button" to="/auth/web/menu">&larr 功能選單</Link> 
                     </p>
                 </div>
                 <div className="box" style={{ marginBottom: '10px' }}>
@@ -201,6 +201,6 @@ export default class Pointlog extends React.Component{
                     </div>
                 }   
             </div>
-        );
+        )
     }
 }

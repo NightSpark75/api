@@ -1,13 +1,13 @@
 /** 
  * Change.js
  */
-import React from 'react';
-import { Link } from 'react-router';
-import axios from 'axios';
+import React from 'react'
+import { Link } from 'react-router'
+import axios from 'axios'
 
 export default class Change extends React.Component{
     constructor(props) {
-        super(props);
+        super(props)
 
         this.state = {
             list: [],
@@ -23,32 +23,32 @@ export default class Change extends React.Component{
     }
 
     componentDidMount() {
-        this.init();
+        this.init()
     }
 
     init() {
-        let self = this;       
+        let self = this       
         axios.get('/api/web/mpe/qa/stock/list')
         .then(function (response) {
             if (response.data.result) {
                 self.setState({
                     list: response.data.list,
                     storage: response.data.storage,
-                });
-                console.log(response.data);
+                })
+                console.log(response.data)
             } else {
-                console.log(response.data);
+                console.log(response.data)
             }
         }).catch(function (error) {
-            console.log(error);
-        });
+            console.log(error)
+        })
     }
 
     onSearch(event) {
-        event.preventDefault();
-        let str = this.state.search_str;
+        event.preventDefault()
+        let str = this.state.search_str
         if (str !== '' && this.state.search_key !== str) {
-            let self = this;       
+            let self = this       
             axios.get('/api/web/mpe/qa/stock/list/' + str)
             .then(function (response) {
                 if (response.data.result) {
@@ -56,19 +56,19 @@ export default class Change extends React.Component{
                         search: response.data.list,
                         searching: true,
                         search_key: str,
-                    });
-                    console.log(response.data);
+                    })
+                    console.log(response.data)
                 } else {
-                    console.log(response.data);
+                    console.log(response.data)
                 }
             }).catch(function (error) {
-                console.log(error);
-            });
+                console.log(error)
+            })
         }
     }
 
     searchChange(event) {
-        this.setState({search_str: event.target.value});
+        this.setState({search_str: event.target.value})
     }
 
     cancelSearch() {
@@ -78,28 +78,28 @@ export default class Change extends React.Component{
             search_key: '',
             searching: false,
             content: this.state.list,
-        });
+        })
     }
 
     showStorage(item) {
         this.setState({
             select_item: item,
             storageShow: true,
-        });
+        })
     }
 
     hideStorage() {
         this.setState({
             select_item: [],
             storageShow: false,
-        });
+        })
     }
 
     setList(data) {
-        let list  = this.state.list;
-        let newlist = [];
+        let list  = this.state.list
+        let newlist = []
         for (let i = 0; i < list.length; i++) {
-            newlist[i] = list[i];
+            newlist[i] = list[i]
             if ((list[i]['partno'] === data.partno) 
                 && (list[i]['batch'] === data.batch)) {
                 newlist[i] = {
@@ -108,46 +108,46 @@ export default class Change extends React.Component{
                     pname: list[i]['pname'],
                     stor: data.stor,
                     whouse: data.whouse,    
-                };
+                }
             }
         }
-        this.setState({list: newlist});
+        this.setState({list: newlist})
     }
 
     onChange(item) {
-        let self = this;
+        let self = this
         let data = {
             partno: this.state.select_item.partno,
             batch: this.state.select_item.batch,
             whouse: item.whouse,
             stor: item.stor,
-        };
+        }
         axios.put('/api/web/mpe/qa/stock/storage/change', data)
         .then(function (response) {
             if (response.data.result) {
-                self.setList(data);
-                self.hideStorage();
+                self.setList(data)
+                self.hideStorage()
             } else {
-                console.log(response.data);
+                console.log(response.data)
             }
-            self.setState({isLoading: false});
+            self.setState({isLoading: false})
         }).catch(function (error) {
-            console.log(error);
-            self.setState({isLoading: false});
-        });
+            console.log(error)
+            self.setState({isLoading: false})
+        })
     }
 
     render() { 
-        const { list, search, search_str, searching, storageShow, storage, isLoading } = this.state;
-        const content = search.length > 0 ? search : list;
-        let show = storageShow ? 'is-active': '';
+        const { list, search, search_str, searching, storageShow, storage, isLoading } = this.state
+        const content = search.length > 0 ? search : list
+        let show = storageShow ? 'is-active': ''
         return(   
             <div>
                 <div className="box" style={{ marginTop: '10px', marginBottom: '10px' }}>
                     <div className="level">
                         <div className="level-left">
                             <div className="level-item">
-                                <Link className="button" to="/auth/web/menu">&larr; 功能選單</Link> 
+                                <Link className="button" to="/auth/web/menu">&larr 功能選單</Link> 
                             </div>
                         </div>
                         <div className="level-right">
@@ -284,6 +284,6 @@ export default class Change extends React.Component{
                     </div>
                 }
             </div>
-        );
-    };
+        )
+    }
 }

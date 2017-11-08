@@ -1,31 +1,31 @@
 // v 1.23.5
-import React from "react";
-import ReactDOM from "react-dom";
-import {Router, Route, browserHistory, IndexRoute, hashHistory} from "react-router";
+import React from "react"
+import ReactDOM from "react-dom"
+import {Router, Route, browserHistory, IndexRoute, hashHistory} from "react-router"
 
-import Hello from "./components/sys/layout/Hello";
-import SinglePage from "./components/sys/layout/SinglePage";
-import NavPage from "./components/sys/layout/NavPage";
-import Upload from "./components/web/service/Upload";
-import Login from "./components/sys/layout/Login";
-import Error from "./components/sys/layout/Error";
-import Menu from "./components/sys/layout/Menu";
-import User from "./components/web/user/User";
-import Pointlog from "./components/web/mpz/pointlog/Pointlog";
-import QAReceive from "./components/web/mpe/qa/receive/Receive";
-import QARestore from "./components/web/mpe/qa/restore/Restore";
-import Retained from "./components/web/mpe/qa/retained/Retained";
-import Change from "./components/web/mpe/qa/stock/storage/Change";
-import QCReceive from "./components/web/mpe/qc/receive/Receive";
-import Production_Job from "./components/web/mpb/production/Job";
-import Production_Working from "./components/web/mpb/production/Working";
-import Packing_Job from "./components/web/mpb/packing/Job";
-import Packing_Working from "./components/web/mpb/packing/Working";
-import Package_Job from "./components/web/mpb/package/Job";
-import Package_Working from "./components/web/mpb/package/Working";
-import QCPartInfo from "./components/web/mpe/qc/part/Info";
+import Hello from "./components/sys/layout/Hello"
+import SinglePage from "./components/sys/layout/SinglePage"
+import NavPage from "./components/sys/layout/NavPage"
+import Upload from "./components/web/service/Upload"
+import Login from "./components/sys/layout/Login"
+import Error from "./components/sys/layout/Error"
+import Menu from "./components/sys/layout/Menu"
+import User from "./components/web/user/User"
+import Pointlog from "./components/web/mpz/pointlog/Pointlog"
+import QAReceive from "./components/web/mpe/qa/receive/Receive"
+import QARestore from "./components/web/mpe/qa/restore/Restore"
+import Retained from "./components/web/mpe/qa/retained/Retained"
+import Change from "./components/web/mpe/qa/stock/storage/Change"
+import QCReceive from "./components/web/mpe/qc/receive/Receive"
+import Production_Job from "./components/web/mpb/production/Job"
+import Production_Working from "./components/web/mpb/production/Working"
+import Packing_Job from "./components/web/mpb/packing/Job"
+import Packing_Working from "./components/web/mpb/packing/Working"
+import Package_Job from "./components/web/mpb/package/Job"
+import Package_Working from "./components/web/mpb/package/Working"
+import QCPartInfo from "./components/web/mpe/qc/part/Info"
 
-const app = document.getElementById('app');
+const app = document.getElementById('app')
 
 ReactDOM.render(
     <Router history={browserHistory}>
@@ -79,4 +79,4 @@ ReactDOM.render(
             </Route>
         </Route>
     </Router>,
-app);
+app)

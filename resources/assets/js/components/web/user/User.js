@@ -1,15 +1,15 @@
 /** 
  * User.js
  */
-import React from 'react';
-import axios from 'axios';
-import { Link } from 'react-router';
-import UserAdd from './UserAdd';
-import UserEdit from './UserEdit';
+import React from 'react'
+import axios from 'axios'
+import { Link } from 'react-router'
+import UserAdd from './UserAdd'
+import UserEdit from './UserEdit'
 
 export default class User extends React.Component{
     constructor(props) {
-        super(props);
+        super(props)
 
         this.state = {
             prg: [],
@@ -22,7 +22,7 @@ export default class User extends React.Component{
     }
 
     init() {
-        let self = this;       
+        let self = this       
         axios.get('/api/web/user/init', null, {
             method: 'get',
         }).then(function (response) {
@@ -30,80 +30,80 @@ export default class User extends React.Component{
                 self.setState({
                     user: response.data.user,
                     prg: response.data.prg
-                });
+                })
             } else {
-                console.log(response.data);
-                window.location = '/web/login/ppm';
+                console.log(response.data)
+                window.location = '/web/login/ppm'
             }
         }).catch(function (error) {
-            console.log(error);
-        });
+            console.log(error)
+        })
     }
 
     addList(item) {
-        let list = this.state.user;
-        list.push(item);
-        this.setState({user: list});
+        let list = this.state.user
+        list.push(item)
+        this.setState({user: list})
     }
 
     editList(item) {
-        let list = this.state.user;
-        let user_id = item['user_id'];
+        let list = this.state.user
+        let user_id = item['user_id']
         for (var i = 0; i < list.length; i++) {
             if (list[i]['user_id'] === user_id) {
-                list[i] = item;
-                this.setState({user: list});
+                list[i] = item
+                this.setState({user: list})
             }
         }
     }
 
     deleteList(user_id) {
-        let list = this.state.user;
+        let list = this.state.user
         for (var i = 0; i < list.length; i++) {
             if (list[i]['user_id'] === user_id) {
-                list.splice(i, 1);
-                this.setState({user: list});
+                list.splice(i, 1)
+                this.setState({user: list})
             }
         }
     }
 
     openAdd() {
-        this.refs.add.initState();
-        this.setState({isAddShow: true});
+        this.refs.add.initState()
+        this.setState({isAddShow: true})
     }
 
     hideAdd() {
-        this.setState({isAddShow: false});
+        this.setState({isAddShow: false})
     }
 
     openEdit(item) {
-        this.refs.edit.setData(item);
-        this.setState({isEditShow: true});
+        this.refs.edit.setData(item)
+        this.setState({isEditShow: true})
     }
 
     hideEdit() {
-        this.setState({isEditShow: false});
+        this.setState({isEditShow: false})
     }
 
     onDelete(user_id) {
         if(confirm('您確定要刪除資料？')) {
-            let self = this;
+            let self = this
             axios.delete('/api/web/user/delete/' + user_id)
             .then(function (response) {
                 if (response.data.result) {
-                    self.deleteList(user_id);
-                    alert('使用者[' + user_id + ']已刪除');
+                    self.deleteList(user_id)
+                    alert('使用者[' + user_id + ']已刪除')
                 } else {
-                    alert(response.data.msg);
+                    alert(response.data.msg)
                 }
             }).catch(function (error) {
-                console.log(error);
-            });
+                console.log(error)
+            })
         }
     }
 
     nonSearch() {
-        let self = this;       
+        let self = this       
         axios.get('/api/web/user/search/', null, {
             method: 'get',
         }).then(function (response) {
@@ -112,20 +112,20 @@ export default class User extends React.Component{
                     user: response.data.user,
                     search: '',
                     allList: true
-                });
-                console.log(response.data);
+                })
+                console.log(response.data)
             } else {
-                console.log(response.data);
+                console.log(response.data)
             }
         }).catch(function (error) {
-            console.log(error);
-        });
+            console.log(error)
+        })
     }
 
     onSearch() {
-        let search = this.state.search;
+        let search = this.state.search
         if (search !== '') {
-            let self = this;       
+            let self = this       
             axios.get('/api/web/user/search/' + search, null, {
                 method: 'get',
             }).then(function (response) {
@@ -133,28 +133,28 @@ export default class User extends React.Component{
                     self.setState({
                         user: response.data.user,
                         allList: false
-                    });
-                    console.log(response.data);
+                    })
+                    console.log(response.data)
                 } else {
-                    console.log(response.data);
+                    console.log(response.data)
                 }
             }).catch(function (error) {
-                console.log(error);
-            });
+                console.log(error)
+            })
         }
     }
     
     searchChange(e) {
-        this.setState({search: e.target.value});
+        this.setState({search: e.target.value})
     }
 
     componentDidMount() {
-        this.init();
+        this.init()
     }
 
     render() {
-        const prg = this.state.prg;
-        const user = this.state.user;
+        const prg = this.state.prg
+        const user = this.state.user
         return(   
             <div>
                 <div className="box" style={{ marginTop: '10px' }}>
@@ -162,7 +162,7 @@ export default class User extends React.Component{
                         <div className="field-body">
                             <div className="field is-grouped">
                                 <p className="control">
-                                    <Link className="button" to="/auth/web/menu">&larr; 功能選單</Link> 
+                                    <Link className="button" to="/auth/web/menu">&larr 功能選單</Link> 
                                 </p>
                                 <p className="control">
                                     {prg['prg_ins'] === 'Y' ?
@@ -278,6 +278,6 @@ export default class User extends React.Component{
                         ref="edit"
                     />   
             </div>
-        );
+        )
     }
 }

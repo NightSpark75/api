@@ -7,7 +7,7 @@ import axios from 'axios'
 
 export default class Receive extends React.Component{
     constructor(props) {
-        super(props);
+        super(props)
 
         this.state = {
             restore: [],
@@ -25,7 +25,7 @@ export default class Receive extends React.Component{
     }
 
     init() {
-        let self = this;       
+        let self = this       
         axios.get('/api/web/mpe/qa/restore/list')
         .then(function (response) {
             if (response.data.result) {
@@ -55,7 +55,7 @@ export default class Receive extends React.Component{
                         item: restore[i],
                         msg:'',
                     })
-                    return;
+                    return
                 }
             }
             this.setState({
@@ -72,8 +72,8 @@ export default class Receive extends React.Component{
 
     goRestore() {
         if(confirm('您確定要入庫過帳嗎？')) {
-            let self = this;      
-            const { barcode, restore_value, item } = this.state;
+            let self = this      
+            const { barcode, restore_value, item } = this.state
             if (restore_value > item.receive_qty) {
                 this.setState({
                     msgType: 'warning',
@@ -81,9 +81,9 @@ export default class Receive extends React.Component{
                 })
                 return
             }
-            let form_data = new FormData();
-            form_data.append('barcode', barcode);
-            form_data.append('qty', restore_value);
+            let form_data = new FormData()
+            form_data.append('barcode', barcode)
+            form_data.append('qty', restore_value)
             axios.post('/api/web/mpe/qa/restore/posting', form_data)
             .then(function (response) {
                 if (response.data.result) {
@@ -96,7 +96,7 @@ export default class Receive extends React.Component{
                 }
             }).catch(function (error) {
                 console.log(error)
-            });
+            })
         }
     }
 
@@ -126,7 +126,7 @@ export default class Receive extends React.Component{
                     <div className="level">
                         <div className="level-left">
                             <div className="level-item">
-                                <Link className="button" to="/auth/web/menu">&larr; 功能選單</Link>
+                                <Link className="button" to="/auth/web/menu">&larr 功能選單</Link>
                             </div>
                         </div>
                         <div className="level-right">

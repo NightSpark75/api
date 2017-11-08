@@ -1,12 +1,12 @@
 /** 
  * UserEdit.js
  */
-import React from "react";
-import axios from 'axios';
+import React from "react"
+import axios from 'axios'
 
 export default class UserEdit extends React.Component{
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             user_id: '',
             user_name: '',
@@ -25,17 +25,17 @@ export default class UserEdit extends React.Component{
             isLoading: false,
             msg_type: '',
             msg: ''
-        };
+        }
 
-        this.editList = this.props.editList.bind(this);
-        this.onHide = this.props.onHide.bind(this);
-    };
+        this.editList = this.props.editList.bind(this)
+        this.onHide = this.props.onHide.bind(this)
+    }
 
     setMsg(type = '', msg = '') {
         this.setState({
             msg_type: type,
             msg: msg,
-        });
+        })
     }
 
     initState() {
@@ -57,7 +57,7 @@ export default class UserEdit extends React.Component{
             isLoading: false,
             msg_type: '',
             msg: ''
-        });
+        })
     }
 
     setData(item) {
@@ -70,67 +70,67 @@ export default class UserEdit extends React.Component{
             s_class: item['class'],
             state: item['state'],
             rmk: item['rmk'] = '',
-        });
+        })
     }
 
     userIdChange(e) {
-        return null;
+        return null
     }
 
     userNameChange(e) {
-        this.setState({user_name: e.target.value});
+        this.setState({user_name: e.target.value})
     }
 
     userPwChange(e) {
-        this.setState({user_pw: e.target.value});
+        this.setState({user_pw: e.target.value})
     }
 
     confPwChange(e) {
-        this.setState({conf_pw: e.target.value});
+        this.setState({conf_pw: e.target.value})
     }
 
     pwCtrlChange(e) {
-        this.setState({pw_ctrl: e.target.value});
+        this.setState({pw_ctrl: e.target.value})
     }
 
     classChange(e) {
-        this.setState({s_class: e.target.value});
+        this.setState({s_class: e.target.value})
     }
 
     stateChange(e) {
-        this.setState({state: e.target.value});
+        this.setState({state: e.target.value})
     }
 
     rmkChange(e) {
-        this.setState({rmk: e.target.value});
+        this.setState({rmk: e.target.value})
     }
 
     formValidate(obj) {
-        const {user_id, user_name, user_pw, conf_pw, pw_ctrl, s_class, state, rmk} = obj;
-        let msg = [];
-        (user_id === '') ? msg.push('請輸入帳號') : null;
-        (user_name === '') ? msg.push('請輸入姓名') : null;
-        (user_pw === '') ? msg.push('請輸入密碼') : null;
-        (conf_pw === '') ? msg.push('請輸入確認密碼') : null;
-        (pw_ctrl === '') ? msg.push('請選擇是否密碼永久有效') : null;
-        (s_class === '') ? msg.push('請選擇是否使用User Menu') : null;
-        (state === '') ? msg.push('請選擇使用狀態') : null;
-        (user_pw !== conf_pw) ? msg.push('密碼與確認密碼不同') : null;
+        const {user_id, user_name, user_pw, conf_pw, pw_ctrl, s_class, state, rmk} = obj
+        let msg = []
+        (user_id === '') ? msg.push('請輸入帳號') : null
+        (user_name === '') ? msg.push('請輸入姓名') : null
+        (user_pw === '') ? msg.push('請輸入密碼') : null
+        (conf_pw === '') ? msg.push('請輸入確認密碼') : null
+        (pw_ctrl === '') ? msg.push('請選擇是否密碼永久有效') : null
+        (s_class === '') ? msg.push('請選擇是否使用User Menu') : null
+        (state === '') ? msg.push('請選擇使用狀態') : null
+        (user_pw !== conf_pw) ? msg.push('密碼與確認密碼不同') : null
         let newText = msg.map((i, index) => {
             return <div key={index}>{i}<br /></div>
-        });
-        return newText;
+        })
+        return newText
     }
 
     onUpdate() {
-        this.setState({isLoading: true});
-        const {user_id, user_name, user_pw, conf_pw, pw_ctrl, s_class, state, rmk} = this.state;
-        let self = this;
-        let errorMsg = this.formValidate(this.state);
+        this.setState({isLoading: true})
+        const {user_id, user_name, user_pw, conf_pw, pw_ctrl, s_class, state, rmk} = this.state
+        let self = this
+        let errorMsg = this.formValidate(this.state)
         if (errorMsg.length > 0) {
-            this.setMsg('danger', errorMsg);
-            this.setState({isLoading: false});
-            return;
+            this.setMsg('danger', errorMsg)
+            this.setState({isLoading: false})
+            return
         }
         let data = {
             user_id: user_id,
@@ -140,30 +140,30 @@ export default class UserEdit extends React.Component{
             class: s_class,
             state: state,
             rmk: rmk,
-        };
+        }
         axios.put('/api/web/user/update', data)
         .then(function (response) {
             if (response.data.result) {
-                self.setMsg('success', response.data.msg);
-                self.setState({buttonState: 'complete'});
-                self.initState();
-                self.editList(response.data.user);
-                self.onHide();
+                self.setMsg('success', response.data.msg)
+                self.setState({buttonState: 'complete'})
+                self.initState()
+                self.editList(response.data.user)
+                self.onHide()
             } else {
-                self.setMsg('danger', response.data.msg);
-                self.setState({buttonState: 'default'});
+                self.setMsg('danger', response.data.msg)
+                self.setState({buttonState: 'default'})
             }
-            self.setState({isLoading: false});
+            self.setState({isLoading: false})
         }).catch(function (error) {
-            console.log(error);
-            self.setMsg('danger', error);
-            self.setState({isLoading: false});
-        });
-    };
+            console.log(error)
+            self.setMsg('danger', error)
+            self.setState({isLoading: false})
+        })
+    }
 
     render() {
-        let isLoading = this.state.isLoading;
-        let show = this.props.showModal ? 'is-active' : '';
+        let isLoading = this.state.isLoading
+        let show = this.props.showModal ? 'is-active' : ''
         return(
             <div className={ "modal " + show }>
                 <div className="modal-background"></div>
@@ -337,6 +337,6 @@ export default class UserEdit extends React.Component{
                     </footer>
                 </div>
             </div>
-        );
-    };
+        )
+    }
 }

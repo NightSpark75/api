@@ -1,13 +1,13 @@
 /** 
  * package.Job.js
  */
-import React from 'react';
-import { Link } from 'react-router';
-import axios from 'axios';
+import React from 'react'
+import { Link } from 'react-router'
+import axios from 'axios'
 
 export default class Job extends React.Component{
     constructor(props) {
-        super(props);
+        super(props)
 
         this.state = {
             ready: false,
@@ -18,60 +18,60 @@ export default class Job extends React.Component{
     }
     
     componentDidMount() {
-        this.init();
-        this.timer = setInterval(this.updateJobList.bind(this), 5000);
+        this.init()
+        this.timer = setInterval(this.updateJobList.bind(this), 5000)
     }
 
     componentWillUnmount() {
-        this.timer && clearInterval(this.timer);
+        this.timer && clearInterval(this.timer)
     }
 
     init() {
-        this.getJobList();
+        this.getJobList()
     }
 
     getJobList() {
-        let self = this;       
+        let self = this       
         axios.get('/api/web/mpb/prod/package/list')
         .then(function (response) {
             if (response.data.result) {
                 self.setState({
                     job_list: response.data.job_list,
-                });
-                console.log(response.data);
+                })
+                console.log(response.data)
             } else {
-                console.log(response.data);
+                console.log(response.data)
             }
         }).catch(function (error) {
-            console.log(error);
-        });
+            console.log(error)
+        })
     }
 
     updateJobList() {
-        let self = this;
-        let job_list = JSON.stringify(this.state.job_list);
-        let form_data = new FormData();
-        form_data.append('job_list', job_list);
+        let self = this
+        let job_list = JSON.stringify(this.state.job_list)
+        let form_data = new FormData()
+        form_data.append('job_list', job_list)
         axios.post('/api/web/mpb/prod/package/compare', form_data)
         .then(function (response) {
             if (response.data.result) {
                 self.setState({
                     job_list: response.data.job_list,
-                });
-                console.log(response.data);
+                })
+                console.log(response.data)
             } else {
-                console.log(response.data);
+                console.log(response.data)
             }
         }).catch(function (error) {
-            console.log(error);
-        });
+            console.log(error)
+        })
     }
 
     showProcessInfo(item) {
         this.setState({
             showInfo: true, 
             item: item,
-        });
+        })
     }
 
     hideProcessInfo() {
@@ -82,12 +82,12 @@ export default class Job extends React.Component{
     }
 
     render() {
-        const { job_list } = this.state; 
+        const { job_list } = this.state 
         return(   
             <div>
                 <div className="box" style={{ marginTop: '10px', marginBottom: '10px' }}>
                     <p className="control">
-                        <Link className="button is-medium" to="/auth/web/menu">&larr; 功能選單</Link> 
+                        <Link className="button is-medium" to="/auth/web/menu">&larr 功能選單</Link> 
                     </p>
                 </div>
                 {this.state.showInfo &&  

@@ -1,13 +1,13 @@
 /** 
  * NavPage.js 
  */
-import React from "react";
-import { Link } from "react-router";
-import axios from 'axios';
+import React from "react"
+import { Link } from "react-router"
+import axios from 'axios'
 
 export default class NavPage extends React.Component{
     constructor(props) {
-        super(props);
+        super(props)
 
         this.state = {
             user: [],
@@ -16,30 +16,30 @@ export default class NavPage extends React.Component{
     }
 
     componentDidMount() {
-        let self = this;
+        let self = this
         axios.get('/api/web/user/info', new FormData(), {
             method: 'get',
         }).then(function (response) {
             if (response.data.session) {
-                self.setState({user: response.data.info});
+                self.setState({user: response.data.info})
             } else {
-                console.log('miss session, need login!');
-                window.location = '/web/login/ppm';
+                console.log('miss session, need login!')
+                window.location = '/web/login/ppm'
             }
         }).catch(function (error) {
-            console.log(error);
-        });
+            console.log(error)
+        })
     }
 
     onLogout(event) {
         if(confirm('您確定要登出系統？')) {
-            window.location = '/api/web/logout';
+            window.location = '/api/web/logout'
         }
     }
 
     navMenu(event) {
-        let nav = this.state.nav === ''? 'is-active' : '';
-        this.setState({nav: nav});
+        let nav = this.state.nav === ''? 'is-active' : ''
+        this.setState({nav: nav})
     }
 
     render(){
@@ -77,6 +77,6 @@ export default class NavPage extends React.Component{
                     </div>
                 </section>
             </div>
-        );
+        )
     }
 }
