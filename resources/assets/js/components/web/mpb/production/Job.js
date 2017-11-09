@@ -87,7 +87,7 @@ export default class Job extends React.Component{
             <div>
                 <div className="box" style={{ marginTop: '10px', marginBottom: '10px' }}>
                     <p className="control">
-                        <Link className="button is-medium" to="/auth/web/menu">&larr 功能選單</Link> 
+                        <Link className="button is-medium" to="/auth/web/menu">&larr; 功能選單</Link> 
                     </p>
                 </div>
                 {this.state.showInfo &&  

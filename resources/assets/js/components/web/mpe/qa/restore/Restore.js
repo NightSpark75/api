@@ -126,7 +126,7 @@ export default class Receive extends React.Component{
                     <div className="level">
                         <div className="level-left">
                             <div className="level-item">
-                                <Link className="button" to="/auth/web/menu">&larr 功能選單</Link>
+                                <Link className="button" to="/auth/web/menu">&larr; 功能選單</Link>
                             </div>
                         </div>
                         <div className="level-right">

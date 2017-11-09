@@ -127,7 +127,7 @@ export default class Pointlog extends React.Component{
             <div>
                 <div className="box" style={{ marginTop: '10px', marginBottom: '10px' }}>
                     <p className="control">
-                        <Link className="button" to="/auth/web/menu">&larr 功能選單</Link> 
+                        <Link className="button" to="/auth/web/menu">&larr; 功能選單</Link> 
                     </p>
                 </div>
                 <div className="box" style={{ marginBottom: '10px' }}>

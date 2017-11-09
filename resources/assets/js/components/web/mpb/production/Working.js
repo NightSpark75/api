@@ -180,7 +180,7 @@ export default class Job extends React.Component{
                     <div className="level">
                         <div className="level-left">
                             <div className="level-item">
-                                <Link className="button is-medium" to="/auth/web/mpb/prod/list">&larr 回生產清單</Link>
+                                <Link className="button is-medium" to="/auth/web/mpb/prod/list">&larr; 回生產清單</Link>
                             </div>
                             <div className="level-item is-hidden-touch">
                                 <button className="button is-primary is-large" onClick={this.allUpdate.bind(this, 'join')} disabled={ lock }>整批工作</button>
@@ -196,7 +196,7 @@ export default class Job extends React.Component{
                             </div>
                             */}
                             <div className="level-item">
-                                <button className="button is-primary is-large" onClick={this.workingComplete.bind(this, 'Y')} disabled={ lock }>結束且完工(清潔)</button>
+                                <button className="button is-primary is-large" onClick={this.workingComplete.bind(this, 'Y')} disabled={ lock }>結束且完工</button>
                             </div>
                         </div>
                     </div>

@@ -162,7 +162,7 @@ export default class User extends React.Component{
                         <div className="field-body">
                             <div className="field is-grouped">
                                 <p className="control">
-                                    <Link className="button" to="/auth/web/menu">&larr 功能選單</Link> 
+                                    <Link className="button" to="/auth/web/menu">&larr; 功能選單</Link> 
                                 </p>
                                 <p className="control">
                                     {prg['prg_ins'] === 'Y' ?

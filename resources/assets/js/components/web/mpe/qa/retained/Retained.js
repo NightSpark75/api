@@ -62,7 +62,7 @@ export default class Retained extends React.Component{
                     <div className="level">
                         <div className="level-left">
                             <div className="level-item">
-                                <Link className="button" to="/auth/web/menu">&larr 功能選單</Link>
+                                <Link className="button" to="/auth/web/menu">&larr; 功能選單</Link>
                             </div>
                         </div>
                         <div className="level-right">
@@ -87,7 +87,7 @@ export default class Retained extends React.Component{
                     </div>
                 </div> 
                 {loading &&
-                    <div className="notification is-primary">
+                    <div className="notification is-info">
                         <strong>資料讀取中請稍候...</strong>
                     </div>
                 }
@@ -113,6 +113,9 @@ export default class Retained extends React.Component{
                                 <th>
                                     QA留樣量
                                 </th>
+                                <th>
+                                    特殊品
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -135,6 +138,9 @@ export default class Retained extends React.Component{
                                     </td>
                                     <td>
                                         {item.irsq03 + item.iruom3}
+                                    </td>
+                                    <td>
+                                        {item.anda} {item.spec}
                                     </td>
                                 </tr>
                             ))}
