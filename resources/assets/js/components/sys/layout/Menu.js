@@ -42,19 +42,9 @@ export default class Menu extends React.Component{
                         </Link>
                     </div>
                 )) }
-                { this.state.list.length === 0 && 
+                {list.length === 0 && 
                     <label className="label is-large">功能清單建立中...</label> 
-                }   
-                <div className="column is-4">
-                    <Link className="button is-orange is-4 is-fullwidth is-large" to={'/s/qc/document'}>
-                        {'test rwd'}
-                    </Link>
-                </div>
-                <div className="column is-4">
-                    <a className="button is-orange is-4 is-fullwidth is-large" href={'/native/pad/bundle/upload'}>
-                        {'test upload'}
-                    </a>
-                </div>
+                }
             </div>
         )
     }
