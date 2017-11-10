@@ -47,6 +47,7 @@ export default class Job extends React.Component{
                 console.log(response.data)
             } else {
                 console.log(response.data)
+                window.location = '/web/login/ppm'
             }
         }).catch(function (error) {
             console.log(error)
@@ -68,6 +69,7 @@ export default class Job extends React.Component{
                 self.setState({ lock: false })
             } else {
                 console.log(response.data)
+                window.location = '/web/login/ppm'
             }
         }).catch(function (error) {
             console.log(error)
@@ -141,6 +143,7 @@ export default class Job extends React.Component{
                     self.setState({ lock: false })
                 } else {
                     console.log(response.data)
+                    window.location = '/web/login/ppm'
                 }
             }).catch(function (error) {
                 console.log(error)
@@ -166,6 +169,7 @@ export default class Job extends React.Component{
                     self.props.router.push('/auth/web/mpb/packing/list')
                 } else {
                     console.log(response.data)
+                    window.location = '/web/login/ppm'
                 }
             }).catch(function (error) {
                 console.log(error)
