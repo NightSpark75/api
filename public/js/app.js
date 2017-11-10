@@ -15479,6 +15479,7 @@ var Job = function (_React$Component) {
                     console.log(response.data);
                 } else {
                     console.log(response.data);
+                    window.location = '/web/login/ppm';
                 }
             }).catch(function (error) {
                 console.log(error);
@@ -16145,6 +16146,7 @@ var Job = function (_React$Component) {
                     console.log(response.data);
                 } else {
                     console.log(response.data);
+                    window.location = '/web/login/ppm';
                 }
             }).catch(function (error) {
                 console.log(error);
@@ -16832,6 +16834,7 @@ var Job = function (_React$Component) {
                     console.log(response.data);
                 } else {
                     console.log(response.data);
+                    window.location = '/web/login/ppm';
                 }
             }).catch(function (error) {
                 console.log(error);

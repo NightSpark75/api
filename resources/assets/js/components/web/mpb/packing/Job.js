@@ -41,6 +41,7 @@ export default class Job extends React.Component{
                 console.log(response.data)
             } else {
                 console.log(response.data)
+                window.location = '/web/login/ppm'
             }
         }).catch(function (error) {
             console.log(error)
