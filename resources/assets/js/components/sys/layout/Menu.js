@@ -35,13 +35,13 @@ export default class Menu extends React.Component{
         let row = list.length / 4
         return(   
             <div className="columns is-multiline" style={{margin: '0px'}}>
-                { list.map((item, index) => (
+                {list.map((item, index) => (
                     <div className="column is-4" key={item['prg_id']}>
                         <Link className="button is-orange is-4 is-fullwidth is-large" to={item['web_route']}>
                             {item['prg_name']}
                         </Link>
                     </div>
-                )) }
+                ))}
                 {list.length === 0 && 
                     <label className="label is-large">功能清單建立中...</label> 
                 }

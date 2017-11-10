@@ -25,12 +25,24 @@ import Package_Job from "./components/web/mpb/package/Job"
 import Package_Working from "./components/web/mpb/package/Working"
 import QCPartInfo from "./components/web/mpe/qc/part/Info"
 
+import Menu1 from "./components/test/menu1"
+import page1 from "./components/test/page1"
+import page2 from "./components/test/page2"
+import page3 from "./components/test/page3"
+
 const app = document.getElementById('app')
 
 ReactDOM.render(
     <Router history={browserHistory}>
         <Route path="/">
             <IndexRoute component={Hello}></IndexRoute>
+        </Route>
+        <Route path="test">
+            <Route path="menu1" component={Menu1}>
+                <Route path="page1" component={page1}></Route>
+                <Route path="page2" component={page2}></Route>
+                <Route path="page3" component={page3}></Route>
+            </Route>
         </Route>
         <Route path="s" component={SinglePage}>
             <Route path="file/upload/:store_type/:file_id/:user_id" component={Upload}></Route>
