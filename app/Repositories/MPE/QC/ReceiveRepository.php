@@ -97,13 +97,14 @@ class ReceiveRepository
                         'rmk' => $rmk,
                         'duser' => $user,
                         'amt' => $item->amt,
+                        'unit' => $item->unit,
                     ];
 
                     DB::insert("
                         insert into mpe_rec_d
-                            (code, sinnum, barcode, partno, whouse, stor, grid, batch, rmk, duser, ddate, usize)
+                            (code, sinnum, barcode, partno, whouse, stor, grid, batch, rmk, duser, ddate, usize, unit)
                         values
-                            (:code, :sinnum, :barcode, :partno, :whouse, :stor, :grid, :batch, :rmk, :duser, sysdate, :amt)
+                            (:code, :sinnum, :barcode, :partno, :whouse, :stor, :grid, :batch, :rmk, :duser, sysdate, :amt, :unit)
                     ", $binds);
 
                     $barcode = $item->barcode;
