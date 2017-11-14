@@ -50,6 +50,7 @@ class ProductionRepository
                     pk_mpa.fu_rno_name(d.rno) rname,
                     pk_mpb.fu_oredr_m_msg('1', d.sno)||chr(13)||pk_mpb.fu_oredr_m_msg('2', d.sno)||chr(13)||
                         '用料號='||pk_mpb.fu_oredr_d_msg('1', d.sno, d.psno) as info
+                    , pk_mpb.fu_check_litm(d.sno, d.psno) check_litm
                 from mpb_order_d d
                 where $where
                 order by d.sno, d.psno
@@ -148,8 +149,9 @@ class ProductionRepository
             }
         }
         return [
-            'result' => false,
+            'result' => true,
             'msg' => '清單無更新',
+            'job_list' => $current,
         ];
     }
 
@@ -530,5 +532,28 @@ class ProductionRepository
             DB::rollback();
             return $this->exception($e);
         }
+    }
+
+    public function getMaterial($input)
+    {
+        $sno = $input['sno'];
+        $psno = $input['psno'];
+        try {
+            $info = DB::selectOne("
+                select pk_mpb.fu_oredr_m_msg('1', 'SP17000003') minfo
+                    ,pk_mpb.fu_oredr_m_msg('2', 'SP17000003') sinfo
+                    ,pk_mpb.fu_oredr_d_msg('1', 'SP17000003', 300) minfo
+                from dual
+            ");
+            $material = DB::select("
+                select *
+                from mpb_order_e
+                where sno = '$sno' and psno = $psno
+            ");
+            return $this->success(['info' => $info, 'material' => $material]);
+        } catch (Exception $e) {
+            return $this->exception($e);
+        }
+
     }
 }   

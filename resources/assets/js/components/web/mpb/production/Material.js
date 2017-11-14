@@ -1,17 +1,18 @@
 /** 
- * packing.Job.js
+ * production.material.js
  */
 import React from 'react'
 import { Link } from 'react-router'
 import axios from 'axios'
 
-export default class Job extends React.Component{
+export default class Material extends React.Component{
     constructor(props) {
         super(props)
 
         this.state = {
             ready: false,
-            job_list: [],
+            info: [],
+            material: [],
             showInfo: false,
             item: [],
         }
@@ -27,21 +28,22 @@ export default class Job extends React.Component{
     }
 
     init() {
-        this.getJobList()
+        const { sno, psno } = this.props
+        this.getMaterialList(sno, psno)
     }
 
-    getJobList() {
+    getMaterialList(sno, psno) {
         let self = this       
-        axios.get('/api/web/mpb/prod/packing/list')
+        axios.get('/api/web/mpb/prod/production/material/' + sno + '/' + psno)
         .then(function (response) {
             if (response.data.result) {
                 self.setState({
-                    job_list: response.data.job_list,
+                    info: response.data.info,
+                    material: response.data.material,
                 })
                 console.log(response.data)
             } else {
                 console.log(response.data)
-                window.location = '/web/login/ppm'
             }
         }).catch(function (error) {
             console.log(error)
@@ -53,7 +55,7 @@ export default class Job extends React.Component{
         let job_list = JSON.stringify(this.state.job_list)
         let form_data = new FormData()
         form_data.append('job_list', job_list)
-        axios.post('/api/web/mpb/prod/packing/compare', form_data)
+        axios.post('/api/web/mpb/prod/production/compare', form_data)
         .then(function (response) {
             if (response.data.result) {
                 self.setState({
@@ -62,6 +64,7 @@ export default class Job extends React.Component{
                 console.log(response.data)
             } else {
                 console.log(response.data)
+                window.location = '/web/login/ppm'
             }
         }).catch(function (error) {
             console.log(error)
@@ -84,29 +87,27 @@ export default class Job extends React.Component{
 
     render() {
         const { job_list } = this.state 
+        const { sno } = this.props
         return(   
             <div>
                 <div className="box" style={{ marginTop: '10px', marginBottom: '10px' }}>
                     <p className="control">
-                        <Link className="button is-medium" to="/auth/web/menu">&larr; 功能選單</Link>
+                        <Link className="button is-medium" to="/auth/web/menu">&larr; 功能選單</Link> 
                     </p>
                 </div>
-                {this.state.showInfo &&  
-                    <article className="message is-info" style={{ marginBottom: '10px' }}>
-                        <div className="message-header is-size-4">
-                            <p>製程單號{this.state.item.sno}詳細資訊</p>
-                            <button className="delete " aria-label="delete" onClick={this.hideProcessInfo.bind(this)}></button>
-                        </div>
-                        <div className="message-body is-size-4">
-                            {this.state.item.info}
-                        </div>
-                    </article>
-                }
                 {job_list.length > 0 ?
                     <div>
                         <div className="column is-hidden-desktop">
                             <label className="is-size-4">請將畫面轉橫</label>
                         </div>
+                        <article className="message is-info" style={{ marginBottom: '10px' }}>
+                            <div className="message-header is-size-4 is-hidden-touch">
+                                <p>製程單號{sno}詳細資訊</p>
+                            </div>
+                            <div className="message-body is-size-4">
+                                {this.state.item.info}
+                            </div>
+                        </article>
                         <table className="table is-bordered is-fullwidth is-size-4 is-hidden-touch">
                             <thead>
                                 <tr>
@@ -133,8 +134,14 @@ export default class Job extends React.Component{
                                         <td>{item.mno}</td>
                                         <td>{item.rname}</td>
                                         <td>
-                                            <Link className="button is-primary is-medium" 
-                                                to={"/auth/web/mpb/packing/working/" + item.sno + "/" + item.psno}>報工</Link>
+                                            {item.check_litm > 0 ?
+                                                <Link className="button is-primary is-medium" 
+                                                    to={"/auth/web/mpb/prod/working/" + item.sno + "/" + item.psno}>報工</Link>
+                                            :
+                                                <Link className="button is-primary is-medium" 
+                                                    to={"/auth/web/mpb/prod/working/" + item.sno + "/" + item.psno}>報工</Link>
+                                            }
+                                            
                                         </td>
                                     </tr>
                                 ))}

@@ -95,4 +95,12 @@ class ProductionController extends Controller
         $response = response()->json($result);
         return $response;
     }
+
+    public function material()
+    {
+        $input request()->all();
+        $result = $this->work->getMaterial($input);
+        $response = response()->json($result);
+        return $response;
+    }
 }
