@@ -114,9 +114,10 @@ class ReceiveRepository
                         update mpe_house_e e
                         set sta = 'Y'
                             , opdate = case when opdate is null then to_number(to_char(sysdate, 'YYYYMMDD')) else opdate end
-                            , opvl = $opvl
+                            , opvl = :opvl
+                            , rmk = :rmk
                         where e.barcode = :barcode
-                    ", ['barcode' => $barcode]);
+                    ", ['barcode' => $barcode, 'opvl' => $opvl, 'rmk' => $rmk]);
 
                     DB::update("
                         update mpe_mate m
