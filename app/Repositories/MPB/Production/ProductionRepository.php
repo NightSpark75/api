@@ -533,4 +533,27 @@ class ProductionRepository
             return $this->exception($e);
         }
     }
+
+    public function getMaterial($input)
+    {
+        $sno = $input['sno'];
+        $psno = $input['psno'];
+        try {
+            $info = DB::selectOne("
+                select pk_mpb.fu_oredr_m_msg('1', 'SP17000003') minfo
+                    ,pk_mpb.fu_oredr_m_msg('2', 'SP17000003') sinfo
+                    ,pk_mpb.fu_oredr_d_msg('1', 'SP17000003', 300) minfo
+                from dual
+            ");
+            $material = DB::select("
+                select *
+                from mpb_order_e
+                where sno = '$sno' and psno = $psno
+            ");
+            return $this->success(['info' => $info, 'material' => $material]);
+        } catch (Exception $e) {
+            return $this->exception($e);
+        }
+
+    }
 }   
