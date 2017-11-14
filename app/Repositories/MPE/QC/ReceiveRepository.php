@@ -115,9 +115,6 @@ class ReceiveRepository
                         set sta = 'Y'
                             , opdate = case when opdate is null then to_number(to_char(sysdate, 'YYYYMMDD')) else opdate end
                             , opvl = $opvl
-                                from mpe_mate m
-                                where e.partno = m.partno
-                            )
                         where e.barcode = :barcode
                     ", ['barcode' => $barcode]);
 
