@@ -17160,7 +17160,12 @@ var Job = function (_React$Component) {
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         'td',
                                         null,
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        item.check_litm > 0 ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            __WEBPACK_IMPORTED_MODULE_1_react_router__["e" /* Link */],
+                                            { className: 'button is-primary is-medium',
+                                                to: "/auth/web/mpb/prod/working/" + item.sno + "/" + item.psno },
+                                            '\u5831\u5DE5'
+                                        ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             __WEBPACK_IMPORTED_MODULE_1_react_router__["e" /* Link */],
                                             { className: 'button is-primary is-medium',
                                                 to: "/auth/web/mpb/prod/working/" + item.sno + "/" + item.psno },

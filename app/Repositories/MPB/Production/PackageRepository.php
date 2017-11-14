@@ -148,8 +148,9 @@ class PackageRepository
             }
         }
         return [
-            'result' => false,
+            'result' => true,
             'msg' => '清單無更新',
+            'job_list' => $current,
         ];
     }
 
