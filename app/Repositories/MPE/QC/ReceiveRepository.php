@@ -84,7 +84,7 @@ class ReceiveRepository
 
                 for ($i = 0; $i < count($receive_list); $i++) {
                     $item = $receive_list[$i];
-
+                    $rmk = "領用單號：$rec_no";
                     $binds = [
                         'code' => $item->code,
                         'sinnum' => $rec_no,
@@ -94,7 +94,7 @@ class ReceiveRepository
                         'stor' => $item->stor,
                         'grid' => $item->grid,
                         'batch' => $item->batch,
-                        'rmk' => $item->rmk,
+                        'rmk' => $rmk,
                         'duser' => $user,
                         'amt' => $item->amt,
                     ];
@@ -106,27 +106,19 @@ class ReceiveRepository
                             (:code, :sinnum, :barcode, :partno, :whouse, :stor, :grid, :batch, :rmk, :duser, sysdate, :amt)
                     ", $binds);
 
+                    $barcode = $item->barcode;
+                    $opvl = DB::selectOne("select pk_mpe.fu_qc_get_valid($barcode) opvl from dual")->opvl;
+
                     DB::update("
                         update mpe_house_e e
                         set sta = 'Y'
                             , opdate = case when opdate is null then to_number(to_char(sysdate, 'YYYYMMDD')) else opdate end
-                            , opvl = (
-                                select 
-                                case 
-                                when e.valid > (
-                                    case 
-                                    when typ = 'A' then to_number(to_char(add_months(sysdate, 24)-1, 'YYYYMMDD'))
-                                    when typ = 'B' then to_number(to_char(add_months(sysdate, 12)-1, 'YYYYMMDD'))
-                                    end) 
-                                    then (case when typ = 'A' then to_number(to_char(add_months(sysdate, 24)-1, 'YYYYMMDD'))
-                                    when typ = 'B' then to_number(to_char(add_months(sysdate, 12)-1, 'YYYYMMDD')) end)
-                                else e.valid 
-                                end
+                            , opvl = $opvl
                                 from mpe_mate m
                                 where e.partno = m.partno
                             )
                         where e.barcode = :barcode
-                    ", ['barcode' => $item->barcode]);
+                    ", ['barcode' => $barcode]);
 
                     DB::update("
                         update mpe_mate m
