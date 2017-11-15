@@ -135,7 +135,7 @@ export default class Job extends React.Component{
                                         <td>
                                             {item.check_litm > 0 ?
                                                 <Link className="button is-primary is-medium" 
-                                                    to={"/auth/web/mpb/prod/working/" + item.sno + "/" + item.psno}>報工</Link>
+                                                    to={"/auth/web/mpb/prod/material/" + item.sno + "/" + item.psno}>領料確認</Link>
                                             :
                                                 <Link className="button is-primary is-medium" 
                                                     to={"/auth/web/mpb/prod/working/" + item.sno + "/" + item.psno}>報工</Link>

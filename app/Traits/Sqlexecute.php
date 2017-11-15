@@ -106,7 +106,7 @@ trait Sqlexecute
      * @param string $array success params
      * @return Mix
      */
-    private function success($info)
+    private function success($info = [])
     {
         $info['result'] = true;
         return $info;

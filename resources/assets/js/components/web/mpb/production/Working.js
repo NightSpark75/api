@@ -34,6 +34,9 @@ export default class Job extends React.Component{
         axios.get('/api/web/mpb/prod/production/member/' + sno + '/' + psno)
         .then(function (response) {
             if (response.data.result) {
+                if (response.data.non_check) {
+                    window.location = '/auth/web/mpb/prod/material/' + sno + '/' + psno
+                }
                 if (!self.state.updated) {
                     self.setState({
                         waiting_list: response.data.waiting,

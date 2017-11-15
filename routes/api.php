@@ -67,6 +67,8 @@ Route::group(['prefix' => 'web/mpb', 'namespace' => 'MPB'], function () {
         Route::get('production/list', 'ProductionController@getProduction');
         Route::post('production/compare', 'ProductionController@compare');
         Route::get('production/member/{sno}/{psno}', 'ProductionController@member');
+        Route::get('production/material/{sno}/{psno}', 'ProductionController@material');
+        Route::post('production/material/check', 'ProductionController@checkMaterial');
         Route::post('production/working/join', 'ProductionController@joinWorking');
         Route::post('production/working/leave', 'ProductionController@leaveWorking');
         Route::post('production/all/join', 'ProductionController@allJoinWorking');

@@ -165,6 +165,11 @@ class ProductionRepository
     public function getMember($sno, $psno)
     {
         try {
+            $non_check = DB::selectOne("select pk_mpb.fu_check_litm('$sno', $psno) v_check from dual")->v_check;
+            if ($non_check > 0) {
+                return $this->success(['non_check' => true]);
+            }
+
             $prod = $this->getProcessInfo($sno, $psno);
             $rno = $prod->rno;
             $mno = $prod->mno;
@@ -534,15 +539,13 @@ class ProductionRepository
         }
     }
 
-    public function getMaterial($input)
+    public function getMaterial($sno, $psno)
     {
-        $sno = $input['sno'];
-        $psno = $input['psno'];
         try {
             $info = DB::selectOne("
                 select pk_mpb.fu_oredr_m_msg('1', 'SP17000003') minfo
                     ,pk_mpb.fu_oredr_m_msg('2', 'SP17000003') sinfo
-                    ,pk_mpb.fu_oredr_d_msg('1', 'SP17000003', 300) minfo
+                    ,pk_mpb.fu_oredr_d_msg('1', 'SP17000003', 300) mainfo
                 from dual
             ");
             $material = DB::select("
@@ -555,5 +558,29 @@ class ProductionRepository
             return $this->exception($e);
         }
 
+    }
+
+    public function checkMaterial($sno, $psno)
+    {
+        try {
+            // 如果已經完成領料確認程序，即不再更新領料確認資訊
+            $isCheck = DB::selectOne("
+                select count(*) v_check
+                from mpb_order_e
+                where sno = '$sno' and psno = $psno and ukid is null
+            ")->v_check;
+
+            if ($isCheck > 0) {
+                $user = auth()->user()->id;
+                DB::update("
+                    update mpb_order_e
+                    set ukid = '$user', duser = '$user', ddate = sysdate
+                    where sno = '$sno' and psno = $psno
+                ");
+            }
+            return $this->success();
+        } catch (Exception $e) {
+            return $this->exception($e);
+        }
     }
 }   

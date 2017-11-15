@@ -96,10 +96,19 @@ class ProductionController extends Controller
         return $response;
     }
 
-    public function material()
+    public function material($sno, $psno)
     {
-        $input request()->all();
-        $result = $this->work->getMaterial($input);
+        $result = $this->work->getMaterial($sno, $psno);
+        $response = response()->json($result);
+        return $response;
+    }
+
+    public function checkMaterial()
+    {
+        $input = request()->all();
+        $sno = $input['sno'];
+        $psno = $input['psno'];
+        $result = $this->work->checkMaterial($sno, $psno);
         $response = response()->json($result);
         return $response;
     }
