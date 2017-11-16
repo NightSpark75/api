@@ -154,8 +154,8 @@ export default class Job extends React.Component{
         }
     }
 
-    workingComplete(clean, event) {
-        let msg =  (clean === 'N') ? '按確定後, 該製程完工(無清潔)..' : '按確定後,該製程完工(清潔)..'
+    workingComplete(event) {
+        let msg = '按確定後, 該製程完工!'
         if(confirm(msg)) {
             this.setState({ lock: true })
             let self = this
@@ -163,7 +163,6 @@ export default class Job extends React.Component{
             let form_data = new FormData()   
             form_data.append('sno', sno) 
             form_data.append('psno', psno)
-            form_data.append('clean', clean)
             axios.post('/api/web/mpb/prod/production/work/complete', form_data)
             .then(function (response) {
                 if (response.data.result) {
@@ -203,7 +202,7 @@ export default class Job extends React.Component{
                             </div>
                             */}
                             <div className="level-item">
-                                <button className="button is-primary is-large" onClick={this.workingComplete.bind(this, 'Y')} disabled={ lock }>結束且完工</button>
+                                <button className="button is-primary is-large" onClick={this.workingComplete.bind(this)} disabled={ lock }>結束且完工</button>
                             </div>
                         </div>
                     </div>

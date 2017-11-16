@@ -514,7 +514,7 @@ class ProductionRepository
 
                 DB::update("
                     update mpb_order_d
-                    set state = 'Y', clean = :clean
+                    set state = 'Y', clean = ''
                     where sno = :sno and psno = :psno
                 ", $params);
 

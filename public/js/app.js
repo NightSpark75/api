@@ -17697,8 +17697,8 @@ var Job = function (_React$Component) {
         }
     }, {
         key: 'workingComplete',
-        value: function workingComplete(clean, event) {
-            var msg = clean === 'N' ? '按確定後, 該製程完工(無清潔)..' : '按確定後,該製程完工(清潔)..';
+        value: function workingComplete(event) {
+            var msg = '按確定後, 該製程完工!';
             if (confirm(msg)) {
                 this.setState({ lock: true });
                 var self = this;
@@ -17709,7 +17709,6 @@ var Job = function (_React$Component) {
                 var form_data = new FormData();
                 form_data.append('sno', sno);
                 form_data.append('psno', psno);
-                form_data.append('clean', clean);
                 __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpb/prod/production/work/complete', form_data).then(function (response) {
                     if (response.data.result) {
                         console.log(response.data);
@@ -17780,7 +17779,7 @@ var Job = function (_React$Component) {
                                 { className: 'level-item' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'button',
-                                    { className: 'button is-primary is-large', onClick: this.workingComplete.bind(this, 'Y'), disabled: lock },
+                                    { className: 'button is-primary is-large', onClick: this.workingComplete.bind(this), disabled: lock },
                                     '\u7D50\u675F\u4E14\u5B8C\u5DE5'
                                 )
                             )
