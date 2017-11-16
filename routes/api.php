@@ -75,6 +75,13 @@ Route::group(['prefix' => 'web/mpb', 'namespace' => 'MPB'], function () {
         Route::post('production/all/leave', 'ProductionController@allLeaveWorking');
         Route::post('production/work/complete', 'ProductionController@workComplete');
 
+        Route::get('clean/list', 'CleanController@getCleanJob');
+        Route::get('clean/compare', 'CleanController@compare');
+        Route::get('clean/dept/{deptno}', 'CleanController@dept');
+        Route::get('clean/member/{sno}/{deptno}', 'CleanController@member')
+        Route::post('clean/working/join', 'CleanController@joinWorking');
+        Route::post('clean/working/leave', 'CleanController@leaveWorking');
+
         Route::get('packing/list', 'PackingController@getPacking');
         Route::post('packing/compare', 'PackingController@compare');
         Route::get('packing/member/{sno}/{psno}', 'PackingController@member');

@@ -13559,16 +13559,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_web_mpb_production_Job__ = __webpack_require__(156);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_web_mpb_production_Working__ = __webpack_require__(158);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__components_web_mpb_production_Material__ = __webpack_require__(157);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__components_web_mpb_packing_Job__ = __webpack_require__(154);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__components_web_mpb_packing_Working__ = __webpack_require__(155);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__components_web_mpb_package_Job__ = __webpack_require__(152);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__components_web_mpb_package_Working__ = __webpack_require__(153);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__components_web_mpe_qc_part_Info__ = __webpack_require__(163);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__components_test_menu1__ = __webpack_require__(148);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__components_test_page1__ = __webpack_require__(149);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__components_test_page2__ = __webpack_require__(150);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__components_test_page3__ = __webpack_require__(151);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__components_web_mpb_clean_Job__ = __webpack_require__(310);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__components_web_mpb_clean_Dept__ = __webpack_require__(308);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__components_web_mpb_clean_Working__ = __webpack_require__(309);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__components_web_mpb_packing_Job__ = __webpack_require__(154);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__components_web_mpb_packing_Working__ = __webpack_require__(155);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__components_web_mpb_package_Job__ = __webpack_require__(152);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__components_web_mpb_package_Working__ = __webpack_require__(153);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__components_web_mpe_qc_part_Info__ = __webpack_require__(163);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__components_test_menu1__ = __webpack_require__(148);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__components_test_page1__ = __webpack_require__(149);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__components_test_page2__ = __webpack_require__(150);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__components_test_page3__ = __webpack_require__(151);
 // v 1.23.5
+
+
+
 
 
 
@@ -13616,10 +13622,10 @@ __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
         { path: "test" },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             __WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */],
-            { path: "menu1", component: __WEBPACK_IMPORTED_MODULE_25__components_test_menu1__["a" /* default */] },
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "page1", component: __WEBPACK_IMPORTED_MODULE_26__components_test_page1__["a" /* default */] }),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "page2", component: __WEBPACK_IMPORTED_MODULE_27__components_test_page2__["a" /* default */] }),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "page3", component: __WEBPACK_IMPORTED_MODULE_28__components_test_page3__["a" /* default */] })
+            { path: "menu1", component: __WEBPACK_IMPORTED_MODULE_28__components_test_menu1__["a" /* default */] },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "page1", component: __WEBPACK_IMPORTED_MODULE_29__components_test_page1__["a" /* default */] }),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "page2", component: __WEBPACK_IMPORTED_MODULE_30__components_test_page2__["a" /* default */] }),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "page3", component: __WEBPACK_IMPORTED_MODULE_31__components_test_page3__["a" /* default */] })
         )
     ),
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -13630,7 +13636,7 @@ __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             __WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */],
             { path: "qc" },
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "document", component: __WEBPACK_IMPORTED_MODULE_24__components_web_mpe_qc_part_Info__["a" /* default */] })
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "document", component: __WEBPACK_IMPORTED_MODULE_27__components_web_mpe_qc_part_Info__["a" /* default */] })
         )
     ),
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -13658,15 +13664,22 @@ __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */],
+                    { path: "clean" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "list", component: __WEBPACK_IMPORTED_MODULE_20__components_web_mpb_clean_Job__["a" /* default */] }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "dept/:sno", component: Clean_dept }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "working/:sno/:deptno", component: __WEBPACK_IMPORTED_MODULE_22__components_web_mpb_clean_Working__["a" /* default */] })
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */],
                     { path: "package" },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "list", component: __WEBPACK_IMPORTED_MODULE_22__components_web_mpb_package_Job__["a" /* default */] }),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "working/:sno/:psno", component: __WEBPACK_IMPORTED_MODULE_23__components_web_mpb_package_Working__["a" /* default */] })
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "list", component: __WEBPACK_IMPORTED_MODULE_25__components_web_mpb_package_Job__["a" /* default */] }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "working/:sno/:psno", component: __WEBPACK_IMPORTED_MODULE_26__components_web_mpb_package_Working__["a" /* default */] })
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */],
                     { path: "packing" },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "list", component: __WEBPACK_IMPORTED_MODULE_20__components_web_mpb_packing_Job__["a" /* default */] }),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "working/:sno/:psno", component: __WEBPACK_IMPORTED_MODULE_21__components_web_mpb_packing_Working__["a" /* default */] })
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "list", component: __WEBPACK_IMPORTED_MODULE_23__components_web_mpb_packing_Job__["a" /* default */] }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* Route */], { path: "working/:sno/:psno", component: __WEBPACK_IMPORTED_MODULE_24__components_web_mpb_packing_Working__["a" /* default */] })
                 )
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -41104,6 +41117,620 @@ module.exports = function (str) {
 __webpack_require__(123);
 module.exports = __webpack_require__(124);
 
+
+/***/ }),
+/* 302 */,
+/* 303 */,
+/* 304 */,
+/* 305 */,
+/* 306 */,
+/* 307 */,
+/* 308 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/** 
+ * clean.Dept.js
+ */
+
+
+
+
+var Dept = function (_React$Component) {
+    _inherits(Dept, _React$Component);
+
+    function Dept(props) {
+        _classCallCheck(this, Dept);
+
+        var _this = _possibleConstructorReturn(this, (Dept.__proto__ || Object.getPrototypeOf(Dept)).call(this, props));
+
+        _this.state = {
+            ready: false,
+            sno: _this.props.sno,
+            dept_list: [],
+            showInfo: false,
+            item: []
+        };
+        return _this;
+    }
+
+    _createClass(Dept, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.init();
+        }
+    }, {
+        key: 'init',
+        value: function init() {
+            this.getDeptList();
+        }
+    }, {
+        key: 'getDeptList',
+        value: function getDeptList() {
+            var self = this;
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/web/mpb/prod/clean/dept/' + sno).then(function (response) {
+                if (response.data.result) {
+                    self.setState({
+                        dept_list: response.data.dept_list
+                    });
+                    console.log(response.data);
+                } else {
+                    console.log(response.data);
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _state = this.state,
+                sno = _state.sno,
+                dept_list = _state.dept_list;
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'box', style: { marginTop: '10px', marginBottom: '10px' } },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'p',
+                        { className: 'control' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_1_react_router__["e" /* Link */],
+                            { className: 'button is-medium', to: '/auth/web/mpb/clean/list' },
+                            '\u2190 \u5DE5\u55AE\u5217\u8868'
+                        )
+                    )
+                ),
+                dept_list.length && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'columns is-multiline', style: { margin: '0px' } },
+                    dept_list.map(function (item, index) {
+                        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'column is-4', key: index },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_react_router__["e" /* Link */],
+                                { className: 'button is-orange is-4 is-fullwidth is-large',
+                                    to: '/auth/web/mpb/clean/working/' + sno + '/' + item['deptno'] },
+                                item['dname']
+                            )
+                        );
+                    })
+                )
+            );
+        }
+    }]);
+
+    return Dept;
+}(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
+
+/* unused harmony default export */ var _unused_webpack_default_export = (Dept);
+
+/***/ }),
+/* 309 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/** 
+ * clean.Working.js
+ */
+
+
+
+
+var Job = function (_React$Component) {
+    _inherits(Job, _React$Component);
+
+    function Job(props) {
+        _classCallCheck(this, Job);
+
+        var _this = _possibleConstructorReturn(this, (Job.__proto__ || Object.getPrototypeOf(Job)).call(this, props));
+
+        _this.state = {
+            sno: _this.props.params.sno,
+            deptno: _this.props.params.deptno,
+            waiting_list: [],
+            working_list: [],
+            updated: false,
+            lock: false
+        };
+        return _this;
+    }
+
+    _createClass(Job, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.getMember();
+            this.timer = setInterval(this.getMember.bind(this), 5000);
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            this.timer && clearInterval(this.timer);
+        }
+    }, {
+        key: 'getMember',
+        value: function getMember() {
+            var _state = this.state,
+                sno = _state.sno,
+                deptno = _state.deptno;
+
+            var self = this;
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/web/mpb/prod/clean/member/' + sno + '/' + deptno).then(function (response) {
+                if (response.data.result) {
+                    if (response.data.non_check) {
+                        window.location = '/auth/web/mpb/clean/dept/' + sno;
+                    }
+                    if (!self.state.updated) {
+                        self.setState({
+                            waiting_list: response.data.waiting,
+                            working_list: response.data.working
+                        });
+                    } else {
+                        self.setState({
+                            updated: false
+                        });
+                    }
+                    console.log(response.data);
+                } else {
+                    console.log(response.data);
+                    window.location = '/web/login/ppm';
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }, {
+        key: 'updateWorking',
+        value: function updateWorking(empno, action, event) {
+            var _state2 = this.state,
+                waiting_list = _state2.waiting_list,
+                working_list = _state2.working_list,
+                sno = _state2.sno,
+                psno = _state2.psno;
+
+            this.setState({ lock: true });
+            var self = this;
+            var form_data = new FormData();
+            form_data.append('sno', sno);
+            form_data.append('psno', psno);
+            form_data.append('empno', empno);
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpb/prod/production/working/' + action, form_data).then(function (response) {
+                if (response.data.result) {
+                    console.log(response.data);
+                    self.setState({ lock: false });
+                } else {
+                    console.log(response.data);
+                    window.location = '/web/login/ppm';
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+            if (action === 'join') {
+                self.updateList(working_list, waiting_list, action, empno);
+            } else {
+                self.updateList(waiting_list, working_list, action, empno);
+            }
+        }
+    }, {
+        key: 'updateList',
+        value: function updateList(add, remove, action, empno) {
+            for (var r = 0; r < remove.length; r++) {
+                if (remove[r]['empno'] === empno) {
+                    add.push(remove[r]);
+                    remove.splice(r, 1);
+                    if (action === 'join') {
+                        this.setState({
+                            working_list: add,
+                            waiting_list: remove,
+                            updated: true
+                        });
+                    } else {
+                        this.setState({
+                            working_list: remove,
+                            waiting_list: add,
+                            updated: true
+                        });
+                    }
+                    return;
+                }
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var _state3 = this.state,
+                job_list = _state3.job_list,
+                lock = _state3.lock;
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'box', style: { marginTop: '10px', marginBottom: '10px' } },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'level' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'level-left' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'level-item' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_1_react_router__["e" /* Link */],
+                                    { className: 'button is-medium', to: '/auth/web/mpb/clean/dept' },
+                                    '\u2190 \u9078\u64C7\u80A1\u5225'
+                                )
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'column is-hidden-desktop' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'label',
+                        { className: 'is-size-4' },
+                        '\u8ACB\u5C07\u756B\u9762\u8F49\u6A6B'
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'columns is-hidden-touch' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'column' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'article',
+                            { className: 'message is-success' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'message-header' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'h4',
+                                    { className: 'title is-3 has-text-white-ter' },
+                                    '\u5F85\u6D3E\u5DE5\u751F\u7522\u4EBA\u54E1'
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'message-body', style: { height: '450px' } },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'field is-grouped is-grouped-multiline' },
+                                    this.state.waiting_list.map(function (item, index) {
+                                        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'p',
+                                            { className: 'control', key: index },
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                'button',
+                                                { className: 'button is-success is-large', disabled: lock,
+                                                    onClick: _this2.updateWorking.bind(_this2, item.empno, 'join')
+                                                },
+                                                item.ename
+                                            )
+                                        );
+                                    })
+                                )
+                            )
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'column' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'article',
+                            { className: 'message is-primary' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'message-header' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'h4',
+                                    { className: 'title is-3 has-text-white-ter' },
+                                    '\u76EE\u524D\u751F\u7522\u4EBA\u54E1'
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'message-body', style: { height: '450px' } },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'field is-grouped is-grouped-multiline' },
+                                    this.state.working_list.map(function (item, index) {
+                                        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'p',
+                                            { className: 'control', key: index },
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                'button',
+                                                { className: 'button is-primary is-large', disabled: lock,
+                                                    onClick: _this2.updateWorking.bind(_this2, item.empno, 'leave')
+                                                },
+                                                item.ename
+                                            )
+                                        );
+                                    })
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Job;
+}(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["a"] = (Job);
+
+/***/ }),
+/* 310 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/** 
+ * clean.Job.js
+ */
+
+
+
+
+var Job = function (_React$Component) {
+    _inherits(Job, _React$Component);
+
+    function Job(props) {
+        _classCallCheck(this, Job);
+
+        var _this = _possibleConstructorReturn(this, (Job.__proto__ || Object.getPrototypeOf(Job)).call(this, props));
+
+        _this.state = {
+            ready: false,
+            job_list: [],
+            showInfo: false,
+            item: []
+        };
+        return _this;
+    }
+
+    _createClass(Job, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.init();
+            this.timer = setInterval(this.updateJobList.bind(this), 5000);
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            this.timer && clearInterval(this.timer);
+        }
+    }, {
+        key: 'init',
+        value: function init() {
+            this.getJobList();
+        }
+    }, {
+        key: 'getJobList',
+        value: function getJobList() {
+            var self = this;
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/web/mpb/prod/clean/list').then(function (response) {
+                if (response.data.result) {
+                    self.setState({
+                        job_list: response.data.job_list
+                    });
+                    console.log(response.data);
+                } else {
+                    console.log(response.data);
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }, {
+        key: 'updateJobList',
+        value: function updateJobList() {
+            var self = this;
+            var job_list = JSON.stringify(this.state.job_list);
+            var form_data = new FormData();
+            form_data.append('job_list', job_list);
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpb/prod/clean/compare', form_data).then(function (response) {
+                if (response.data.result) {
+                    self.setState({
+                        job_list: response.data.job_list
+                    });
+                    console.log(response.data);
+                } else {
+                    console.log(response.data);
+                    window.location = '/web/login/ppm';
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var job_list = this.state.job_list;
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'box', style: { marginTop: '10px', marginBottom: '10px' } },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'p',
+                        { className: 'control' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_1_react_router__["e" /* Link */],
+                            { className: 'button is-medium', to: '/auth/web/menu' },
+                            '\u2190 \u529F\u80FD\u9078\u55AE'
+                        )
+                    )
+                ),
+                job_list.length > 0 ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'column is-hidden-desktop' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'label',
+                            { className: 'is-size-4' },
+                            '\u8ACB\u5C07\u756B\u9762\u8F49\u6A6B'
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'table',
+                        { className: 'table is-bordered is-fullwidth is-size-4 is-hidden-touch' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'thead',
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'tr',
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'th',
+                                    null,
+                                    '\u88FD\u7A0B\u55AE\u865F'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'th',
+                                    null,
+                                    '\u77ED\u6599\u865F'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'th',
+                                    null,
+                                    '\u6599\u865F'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'th',
+                                    null,
+                                    '\u6279\u865F'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('th', null)
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'tbody',
+                            null,
+                            job_list.map(function (item, index) {
+                                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'tr',
+                                    { key: index },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'td',
+                                        null,
+                                        item.sno
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'td',
+                                        null,
+                                        item.item
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'td',
+                                        null,
+                                        item.itm
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'td',
+                                        null,
+                                        item.bno
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'td',
+                                        null,
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            __WEBPACK_IMPORTED_MODULE_1_react_router__["e" /* Link */],
+                                            { className: 'button is-primary is-medium',
+                                                to: "/auth/web/mpb/prod/working/dept" + item.dept },
+                                            '\u6E05\u6F54\u5831\u5DE5'
+                                        )
+                                    )
+                                );
+                            })
+                        )
+                    )
+                ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'notification is-warning is-size-4', style: { padding: '1rem 1rem 1rem 1rem' } },
+                    '\u76EE\u524D\u5C1A\u7121\u751F\u7522\u8CC7\u8A0A...'
+                )
+            );
+        }
+    }]);
+
+    return Job;
+}(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["a"] = (Job);
 
 /***/ })
 /******/ ]);

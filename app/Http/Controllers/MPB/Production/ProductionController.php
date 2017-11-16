@@ -26,20 +26,6 @@ class ProductionController extends Controller
         return $response;
     }
 
-    public function getPacking() 
-    {
-        $result = $this->work->getJob('packing');
-        $response = response()->json($result);
-        return $response;
-    }
-
-    public function getPackage() 
-    {
-        $result = $this->work->getJob('package');
-        $response = response()->json($result);
-        return $response;
-    }
-
     public function compare() 
     {
         $input = request()->all();

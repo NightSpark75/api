@@ -20,6 +20,9 @@ import QCReceive from "./components/web/mpe/qc/receive/Receive"
 import Production_Job from "./components/web/mpb/production/Job"
 import Production_Working from "./components/web/mpb/production/Working"
 import Production_Material from "./components/web/mpb/production/Material"
+import Clean_Job from "./components/web/mpb/clean/Job"
+import Clean_Dept from "./components/web/mpb/clean/Dept"
+import Clean_Working from "./components/web/mpb/clean/Working"
 import Packing_Job from "./components/web/mpb/packing/Job"
 import Packing_Working from "./components/web/mpb/packing/Working"
 import Package_Job from "./components/web/mpb/package/Job"
@@ -64,6 +67,11 @@ ReactDOM.render(
                         <Route path="list" component={Production_Job}></Route>
                         <Route path="material/:sno/:psno" component={Production_Material}></Route>
                         <Route path="working/:sno/:psno" component={Production_Working}></Route>
+                    </Route>
+                    <Route path="clean">
+                        <Route path="list" component={Clean_Job}></Route>
+                        <Route path="dept/:sno" component={Clean_dept}></Route>
+                        <Route path="working/:sno/:deptno" component={Clean_Working}></Route>
                     </Route>
                     <Route path="package">
                         <Route path="list" component={Package_Job}></Route>

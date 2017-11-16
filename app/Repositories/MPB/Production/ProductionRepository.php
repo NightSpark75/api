@@ -514,7 +514,7 @@ class ProductionRepository
 
                 DB::update("
                     update mpb_order_d
-                    set state = 'Y', clean = ''
+                    set state = 'Y'
                     where sno = :sno and psno = :psno
                 ", $params);
 
@@ -579,6 +579,22 @@ class ProductionRepository
                 ");
             }
             return $this->success();
+        } catch (Exception $e) {
+            return $this->exception($e);
+        }
+    }
+
+    public function getClearJob()
+    {
+        try {
+            $user_id = auth()->user()->id;
+            $clear = DB::select("
+                select unique m.*
+                from mpb_order_m m, mpa_dept_emp e, mpb_order_f f
+                where m.deptno = e.deptno(+) and m.sno = f.sno 
+                and (e.empno = '$user_id' or f.empno = '$user_id')
+            ");
+            return $this->success(['clearJob' => $clear]);
         } catch (Exception $e) {
             return $this->exception($e);
         }
