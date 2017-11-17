@@ -11,7 +11,8 @@ export default class Dept extends React.Component{
 
         this.state = {
             ready: false,
-            sno: this.props.sno,
+            sno: this.props.params.sno,
+            deptno: this.props.params.deptno,
             dept_list: [],
             showInfo: false,
             item: [],
@@ -28,7 +29,8 @@ export default class Dept extends React.Component{
 
     getDeptList() {
         let self = this       
-        axios.get('/api/web/mpb/prod/clean/dept/' + sno)
+        let { deptno } = this.state
+        axios.get('/api/web/mpb/prod/clean/dept/' + deptno)
         .then(function (response) {
             if (response.data.result) {
                 self.setState({
@@ -52,7 +54,7 @@ export default class Dept extends React.Component{
                         <Link className="button is-medium" to="/auth/web/mpb/clean/list">&larr; 工單列表</Link> 
                     </p>
                 </div>
-                {dept_list.length &&
+                {dept_list.length !== 0 &&
                     <div className="columns is-multiline" style={{margin: '0px'}}>
                         {dept_list.map((item, index) => (
                             <div className="column is-4" key={index}>

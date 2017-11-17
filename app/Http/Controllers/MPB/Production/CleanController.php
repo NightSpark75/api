@@ -35,9 +35,16 @@ class CleanController extends Controller
         return $response;
     }
 
-    public function member($sno, $psno)
+    public function dept($deptno)
     {
-        $result = $this->work->getMember($sno, $psno);
+        $result = $this->work->getDept($deptno);
+        $response = response()->json($result);
+        return $response;
+    }
+
+    public function member($sno, $deptno)
+    {
+        $result = $this->work->getMember($sno, $deptno);
         $response = response()->json($result);
         return $response;
     }

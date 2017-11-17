@@ -70,7 +70,7 @@ ReactDOM.render(
                     </Route>
                     <Route path="clean">
                         <Route path="list" component={Clean_Job}></Route>
-                        <Route path="dept/:sno" component={Clean_dept}></Route>
+                        <Route path="dept/:sno/:deptno" component={Clean_Dept}></Route>
                         <Route path="working/:sno/:deptno" component={Clean_Working}></Route>
                     </Route>
                     <Route path="package">

@@ -58,14 +58,13 @@ export default class Job extends React.Component{
     }
 
     updateWorking(empno, action, event) {
-        const { waiting_list, working_list, sno, psno } = this.state
+        const { waiting_list, working_list, sno } = this.state
         this.setState({lock: true})
         let self = this    
         let form_data = new FormData()   
         form_data.append('sno', sno) 
-        form_data.append('psno', psno)
         form_data.append('empno', empno)
-        axios.post('/api/web/mpb/prod/production/working/' + action, form_data)
+        axios.post('/api/web/mpb/prod/clean/working/' + action, form_data)
         .then(function (response) {
             if (response.data.result) {
                 console.log(response.data)
@@ -108,14 +107,15 @@ export default class Job extends React.Component{
     }
 
     render() {
-        const { job_list, lock } = this.state 
+        const { job_list, lock, sno, deptno } = this.state 
+        let dno = deptno.substr(0, 4) + '0'
         return(   
             <div>
                 <div className="box" style={{ marginTop: '10px', marginBottom: '10px' }}>
                     <div className="level">
                         <div className="level-left">
                             <div className="level-item">
-                                <Link className="button is-medium" to="/auth/web/mpb/clean/dept">&larr; 選擇股別</Link>
+                                <Link className="button is-medium" to={"/auth/web/mpb/clean/dept/" + sno + "/" + dno }>&larr; 選擇股別</Link>
                             </div>
                         </div>
                     </div>

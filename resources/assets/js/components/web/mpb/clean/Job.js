@@ -101,7 +101,7 @@ export default class Job extends React.Component{
                                         <td>{item.bno}</td>
                                         <td>
                                             <Link className="button is-primary is-medium" 
-                                                to={"/auth/web/mpb/prod/working/dept" + item.dept}>清潔報工</Link>
+                                                to={"/auth/web/mpb/clean/dept/" + item.sno + "/" + item.deptno}>清潔報工</Link>
                                         </td>
                                     </tr>
                                 ))}

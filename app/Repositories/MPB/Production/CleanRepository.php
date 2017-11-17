@@ -43,7 +43,7 @@ class CleanRepository
                 where m.deptno = e.deptno(+) and m.sno = f.sno 
                 and (e.empno = '$user_id' or f.empno = '$user_id')
             ");
-            return $this->success(['clearJob' => $clear]);
+            return $this->success(['job_list' => $clear]);
         } catch (Exception $e) {
             return $this->exception($e);
         }
@@ -109,6 +109,20 @@ class CleanRepository
         ];
     }
 
+    public function getDept($deptno)
+    {
+        try {
+            $dept_list = DB::select("
+                select unique deptno, dname
+                from stdadm.v_hra_emp_dept
+                where deptno like substr('$deptno', 1, 4)||'%' and deptno <> '$deptno'
+            ");
+            return $this->success(['dept_list' => $dept_list]);
+        } catch (Exception $e) {
+            return $this->exception($e);
+        }
+    }
+
     /**
      * 取得途程生產人員清單
      * 
@@ -119,7 +133,7 @@ class CleanRepository
     public function getMember($sno, $deptno)
     {
         try {         
-            $waiting = $this->getWaiting($deptno);
+            $waiting = $this->getWaiting($sno, $deptno);
             $working = $this->getWorking($sno);
 
             $result = [
@@ -141,12 +155,17 @@ class CleanRepository
      * @param string $psno 途程代號
      * @return array
      */
-    private function getWaiting($deptno)
+    private function getWaiting($sno, $deptno)
     {
+        $psno = $this->getFirstPsno($sno);
         $waiting = DB::select("
-            select *
-            from stdadm.v_hra_emp_dept
-            where deptno = '$deptno'
+            select v.*
+            from stdadm.v_hra_emp_dept v
+            where v.deptno = '$deptno' and not exists
+                (select * 
+                    from mpb_order_tw t 
+                    where t.sno = '$sno' and psno = $psno and t.empno = v.empno
+                )
         ");
         return $waiting;
     }
@@ -165,7 +184,7 @@ class CleanRepository
     private function getWorking($sno)
     {
         $working = [];
-        $member = $this->getWorkingMember($sno);
+        $working = $this->getWorkingMember($sno);
         return $working;
     }
 
@@ -177,12 +196,14 @@ class CleanRepository
      */
     private function getWorkingMember($sno)
     {
+        $psno = $this->getFirstPsno($sno);
         $member = DB::select("
-            select * 
-            from mpb_order_tw 
-            where sno = :sno and psno = 0
+            select t.*, stdadm.pk_hra.fu_emp_name(t.empno) ename
+            from mpb_order_tw t
+            where t.sno = :sno and t.psno = :psno
         ", [
             'sno' => $sno,
+            'psno' => $psno,
         ]);
         return $member;
     }
@@ -199,9 +220,10 @@ class CleanRepository
             if (!$check) {
                 return null;
             }
+            $params['psno'] = $this->getFirstPsno($params['sno']);
             DB::insert("
                 insert into mpb_order_tw 
-                values (:sno, 0, :empno, '', sysdate)
+                values (:sno, :psno, :empno, '2', sysdate)
             ", $params);
             $result = [
                 'result' => true,
@@ -222,9 +244,10 @@ class CleanRepository
     public function leaveWorking($params)
     {
         try{
+            $params['psno'] = $this->getFirstPsno($params['sno']);
             DB::delete("
                 delete from mpb_order_tw 
-                where sno = :sno and psno = 0 and empno = :empno
+                where sno = :sno and psno = :psno and empno = :empno
             ", $params);
             $result = [
                 'result' => true,
@@ -235,4 +258,14 @@ class CleanRepository
             return $this->exception($e);
         }
     }    
+
+    public function getFirstPsno($sno)
+    {
+        $psno = DB::selectOne("
+            select min(psno) psno
+                from mpb_order_d
+                where sno = '$sno'
+        ")->psno;
+        return $psno;
+    }
 }   
