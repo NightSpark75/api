@@ -114,6 +114,9 @@ export default class Retained extends React.Component{
                                     QA留樣量
                                 </th>
                                 <th>
+                                    貯存條件
+                                </th>
+                                <th>
                                     特殊品
                                 </th>
                             </tr>
@@ -138,6 +141,9 @@ export default class Retained extends React.Component{
                                     </td>
                                     <td>
                                         {item.irsq03 + item.iruom3}
+                                    </td>
+                                    <td>
+                                        {item.t_prp1_name}
                                     </td>
                                     <td>
                                         {item.anda} {item.spec}

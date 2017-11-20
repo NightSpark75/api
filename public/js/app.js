@@ -19914,6 +19914,11 @@ var Retained = function (_React$Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'th',
                                 null,
+                                '\u8CAF\u5B58\u689D\u4EF6'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'th',
+                                null,
                                 '\u7279\u6B8A\u54C1'
                             )
                         )
@@ -19954,6 +19959,11 @@ var Retained = function (_React$Component) {
                                     'td',
                                     null,
                                     item.irsq03 + item.iruom3
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'td',
+                                    null,
+                                    item.t_prp1_name
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'td',
