@@ -8,8 +8,27 @@ export default class page1 extends React.Component{
     componentDidMount() {}
     render() {
         return(   
-            <div>
-                <h1 className="title">Page1</h1>
+            <div className="dropdown is-active">
+                <div className="dropdown-menu" role="menu">
+                    <div className="dropdown-content">
+                        <a href="#" className="dropdown-item">
+                            Dropdown item
+                        </a>
+                        <a className="dropdown-item">
+                            Other dropdown item
+                        </a>
+                        <a href="#" className="dropdown-item is-active">
+                            Active dropdown item
+                        </a>
+                        <a href="#" className="dropdown-item">
+                            Other dropdown item
+                        </a>
+                        <hr className="dropdown-divider"/>
+                        <a href="#" className="dropdown-item">
+                            With a divider
+                        </a>
+                    </div>
+                </div>
             </div>
         )
     }

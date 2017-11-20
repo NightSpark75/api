@@ -15462,11 +15462,40 @@ var page1 = function (_React$Component) {
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 "div",
-                null,
+                { className: "dropdown is-active" },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    "h1",
-                    { className: "title" },
-                    "Page1"
+                    "div",
+                    { className: "dropdown-menu", role: "menu" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "dropdown-content" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "#", className: "dropdown-item" },
+                            "Dropdown item"
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { className: "dropdown-item" },
+                            "Other dropdown item"
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "#", className: "dropdown-item is-active" },
+                            "Active dropdown item"
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "#", className: "dropdown-item" },
+                            "Other dropdown item"
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", { className: "dropdown-divider" }),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "#", className: "dropdown-item" },
+                            "With a divider"
+                        )
+                    )
                 )
             );
         }
@@ -15514,11 +15543,88 @@ var page2 = function (_React$Component) {
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 "div",
-                null,
+                { className: "smenu" },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    "h1",
-                    { className: "title" },
-                    "Page2"
+                    "div",
+                    { className: "smenu-list", role: "smenu" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "smenu-list-content" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "#", className: "smenu-list-item", "aria-haspopup": "true", "aria-controls": "smenu1" },
+                            "Dropdown item",
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "span",
+                                { className: "icon is-small" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-angle-right", "aria-hidden": "true" })
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "smenu", id: "smenu1" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "smenu-list", role: "smenu" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "div",
+                                    { className: "smenu-list-content" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "a",
+                                        { href: "#", className: "smenu-list-item" },
+                                        "Dropdown item",
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            "span",
+                                            { className: "icon is-small" },
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-angle-right", "aria-hidden": "true" })
+                                        )
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "a",
+                                        { className: "smenu-list-item" },
+                                        "Other dropdown item"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "a",
+                                        { href: "#", className: "smenu-list-item is-active" },
+                                        "Active dropdown item"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "a",
+                                        { href: "#", className: "smenu-list-item" },
+                                        "Other dropdown item"
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", { className: "smenu-list-divider" }),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "a",
+                                        { href: "#", className: "smenu-list-item" },
+                                        "With a divider"
+                                    )
+                                )
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { className: "smenu-list-item" },
+                            "Other dropdown item"
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "#", className: "smenu-list-item is-active" },
+                            "Active dropdown item"
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "#", className: "smenu-list-item" },
+                            "Other dropdown item"
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", { className: "smenu-list-divider" }),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "#", className: "smenu-list-item" },
+                            "With a divider"
+                        )
+                    )
                 )
             );
         }
@@ -15564,13 +15670,177 @@ var page3 = function (_React$Component) {
     }, {
         key: "render",
         value: function render() {
+            var sub_menu = function sub_menu(id) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "v-menu", id: id, role: "menu" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "v-menu-list" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "v-menu-content" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "v-menu-item" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "a",
+                                    null,
+                                    "Dropdown item",
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "span",
+                                        { className: "icon" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-angle-right" })
+                                    )
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "v-menu-item" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "a",
+                                    null,
+                                    "Other dropdown item",
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "span",
+                                        { className: "icon" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-angle-right" })
+                                    )
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "v-menu-item" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "a",
+                                    null,
+                                    "Active dropdown item",
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "span",
+                                        { className: "icon" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-angle-right" })
+                                    )
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "v-menu-item" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "a",
+                                    null,
+                                    "Other dropdown item",
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "span",
+                                        { className: "icon" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-angle-right" })
+                                    )
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", { className: "v-menu-divider" }),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "v-menu-item" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "a",
+                                    null,
+                                    "With a divider",
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "span",
+                                        { className: "icon" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-angle-right" })
+                                    )
+                                )
+                            )
+                        )
+                    )
+                );
+            };
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 "div",
-                null,
+                { className: "v-menu", role: "menu" },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    "h1",
-                    { className: "title" },
-                    "Page3"
+                    "div",
+                    { className: "v-menu-list" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "v-menu-content" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "v-menu-item" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "a",
+                                null,
+                                "Dropdown item Dropdown item Dropdown item Dropdown item",
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "span",
+                                    { className: "icon" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-angle-right" })
+                                )
+                            ),
+                            sub_menu('sub_menu1')
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "v-menu-item" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "a",
+                                null,
+                                "Other dropdown item",
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "span",
+                                    { className: "icon" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-angle-right" })
+                                )
+                            ),
+                            sub_menu('sub_menu2')
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "v-menu-item" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "a",
+                                null,
+                                "Active dropdown item",
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "span",
+                                    { className: "icon" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-angle-right" })
+                                )
+                            ),
+                            sub_menu('sub_menu3')
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "v-menu-item" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "a",
+                                null,
+                                "Other dropdown item",
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "span",
+                                    { className: "icon" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-angle-right" })
+                                )
+                            ),
+                            sub_menu('sub_menu4')
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", { className: "v-menu-divider" }),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "v-menu-item" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "a",
+                                null,
+                                "With a divider",
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "span",
+                                    { className: "icon" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-angle-right" })
+                                )
+                            ),
+                            sub_menu('sub_menu5')
+                        )
+                    )
                 )
             );
         }

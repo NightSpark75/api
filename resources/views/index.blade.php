@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Standard web</title>
-    <link href="{{ url('/css/app.css?x=10') }}" rel="stylesheet">
+    <link href="{{ url('/css/app.css?x=11') }}" rel="stylesheet">
     <link href="{{ url('/css/font-awesome.min.css') }}" rel="stylesheet">
 </head>
 <body>
