@@ -15531,99 +15531,92 @@ var page2 = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (page2.__proto__ || Object.getPrototypeOf(page2)).call(this, props));
 
-        _this.state = {};
+        _this.state = {
+            menu: {
+                0: {
+                    name: 'list 1',
+                    menu: {
+                        0: {
+                            name: 'list 1-1',
+                            menu: null
+                        }
+                    }
+                },
+                1: {
+                    name: 'list 2',
+                    menu: {
+                        0: {
+                            name: 'list 2-1',
+                            menu: null
+                        },
+                        1: {
+                            name: 'list 2-2',
+                            menu: null
+                        },
+                        2: {
+                            name: 'list 2-3',
+                            menu: null
+                        }
+                    }
+                }
+            }
+        };
         return _this;
     }
 
     _createClass(page2, [{
-        key: "componentDidMount",
+        key: 'componentDidMount',
         value: function componentDidMount() {}
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                "div",
-                { className: "smenu" },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    "div",
-                    { className: "smenu-list", role: "smenu" },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        "div",
-                        { className: "smenu-list-content" },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            "a",
-                            { href: "#", className: "smenu-list-item", "aria-haspopup": "true", "aria-controls": "smenu1" },
-                            "Dropdown item",
+            var menu = this.state.menu;
+
+            var v_menu = function v_menu(menu) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    null,
+                    Object.keys(menu).map(function (key) {
+                        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'v-menu-item', id: key + menu[key].name },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                "span",
-                                { className: "icon is-small" },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-angle-right", "aria-hidden": "true" })
-                            )
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            "div",
-                            { className: "smenu", id: "smenu1" },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                "div",
-                                { className: "smenu-list", role: "smenu" },
+                                'a',
+                                null,
+                                menu[key].name,
+                                menu[key].menu && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'span',
+                                    { className: 'icon' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-angle-right' })
+                                )
+                            ),
+                            menu[key].menu && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'v-menu', role: 'menu' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    "div",
-                                    { className: "smenu-list-content" },
+                                    'div',
+                                    { className: 'v-menu-list' },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        "a",
-                                        { href: "#", className: "smenu-list-item" },
-                                        "Dropdown item",
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            "span",
-                                            { className: "icon is-small" },
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-angle-right", "aria-hidden": "true" })
-                                        )
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        "a",
-                                        { className: "smenu-list-item" },
-                                        "Other dropdown item"
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        "a",
-                                        { href: "#", className: "smenu-list-item is-active" },
-                                        "Active dropdown item"
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        "a",
-                                        { href: "#", className: "smenu-list-item" },
-                                        "Other dropdown item"
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", { className: "smenu-list-divider" }),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        "a",
-                                        { href: "#", className: "smenu-list-item" },
-                                        "With a divider"
+                                        'div',
+                                        { className: 'v-menu-content' },
+                                        v_menu(menu[key].menu)
                                     )
                                 )
                             )
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            "a",
-                            { className: "smenu-list-item" },
-                            "Other dropdown item"
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            "a",
-                            { href: "#", className: "smenu-list-item is-active" },
-                            "Active dropdown item"
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            "a",
-                            { href: "#", className: "smenu-list-item" },
-                            "Other dropdown item"
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", { className: "smenu-list-divider" }),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            "a",
-                            { href: "#", className: "smenu-list-item" },
-                            "With a divider"
-                        )
+                        );
+                    })
+                );
+            };
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'v-menu', role: 'menu' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'v-menu-list' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'v-menu-content' },
+                        v_menu(menu)
                     )
                 )
             );

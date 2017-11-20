@@ -58,6 +58,7 @@ Route::group(['prefix' => 'file', 'namespace' => 'Web'], function () {
     Route::get('download/{token}/{file_id}/{user_id}', 'FileController@downloadFile');
 
     Route::post('ez/upload', 'FileController@ezUploadFile');
+    Route::get('ezgetfile/{file_id}', 'FileController@ezGetFile');
 });
 
 // MPB routes

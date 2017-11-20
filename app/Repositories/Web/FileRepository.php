@@ -512,4 +512,14 @@ class FileRepository
         ";
         $this->query($binds, $update);
     }
+
+    public function ezGetFile($file_id)
+    {
+        $file = $this->select("
+            select *
+            from api_file_code c
+            where file_id = '$file_id'
+        ");
+        return $file;
+    }
 }

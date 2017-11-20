@@ -181,4 +181,28 @@ class FileController extends Controller
         $response->header('Content-Disposition', 'attachment; filename=' . $name); // file_name
         return $response;
     }
+
+    public function ezGetFile($file_id)
+    {
+        $file = $this->file->ezGetFile($file_id);
+        $decode = base64_decode($file->code);
+        $code = $file->code;
+        $name = mb_convert_encoding($file->name,"BIG-5","UTF-8");
+        $mime = $file->mime;
+        $extension = $file->extension;
+
+        $response = 
+        response($decode)
+        ->header('Content-Type', $mime) // MIME
+        ->header('Content-length', strlen($code)) // base64
+        ->header('Content-Transfer-Encoding', 'binary');
+
+        if (in_array($extension, $this->online_open)) {
+            return $response;
+        }
+
+        // 加入下載檔案標頭
+        $response->header('Content-Disposition', 'attachment; filename=' . $name); // file_name
+        return $response;
+    }
 }
