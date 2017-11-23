@@ -263,6 +263,7 @@ table.is-orange tr td, table.is-orange tr th {
 .v-menu {
     position: relative;
     vertical-align: top;
+    z-index: 1000;
 }
 
 .v-menu-list {
@@ -271,7 +272,6 @@ table.is-orange tr td, table.is-orange tr th {
     padding-top: 4px;
     position: absolute;
     top: 100%;
-    z-index: 20;
 }
 
 .v-menu-content {

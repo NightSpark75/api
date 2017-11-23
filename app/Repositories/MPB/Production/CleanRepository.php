@@ -39,9 +39,10 @@ class CleanRepository
             $user_id = auth()->user()->id;
             $clear = DB::select("
                 select unique m.*
-                from mpb_order_m m, mpa_dept_emp e, mpb_order_f f
-                where m.deptno = e.deptno(+) and m.sno = f.sno 
-                and (e.empno = '$user_id' or f.empno = '$user_id')
+                    from mpb_order_m m, mpa_dept_emp e, mpb_order_f f
+                    where m.deptno = e.deptno(+) and m.sno = f.sno 
+                        and (e.empno = '$user_id' or f.empno = '$user_id') and state <> 'O'
+                    order by m.sno desc
             ");
             return $this->success(['job_list' => $clear]);
         } catch (Exception $e) {
@@ -114,8 +115,8 @@ class CleanRepository
         try {
             $dept_list = DB::select("
                 select unique deptno, dname
-                from stdadm.v_hra_emp_dept
-                where deptno like substr('$deptno', 1, 4)||'%' and deptno <> '$deptno'
+                    from stdadm.v_hra_emp_dept
+                    where deptno like substr('$deptno', 1, 4)||'%' and deptno <> '$deptno'
             ");
             return $this->success(['dept_list' => $dept_list]);
         } catch (Exception $e) {
@@ -160,12 +161,12 @@ class CleanRepository
         $psno = $this->getFirstPsno($sno);
         $waiting = DB::select("
             select v.*
-            from stdadm.v_hra_emp_dept v
-            where v.deptno = '$deptno' and not exists
-                (select * 
-                    from mpb_order_tw t 
-                    where t.sno = '$sno' and psno = $psno and t.empno = v.empno
-                )
+                from stdadm.v_hra_emp_dept v
+                where v.deptno = '$deptno' and not exists
+                    (select * 
+                        from mpb_order_tw t 
+                        where t.sno = '$sno' and psno = $psno and t.empno = v.empno
+                    )
         ");
         return $waiting;
     }
@@ -199,8 +200,8 @@ class CleanRepository
         $psno = $this->getFirstPsno($sno);
         $member = DB::select("
             select t.*, stdadm.pk_hra.fu_emp_name(t.empno) ename
-            from mpb_order_tw t
-            where t.sno = :sno and t.psno = :psno
+                from mpb_order_tw t
+                where t.sno = :sno and t.psno = :psno
         ", [
             'sno' => $sno,
             'psno' => $psno,
@@ -223,7 +224,7 @@ class CleanRepository
             $params['psno'] = $this->getFirstPsno($params['sno']);
             DB::insert("
                 insert into mpb_order_tw 
-                values (:sno, :psno, :empno, '2', sysdate)
+                    values (:sno, :psno, :empno, '2', sysdate)
             ", $params);
             $result = [
                 'result' => true,
@@ -247,7 +248,7 @@ class CleanRepository
             $params['psno'] = $this->getFirstPsno($params['sno']);
             DB::delete("
                 delete from mpb_order_tw 
-                where sno = :sno and psno = :psno and empno = :empno
+                    where sno = :sno and psno = :psno and empno = :empno
             ", $params);
             $result = [
                 'result' => true,

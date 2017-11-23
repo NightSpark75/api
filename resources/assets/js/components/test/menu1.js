@@ -7,7 +7,34 @@ export default class Menu1 extends React.Component{
         super(props)
 
         this.state = {
-
+            menu: [
+                {
+                    name: 'list 1',
+                    menu: [
+                        {
+                            name: 'list 1-1',
+                            menu: null,
+                        },
+                    ],
+                },
+                {
+                    name: 'list 2',
+                    menu: [
+                        {
+                            name: 'list 2-1',
+                            menu: null,
+                        },
+                        {
+                            name: 'list 2-2',
+                            menu: null,
+                        },
+                        {
+                            name: 'list 2-3',
+                            menu: null,
+                        },
+                    ],
+                },
+            ],
         }
     }
 
@@ -16,7 +43,38 @@ export default class Menu1 extends React.Component{
     }
 
     render() {
-
+        const { menu } = this.state
+        const v_menu = (menu) => {
+            const uuid = () => {
+                function s4() {
+                    return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+                }
+                return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+            }
+            return (
+                menu.map((item, index) => (
+                    <div className="v-menu-item" key={index}>
+                        <a>
+                            {item.name}
+                            {item.menu && 
+                                <span className="icon">
+                                    <i className="fa fa-angle-right"></i>
+                                </span>
+                            }
+                        </a>
+                        {item.menu && 
+                            <div className="v-menu">
+                                <div className="v-menu-list">
+                                    <div className="v-menu-content">
+                                        {v_menu(item.menu)}
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                ))
+            )
+        }
         return(   
             <div>
                 <nav className="navbar is-fixed-top">
@@ -45,43 +103,13 @@ export default class Menu1 extends React.Component{
                 </nav>
                 <div className="columns warpper">
                     <div className="column siderbar menu-color">
-                        <aside className="menu">
-                            <p className="menu-label">
-                                General
-                            </p>
-                            <ul className="menu-list">
-                                <li><a>Dashboard</a></li>
-                                <li><a>Customers</a></li>
-                                <li><Link to="/test/menu1/page1">{'page1'}</Link></li>
-                                <li><Link to="/test/menu1/page2">{'page2'}</Link></li>
-                                <li><Link to="/test/menu1/page3">{'page3'}</Link></li>
-                            </ul>
-                            <p className="menu-label">
-                                Administration
-                            </p>
-                            <ul className="menu-list">
-                                <li><a>Team Settings</a></li>
-                                <li>
-                                    <a className="is-active">Manage Your Team</a>
-                                    <ul>
-                                        <li><a>Members</a></li>
-                                        <li><a>Plugins</a></li>
-                                        <li><a>Add a member</a></li>
-                                    </ul>
-                                </li>
-                                <li><a>Invitations</a></li>
-                                <li><a>Cloud Storage Environment Settings</a></li>
-                                <li><a>Authentication</a></li>
-                            </ul>
-                            <p className="menu-label">
-                                Transactions
-                            </p>
-                            <ul className="menu-list">
-                                <li><a>Payments</a></li>
-                                <li><a>Transfers</a></li>
-                                <li><a>Balance</a></li>
-                            </ul>
-                        </aside>
+                        <div className="v-menu">
+                            <div className="v-menu-list">
+                                <div className="v-menu-content"> 
+                                    {v_menu(menu)}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div className="column">
                         {this.props.children}

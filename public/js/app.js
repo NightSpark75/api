@@ -15160,7 +15160,27 @@ var Menu1 = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (Menu1.__proto__ || Object.getPrototypeOf(Menu1)).call(this, props));
 
-        _this.state = {};
+        _this.state = {
+            menu: [{
+                name: 'list 1',
+                menu: [{
+                    name: 'list 1-1',
+                    menu: null
+                }]
+            }, {
+                name: 'list 2',
+                menu: [{
+                    name: 'list 2-1',
+                    menu: null
+                }, {
+                    name: 'list 2-2',
+                    menu: null
+                }, {
+                    name: 'list 2-3',
+                    menu: null
+                }]
+            }]
+        };
         return _this;
     }
 
@@ -15170,7 +15190,45 @@ var Menu1 = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
+            var menu = this.state.menu;
 
+            var v_menu = function v_menu(menu) {
+                var uuid = function uuid() {
+                    function s4() {
+                        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+                    }
+                    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+                };
+                return menu.map(function (item, index) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'v-menu-item', key: index },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'a',
+                            null,
+                            item.name,
+                            item.menu && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'span',
+                                { className: 'icon' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-angle-right' })
+                            )
+                        ),
+                        item.menu && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'v-menu' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'v-menu-list' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'v-menu-content' },
+                                    v_menu(item.menu)
+                                )
+                            )
+                        )
+                    );
+                });
+            };
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
@@ -15231,181 +15289,15 @@ var Menu1 = function (_React$Component) {
                         'div',
                         { className: 'column siderbar menu-color' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'aside',
-                            { className: 'menu' },
+                            'div',
+                            { className: 'v-menu' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'p',
-                                { className: 'menu-label' },
-                                'General'
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'ul',
-                                { className: 'menu-list' },
+                                'div',
+                                { className: 'v-menu-list' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'li',
-                                    null,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'a',
-                                        null,
-                                        'Dashboard'
-                                    )
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'li',
-                                    null,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'a',
-                                        null,
-                                        'Customers'
-                                    )
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'li',
-                                    null,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_1_react_router__["e" /* Link */],
-                                        { to: '/test/menu1/page1' },
-                                        'page1'
-                                    )
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'li',
-                                    null,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_1_react_router__["e" /* Link */],
-                                        { to: '/test/menu1/page2' },
-                                        'page2'
-                                    )
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'li',
-                                    null,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_1_react_router__["e" /* Link */],
-                                        { to: '/test/menu1/page3' },
-                                        'page3'
-                                    )
-                                )
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'p',
-                                { className: 'menu-label' },
-                                'Administration'
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'ul',
-                                { className: 'menu-list' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'li',
-                                    null,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'a',
-                                        null,
-                                        'Team Settings'
-                                    )
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'li',
-                                    null,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'a',
-                                        { className: 'is-active' },
-                                        'Manage Your Team'
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'ul',
-                                        null,
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            'li',
-                                            null,
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                'a',
-                                                null,
-                                                'Members'
-                                            )
-                                        ),
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            'li',
-                                            null,
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                'a',
-                                                null,
-                                                'Plugins'
-                                            )
-                                        ),
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            'li',
-                                            null,
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                'a',
-                                                null,
-                                                'Add a member'
-                                            )
-                                        )
-                                    )
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'li',
-                                    null,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'a',
-                                        null,
-                                        'Invitations'
-                                    )
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'li',
-                                    null,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'a',
-                                        null,
-                                        'Cloud Storage Environment Settings'
-                                    )
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'li',
-                                    null,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'a',
-                                        null,
-                                        'Authentication'
-                                    )
-                                )
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'p',
-                                { className: 'menu-label' },
-                                'Transactions'
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'ul',
-                                { className: 'menu-list' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'li',
-                                    null,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'a',
-                                        null,
-                                        'Payments'
-                                    )
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'li',
-                                    null,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'a',
-                                        null,
-                                        'Transfers'
-                                    )
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'li',
-                                    null,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'a',
-                                        null,
-                                        'Balance'
-                                    )
+                                    'div',
+                                    { className: 'v-menu-content' },
+                                    v_menu(menu)
                                 )
                             )
                         )
@@ -15532,34 +15424,25 @@ var page2 = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (page2.__proto__ || Object.getPrototypeOf(page2)).call(this, props));
 
         _this.state = {
-            menu: {
-                0: {
-                    name: 'list 1',
-                    menu: {
-                        0: {
-                            name: 'list 1-1',
-                            menu: null
-                        }
-                    }
-                },
-                1: {
-                    name: 'list 2',
-                    menu: {
-                        0: {
-                            name: 'list 2-1',
-                            menu: null
-                        },
-                        1: {
-                            name: 'list 2-2',
-                            menu: null
-                        },
-                        2: {
-                            name: 'list 2-3',
-                            menu: null
-                        }
-                    }
-                }
-            }
+            menu: [{
+                name: 'list 1',
+                menu: [{
+                    name: 'list 1-1',
+                    menu: null
+                }]
+            }, {
+                name: 'list 2',
+                menu: [{
+                    name: 'list 2-1',
+                    menu: null
+                }, {
+                    name: 'list 2-2',
+                    menu: null
+                }, {
+                    name: 'list 2-3',
+                    menu: null
+                }]
+            }]
         };
         return _this;
     }
@@ -15573,43 +15456,45 @@ var page2 = function (_React$Component) {
             var menu = this.state.menu;
 
             var v_menu = function v_menu(menu) {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    null,
-                    Object.keys(menu).map(function (key) {
-                        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                var uuid = function uuid() {
+                    function s4() {
+                        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+                    }
+                    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+                };
+                return menu.map(function (item, index) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'v-menu-item', key: index },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'a',
+                            null,
+                            item.name,
+                            item.menu && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'span',
+                                { className: 'icon' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-angle-right' })
+                            )
+                        ),
+                        item.menu && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
-                            { className: 'v-menu-item', id: key + menu[key].name },
+                            { className: 'v-menu' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                null,
-                                menu[key].name,
-                                menu[key].menu && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'span',
-                                    { className: 'icon' },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-angle-right' })
-                                )
-                            ),
-                            menu[key].menu && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
-                                { className: 'v-menu', role: 'menu' },
+                                { className: 'v-menu-list' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
-                                    { className: 'v-menu-list' },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'div',
-                                        { className: 'v-menu-content' },
-                                        v_menu(menu[key].menu)
-                                    )
+                                    { className: 'v-menu-content' },
+                                    v_menu(item.menu)
                                 )
                             )
-                        );
-                    })
-                );
+                        )
+                    );
+                });
             };
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
-                { className: 'v-menu', role: 'menu' },
+                { className: 'v-menu' },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
                     { className: 'v-menu-list' },
