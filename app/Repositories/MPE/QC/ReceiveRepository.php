@@ -47,18 +47,10 @@ class ReceiveRepository
     private function getBarcode()
     {
         $barcode = DB::select("
-            select e.*, m.pname, m.molef, m.molew, m.casno, m.lev, m.conc, m.scrap, m.sfty, m.unit, 
-                m.toxicizer, m.hazard, m.ename, m.reagent, m.pioneer, m.sds_no, m.sdsdate, m.ops, h.usize,
-                (select sum(amt)
-                    from mpe_house_e se
-                    where e.code = se.code and e.partno = se.partno and e.batch = se.batch
-                        and e.whouse = se.whouse and e.stor = se.stor and se.sta = 'N'
-                    group by code, partno, batch, whouse, stor
-                ) qty
-            from mpe_house_e e, mpe_mate m, mpe_house_m h
-            where e.code = '01' and e.code = m.code and e.partno = m.partno
-                and e.code = h.code and e.partno = h.partno and e.batch = h.batch
-                and e.whouse = h.whouse and e.stor = h.stor and e.sta = 'N'
+            select barcode, partno, pk_mpe.fu_pname(partno) pname, batch, opvl, 
+                    opdate, valid, buydate, pk_mpe.fu_partno_predate(partno) predate
+                from mpe_house_e
+                where sta = 'N'
         ");
         return $barcode;
     }

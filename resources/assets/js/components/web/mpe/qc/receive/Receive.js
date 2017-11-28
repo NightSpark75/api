@@ -193,6 +193,7 @@ export default class Receive extends React.Component{
                                 <td>失效日期</td>
                                 <td>開封日期</td>
                                 <td>開封後失效日期</td>
+                                <td>上次領用日</td>
                                 <td width="92.22"></td>
                             </tr>
                         </thead>
@@ -207,6 +208,7 @@ export default class Receive extends React.Component{
                                     <td>{item.valid}</td>
                                     <td>{item.opdate}</td>
                                     <td>{item.opvl}</td>
+                                    <td>{item.predate}</td>
                                     <td>
                                         <button className="button is-danger" onClick={this.removeReceive.bind(this, item)}>移除</button>
                                     </td>
