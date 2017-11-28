@@ -22,8 +22,12 @@
     <script src="{{ url('/js/pdf.js') }}"></script>
     <script src="{{ url('/js/pdf.worker.js') }}"></script>
     <script>
-        PDFJS.getDocument(' {{ $src }} ').then(function(pdf) {
-            for (var pageNum = 1; pageNum < pdf.numPages; ++pageNum) {
+        var BASE64_MARKER = ';base64,';
+        var pdfAsDataUri = '{{$src}}'; // shortened
+        var pdfAsArray = convertDataURIToBinary(pdfAsDataUri);
+
+        PDFJS.getDocument(pdfAsArray).then(function(pdf) {
+            for (var pageNum = 1; pageNum <= pdf.numPages; ++pageNum) {
                 pdf.getPage(pageNum).then(function(page) {
                 // you can now use *page* here
                 
@@ -44,6 +48,19 @@
                 });
             }
         })
+        
+        function convertDataURIToBinary(dataURI) {
+            var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
+            var base64 = dataURI.substring(base64Index);
+            var raw = window.atob(base64);
+            var rawLength = raw.length;
+            var array = new Uint8Array(new ArrayBuffer(rawLength));
+
+            for(var i = 0; i < rawLength; i++) {
+                array[i] = raw.charCodeAt(i);
+            }
+            return array;
+        }
     </script>
 </body>
 </html>

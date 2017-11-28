@@ -154,13 +154,7 @@ class DocumentRepository
             $code = $file->code;
             $mime = $file->mime;
             $src = "data:$mime;base64,$code";
-            //return view('service.pdfcanvas')->with('src', $src);
-            $response = 
-            response(base64_decode($file->code))
-            ->header('Content-Type', $mime) // MIME
-            ->header('Content-length', strlen($code)) // base64
-            ->header('Content-Transfer-Encoding', 'binary');
-            return $response;
+            return view('service.pdfcanvas')->with('src', $src);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
