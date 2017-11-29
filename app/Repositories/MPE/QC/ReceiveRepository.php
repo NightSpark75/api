@@ -78,7 +78,7 @@ class ReceiveRepository
                     $item = $receive_list[$i];
                     $rmk = "領用單號：$rec_no";
                     $binds = [
-                        'code' => $item->code,
+                        'code' => '01',
                         'sinnum' => $rec_no,
                         'barcode' => $item->barcode,
                         'partno' => $item->partno,
