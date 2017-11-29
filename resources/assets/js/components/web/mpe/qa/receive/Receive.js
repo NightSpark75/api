@@ -325,7 +325,7 @@ export default class Receive extends React.Component{
                                 </div>
                                 <div className="level-right">
                                     <div className="level-item">
-                                        <button className={"button " + posting ? "is-success": ""} disabled={!posting} onClick={this.goPosting.bind(this)}>領料過帳</button>
+                                        <button className={"button is-success"} disabled={!posting} onClick={this.goPosting.bind(this)}>領料過帳</button>
                                     </div>
                                 </div>
                             </div>
