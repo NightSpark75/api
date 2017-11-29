@@ -28,6 +28,7 @@ export default class Receive extends React.Component{
         let self = this       
         axios.get('/api/web/mpe/qa/restore/list')
         .then(function (response) {
+            console.log(response.data)
             if (response.data.result) {
                 self.setState({
                     restore: response.data.restore,
@@ -74,7 +75,7 @@ export default class Receive extends React.Component{
         if(confirm('您確定要入庫過帳嗎？')) {
             let self = this      
             const { barcode, restore_value, item } = this.state
-            if (restore_value > item.receive_qty) {
+            if (parseFloat(restore_value) > parseFloat(item.receive_qty)) {
                 this.setState({
                     msgType: 'warning',
                     msg: '回庫量大於領用量',
@@ -86,6 +87,7 @@ export default class Receive extends React.Component{
             form_data.append('qty', restore_value)
             axios.post('/api/web/mpe/qa/restore/posting', form_data)
             .then(function (response) {
+                console.log(response.data)
                 if (response.data.result) {
                     self.resetList(barcode)
                 } else {
