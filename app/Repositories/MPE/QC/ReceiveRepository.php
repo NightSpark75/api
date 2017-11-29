@@ -48,7 +48,8 @@ class ReceiveRepository
     {
         $barcode = DB::select("
             select barcode, partno, pk_mpe.fu_pname(partno) pname, batch, opvl, 
-                    opdate, valid, buydate, pk_mpe.fu_partno_predate(partno) predate
+                    opdate, valid, buydate, pk_mpe.fu_partno_predate(partno) predate, 
+                    whouse, stor, grid, amt, pk_mpe.fu_get_qc_unit(partno) unit
                 from mpe_house_e
                 where sta = 'N'
         ");
