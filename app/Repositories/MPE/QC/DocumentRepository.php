@@ -31,35 +31,38 @@ class DocumentRepository
     {
         try {
             $info = DB::select("
-                select hm.partno, hm.batch, m.ename, pk_mpe.fu_storn(hm.whouse, hm.stor) storn, hm.qty||m.unit qty, m.sfty||m.unit sfty, hm.coa_no, m.sds_no
-                from mpe_house_m hm, mpe_house_e he, mpe_mate m
-                where (hm.partno like '%$search%' 
-                        or hm.batch like '%$search%' 
-                        or UPPER(m.ename) like UPPER('%$search%')
-                        or UPPER(m.pname) like UPPER('%$search%')
-                        or UPPER(m.reagent) like UPPER('%$search%')
-                        or m.casno like '%$search%'
-                        or m.molef like '%$search%'
-                        or he.barcode = '$search')
-                    and m.code = '01' and hm.code = '01' and he.code = '01'
-                    and hm.partno = he.partno and hm.batch = he.batch and hm.whouse = he.whouse and hm.stor = he.stor and hm.grid = he.grid
-                    and hm.partno = m.partno
-                group by hm.partno, hm.batch, m.ename, hm.whouse, hm.stor, hm.qty, m.sfty, hm.coa_no, m.sds_no, m.unit
+                select m.partno, hm.batch, m.ename, pk_mpe.fu_storn(hm.whouse, hm.stor) storn, hm.qty||m.unit qty, m.sfty||m.unit sfty, hm.coa_no, m.sds_no, 
+                        m.pname, m.molef, m.molew, m.casno, m.lev, m.conc, m.scrap, m.sfty, m.toxicizer, m.hazard, m.reagent, m.pioneer, m.store_type
+                    from mpe_house_m hm, mpe_house_e he, mpe_mate m
+                    where (hm.partno like '%$search%' 
+                            or hm.batch like '%$search%' 
+                            or UPPER(m.ename) like UPPER('%$search%')
+                            or UPPER(m.pname) like UPPER('%$search%')
+                            or UPPER(m.reagent) like UPPER('%$search%')
+                            or m.casno like '%$search%'
+                            or m.molef like '%$search%'
+                            or he.barcode = '$search')
+                        and m.code = '01' and hm.code = '01' and he.code = '01'
+                        and hm.partno = he.partno and hm.batch = he.batch and hm.whouse = he.whouse and hm.stor = he.stor and hm.grid = he.grid
+                        and hm.partno = m.partno
+                group by m.partno, hm.batch, m.ename, hm.whouse, hm.stor, hm.qty, m.sfty, hm.coa_no, m.sds_no, m.unit, 
+                    m.pname, m.molef, m.molew, m.casno, m.lev, m.conc, m.scrap, m.sfty, m.toxicizer, m.hazard, m.reagent, m.pioneer, m.store_type
                 union
-                select m.partno, null batch, m.ename, '' storn, '0' qty, m.sfty||m.unit sfty, null coa_no, m.sds_no
-                from mpe_mate m
-                where m.code = '01'
-                    and (m.partno like '%$search%' 
-                        or UPPER(m.ename) like UPPER('%$search%')
-                        or UPPER(m.pname) like UPPER('%$search%')
-                        or UPPER(m.reagent) like UPPER('%$search%')
-                        or m.casno like '%$search%'
-                        or m.molef like '%$search%')
-                    and not exists(
-                        select *
-                        from mpe_house_m hh
-                        where hh.partno = m.partno
-                      )
+                    select m.partno, null batch, m.ename, '' storn, '0' qty, m.sfty||m.unit sfty, null coa_no, m.sds_no, 
+                            m.pname, m.molef, m.molew, m.casno, m.lev, m.conc, m.scrap, m.sfty, m.toxicizer, m.hazard, m.reagent, m.pioneer, m.store_type
+                        from mpe_mate m
+                        where m.code = '01'
+                            and (m.partno like '%$search%' 
+                                or UPPER(m.ename) like UPPER('%$search%')
+                                or UPPER(m.pname) like UPPER('%$search%')
+                                or UPPER(m.reagent) like UPPER('%$search%')
+                                or m.casno like '%$search%'
+                                or m.molef like '%$search%')
+                            and not exists(
+                                select *
+                                from mpe_house_m hh
+                                where hh.partno = m.partno
+                            )
                 order by 1
             ");
             if (count($info) === 0) {

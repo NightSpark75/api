@@ -13,6 +13,7 @@ export default class Info extends React.Component{
             info: null,
             search: '',
             searching: false,
+            detail: null,
         }
     }
 
@@ -47,9 +48,18 @@ export default class Info extends React.Component{
         });
     }
 
+    showDetail(item) {
+        this.setState({detail: item})
+    }
+
+    hideDetail() {
+        this.setState({detail: null})
+    }
+
     render() { 
-        const { info, search, searching } = this.state;
+        const { info, search, searching, detail } = this.state;
         let loading = searching ? 'is-loading': '';
+        let show = detail ? 'is-active': ''; 
         return(   
             <div>
                 <div className="box"> 
@@ -78,6 +88,7 @@ export default class Info extends React.Component{
                     <table className="table is-bordered is-hoverable is-fullwidth">
                         <thead>
                             <tr>
+                                <td width="60"></td>
                                 <td width="80">料號</td>
                                 <td>批號</td>
                                 <td>品名</td>
@@ -91,6 +102,13 @@ export default class Info extends React.Component{
                         <tbody>
                             {info.map((item,index) => (
                                 <tr key={index}>
+                                    <td>
+                                        <button className="button" onClick={this.showDetail.bind(this, item)}>
+                                            <span className="icon is-small">
+                                                <i className="fa fa-info"></i>
+                                            </span>
+                                        </button>
+                                    </td>
                                     <td>{item.partno}</td>
                                     <td>{item.batch}</td>
                                     <td>{item.ename}</td>
@@ -125,8 +143,75 @@ export default class Info extends React.Component{
                                 </tr>
                             ))}
                         </tbody>
-
                     </table>
+                }
+                {detail &&
+                    <div className={"modal " + show}>
+                        <div className="modal-background"></div>
+                        <div className="modal-card">
+                        <header className="modal-card-head">
+                            <p className="modal-card-title">{detail.partno}</p>
+                            <button className="delete" aria-label="close" onClick={this.hideDetail.bind(this)}></button>
+                        </header>
+                        <section className="modal-card-body">
+                            <table className="table is-bordered is-hoverable is-fullwidth" style={{margin: '0'}}>
+                                <tbody>
+                                    <tr>
+                                        <td>中文名稱</td>
+                                        <td>{detail.pname}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>英文名稱</td>
+                                        <td>{detail.ename}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>試藥同名</td>
+                                        <td>{detail.reagent}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>CASNO</td>
+                                        <td>{detail.casno}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>分子式</td>
+                                        <td>{detail.molef}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>分子量</td>
+                                        <td>{detail.molew}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>等級</td>
+                                        <td>{detail.lev}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>濃度</td>
+                                        <td>{detail.conc}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>分類</td>
+                                        <td>
+                                            { detail.toxicizer ? ' 毒:' + detail.toxicizer : '' } 
+                                            { detail.hazard ? ' 危:' + detail.hazard : '' } 
+                                            { detail.pioneer ? ' 先:' + detail.pioneer : '' }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>貯存方式</td>
+                                        <td>{detail.store_type}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>安全庫存量</td>
+                                        <td>{detail.sfty}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+                        <footer className="modal-card-foot">
+                            <button className="button" onClick={this.hideDetail.bind(this)}>關閉</button>
+                        </footer>
+                        </div>
+                    </div>
                 }
             </div>
         )

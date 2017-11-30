@@ -130,7 +130,7 @@ class ReceiveRepository
             ];
             return $result;
         } catch (Exception $e) {
-            DB::rollback();
+            DB::rollback(); 
             $result = [
                 'result' => false,
                 'msg' => $e->getMessage(),
