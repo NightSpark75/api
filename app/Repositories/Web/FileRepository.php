@@ -36,7 +36,7 @@ class FileRepository
      * @param bool $version version control
      * @return mixed
      */
-    public function new_uploadFIle($req, $version)
+    public function new_uploadFile($req, $version)
     {
         try {
             $this->checkFileSize($req);
@@ -54,9 +54,10 @@ class FileRepository
 
     /**
      * 檢查檔案大小
-     * 
+     *
      * @param Request $req resquest()
      * @return mixed
+     * @throws Exception
      */
     private function checkFileSize($req)
     {

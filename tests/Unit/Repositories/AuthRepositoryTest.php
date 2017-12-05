@@ -3,15 +3,16 @@
 namespace Tests\Unit\Repositories;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 use App\Repositories\Web\AuthREpository;
 use App\Traits\Sqlexecute;
-use Auth;
-use App\Models\Web\UserPrg;
+use Illuminate\Support\Facades\Auth;
 
 
+/**
+ * @property null mock
+ */
 class AuthRepositoryTest extends TestCase
 {
     use DatabaseTransactions;
@@ -42,21 +43,35 @@ class AuthRepositoryTest extends TestCase
     public function test_login()
     {
         /** arrange */
-        $expected = ['result' => true, 'msg' => '登入成功!(#0000)'];
-        
-        $user_id = str_random(10);
+        $user_id = str_random( 10);
         $user_pw = str_random(10);
         $user_name = str_random(10);
         $sys = 'ppm';
+        $co = 'C99';
+
+        $expected = [
+            'result' => true, 
+            'msg' => '登入成功!(#0000)',
+            'user_info' => [
+                'system' => $sys,
+                'sys' => $sys,
+                'co' => $co,
+                'user_id' => $user_id,
+                'user_name' => $user_name,
+            ]
+        ];
 
         $bindings = [
+            'co' => $co,
             'user_id' => $user_id,
             'user_pw' => $user_pw,
             'user_name' => $user_name,
+            'state' => 'Y'
         ];
-        $insert_query = "
+        $insert_query = /** @lang text */
+            "
             insert into sma_user_m (co, user_id, user_pw, user_name, state)
-                values ('C99', :user_id, :user_pw, :user_name, 'Y')
+                values (:co, :user_id, :user_pw, :user_name, :state)
         ";
         $this->query($bindings, $insert_query);
         
@@ -95,8 +110,6 @@ class AuthRepositoryTest extends TestCase
     public function test_logout()
     {
         /** arrange */
-        $expected = false;
-        
         $user_id = str_random(10);
         $user_pw = str_random(10);
         $user_name = str_random(10);
@@ -106,7 +119,8 @@ class AuthRepositoryTest extends TestCase
             'user_pw' => $user_pw,
             'user_name' => $user_name,
         ];
-        $insert_query = "
+        $insert_query = /** @lang text */
+            "
             insert into sma_user_m (co, user_id, user_pw, user_name)
                 values ('C99', :user_id, :user_pw, :user_name)
         ";
@@ -161,6 +175,13 @@ class AuthRepositoryTest extends TestCase
     /**
      * insert program info
      *
+     * @param $user_id
+     * @param $user_pw
+     * @param $user_name
+     * @param $sys_id
+     * @param $prg_id
+     * @param $route
+     * @param $role_id
      * @return void
      */
     private function insertPrgInfo($user_id, $user_pw, $user_name, $sys_id, $prg_id, $route, $role_id)
@@ -170,55 +191,64 @@ class AuthRepositoryTest extends TestCase
             'user_id' => $user_id,
             'user_pw' => $user_pw,
             'user_name' => $user_name];
-        $insert_query = "insert into sma_user_m (co, user_id, user_pw, user_name)
+        $insert_query = /** @lang text */
+            "insert into sma_user_m (co, user_id, user_pw, user_name)
                             values ('C99', :user_id, :user_pw, :user_name)";
         $this->query($bindings, $insert_query);
 
         // sma_sys_prg_m
         $bindings = ['sys_id' => $sys_id];
-        $insert_query = "insert into sma_sys_prg_m (co, sys_id, sys_name)
+        $insert_query = /** @lang text */
+            "insert into sma_sys_prg_m (co, sys_id, sys_name)
                             values ('C99', :sys_id, :sys_id)";
         $this->query($bindings, $insert_query);
 
         // sma_sys_prg_d
         $bindings = ['sys_id' => $sys_id, 'prg_id' => $prg_id];
-        $insert_query = "insert into sma_sys_prg_d (co, sys_id, prg_id, prg_name)
+        $insert_query = /** @lang text */
+            "insert into sma_sys_prg_d (co, sys_id, prg_id, prg_name)
                             values ('C99', :sys_id, :prg_id, :prg_id)";
         $this->query($bindings, $insert_query);
 
         // insert api_web_prg
         $bindings = ['prg_id' => $prg_id, 'route' => $route];
-        $insert_query = "insert into api_web_prg (co, prg_id, web_route)
+        $insert_query = /** @lang text */
+            "insert into api_web_prg (co, prg_id, web_route)
                             values ('C99', :prg_id, :route)";
         $this->query($bindings, $insert_query);
 
         // insert sma_tree
         $bindings = ['user_id' => 'S'.$user_id, 'prg_id' => $prg_id.' '.str_random(8)];
-        $insert_query = "insert into sma_tree (co, user_id, class, data_d)
+        $insert_query = /** @lang text */
+            "insert into sma_tree (co, user_id, class, data_d)
                             values ('C99', :user_id, 'SYS', :prg_id)";        
         $this->query($bindings, $insert_query);
 
         // insert sma_role_prg_m
         $bindings = ['role_id' => $role_id];
-        $insert_query = "insert into sma_role_prg_m (co, role_id, role_name, roel_stat)
+        $insert_query = /** @lang text */
+            "insert into sma_role_prg_m (co, role_id, role_name, roel_stat)
                             values ('C99', :role_id, :role_id, 'Y')";        
         $this->query($bindings, $insert_query); 
 
         // insert sma_role_prg_d
         $bindings = ['role_id' => $role_id, 'sys_id' => $sys_id, 'prg_id' => $prg_id];
-        $insert_query = "insert into sma_role_prg_d (co, role_id, sys_id, prg_id, prg_ins, prg_upd, prg_del, prg_stat)
+        $insert_query = /** @lang text */
+            "insert into sma_role_prg_d (co, role_id, sys_id, prg_id, prg_ins, prg_upd, prg_del, prg_stat)
                             values ('C99', :role_id, :sys_id, :prg_id, 'Y', 'Y', 'Y', 'Y')";        
         $this->query($bindings, $insert_query); 
 
         // insert sma_user_role_d
         $bindings = ['user_id' => $user_id, 'role_id' => $role_id];
-        $insert_query = "insert into sma_user_role_d (co, user_id, role_id, role_stat)
+        $insert_query = /** @lang text */
+            "insert into sma_user_role_d (co, user_id, role_id, role_stat)
                             values ('C99', :user_id, :role_id, 'Y')";        
         $this->query($bindings, $insert_query); 
 
         // insert sma_user_prg_d
         $bindings = ['user_id' => $user_id, 'sys_id' => $sys_id, 'prg_id' => $prg_id];
-        $insert_query = "insert into sma_user_prg_d (co, user_id, sys_id, prg_id, prg_ins, prg_upd, prg_del, prg_stat)
+        $insert_query = /** @lang text */
+            "insert into sma_user_prg_d (co, user_id, sys_id, prg_id, prg_ins, prg_upd, prg_del, prg_stat)
                             values ('C99', :user_id, :sys_id, :prg_id, 'Y', 'Y', 'Y', 'Y')";        
         $this->query($bindings, $insert_query); 
     }

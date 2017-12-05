@@ -44,7 +44,7 @@ class FileController extends Controller
     public function ezUploadFile() 
     {
         $version = request()->input('version') === 'true'? true: false;
-        $result = $this->file->new_uploadFIle(request(), $version);
+        $result = $this->file->new_uploadFile(request(), $version);
         return $this->ezUploadResult($result);
     }
 
@@ -68,8 +68,8 @@ class FileController extends Controller
 
     /**
      * 檔案上傳
-     * 
-     * @param Request $req request
+     *
+     * @param string $store_type
      * @return array
      */
     public function uploadFile($store_type = 'code')
@@ -83,8 +83,8 @@ class FileController extends Controller
 
     /**
      * 檔案上傳舊介面
-     * 
-     * @param Request $req request
+     *
+     * @param string $store_type
      * @return array
      */
     public function uploadOldFile($store_type = 'code')
@@ -128,17 +128,19 @@ class FileController extends Controller
      */
     private function getFile($file)
     {
-        if ($file->store_type == 'P') {
-            return $this->loadFile($file);
+        if (!empty($file->store_type)) {
+            if ($file->store_type == 'P') {
+                return $this->loadFile($file);
+            }
         }
         return $this->setFile($file);
     }
 
     /**
      * 讀取實體檔案並下載，或直接開啟檔案
-     * 
+     *
      * @param array $file file info
-     * @return Response
+     * @return mixed
      */
     private function loadFile($file)
     {

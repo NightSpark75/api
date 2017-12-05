@@ -14,8 +14,8 @@ use Exception;
 use App\Traits\Sqlexecute;
 use App\Models\Web\User;
 use App\Models\Web\UserPrg;
-use Auth;
-use DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 
 /**
@@ -66,6 +66,13 @@ class AuthRepository
         }
     }
 
+    /**
+     * @param $account
+     * @param $password
+     * @param $system
+     * @return array
+     * @throws Exception
+     */
     private function userLogin($account, $password, $system)
     {
         $auth = 
@@ -95,8 +102,8 @@ class AuthRepository
 
     /**
      * 使用者登出
-     * 
-     * @return Response
+     *
+     * @return void
      */
     public function logout()
     {
@@ -105,9 +112,9 @@ class AuthRepository
 
     /**
      * 取得使用者清單
-     * 
+     *
      * @param string $user_id
-     * @return Mix
+     * @return array
      */
     public function getMenu($user_id)
     {
@@ -122,16 +129,17 @@ class AuthRepository
 
     /**
      * 取得公用程式清單
-     * 
+     *
      * @param string $class
-     * @return Mix
+     * @return array
      */
     public function getCommonMenu($class)
     {
-        $menu = DB::select("
+        $menu = DB::select(/** @lang text */
+            "
             select w.co, w.prg_id, w.web_route, w.rmk, w.prg_name
-            from api_web_prg w, api_common_prg c
-            where w.co = c.co and w.prg_id = c.prg_id and c.cls = '$class'
+                from api_web_prg w, api_common_prg c
+                where w.co = c.co and w.prg_id = c.prg_id and c.cls = '$class'
         ");
         $result = [
             'result' => true, 
@@ -143,8 +151,8 @@ class AuthRepository
 
     /**
      * 取得登入使用者資料
-     * 
-     * @return App\Models\User
+     *
+     * @return mixed
      */
     public function getUser()
     {
@@ -171,8 +179,9 @@ class AuthRepository
 
     /**
      * 取得登入者的角色
-     * 
-     * @return Mix
+     *
+     * @param $user
+     * @return mixed
      */
     
     public function getUserRole($user)
@@ -182,10 +191,11 @@ class AuthRepository
             'co' => $user->co,
             'user_id' => $user->id,
         ];
-        $user_role = DB::select("
+        $user_role = DB::select(/** @lang text */
+            "
             select *
-            from sma_user_role_d
-            where co = :co and user_id = :user_id
+                from sma_user_role_d
+                where co = :co and user_id = :user_id
         ", $binds);
         return $user_role;
     }

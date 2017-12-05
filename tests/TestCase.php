@@ -3,6 +3,7 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Mockery;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -12,7 +13,7 @@ abstract class TestCase extends BaseTestCase
      * 初始化mock物件
      *
      * @param string $class
-     * @return Mockery
+     * @return Mockery\MockInterface
      */
     public function initMock($class)
     {
