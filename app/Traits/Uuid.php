@@ -24,13 +24,13 @@ trait Uuid
      */
     function getUuid() 
     {
-        $charid = strtoupper(md5(uniqid(mt_rand(), true)));
+        $char_id = strtoupper(md5(uniqid(mt_rand(), true)));
         $hyphen = chr(45);  // "-"
-        $uuid = ''.substr($charid, 0, 8).$hyphen
-            .substr($charid, 8, 4).$hyphen
-            .substr($charid,12, 4).$hyphen
-            .substr($charid,16, 4).$hyphen
-            .substr($charid,20,12);
+        $uuid = ''.substr($char_id, 0, 8).$hyphen
+            .substr($char_id, 8, 4).$hyphen
+            .substr($char_id,12, 4).$hyphen
+            .substr($char_id,16, 4).$hyphen
+            .substr($char_id,20,12);
         return $uuid;
     }
 }

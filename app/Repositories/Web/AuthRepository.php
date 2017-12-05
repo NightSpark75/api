@@ -52,6 +52,12 @@ class AuthRepository
         }
     }
 
+    /**
+     * @param $account
+     * @param $password
+     * @param $system
+     * @return array
+     */
     public function nativeLogin($account, $password, $system)
     {
         try {
@@ -84,13 +90,14 @@ class AuthRepository
                 ->first();
         if ($auth) {
             Auth::login($auth);
-            $user_info = [
+            /** @noinspection PhpUndefinedFieldInspection */
+            $user_info = array(
                 'system' => $system,
                 'sys' => $auth->sys,
                 'co' => $auth->co,
                 'user_id' => $auth->id,
                 'user_name' => $auth->name,
-            ];
+            );
             session([
                 'user_info' => $user_info,
                 'system' => $system,
@@ -135,6 +142,7 @@ class AuthRepository
      */
     public function getCommonMenu($class)
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         $menu = DB::select(/** @lang text */
             "
             select w.co, w.prg_id, w.web_route, w.rmk, w.prg_name
@@ -186,11 +194,11 @@ class AuthRepository
     
     public function getUserRole($user)
     {
-        //$user = auth()->user();
         $binds = [
             'co' => $user->co,
             'user_id' => $user->id,
         ];
+        /** @noinspection PhpUndefinedMethodInspection */
         $user_role = DB::select(/** @lang text */
             "
             select *

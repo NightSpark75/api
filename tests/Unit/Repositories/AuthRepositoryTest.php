@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Repositories\Web\AuthREpository;
 use App\Traits\Sqlexecute;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\DB;
 
 /**
  * @property null mock
@@ -39,6 +39,7 @@ class AuthRepositoryTest extends TestCase
 
     /**
      * test login success
+     * @throws \Exception
      */
     public function test_login()
     {
@@ -76,6 +77,7 @@ class AuthRepositoryTest extends TestCase
         $this->query($bindings, $insert_query);
         
         /** act */
+        /** @noinspection PhpUndefinedMethodInspection */
         $actual = $this->target->login($user_id, $user_pw, $sys);
         $actual_user = Auth::check();
 
@@ -98,6 +100,7 @@ class AuthRepositoryTest extends TestCase
         $user_name = str_random(10);
         
         /** act */
+        /** @noinspection PhpUndefinedMethodInspection */
         $actual = $this->target->login($user_id, $user_pw, $user_name);
 
         /** assert */
@@ -106,6 +109,7 @@ class AuthRepositoryTest extends TestCase
 
     /**
      * test logout
+     * @throws \Exception
      */
     public function test_logout()
     {
@@ -128,6 +132,7 @@ class AuthRepositoryTest extends TestCase
         
         /** act */
         Auth::loginUsingId($user_id, false);
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->target->logout();
         $actual = Auth::check();
 
@@ -139,6 +144,7 @@ class AuthRepositoryTest extends TestCase
      * test get menu
      *
      * @return void
+     * @throws \Exception
      */
     public function test_get_menu()
     {
@@ -152,7 +158,8 @@ class AuthRepositoryTest extends TestCase
         $role_id = str_random(6);
         $this->insertPrgInfo($user_id, $user_pw, $user_name, $sys_id, $prg_id, $route, $role_id); 
         $menu = [
-            ['sys_id' => $sys_id, 
+            [
+                'sys_id' => $sys_id,
                 'sys_name' => $sys_id,
                 'prg_id' => $prg_id,
                 'prg_name' => $prg_id,
@@ -161,13 +168,90 @@ class AuthRepositoryTest extends TestCase
                 'prg_ins' => 'Y',
                 'prg_upd' => 'Y',
                 'prg_del' => 'Y',
-                'prg_stat' => 'Y'],
+                'prg_stat' => 'Y'
+            ],
         ];
         $expected = ['result' => true, 'msg' => '已取得清單!(#0000)', 'menu' => $menu];
 
         /** act */
+        /** @noinspection PhpUndefinedMethodInspection */
         $actual = $this->target->getMenu($user_id);
 
+        /** assert */
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function test_nativeLogin()
+    {
+        /** arrange */
+        $user_id = str_random(8);
+        $user_pw = str_random(10);
+        $user_name = str_random(10);
+        $sys_id = str_random(3);
+        $prg_id = $sys_id.'F'.str_random(4);
+        $route = str_random(10);
+        $role_id = str_random(6);
+        $this->insertPrgInfo($user_id, $user_pw, $user_name, $sys_id, $prg_id, $route, $role_id);
+        $menu = [
+            [
+                'sys_id' => $sys_id,
+                'sys_name' => $sys_id,
+                'prg_id' => $prg_id,
+                'prg_name' => $prg_id,
+                'user_id' => $user_id,
+                'web_route' => $route,
+                'prg_ins' => 'Y',
+                'prg_upd' => 'Y',
+                'prg_del' => 'Y',
+                'prg_stat' => 'Y'
+            ],
+        ];
+        $login_info = [
+                'system' => 'ppm',
+                'sys' => 'ppm',
+                'co' => "C99",
+                'user_id' => $user_id,
+                'user_name' => $user_name,
+        ];
+        $expected = [
+            'result' => true,
+            'user_info' => $login_info,
+            'user_menu' => $menu,
+        ];
+
+        /** act */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $actual = $this->target->nativeLogin($user_id, $user_pw, 'ppm');
+        
+        /** assert */
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_nativeLogin_password_faild()
+    {
+        /** arrange */
+        $user_id = str_random(8);
+        $user_pw = str_random(10);
+        $user_name = str_random(10);
+        $sys_id = str_random(3);
+        $prg_id = $sys_id.'F'.str_random(4);
+        $route = str_random(10);
+        $role_id = str_random(6);
+        $error_pw = str_random(10);
+        $this->insertPrgInfo($user_id, $user_pw, $user_name, $sys_id, $prg_id, $route, $role_id);
+
+        $expected = [
+            'result' => false,
+            'info' => $user_id.' pw:'.$error_pw,
+            'msg' => '帳號或密碼錯誤!(#0001)'
+        ];
+
+        /** act */
+        $actual = $this->target->nativeLogin($user_id, $error_pw, 'ppm');
+        
         /** assert */
         $this->assertEquals($expected, $actual);
     }
@@ -183,6 +267,7 @@ class AuthRepositoryTest extends TestCase
      * @param $route
      * @param $role_id
      * @return void
+     * @throws \Exception
      */
     private function insertPrgInfo($user_id, $user_pw, $user_name, $sys_id, $prg_id, $route, $role_id)
     {   
@@ -192,8 +277,8 @@ class AuthRepositoryTest extends TestCase
             'user_pw' => $user_pw,
             'user_name' => $user_name];
         $insert_query = /** @lang text */
-            "insert into sma_user_m (co, user_id, user_pw, user_name)
-                            values ('C99', :user_id, :user_pw, :user_name)";
+            "insert into sma_user_m (co, user_id, user_pw, user_name, state)
+                            values ('C99', :user_id, :user_pw, :user_name, 'Y')";
         $this->query($bindings, $insert_query);
 
         // sma_sys_prg_m
@@ -226,9 +311,12 @@ class AuthRepositoryTest extends TestCase
 
         // insert sma_role_prg_m
         $bindings = ['role_id' => $role_id];
+        /** @noinspection SpellCheckingInspection
+         * the column is "roel_stat" indeed
+         */
         $insert_query = /** @lang text */
             "insert into sma_role_prg_m (co, role_id, role_name, roel_stat)
-                            values ('C99', :role_id, :role_id, 'Y')";        
+                            values ('C99', :role_id, :role_id, 'Y')";
         $this->query($bindings, $insert_query); 
 
         // insert sma_role_prg_d

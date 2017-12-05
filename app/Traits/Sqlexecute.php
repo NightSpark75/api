@@ -10,7 +10,9 @@
  */
 namespace App\Traits;
 
-use DB;
+use Illuminate\Support\Facades\DB;
+use Exception;
+use Illuminate\View\View;
 use PDO;
 
 /**
@@ -22,16 +24,20 @@ trait Sqlexecute
 {
     /**
      * 執行SQL語法
-     * 
-     * @param array $bindings parames
+     *
+     * @param array $bindings bindings parameters
      * @param string $query query string
-     * @return 
+     * @return void
+     * @throws Exception
      */
     private function query($bindings, $query) 
     {
         try {
+            /** @noinspection PhpUndefinedMethodInspection */
             $statement = DB::getPdo()->prepare($query);
+            /** @noinspection PhpUndefinedMethodInspection */
             DB::bindValues($statement, DB::prepareBindings($bindings));
+            /** @noinspection PhpUndefinedMethodInspection */
             $statement->execute();
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
@@ -40,37 +46,42 @@ trait Sqlexecute
 
     /**
      * 執行SQL查詢
-     * 
+     *
      * @param string $query query string
-     * @return 
+     * @return \stdClass
      */
     private function select($query)
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return DB::selectOne($query);
     }
 
     /**
      * 執行procedure
-     * 
+     *
      * @param string $name procedure name
-     * @param array $par_in  
-     * @param array $par_out 
+     * @param $pars
      * @return array
      */
     private function procedure($name, $pars)
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         $pdo = DB::getPdo();
         list($key, $val) = array_divide($pars);
         $par_str = implode(',', $key);
 
+        /** @noinspection PhpUndefinedMethodInspection */
         $stmt = $pdo->prepare("begin $name($par_str); end;");
         for ($i = 0; $i < count($key); $i++) {
             if (is_numeric($val[$i])) {
+                /** @noinspection PhpUndefinedMethodInspection */
                 $stmt->bindParam($key[$i], $val[$i], PDO::PARAM_INT);
             } else {
+                /** @noinspection PhpUndefinedMethodInspection */
                 $stmt->bindParam($key[$i], $val[$i], PDO::PARAM_STR, 4000);
             }
         }
+        /** @noinspection PhpUndefinedMethodInspection */
         $stmt->execute();
         $new_array = array_combine($key, $val);
         return $new_array;
@@ -78,13 +89,15 @@ trait Sqlexecute
 
     /**
      * 回傳exception訊息
-     * 
+     *
      * @param string $exception exception
+     * @param array $result
      * @return array
      */
     private function exception($exception, $result = [])
     {
         $result['result'] = false;
+        /** @noinspection PhpUndefinedMethodInspection */
         $result['msg'] = $exception->getMessage();
         return $result;
     }
@@ -93,7 +106,7 @@ trait Sqlexecute
      * return error page and error message
      * 
      * @param string $message error message
-     * @return view
+     * @return View
      */
     private function errorPage($message)
     {
@@ -102,9 +115,9 @@ trait Sqlexecute
 
     /**
      * return success info
-     * 
-     * @param string $array success params
-     * @return Mix
+     *
+     * @param array $info
+     * @return array
      */
     private function success($info = [])
     {
