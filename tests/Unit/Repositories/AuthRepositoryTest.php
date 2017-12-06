@@ -230,6 +230,10 @@ class AuthRepositoryTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    /**
+     * @throws \Exception
+     */
+    /** @noinspection SpellCheckingInspection */
     public function test_nativeLogin_password_faild()
     {
         /** arrange */
@@ -241,6 +245,7 @@ class AuthRepositoryTest extends TestCase
         $route = str_random(10);
         $role_id = str_random(6);
         $error_pw = str_random(10);
+        /** @noinspection PhpUnhandledExceptionInspection */
         $this->insertPrgInfo($user_id, $user_pw, $user_name, $sys_id, $prg_id, $route, $role_id);
 
         $expected = [
@@ -250,8 +255,171 @@ class AuthRepositoryTest extends TestCase
         ];
 
         /** act */
+        /** @noinspection PhpUndefinedMethodInspection */
         $actual = $this->target->nativeLogin($user_id, $error_pw, 'ppm');
         
+        /** assert */
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     *
+     */
+    public function test_get_common_menu()
+    {
+        /** arrange */
+        $co = str_random(3);
+        $prg_id = str_random(5);
+        $web_route = str_random(5);
+        $prg_name = str_random(5);
+        $cls = str_random(3);
+        /** @noinspection PhpUndefinedMethodInspection */
+        DB::insert(/** @lang text */
+            "
+            insert into api_web_prg
+                (co, prg_id, web_route, status, prg_name)
+            values
+                (:co, :prg_id, :web_route, :status, :prg_name)
+        ", [
+            'co' => $co,
+            'prg_id' => $prg_id,
+            'web_route' => $web_route,
+            'status' => 'Y',
+            'prg_name' => $prg_name,
+        ]);
+
+        /** @noinspection PhpUndefinedMethodInspection */
+        DB::insert(/** @lang text */
+            "
+            insert into api_common_prg
+                (co, cls, prg_id)
+            values
+                (:co, :cls, :prg_id)
+        ", [
+            'co' => $co,
+            'cls' => $cls,
+            'prg_id' => $prg_id,
+        ]);
+
+        $menu = [(object)[
+            'co' => $co,
+            'prg_id' => $prg_id,
+            'web_route' => $web_route,
+            'rmk' => '',
+            'prg_name' => $prg_name,
+        ]];
+
+        $expected = [
+            'result' => true, 
+            'msg' => '已取得清單!(#0000)', 
+            'menu' => $menu
+        ];
+
+        /** act */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $actual = $this->target->getCommonMenu($cls);
+
+        /** assert */
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function test_get_user()
+    {
+        /** arrange */
+        $user_id = str_random( 10);
+        $user_pw = str_random(10);
+        $user_name = str_random(10);
+        $sys = 'ppm';
+        $co = 'C99';
+        $bindings = [
+            'co' => $co,
+            'user_id' => $user_id,
+            'user_pw' => $user_pw,
+            'user_name' => $user_name,
+            'state' => 'Y'
+        ];
+        $insert_query = /** @lang text */
+            "
+            insert into sma_user_m (co, user_id, user_pw, user_name, state)
+                values (:co, :user_id, :user_pw, :user_name, :state)
+        ";
+        $this->query($bindings, $insert_query);
+        Auth::loginUsingId($user_id, false);
+        $user_info = [
+            'system' => 'ppm',
+            'sys' => $sys,
+            'co' => $co,
+            'user_id' => $user_id,
+            'user_name' => $user_name,
+        ];
+
+        $expected = [
+            'session' => true,
+            'info' => $user_info,
+        ];
+
+        /** act */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $actual = $this->target->getUser();
+
+        /** assert */
+        $this->assertEquals($expected, $actual);
+        $this->assertEquals(session('user_info'), $user_info);
+    }
+
+    /**
+     *
+     */
+    public function test_get_user_no_auth()
+    {
+        /** arrange */
+        $expected = ['session' => false];
+
+        /** act */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $actual = $this->target->getUser();
+
+        /** assert */
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function test_get_user_role()
+    {
+        /** arrange */
+        /** arrange */
+        $user_id = str_random(8);
+        $user_pw = str_random(10);
+        $user_name = str_random(10);
+        $sys_id = str_random(3);
+        $prg_id = $sys_id.'F'.str_random(4);
+        $route = str_random(10);
+        $role_id = str_random(6);
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $this->insertPrgInfo($user_id, $user_pw, $user_name, $sys_id, $prg_id, $route, $role_id);
+        $expected = [
+            (object) [
+                'co' => 'C99',
+                'user_id' => $user_id,
+                'role_id' => $role_id,
+                'role_stat' => 'Y',
+                'rmk' => null,
+            ]
+        ];
+
+        $user = (object) [
+            'co' => 'C99',
+            'id' => $user_id,
+        ];
+        /** act */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $actual = $this->target->getUserRole($user);
+
         /** assert */
         $this->assertEquals($expected, $actual);
     }

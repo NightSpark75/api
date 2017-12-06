@@ -144,7 +144,7 @@ class AuthRepository
     {
         /** @noinspection PhpUndefinedMethodInspection */
         $menu = DB::select(/** @lang text */
-            "
+        "
             select w.co, w.prg_id, w.web_route, w.rmk, w.prg_name
                 from api_web_prg w, api_common_prg c
                 where w.co = c.co and w.prg_id = c.prg_id and c.cls = '$class'
@@ -201,7 +201,7 @@ class AuthRepository
         /** @noinspection PhpUndefinedMethodInspection */
         $user_role = DB::select(/** @lang text */
             "
-            select *
+            select co, user_id, role_id, role_stat, rmk
                 from sma_user_role_d
                 where co = :co and user_id = :user_id
         ", $binds);
