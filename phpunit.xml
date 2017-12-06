@@ -19,6 +19,7 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./app/Repositories</directory>
+            <directory suffix=".php">./app/Repositories/Web</directory>
             <directory suffix=".php">./app/Services</directory>
             <directory suffix=".php">./app/Traits</directory>
             <directory suffix=".php">./app/Http/Controllers</directory>
@@ -35,11 +36,11 @@
             <directory suffix=".php">./vendor</directory>
         </blacklist>
     </filter>
-    <logging>
+    <!-- <logging>
         <log type="coverage-html" target="./report" charset="UTF-8"
             yui="true" highlight="true"
             lowUpperBound="50" highLowerBound="80" />
-    </logging>
+    </logging> -->
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="CACHE_DRIVER" value="array"/>
