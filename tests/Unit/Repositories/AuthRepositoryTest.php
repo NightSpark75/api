@@ -392,7 +392,6 @@ class AuthRepositoryTest extends TestCase
     public function test_get_user_role()
     {
         /** arrange */
-        /** arrange */
         $user_id = str_random(8);
         $user_pw = str_random(10);
         $user_name = str_random(10);
