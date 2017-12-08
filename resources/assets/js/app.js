@@ -1,7 +1,7 @@
 // v 1.23.5
 import React from "react"
 import ReactDOM from "react-dom"
-import {Router, Route, browserHistory, IndexRoute, hashHistory} from "react-router"
+import { Router, Route, browserHistory, IndexRoute, hashHistory } from "react-router"
 
 import Hello from "./components/sys/layout/Hello"
 import SinglePage from "./components/sys/layout/SinglePage"
@@ -37,68 +37,68 @@ import page3 from "./components/test/page3"
 const app = document.getElementById('app')
 
 ReactDOM.render(
-    <Router history={browserHistory}>
-        <Route path="/">
-            <IndexRoute component={Hello}></IndexRoute>
+  <Router history={browserHistory}>
+    <Route path="/">
+      <IndexRoute component={Hello}></IndexRoute>
+    </Route>
+    <Route path="test">
+      <Route path="menu1" component={Menu1}>
+        <Route path="page1" component={page1}></Route>
+        <Route path="page2" component={page2}></Route>
+        <Route path="page3" component={page3}></Route>
+      </Route>
+    </Route>
+    <Route path="s" component={SinglePage}>
+      <Route path="file/upload/:store_type/:file_id/:user_id" component={Upload}></Route>
+      <Route path="error/:msg" component={Error}></Route>
+      <Route path="qc">
+        <Route path="document" component={QCPartInfo}></Route>
+      </Route>
+    </Route>
+    <Route path="web" component={SinglePage}>
+      <Route path="login/:system" component={Login}></Route>
+    </Route>
+    <Route path="auth">
+      <Route path="web" component={NavPage}>
+        <Route path="menu" component={Menu}></Route>
+        <Route path="user" component={User}></Route>
+        <Route path="mpb">
+          <Route path="prod">
+            <Route path="list" component={Production_Job}></Route>
+            <Route path="material/:sno/:psno" component={Production_Material}></Route>
+            <Route path="working/:sno/:psno" component={Production_Working}></Route>
+          </Route>
+          <Route path="clean">
+            <Route path="list" component={Clean_Job}></Route>
+            <Route path="dept/:sno/:deptno" component={Clean_Dept}></Route>
+            <Route path="working/:sno/:deptno" component={Clean_Working}></Route>
+          </Route>
+          <Route path="package">
+            <Route path="list" component={Package_Job}></Route>
+            <Route path="working/:sno/:psno" component={Package_Working}></Route>
+          </Route>
+          <Route path="packing">
+            <Route path="list" component={Packing_Job}></Route>
+            <Route path="working/:sno/:psno" component={Packing_Working}></Route>
+          </Route>
         </Route>
-        <Route path="test">
-            <Route path="menu1" component={Menu1}>
-                <Route path="page1" component={page1}></Route>
-                <Route path="page2" component={page2}></Route>
-                <Route path="page3" component={page3}></Route>
+        <Route path="mpz">
+          <Route path="pointlog" component={Pointlog}></Route>
+        </Route>
+        <Route path="mpe">
+          <Route path="qa">
+            <Route path="receive/list" component={QAReceive}></Route>
+            <Route path="restore/list" component={QARestore}></Route>
+            <Route path="retained/list" component={Retained}></Route>
+            <Route path="stock">
+              <Route path="storage/Change" component={Change}></Route>
             </Route>
+          </Route>
+          <Route path="qc">
+            <Route path="receive" component={QCReceive}></Route>
+          </Route>
         </Route>
-        <Route path="s" component={SinglePage}>
-            <Route path="file/upload/:store_type/:file_id/:user_id" component={Upload}></Route>
-            <Route path="error/:msg" component={Error}></Route>
-            <Route path="qc">
-                <Route path="document" component={QCPartInfo}></Route>
-            </Route>
-        </Route>
-        <Route path="web" component={SinglePage}>
-            <Route path="login/:system" component={Login}></Route>
-        </Route>
-        <Route path="auth">
-            <Route path="web" component={NavPage}>
-                <Route path="menu" component={Menu}></Route>
-                <Route path="user" component={User}></Route>
-                <Route path="mpb">
-                    <Route path="prod">
-                        <Route path="list" component={Production_Job}></Route>
-                        <Route path="material/:sno/:psno" component={Production_Material}></Route>
-                        <Route path="working/:sno/:psno" component={Production_Working}></Route>
-                    </Route>
-                    <Route path="clean">
-                        <Route path="list" component={Clean_Job}></Route>
-                        <Route path="dept/:sno/:deptno" component={Clean_Dept}></Route>
-                        <Route path="working/:sno/:deptno" component={Clean_Working}></Route>
-                    </Route>
-                    <Route path="package">
-                        <Route path="list" component={Package_Job}></Route>
-                        <Route path="working/:sno/:psno" component={Package_Working}></Route>
-                    </Route>
-                    <Route path="packing">
-                        <Route path="list" component={Packing_Job}></Route>
-                        <Route path="working/:sno/:psno" component={Packing_Working}></Route>
-                    </Route>
-                </Route>
-                <Route path="mpz">
-                    <Route path="pointlog" component={Pointlog}></Route>
-                </Route>
-                <Route path="mpe">
-                    <Route path="qa">
-                        <Route path="receive/list" component={QAReceive}></Route>
-                        <Route path="restore/list" component={QARestore}></Route>
-                        <Route path="retained/list" component={Retained}></Route>
-                        <Route path="stock">
-                            <Route path="storage/Change" component={Change}></Route>
-                        </Route>
-                    </Route>
-                    <Route path="qc">
-                        <Route path="receive" component={QCReceive}></Route>
-                    </Route>
-                </Route>
-            </Route>
-        </Route>
-    </Router>,
-app)
+      </Route>
+    </Route>
+  </Router>,
+  app)

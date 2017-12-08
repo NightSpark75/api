@@ -58,7 +58,7 @@ class AuthController extends Controller
 
     public function logout()
     {
-        $system = session('system');
+        $system = session('system')||'ppm';
         $this->auth->logout();
         return redirect('/web/login/'.$system);
     }
