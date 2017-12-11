@@ -101,7 +101,7 @@ class ReceiveRepository
                     ", $binds);
 
                     $barcode = $item->barcode;
-                    $opvl = DB::selectOne("select pk_mpe.fu_qc_get_valid($barcode) opvl from dual")->opvl;
+                    $opvl = DB::selectOne("select pk_mpe.fu_qc_get_valid($barcode, to_number(to_char(sysdate, 'YYYYMMDD') opvl from dual")->opvl;
 
                     DB::update("
                         update mpe_house_e e
