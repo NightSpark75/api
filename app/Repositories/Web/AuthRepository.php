@@ -85,14 +85,14 @@ class AuthRepository
             $this->user
                 ->where('id', $account)
                 ->where('pwd', $password)
-                ->where('sys', $system)
+                //->where('sys', $system)
                 ->where('state', 'Y')
                 ->first();
         if ($auth) {
             Auth::login($auth);
             /** @noinspection PhpUndefinedFieldInspection */
             $user_info = array(
-                'system' => $system,
+                'system' => $auth->sys,
                 'sys' => $auth->sys,
                 'co' => $auth->co,
                 'user_id' => $auth->id,
