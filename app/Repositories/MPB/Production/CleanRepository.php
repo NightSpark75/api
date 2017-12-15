@@ -41,7 +41,7 @@ class CleanRepository
                 select unique m.*
                     from mpb_order_m m, mpa_dept_emp e, mpb_order_f f
                     where m.deptno = e.deptno(+) and m.sno = f.sno 
-                        and (e.empno = '$user_id' or f.empno = '$user_id') and state <> 'O'
+                        and (e.empno = '$user_id' or f.empno = '$user_id') and state in ('Y', 'O')
                     order by m.sno desc
             ");
             return $this->success(['job_list' => $clear]);
