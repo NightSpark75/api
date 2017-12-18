@@ -264,7 +264,7 @@ class PackingRepository
         $result = DB::selectOne("
             select count(*) count
             from mpb_order_tw 
-            where sno = :sno and psno = :psno and empno = substr(:mno, 3, 6)
+            where sno = :sno and psno = :psno and empno = substr(:mno, 3, 7)
         ", [
             'sno' => $sno,
             'psno' => $psno,
@@ -295,7 +295,7 @@ class PackingRepository
         ]);
         if ($item->ename === '無') {
             if (substr($item->empno, 0, 3) === '10M') {
-                $item->ename = substr($item->empno, 2, 6);
+                $item->ename = substr($item->empno, 2, 7);
             } else {
                 $item->ename = $item->empno;
                 $item->empno = '10'.$item->empno;
@@ -325,7 +325,7 @@ class PackingRepository
         }
         if ($mno !== null) {
             $machine_state = $this->machineStateCheck($sno, $psno, $mno);
-            $waiting = $machine_state ? $this->pushMemberInfo($waiting, substr($mno, 2, 6)) : $waiting;
+            $waiting = $machine_state ? $this->pushMemberInfo($waiting, substr($mno, 2, 7)) : $waiting;
         }
         return $waiting;
     }
@@ -428,7 +428,7 @@ class PackingRepository
     private function formatNo($empno)
     {
         if (substr($empno, 0, 3) === '10M') {
-            return substr($empno, 2, 6);
+            return substr($empno, 2, 7);
         }
         return $empno;
     }
@@ -447,8 +447,8 @@ class PackingRepository
                 $this->joinWorking($params, $this->memberStateCheck($sno, $psno, $empno));
             }
             if ($mno !== null) {
-                $params['empno'] = substr($mno, 2, 6);
-                $this->joinWorking($params, $this->machineStateCheck($sno, $psno, substr($mno, 2, 6)));
+                $params['empno'] = substr($mno, 2, 7);
+                $this->joinWorking($params, $this->machineStateCheck($sno, $psno, substr($mno, 2, 7)));
             }
             $result = [
                 'result' => true,
