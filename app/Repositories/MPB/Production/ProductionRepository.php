@@ -272,7 +272,7 @@ class ProductionRepository
         $result = DB::selectOne("
             select count(*) count
             from mpb_order_tw 
-            where sno = :sno and psno = :psno and empno = substr(:mno, 3, 6)
+            where sno = :sno and psno = :psno and empno = substr(:mno, 3, 7)
         ", [
             'sno' => $sno,
             'psno' => $psno,
@@ -303,7 +303,7 @@ class ProductionRepository
         ]);
         if ($item->ename === '無') {
             if (substr($item->empno, 0, 3) === '10M') {
-                $item->ename = substr($item->empno, 2, 6);
+                $item->ename = substr($item->empno, 2, 7);
             } else {
                 $item->ename = $item->empno;
                 $item->empno = '10'.$item->empno;
