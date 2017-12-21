@@ -27,6 +27,8 @@ import Packing_Job from "./components/web/mpb/packing/Job"
 import Packing_Working from "./components/web/mpb/packing/Working"
 import Package_Job from "./components/web/mpb/package/Job"
 import Package_Working from "./components/web/mpb/package/Working"
+import Package_Material from "./components/web/mpb/package/Material"
+import Package_Duty from "./components/web/mpb/package/Duty"
 import QCPartInfo from "./components/web/mpe/qc/part/Info"
 
 import Menu1 from "./components/test/menu1"
@@ -75,7 +77,9 @@ ReactDOM.render(
           </Route>
           <Route path="package">
             <Route path="list" component={Package_Job}></Route>
-            <Route path="working/:sno/:psno" component={Package_Working}></Route>
+            <Route path="material/:sno/:psno" component={Package_Material}></Route>
+            <Route path="duty/:sno/:psno" component={Package_Duty}></Route>
+            <Route path="working/:sno/:psno/:duty/:group" component={Package_Working}></Route>
           </Route>
           <Route path="packing">
             <Route path="list" component={Packing_Job}></Route>

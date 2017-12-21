@@ -12,6 +12,8 @@ export default class Job extends React.Component{
         this.state = {
             sno: this.props.params.sno,
             psno: this.props.params.psno,
+            duty: this.props.params.duty,
+            group: this.props.params.group,
             waiting_list: [],
             working_list: [],
             updated: false,
@@ -29,9 +31,9 @@ export default class Job extends React.Component{
     }
 
     getMember() {
-        const { sno, psno } = this.state
+        const { sno, psno, duty, group } = this.state
         let self = this       
-        axios.get('/api/web/mpb/prod/package/member/' + sno + '/' + psno)
+        axios.get('/api/web/mpb/prod/package/member/' + sno + '/' + psno + '/' + duty + '/' + group)
         .then(function (response) {
             if (response.data.result) {
                 if (!self.state.updated) {
@@ -55,7 +57,7 @@ export default class Job extends React.Component{
     }
 
     updateWorking(empno, action, event) {
-        const { waiting_list, working_list, sno, psno } = this.state
+        const { waiting_list, working_list, sno, psno, duty, group } = this.state
         let self = this    
         let form_data = new FormData()   
         this.setState({ lock: true })
@@ -131,10 +133,12 @@ export default class Job extends React.Component{
             (action === 'leave' && this.state.working_list.length > 0)) {
             this.setState({ lock: true })
             let self = this
-            let {sno, psno, working_list, waiting_list} = this.state
+            let { sno, psno, duty, group, working_list, waiting_list } = this.state
             let form_data = new FormData()   
             form_data.append('sno', sno) 
             form_data.append('psno', psno)
+            form_data.append('duty', duty) 
+            form_data.append('group', group)
             axios.post('/api/web/mpb/prod/package/all/' + action, form_data)
             .then(function (response) {
                 if (response.data.result) {
@@ -151,8 +155,8 @@ export default class Job extends React.Component{
         }
     }
 
-    workingComplete(clean, event) {
-        let msg =  (clean === 'N') ? '按確定後, 該製程完工(無清潔)..' : '按確定後,該製程完工(清潔)..'
+    workingComplete(event) {
+        let msg = '按確定後, 該製程完工..'
         if(confirm(msg)) {
             let self = this
             let {sno, psno} = this.state
@@ -160,7 +164,6 @@ export default class Job extends React.Component{
             this.setState({ lock: true }) 
             form_data.append('sno', sno) 
             form_data.append('psno', psno)
-            form_data.append('clean', clean)
             axios.post('/api/web/mpb/prod/package/work/complete', form_data)
             .then(function (response) {
                 if (response.data.result) {
@@ -177,14 +180,15 @@ export default class Job extends React.Component{
     }
 
     render() {
-        const { job_list, lock } = this.state 
+        const { job_list, lock, sno, psno } = this.state 
+        let par = sno + '/' + psno
         return(   
             <div>
                 <div className="box" style={{ marginTop: '10px', marginBottom: '10px' }}>
                     <div className="level">
                         <div className="level-left">
                             <div className="level-item">
-                                <Link className="button is-medium" to="/auth/web/mpb/package/list">&larr; 回生產清單</Link>
+                                <Link className="button is-medium" to={"/auth/web/mpb/package/duty/" + par}>&larr; 回生產清單</Link>
                             </div>
                             <div className="level-item is-hidden-touch">
                                 <button className="button is-primary is-large" onClick={this.allUpdate.bind(this, 'join')} disabled={ lock }>整批工作</button>
@@ -200,7 +204,7 @@ export default class Job extends React.Component{
                             </div>
                             */}
                             <div className="level-item">
-                                <button className="button is-primary is-large" onClick={this.workingComplete.bind(this, 'Y')} disabled={ lock }>結束且完工</button>
+                                <button className="button is-primary is-large" onClick={this.workingComplete.bind(this)} disabled={ lock }>結束且完工</button>
                             </div>
                         </div>
                     </div>

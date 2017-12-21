@@ -45,14 +45,16 @@ class PackageRepository
             $where = $this->getPackageWhere($user_id);
             $order_d = DB::select("
                 select d.*, 
-                    pk_mpa.fu_pno_name(d.pno) pname, 
-                    pk_mpa.fu_mno_name(d.mno) mname, 
-                    pk_mpa.fu_rno_name(d.rno) rname,
-                    pk_mpb.fu_oredr_m_msg('1', d.sno)||chr(13)||pk_mpb.fu_oredr_m_msg('2', d.sno)||chr(13)||
-                        '用料號='||pk_mpb.fu_oredr_d_msg('1', d.sno, d.psno) as info
-                from mpb_order_d d
-                where $where
-                order by d.sno, d.psno
+                        pk_mpa.fu_pno_name(d.pno) pname, 
+                        pk_mpa.fu_mno_name(d.mno) mname, 
+                        pk_mpa.fu_rno_name(d.rno) rname,
+                        pk_mpb.fu_get_iname(d.sno) iname,
+                        pk_mpb.fu_oredr_m_msg('1', d.sno)||chr(13)||pk_mpb.fu_oredr_m_msg('2', d.sno)||chr(13)||
+                            '用料號='||pk_mpb.fu_oredr_d_msg('1', d.sno, d.psno) as info
+                        , pk_mpb.fu_check_litm(d.sno, d.psno) check_litm
+                    from mpb_order_d d
+                    where $where
+                    order by d.sno, d.psno
             ");
             $result = [
                 'result' => true,
@@ -74,18 +76,16 @@ class PackageRepository
     private function getPackageWhere($user_id) {
         $type = DB::selectOne("
             select count(*) as count
-            from mpa_dept_emp 
-            where empno = '$user_id' 
+                from mpa_dept_emp 
+                where empno = '$user_id' 
         ");
         if ((int)$type->count === 0) {
             $where = DB::selectOne("
-                select pk_mpb.fu_order_where_52('1', '%', '$user_id') as str;
-                from dual
+                select pk_mpb.fu_order_where_53('1', '%', '$user_id') as str from dual
             ");
         } else {
             $where = DB::selectOne("
-                select pk_mpb.fu_order_where_52('3115', '', '$user_id') as str
-                from dual
+                select pk_mpb.fu_order_where_53('3115', '', '$user_id') as str from dual
             ");
             if ($where->str === 'x') {
                 return '1 = 2';
@@ -161,15 +161,15 @@ class PackageRepository
      * @param string $psno 途程代號
      * @return array
      */
-    public function getMember($sno, $psno)
+    public function getMember($sno, $psno, $duty, $group)
     {
         try {
             $prod = $this->getProcessInfo($sno, $psno);
             $rno = $prod->rno;
             $mno = $prod->mno;
             
-            $waiting = $this->getWaiting($sno, $psno, $rno, $mno);
-            $working = $this->getWorking($sno, $psno);
+            $waiting = $this->getWaiting($sno, $psno, $duty, $group, $rno, $mno);
+            $working = $this->getWorking($sno, $psno, $duty, $group);
 
             $result = [
                 'result' => true,
@@ -184,21 +184,31 @@ class PackageRepository
     }
 
     /**
-     * 取得該料品製造許可人員與設備
+     * 取得該料品製造許可人員
      * 
      * @param string $sno 製程代號
      * @param string $psno 途程代號
      * @param string $rno 房室代號
      * @return stdClass
      */
-    private function getItmMember($sno)
+    private function getItmMember($sno, $psno, $duty, $group)
     {
         $list = DB::select("
-            select * 
-            from v_pgdialy_d 
-            where pday = pk_date.fu_number(sysdate) and sno = :sno
+            select empno
+                from v_pgdialy_d 
+                where pday = pk_date.fu_number(sysdate) 
+                    and sno = :sno and psno = :psno
+                    and duty = :duty and gro = :gro
+            union
+            select mno empno from mpb_order_g 
+                where sno = :sno and psno = :psno
         ", [
             'sno' => $sno,
+            'psno' => $psno,
+            'duty' => $duty,
+            'gro' => $group,
+            'sno' => $sno,
+            'psno' => $psno,
         ]);
         return $list;
     }
@@ -214,8 +224,8 @@ class PackageRepository
     {
         $process = DB::selectOne("
             select *
-            from mpb_order_d
-            where sno = :sno and psno = :psno
+                from mpb_order_d
+                where sno = :sno and psno = :psno
         ", [
             'sno' => $sno,
             'psno' => $psno,
@@ -235,8 +245,8 @@ class PackageRepository
     {
         $result = DB::selectOne("
             select count(*) count
-            from mpb_order_tw 
-            where sno = :sno and psno = :psno and empno = :empno
+                from mpb_order_tw 
+                where sno = :sno and psno = :psno and empno = :empno
         ", [
             'sno' => $sno,
             'psno' => $psno,
@@ -260,8 +270,8 @@ class PackageRepository
     {
         $result = DB::selectOne("
             select count(*) count
-            from mpb_order_tw 
-            where sno = :sno and psno = :psno and empno = substr(:mno, 3, 7)
+                from mpb_order_tw 
+                where sno = :sno and psno = :psno and empno = substr(:mno, 3, 7)
         ", [
             'sno' => $sno,
             'psno' => $psno,
@@ -311,10 +321,10 @@ class PackageRepository
      * @param string $psno 途程代號
      * @return array
      */
-    private function getWaiting($sno, $psno, $mno)
+    private function getWaiting($sno, $psno, $duty, $group, $rno, $mno)
     {
         $waiting = [];
-        $member = $this->getItmMember($sno);
+        $member = $this->getItmMember($sno, $psno, $duty, $group);
         for ($i = 0; $i < count($member); $i++) {
             $empno = $member[$i]->empno;
             $member_state = $this->memberStateCheck($sno, $psno, $empno);
@@ -334,10 +344,10 @@ class PackageRepository
      * @param string $psno 途程代號
      * @return array
      */
-    private function getWorking($sno, $psno)
+    private function getWorking($sno, $psno, $duty, $group)
     {
         $working = [];
-        $member = $this->getWorkingMember($sno, $psno);
+        $member = $this->getWorkingMember($sno, $psno, $duty, $group);
         for ($i = 0; $i < count($member); $i++) {
             $empno = $member[$i]->empno;
             $working = $this->pushMemberInfo($working, $empno);
@@ -352,15 +362,29 @@ class PackageRepository
      * @param string $psno 途程代號
      * @return stdClass
      */
-    private function getWorkingMember($sno, $psno)
+    private function getWorkingMember($sno, $psno, $duty, $group)
     {
         $member = DB::select("
-            select * 
-            from mpb_order_tw 
-            where sno = :sno and psno = :psno
+            select t.* 
+                from mpb_order_tw t 
+                where t.sno = :sno and t.psno = :psno
+                    and (exists (
+                        select * 
+                            from v_pgdialy_d d
+                            where d.pday = pk_date.fu_number(sysdate) and d.sno = :sno
+                                and d.psno = :psno and d.duty = :duty
+                                and d.gro = :gro and t.empno = d.empno) or exists (
+                            select * 
+                                from mpb_order_g g
+                                where t.sno = g.sno and t.psno = g.psno and t.empno = g.mno
+                    ))
         ", [
             'sno' => $sno,
             'psno' => $psno,
+            'sno' => $sno,
+            'psno' => $psno,
+            'duty' => $duty,
+            'gro' => $group,
         ]);
         return $member;
     }
@@ -380,7 +404,7 @@ class PackageRepository
             //$params['empno'] = $this->formatNo($params['empno']);
             DB::insert("
                 insert into mpb_order_tw 
-                values (:sno, :psno, :empno, '', sysdate)
+                    values (:sno, :psno, :empno, '', sysdate)
             ", $params);
             $result = [
                 'result' => true,
@@ -404,7 +428,7 @@ class PackageRepository
             //$params['empno'] = $this->formatNo($params['empno']);
             DB::delete("
                 delete from mpb_order_tw 
-                where sno = :sno and psno = :psno and empno = :empno
+                    where sno = :sno and psno = :psno and empno = :empno
             ", $params);
             $result = [
                 'result' => true,
@@ -484,7 +508,7 @@ class PackageRepository
             DB::transaction( function () use($params) {
                 DB::delete("
                     delete from mpb_order_tw
-                    where sno = :sno and psno = :psno
+                        where sno = :sno and psno = :psno
                 ", [
                     'sno' => $params['sno'],
                     'psno' => $params['psno'],
@@ -492,13 +516,13 @@ class PackageRepository
 
                 DB::update("
                     update mpb_order_d
-                    set state = 'Y', clean = :clean
-                    where sno = :sno and psno = :psno
+                        set state = 'Y', clean = :clean
+                        where sno = :sno and psno = :psno
                 ", $params);
 
                 DB::delete("
                     delete from mpb_proc_now
-                    where sno = :sno
+                        where sno = :sno
                 ", ['sno' => $params['sno']]);
                 $pdo = DB::getPdo();
                 $stmt = $pdo->prepare("begin pk_mpb.proc_create_next_proc(:sno); end;");
@@ -513,6 +537,69 @@ class PackageRepository
             return $result;
         } catch (Exception $e) {
             DB::rollback();
+            return $this->exception($e);
+        }
+    }
+
+    public function getMaterial($sno, $psno)
+    {
+        try {
+            $info = DB::selectOne("
+                select pk_mpb.fu_oredr_m_msg('1', 'SP17000003') minfo
+                    ,pk_mpb.fu_oredr_m_msg('2', 'SP17000003') sinfo
+                    ,pk_mpb.fu_oredr_d_msg('1', 'SP17000003', 300) mainfo
+                from dual
+            ");
+            $material = DB::select("
+                select *
+                    from mpb_order_e
+                    where sno = '$sno' and psno = $psno
+            ");
+            return $this->success(['info' => $info, 'material' => $material]);
+        } catch (Exception $e) {
+            return $this->exception($e);
+        }
+
+    }
+
+    public function checkMaterial($sno, $psno)
+    {
+        try {
+            // 如果已經完成領料確認程序，即不再更新領料確認資訊
+            $isCheck = DB::selectOne("
+                select count(*) v_check
+                    from mpb_order_e
+                    where sno = '$sno' and psno = $psno and ukid is null
+            ")->v_check;
+
+            if ($isCheck > 0) {
+                $user = auth()->user()->id;
+                DB::update("
+                    update mpb_order_e
+                        set ukid = '$user', duser = '$user', ddate = sysdate
+                        where sno = '$sno' and psno = $psno
+                ");
+            }
+            return $this->success();
+        } catch (Exception $e) {
+            return $this->exception($e);
+        }
+    }
+
+    public function getDuty($sno, $psno)
+    {
+        try {
+            $list = DB::select("
+                select pgno, sno, psno, duty, gro,
+                        pk_mpb.fu_get_iname(sno) iname,
+                        pk_mpb.fu_get_psname(sno, psno) pname
+                    from v_mpb_pgdialy
+                    where pday = pk_date.fu_number(sysdate)
+                        and sno = '$sno' and psno = '$psno'
+                    order by duty, gro
+            ");
+            return $this->success(['duty' => $list]);
+        } catch (Exception $e) {
             return $this->exception($e);
         }
     }

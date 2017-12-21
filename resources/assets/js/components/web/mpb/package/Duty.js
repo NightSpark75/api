@@ -1,17 +1,17 @@
 /** 
- * package.Job.js
+ * package.Duty.js
  */
 import React from 'react'
 import { Link } from 'react-router'
 import axios from 'axios'
 
-export default class Job extends React.Component{
+export default class Duty extends React.Component{
     constructor(props) {
         super(props)
 
         this.state = {
             ready: false,
-            job_list: [],
+            duty_list: [],
             showInfo: false,
             item: [],
         }
@@ -19,49 +19,25 @@ export default class Job extends React.Component{
     
     componentDidMount() {
         this.init()
-        this.timer = setInterval(this.updateJobList.bind(this), 5000)
-    }
-
-    componentWillUnmount() {
-        this.timer && clearInterval(this.timer)
     }
 
     init() {
-        this.getJobList()
+        this.getDutyList()
     }
 
-    getJobList() {
+    getDutyList() {
         let self = this       
-        axios.get('/api/web/mpb/prod/package/list')
+        const { sno, psno } = this.props.params
+        axios.get('/api/web/mpb/prod/package/duty/list/' + sno + '/' + psno)
         .then(function (response) {
             if (response.data.result) {
                 self.setState({
-                    job_list: response.data.job_list,
+                    duty_list: response.data.duty,
                 })
                 console.log(response.data)
             } else {
                 console.log(response.data)
                 window.location = '/web/login/ppm'
-            }
-        }).catch(function (error) {
-            console.log(error)
-        })
-    }
-
-    updateJobList() {
-        let self = this
-        let job_list = JSON.stringify(this.state.job_list)
-        let form_data = new FormData()
-        form_data.append('job_list', job_list)
-        axios.post('/api/web/mpb/prod/package/compare', form_data)
-        .then(function (response) {
-            if (response.data.result) {
-                self.setState({
-                    job_list: response.data.job_list,
-                })
-                console.log(response.data)
-            } else {
-                console.log(response.data)
             }
         }).catch(function (error) {
             console.log(error)
@@ -83,12 +59,12 @@ export default class Job extends React.Component{
     }
 
     render() {
-        const { job_list } = this.state 
+        const { duty_list } = this.state 
         return(   
             <div>
                 <div className="box" style={{ marginTop: '10px', marginBottom: '10px' }}>
                     <p className="control">
-                        <Link className="button is-medium" to="/auth/web/menu">&larr; 功能選單</Link> 
+                        <Link className="button is-medium" to="/auth/web/mpb/package/list">&larr; 分包裝工單清單</Link> 
                     </p>
                 </div>
                 {this.state.showInfo &&  
@@ -102,7 +78,7 @@ export default class Job extends React.Component{
                         </div>
                     </article>
                 }
-                {job_list.length > 0 ?
+                {duty_list.length > 0 ?
                     <div>
                         <div className="column is-hidden-desktop">
                             <label className="is-size-4">請將畫面轉橫</label>
@@ -110,34 +86,27 @@ export default class Job extends React.Component{
                         <table className="table is-bordered is-fullwidth is-size-4 is-hidden-touch">
                             <thead>
                                 <tr>
-                                    <th></th>
-                                    <th>製程單號</th>
-                                    <th>批號</th>
-                                    <th>順序</th>
-                                    <th>途程名稱</th>
                                     <th>品名規格</th>
+                                    <th>途程</th>
+                                    <th>班別</th>
+                                    <th>組別</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {job_list.map((item, index) => (
+                                {duty_list.map((item, index) => (
                                     <tr key={index}>
-                                        <td>
-                                            <button className="button is-medium" onClick={this.showProcessInfo.bind(this, item)}>詳細資訊</button>
-                                        </td>
-                                        <td>{item.sno}</td>
-                                        <td>{item.bno}</td>
-                                        <td>{item.psno}</td>
-                                        <td>{item.pname}</td>
                                         <td>{item.iname}</td>
+                                        <td>{item.pname}</td>
                                         <td>
-                                            {item.check_litm > 0 ?
-                                                <Link className="button is-primary is-medium" 
-                                                    to={"/auth/web/mpb/prod/material/" + item.sno + "/" + item.psno}>領料確認</Link>
-                                            :
-                                                <Link className="button is-primary is-medium" 
-                                                    to={"/auth/web/mpb/package/duty/" + item.sno + "/" + item.psno}>選擇班別</Link>
-                                            }
+                                            {item.duty === '1' && "早班"}
+                                            {item.duty === '2' && "中班"}
+                                            {item.duty === '3' && "晚班"}
+                                        </td>
+                                        <td>{item.gro}</td>
+                                        <td>
+                                            <Link className="button is-primary is-medium" 
+                                                to={"/auth/web/mpb/package/working/" + item.sno + "/" + item.psno + "/" + item.duty + "/" + item.gro}>報工</Link>
                                         </td>
                                     </tr>
                                 ))}
