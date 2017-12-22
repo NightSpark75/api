@@ -12,6 +12,7 @@ class User extends Authenticatable
     protected $connection = 'oracle';
     protected $table = "v_api_user";
     protected $primaryKey = 'id';
+    protected $keyType = 'string';
     public $incrementing = false;
     protected $visible = ['sys', 'co', 'id', 'name', 'class', 'state'];
     //protected $hidden = ['pwd'];

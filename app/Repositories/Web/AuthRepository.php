@@ -17,7 +17,6 @@ use App\Models\Web\UserPrg;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-
 /**
  * Class AuthRepository
  *
