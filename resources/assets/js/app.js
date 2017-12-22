@@ -79,7 +79,7 @@ ReactDOM.render(
             <Route path="list" component={Package_Job}></Route>
             <Route path="material/:sno/:psno" component={Package_Material}></Route>
             <Route path="duty/:sno/:psno" component={Package_Duty}></Route>
-            <Route path="working/:sno/:psno/:duty/:group" component={Package_Working}></Route>
+            <Route path="working/:sno/:psno/:pgno/:duty/:group" component={Package_Working}></Route>
           </Route>
           <Route path="packing">
             <Route path="list" component={Packing_Job}></Route>

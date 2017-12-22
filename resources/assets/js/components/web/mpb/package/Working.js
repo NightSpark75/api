@@ -12,6 +12,7 @@ export default class Job extends React.Component{
         this.state = {
             sno: this.props.params.sno,
             psno: this.props.params.psno,
+            pgno: this.props.params.pgno,
             duty: this.props.params.duty,
             group: this.props.params.group,
             waiting_list: [],
@@ -31,9 +32,9 @@ export default class Job extends React.Component{
     }
 
     getMember() {
-        const { sno, psno, duty, group } = this.state
+        const { sno, psno, pgno, duty, group } = this.state
         let self = this       
-        axios.get('/api/web/mpb/prod/package/member/' + sno + '/' + psno + '/' + duty + '/' + group)
+        axios.get('/api/web/mpb/prod/package/member/' + sno + '/' + psno + '/' + pgno + '/' + duty + '/' + group)
         .then(function (response) {
             if (response.data.result) {
                 if (!self.state.updated) {
@@ -57,7 +58,7 @@ export default class Job extends React.Component{
     }
 
     updateWorking(empno, action, event) {
-        const { waiting_list, working_list, sno, psno, duty, group } = this.state
+        const { waiting_list, working_list, sno, psno} = this.state
         let self = this    
         let form_data = new FormData()   
         this.setState({ lock: true })
@@ -156,7 +157,7 @@ export default class Job extends React.Component{
     }
 
     workingComplete(event) {
-        let msg = '按確定後, 該製程完工..'
+        let msg = '按確定後, 此製程完工..'
         if(confirm(msg)) {
             let self = this
             let {sno, psno} = this.state
@@ -169,6 +170,34 @@ export default class Job extends React.Component{
                 if (response.data.result) {
                     console.log(response.data)
                     self.props.router.push('/auth/web/mpb/package/list')
+                } else {
+                    console.log(response.data)
+                    window.location = '/web/login/ppm'
+                }
+            }).catch(function (error) {
+                console.log(error)
+            })
+        }
+    }
+
+    dutyClose() {
+        let msg = '按確定後, 完成此班報工..'
+        if(confirm(msg)) {
+            let self = this
+            let { sno, psno, pgno, duty, group } = this.state
+            let par = sno + '/' + psno
+            let form_data = new FormData()  
+            this.setState({ lock: true }) 
+            form_data.append('sno', sno) 
+            form_data.append('psno', psno)
+            form_data.append('pgno', pgno)
+            form_data.append('duty', duty)
+            form_data.append('gro', group)
+            axios.post('/api/web/mpb/prod/package/working/duty/close', form_data)
+            .then(function (response) {
+                if (response.data.result) {
+                    console.log(response.data)
+                    self.props.router.push('/auth/web/mpb/package/duty/' + par)
                 } else {
                     console.log(response.data)
                     window.location = '/web/login/ppm'
@@ -198,13 +227,11 @@ export default class Job extends React.Component{
                             </div>
                         </div>
                         <div className="level-right is-hidden-touch">
-                            {/*}
-                            <div className="level-item">
-                                <button className="button is-primary is-large" onClick={this.workingComplete.bind(this, 'N')} disabled={ lock }>結束且完工(無清潔)</button>
+                            <div className="level-item" style={{marginRight: '50px'}}>
+                                <button className="button is-info is-large" onClick={this.dutyClose.bind(this)} disabled={ lock }>此班完工</button>
                             </div>
-                            */}
                             <div className="level-item">
-                                <button className="button is-primary is-large" onClick={this.workingComplete.bind(this)} disabled={ lock }>結束且完工</button>
+                                <button className="button is-primary is-large" onClick={this.workingComplete.bind(this)} disabled={ lock }>途程完工</button>
                             </div>
                         </div>
                     </div>

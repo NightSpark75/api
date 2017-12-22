@@ -161,15 +161,15 @@ class PackageRepository
      * @param string $psno 途程代號
      * @return array
      */
-    public function getMember($sno, $psno, $duty, $group)
+    public function getMember($sno, $psno, $pgno, $duty, $group)
     {
         try {
             $prod = $this->getProcessInfo($sno, $psno);
             $rno = $prod->rno;
             $mno = $prod->mno;
             
-            $waiting = $this->getWaiting($sno, $psno, $duty, $group, $rno, $mno);
-            $working = $this->getWorking($sno, $psno, $duty, $group);
+            $waiting = $this->getWaiting($sno, $psno, $pgno, $duty, $group, $rno, $mno);
+            $working = $this->getWorking($sno, $psno, $pgno, $duty, $group);
 
             $result = [
                 'result' => true,
@@ -191,13 +191,12 @@ class PackageRepository
      * @param string $rno 房室代號
      * @return stdClass
      */
-    private function getItmMember($sno, $psno, $duty, $group)
+    private function getItmMember($sno, $psno, $pgno, $duty, $group)
     {
         $list = DB::select("
             select empno
                 from v_pgdialy_d 
-                where pday = pk_date.fu_number(sysdate) 
-                    and sno = :sno and psno = :psno
+                where sno = :sno and psno = :psno and pgno = :pgno
                     and duty = :duty and gro = :gro
             union
             select mno empno from mpb_order_g 
@@ -205,6 +204,7 @@ class PackageRepository
         ", [
             'sno' => $sno,
             'psno' => $psno,
+            'pgno' => $pgno,
             'duty' => $duty,
             'gro' => $group,
             'sno' => $sno,
@@ -321,10 +321,10 @@ class PackageRepository
      * @param string $psno 途程代號
      * @return array
      */
-    private function getWaiting($sno, $psno, $duty, $group, $rno, $mno)
+    private function getWaiting($sno, $psno, $pgno, $duty, $group, $rno, $mno)
     {
         $waiting = [];
-        $member = $this->getItmMember($sno, $psno, $duty, $group);
+        $member = $this->getItmMember($sno, $psno, $pgno, $duty, $group);
         for ($i = 0; $i < count($member); $i++) {
             $empno = $member[$i]->empno;
             $member_state = $this->memberStateCheck($sno, $psno, $empno);
@@ -344,10 +344,10 @@ class PackageRepository
      * @param string $psno 途程代號
      * @return array
      */
-    private function getWorking($sno, $psno, $duty, $group)
+    private function getWorking($sno, $psno, $pgno, $duty, $group)
     {
         $working = [];
-        $member = $this->getWorkingMember($sno, $psno, $duty, $group);
+        $member = $this->getWorkingMember($sno, $psno, $pgno, $duty, $group);
         for ($i = 0; $i < count($member); $i++) {
             $empno = $member[$i]->empno;
             $working = $this->pushMemberInfo($working, $empno);
@@ -362,7 +362,7 @@ class PackageRepository
      * @param string $psno 途程代號
      * @return stdClass
      */
-    private function getWorkingMember($sno, $psno, $duty, $group)
+    private function getWorkingMember($sno, $psno, $pgno, $duty, $group)
     {
         $member = DB::select("
             select t.* 
@@ -371,8 +371,8 @@ class PackageRepository
                     and (exists (
                         select * 
                             from v_pgdialy_d d
-                            where d.pday = pk_date.fu_number(sysdate) and d.sno = :sno
-                                and d.psno = :psno and d.duty = :duty
+                            where d.sno = :sno
+                                and d.psno = :psno and pgno = :pgno and d.duty = :duty
                                 and d.gro = :gro and t.empno = d.empno) or exists (
                             select * 
                                 from mpb_order_g g
@@ -383,6 +383,7 @@ class PackageRepository
             'psno' => $psno,
             'sno' => $sno,
             'psno' => $psno,
+            'pgno' => $pgno,
             'duty' => $duty,
             'gro' => $group,
         ]);
@@ -516,9 +517,12 @@ class PackageRepository
 
                 DB::update("
                     update mpb_order_d
-                        set state = 'Y', clean = :clean
+                        set state = 'Y'
                         where sno = :sno and psno = :psno
-                ", $params);
+                ", [
+                    'sno' => $params['sno'],
+                    'psno' => $params['psno'],
+                ]);
 
                 DB::delete("
                     delete from mpb_proc_now
@@ -533,6 +537,45 @@ class PackageRepository
             $result = [
                 'result' => true,
                 'msg' => '完成工作!(#0006)',
+            ];
+            return $result;
+        } catch (Exception $e) {
+            DB::rollback();
+            return $this->exception($e);
+        }
+    }
+
+    public function dutyClose($params)
+    {
+        try {
+            DB::transaction( function () use($params) {
+                DB::delete("
+                    delete from mpb_order_tw
+                        where sno = :sno and psno = :psno
+                ", [
+                    'sno' => $params['sno'],
+                    'psno' => $params['psno'],
+                ]);
+
+                DB::update("
+                    update mpb_pgdialy_d
+                        set sta = 'Y'
+                        where sno = :sno and psno = :psno and pgno = :pgno and duty = :duty and gro = :gro
+                ", $params);
+
+                DB::delete("
+                    delete from mpb_proc_now
+                        where sno = :sno
+                ", ['sno' => $params['sno']]);
+                $pdo = DB::getPdo();
+                $stmt = $pdo->prepare("begin pk_mpb.proc_create_next_proc(:sno); end;");
+                $stmt->bindParam(':sno', $params['sno']);
+                $stmt->execute();
+            });
+            DB::commit();
+            $result = [
+                'result' => true,
+                'msg' => '結束此班報工!(#0007)',
             ];
             return $result;
         } catch (Exception $e) {
@@ -595,7 +638,7 @@ class PackageRepository
                         pk_mpb.fu_get_psname(sno, psno) pname
                     from v_mpb_pgdialy
                     where pday = pk_date.fu_number(sysdate)
-                        and sno = '$sno' and psno = '$psno'
+                        and sno = '$sno' and psno = '$psno' and sta is null
                     order by duty, gro
             ");
             return $this->success(['duty' => $list]);

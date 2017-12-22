@@ -106,7 +106,8 @@ export default class Duty extends React.Component{
                                         <td>{item.gro}</td>
                                         <td>
                                             <Link className="button is-primary is-medium" 
-                                                to={"/auth/web/mpb/package/working/" + item.sno + "/" + item.psno + "/" + item.duty + "/" + item.gro}>報工</Link>
+                                                to={"/auth/web/mpb/package/working/" 
+                                                    + item.sno + "/" + item.psno + "/" + item.pgno + "/" + item.duty + "/" + item.gro}>報工</Link>
                                         </td>
                                     </tr>
                                 ))}

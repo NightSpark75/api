@@ -96,7 +96,7 @@ Route::group(['prefix' => 'web/mpb', 'namespace' => 'MPB'], function () {
 
         Route::get('package/list', 'PackageController@getPackage');
         Route::post('package/compare', 'PackageController@compare');
-        Route::get('package/member/{sno}/{psno}/{duty}/{group}', 'PackageController@member');
+        Route::get('package/member/{sno}/{psno}/{pgno}/{duty}/{group}', 'PackageController@member');
         Route::get('package/duty/list/{sno}/{psno}', 'PackageController@duty');
         Route::get('package/material/{sno}/{psno}', 'ProductionController@material');
         Route::post('package/material/check', 'ProductionController@checkMaterial');
@@ -105,6 +105,7 @@ Route::group(['prefix' => 'web/mpb', 'namespace' => 'MPB'], function () {
         Route::post('package/all/join', 'PackageController@allJoinWorking');
         Route::post('package/all/leave', 'PackageController@allLeaveWorking');
         Route::post('package/work/complete', 'PackageController@workComplete');
+        Route::post('package/working/duty/close', 'PackageController@dutyClose');
     });
 });
 

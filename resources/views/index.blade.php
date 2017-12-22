@@ -7,11 +7,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Standard web</title>
-    <link href="{{ url('/css/app.css?x=15') }}" rel="stylesheet">
+    <link href="{{ url('/css/app.css?x=17') }}" rel="stylesheet">
     <link href="{{ url('/css/font-awesome.min.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app"></div>
-    <script src="{{ url('/js/app.js?x=13') }}"></script>
+    <script src="{{ url('/js/app.js?x=15') }}"></script>
 </body>
 </html>

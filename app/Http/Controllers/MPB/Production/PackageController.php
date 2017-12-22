@@ -35,9 +35,9 @@ class PackageController extends Controller
         return $response;
     }
 
-    public function member($sno, $psno, $duty, $group)
+    public function member($sno, $psno, $pgno, $duty, $group)
     {
-        $result = $this->work->getMember($sno, $psno, $duty, $group);
+        $result = $this->work->getMember($sno, $psno, $pgno, $duty, $group);
         $response = response()->json($result);
         return $response;
     }
@@ -78,6 +78,14 @@ class PackageController extends Controller
     {
         $input = request()->all();
         $result = $this->work->workComplete($input);
+        $response = response()->json($result);
+        return $response;
+    }
+
+    public function dutyClose()
+    {
+        $input = request()->all();
+        $result = $this->work->dutyClose($input);
         $response = response()->json($result);
         return $response;
     }
