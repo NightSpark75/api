@@ -102,16 +102,17 @@ class AuthController extends Controller
     public function jwtAuth(User $user, $id, $pwd)
     {
         // grab credentials from the request
-        $credentials = ['id' => $id, 'pwd' => $pwd];
+        $pwd = strtoupper($pwd);     
         $auth = $user
-            ->where('id', ucwords($id))
-            ->where('pwd', ucwords($pwd))
+            ->where('id', $id)
+            ->where('pwd', $pwd)
             ->where('state', 'Y')
             ->first();
 
         try {
             // attempt to verify the credentials and create a token for the user
-            if (! $token = JWTAuth::attempt($credentials)) {
+            // if (! $token = JWTAuth::attempt($credentials)) {
+            if (! $token = JWTAuth::fromUser($user)) {
                 return response()->json(['error' => 'invalid_credentials'], 401);
             }
         } catch (JWTException $e) {
