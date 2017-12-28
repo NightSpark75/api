@@ -110,11 +110,13 @@ class AuthController extends Controller
             ->where('pwd', $pwd)
             ->where('state', 'Y')
             ->first();
-
+        $payloadable = [
+            'iss' => $auth->id,
+        ];
+        
         try {
             // attempt to verify the credentials and create a token for the user
-            // if (! $token = JWTAuth::attempt($input)) {
-            if (! $token = JWTAuth::fromUser($user)) {
+            if (! $token = JWTAuth::fromUser($auth, $payloadable)) {
                 return response()->json(['error' => 'invalid_credentials'], 401);
             }
         } catch (JWTException $e) {
@@ -123,8 +125,7 @@ class AuthController extends Controller
         }
 
         // all good so return the token
-        $a = JWTAuth::toUser($token);
-        return response()->json(compact('token', 'a'));
+        return response()->json(compact('token'));
     }
 
     public function toUser($token)
