@@ -47,11 +47,11 @@ class ReceiveRepository
     private function getBarcode()
     {
         $barcode = DB::select("
-            select barcode, partno, pk_mpe.fu_pname(partno) pname, batch, opvl, 
+            select barcode, partno, pk_mpe.fu_pname(partno) pname, pk_mpe.fu_ename(partno) ename, batch, opvl, 
                     opdate, valid, buydate, pk_mpe.fu_partno_predate(partno) predate, 
                     whouse, stor, grid, amt, pk_mpe.fu_get_qc_unit(partno) unit
                 from mpe_house_e
-                where sta = 'N'
+                where sta = 'N' and code = '01'
         ");
         return $barcode;
     }
