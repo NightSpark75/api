@@ -56,15 +56,15 @@ class ReceiveRepository
     private function get_lsa_m($lsa_no = '%%')
     {
         $lsa_m = DB::select("
-        select m.no, m.apply_user, stdadm.pk_hra.fu_emp_name(m.apply_user) uname, m.apply_unit, stdadm.pk_hra.fu_dept_name(m.apply_unit) dname,
-            m.check_user, stdadm.pk_hra.fu_emp_name(m.check_user) cname, m.back_user, stdadm.pk_hra.fu_emp_name(m.back_user) bname, m.apply_date, 
-            req_date, reason, doc_class, doc_no, back_date, back_reason, rdate, m.status
-        from mpe_lsa_m m
-        where m.status = 'P' and m.no like :lsa_no
-        group by m.no, m.apply_user, m.apply_unit,
-            m.check_user, m.back_user, m.apply_date, 
-            req_date, reason, doc_class, doc_no, back_date, back_reason, rdate, m.status
-        order by m.req_date, m.no
+            select m.no, m.apply_user, stdadm.pk_hra.fu_emp_name(m.apply_user) uname, m.apply_unit, stdadm.pk_hra.fu_dept_name(m.apply_unit) dname,
+                m.check_user, stdadm.pk_hra.fu_emp_name(m.check_user) cname, m.back_user, stdadm.pk_hra.fu_emp_name(m.back_user) bname, m.apply_date, 
+                req_date, reason, doc_class, doc_no, back_date, back_reason, rdate, m.status
+                from mpe_lsa_m m
+                where m.status = 'P' and m.no like :lsa_no
+                group by m.no, m.apply_user, m.apply_unit,
+                    m.check_user, m.back_user, m.apply_date, 
+                    req_date, reason, doc_class, doc_no, back_date, back_reason, rdate, m.status
+                order by m.req_date, m.no
         ", ['lsa_no' => $lsa_no]);
         return $lsa_m;
     }
@@ -74,14 +74,14 @@ class ReceiveRepository
         $lsa_d = DB::select("
             select d.lsa_no, d.bno, d.qty, d.partno, d.whouse, d.stor, m.pname, h.usize, h.unit 
                 , d.status
-            from mpe_lsa_d d
-                join mpe_mate m on d.partno = m.partno
-                join mpe_house_m h on d.bno = h.batch and d.partno = h.partno 
-                    and d.whouse = h.whouse and d.stor = h.stor 
-                join mpe_lsa_m lm on lm.no = d.lsa_no
-            where d.lsa_no like :lsa_no and lm.status = 'P'
-            group by d.lsa_no, d.bno, d.qty, d.partno, d.whouse, d.stor, m.pname, h.usize, h.unit, d.status
-            order by d.lsa_no, d.bno
+                from mpe_lsa_d d
+                    join mpe_mate m on d.partno = m.partno
+                    join mpe_house_m h on d.bno = h.batch and d.partno = h.partno 
+                        and d.whouse = h.whouse and d.stor = h.stor 
+                    join mpe_lsa_m lm on lm.no = d.lsa_no
+                where d.lsa_no like :lsa_no and lm.status = 'P'
+                group by d.lsa_no, d.bno, d.qty, d.partno, d.whouse, d.stor, m.pname, h.usize, h.unit, d.status
+                order by d.lsa_no, d.bno
         ", ['lsa_no' => $lsa_no]);
         return $lsa_d;
     }
@@ -90,14 +90,14 @@ class ReceiveRepository
     {
         $lsa_e = DB::select("
             select m.no lsa_no, e.*, h.usize, h.unit
-            from mpe_house_e e, mpe_lsa_m m, mpe_lsa_d d, mpe_house_m h
-            where e.sta = 'N'
-                and m.status = 'P' and m.no = d.lsa_no and m.no like :lsa_no
-                and e.partno = h.partno and e.batch = h.batch
-                and e.whouse = h.whouse and e.stor = h.stor
-                and e.partno = d.partno and e.batch = d.bno
-                and e.whouse = d.whouse and e.stor = d.stor
-                order by m.no, e.batch
+                from mpe_house_e e, mpe_lsa_m m, mpe_lsa_d d, mpe_house_m h
+                where e.sta = 'N'
+                    and m.status = 'P' and m.no = d.lsa_no and m.no like :lsa_no
+                    and e.partno = h.partno and e.batch = h.batch
+                    and e.whouse = h.whouse and e.stor = h.stor
+                    and e.partno = d.partno and e.batch = d.bno
+                    and e.whouse = d.whouse and e.stor = d.stor
+                    order by m.no, e.batch
         ", ['lsa_no' => $lsa_no]);
         return $lsa_e;
     }
@@ -179,6 +179,87 @@ class ReceiveRepository
                 'msg' => $e->getMessage(),
             ];
             return $result;
+        }
+    }
+
+    public function getCheckList()
+    {
+        $lsa_m = DB::select("
+            select m.no, m.apply_user, stdadm.pk_hra.fu_emp_name(m.apply_user) uname, m.apply_unit, stdadm.pk_hra.fu_dept_name(m.apply_unit) dname,
+                    m.check_user, stdadm.pk_hra.fu_emp_name(m.check_user) cname, m.back_user, stdadm.pk_hra.fu_emp_name(m.back_user) bname, m.apply_date, 
+                    req_date, reason, doc_class, doc_no, back_date, back_reason, rdate, m.status
+                from mpe_lsa_m m
+                where m.status = 'R'
+                group by m.no, m.apply_user, m.apply_unit,
+                    m.check_user, m.back_user, m.apply_date, 
+                    req_date, reason, doc_class, doc_no, back_date, back_reason, rdate, m.status
+                order by m.req_date, m.no
+        ");
+        return $this->success(compact('lsa_m'));
+    }
+
+    public function getCheckDetail($no)
+    {
+        $lsa_d = DB::select("
+            select d.lsa_no, d.bno, d.qty, d.partno, d.whouse, d.stor, m.pname, h.usize, h.unit, d.status
+                from mpe_lsa_d d
+                    join mpe_mate m on d.partno = m.partno
+                    join mpe_house_m h on d.bno = h.batch and d.partno = h.partno 
+                        and d.whouse = h.whouse and d.stor = h.stor 
+                    join mpe_lsa_m lm on lm.no = d.lsa_no
+                where d.lsa_no = :no and lm.status = 'R'
+                group by d.lsa_no, d.bno, d.qty, d.partno, d.whouse, d.stor, m.pname, h.usize, h.unit, d.status
+                order by d.lsa_no, d.bno
+        ", compact('no'));
+
+        $lsa_e = DB::select("
+            select e.partno, e.bno, pk_mpe.fu_pname(e.partno) pname, 
+                    pk_mpe.fu_posit(e.whouse) posit, pk_mpe.fu_storn(e.whouse, e.stor) storn, d.qty, e.barcode, 
+                    e.qty, pk_mpe.fu_get_usize(e.partno, e.bno, e.whouse, e.stor, 'N') usize, pk_mpe.fu_get_unit(e.partno, e.bno, e.whouse, e.stor, 'N') unit
+                from mpe_lsa_m m, mpe_lsa_d d, mpe_lsa_e e
+                where m.no = :no and m.no = d.lsa_no
+                    and d.partno = e.partno and d.bno = e.bno
+                    and d.whouse = e.whouse and d.stor = e.stor
+        ", compact('no'));
+        
+        return $this->success(compact('lsa_d', 'lsa_e'));
+    }
+
+    public function confirm($no, $receive_user)
+    {
+        try {
+            DB::update("
+                update mpe_lsa_m
+                    set status = 'S', receive_user = :receive_user
+                    where no = :no and status = 'R'
+            ", compact('receive_user', 'no'));
+
+            DB::update("
+                update mpe_lsa_e
+                    set status = 'R' 
+                    where lsa_no = :no and status = 'Y'
+            ", compact('no'));
+
+            return $this->success();
+        } catch (Exception $e) {
+            return $this->exception($e);
+        }
+    }
+
+    public function checkUser($empno)
+    {
+        try{
+            $user = DB::selectOne("
+                select empno, ename, deptno, dname
+                    from stdadm.v_hra_emp_dept
+                    where empno = :empno
+            ", compact('empno'));
+            if ($user) {
+                return $this->success(compact('user'));
+            }
+            throw New Exception('找不到員工資料!');
+        } catch(Exception $e) {
+            return $this->exception($e);
         }
     }
 }   

@@ -119,6 +119,10 @@ Route::group(['prefix' => 'web/mpe', 'namespace' => 'MPE'], function () {
             Route::get('list', 'ReceiveController@getList');
             Route::get('detail/{lsa_no}', 'ReceiveController@getDetail');
             Route::post('posting', 'ReceiveController@posting');
+            Route::get('check', 'ReceiveController@check');
+            Route::get('check/detail/{no}', 'ReceiveController@checkDetail');
+            Route::post('confirm', 'ReceiveController@confirm');
+            Route::get('user/{empno}', 'ReceiveController@user');
         });
         Route::group(['prefix' => 'restore'], function () {
             Route::get('list', 'RestoreController@getList');
