@@ -60,5 +60,9 @@ class Kernel extends HttpKernel
         'role:update' => \App\Http\Middleware\UpdateMiddleware::class,   // 驗證使用者程式權限Update
         'role:delete' => \App\Http\Middleware\DeleteMiddleware::class,   // 驗證使用者程式權限Delete
         'cors' => \App\Http\Middleware\CORS::class,
+        'jwt' => \App\Http\Middleware\AuthJWT::class,
+        'jwt.role' => \App\Http\Middleware\JwtRoleMiddleware::class,
+        'jwt.auth' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
+        'jwt.refresh' => \Tymon\JWTAuth\Middleware\RefreshToken::class,
     ];
 }

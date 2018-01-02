@@ -16,7 +16,7 @@ class User extends Authenticatable
     protected $keyType = 'string';
     public $incrementing = false;
     protected $visible = ['sys', 'co', 'id', 'name', 'class', 'state'];
-    protected $hidden = ['pwd'];
+    protected $hidden = ['pwd', 'password'];
     
     public function getRememberToken()
     {

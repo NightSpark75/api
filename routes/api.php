@@ -30,8 +30,9 @@ Route::group(['prefix' => 'web', 'namespace' => 'Web'], function () {
     Route::middleware('web')->get('user/info', 'AuthController@user');
     Route::get('checkLogin', 'AuthController@checkLogin');
 
-    Route::any('jwt/{id}/{pwd}', 'AuthController@jwtAuth');
-    Route::get('toUser/{token}', 'AuthController@toUser');
+    Route::post('jwt/login', 'JwtController@login');
+    Route::post('jwt/toUser', 'JwtController@toUser');
+    Route::post('jwt/refresh', 'JwtController@refresh');
 });
 
 // react native api
