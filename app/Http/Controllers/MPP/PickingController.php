@@ -13,8 +13,5 @@ class PickingController extends Controller
     public function __construct(PickingRepository $picking)
     {
         $this->picking = $picking;
-        $this->middleware('jwt:role');
     }
-
-    
 }

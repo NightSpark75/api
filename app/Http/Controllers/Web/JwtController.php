@@ -12,12 +12,9 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Web\JwtRepository;
-use JWTAuth;
-use JWTException;
-use App\Models\Web\User;
 
 /**
- * Class AuthController
+ * Class JwtController
  *
  * @package App\Http\Controllers
  */
@@ -49,14 +46,5 @@ class JwtController extends Controller
         $input = request()->all();
         $result = $this->jwt->refresh($input);
         return $result;
-    }
-
-    public function toUser()
-    {
-        $input = request()->all();
-        $result = $this->jwt->toUser($input);
-        return $result;
-        $user = JWTAuth::toUser($token);
-        return response()->json(compact('user'));
     }
 }

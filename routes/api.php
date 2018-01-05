@@ -31,7 +31,6 @@ Route::group(['prefix' => 'web', 'namespace' => 'Web'], function () {
     Route::get('checkLogin', 'AuthController@checkLogin');
 
     Route::post('jwt/login', 'JwtController@login');
-    Route::post('jwt/toUser', 'JwtController@toUser');
     Route::post('jwt/refresh', 'JwtController@refresh');
 });
 

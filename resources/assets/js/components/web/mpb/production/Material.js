@@ -49,9 +49,9 @@ export default class Material extends React.Component{
         let litm = e.target.value
         this.setState({litm: litm})
         if (litm.length === 7) {
-            if(Object.keys(material).map((key) => {
-                if (material[key].litm === litm) {
-                    material[key].ukid = '***'
+            for (let i = 0; i < material.length; i++) {
+                if (material[i].litm === litm) {
+                    material[i].ukid = '***'
                     this.setState({
                         material: material,
                         msg: '',
@@ -59,10 +59,8 @@ export default class Material extends React.Component{
                     })
                     return true
                 }
-            })) {
-                return 
             }
-            this.setState({msg: litm + '並非此途程所需料號'})
+            this.setState({msg: litm + '並非此途程所需料號'})           
         }
     }
 
@@ -96,6 +94,16 @@ export default class Material extends React.Component{
     render() {
         const { material, info } = this.state 
         const { sno } = this.props.params
+        let complete = true
+        let n = 0
+        Object.keys(material).map((key) => {
+            if (material[key].ukid) {
+                n++
+            }
+        })
+        if (n === material.length) {
+            complete = false
+        }
         return(   
             <div>
                 <div className="box" style={{ marginTop: '10px', marginBottom: '10px' }}>
@@ -106,11 +114,13 @@ export default class Material extends React.Component{
                             </div>
                         </div>
                         <div className="level-right">
-                            <div className="level-item">
-                                <button className="button is-medium is-success" 
-                                    disabled={false} 
-                                    onClick={this.submitCheck.bind(this)}>領料確認</button>
-                            </div>
+                            {material.length > 0 &&
+                                <div className="level-item">
+                                    <button className="button is-medium is-success" 
+                                        disabled={complete} 
+                                        onClick={this.submitCheck.bind(this)}>領料確認</button>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>

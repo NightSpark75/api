@@ -62,7 +62,5 @@ class Kernel extends HttpKernel
         'cors' => \App\Http\Middleware\CORS::class,
         'jwt' => \App\Http\Middleware\AuthJWT::class,
         'jwt.role' => \App\Http\Middleware\JwtRoleMiddleware::class,
-        'jwt.auth' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
-        'jwt.refresh' => \Tymon\JWTAuth\Middleware\RefreshToken::class,
     ];
 }

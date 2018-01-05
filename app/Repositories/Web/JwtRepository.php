@@ -11,12 +11,12 @@
 namespace App\Repositories\Web;
 
 use JWTAuth;
-use JWTException;
 use Exception;
 use App\Traits\Sqlexecute;
 use App\Models\Web\User;
 use App\Models\Web\UserPrg;
 use Illuminate\Support\Facades\DB;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 /**
  * Class JwtRepository
@@ -37,55 +37,60 @@ class JwtRepository
 
     public function login($input)
     {
-        $user = $this->getUser($input);
         try {
             // attempt to verify the credentials and create a token for the user
+            $user = $this->getUser($input);
             if (!$user) {
                 $code = 401;
                 $error = 'invalid_credentials';
-            } else {
-                $payload = ['name' => $user->name];
-                if (!$token = JWTAuth::fromUser($user, $payload)) {
-                    $code = 401;
-                    $error = 'invalid_credentials';
-                } else {
-                    $code = 200;
-                }
-            } 
+                return response()->json(compact('error'), $code);
+            }
+            $payload = ['name' => $user->name];
+            if (!$token = JWTAuth::fromUser($user, $payload)) {
+                $code = 401;
+                $error = 'invalid_credentials';
+                return response()->json(compact('error'), $code);
+            }
+            $code = 200;
+            return response()->json(compact('token'), $code);
         } catch (JWTException $e) {
             // something went wrong whilst attempting to encode the token
             $code = 500;
             $error = 'could_not_create_token';
+            return response()->json(compact('error'), $code);
         }
-        return response()->json(compact('token', 'error'), $code);
     }
 
     public function refresh($input)
     {
-        $user = JWTAuth::toUser($input['token']);
-        if ($user) {
-            $token = JWTAuth::refresh($input['token']);
-            return response()->json(compact('token'));
+        try {
+            if ($user = JWTAuth::toUser($input['token'])) {
+                $code = 200;
+                $token = JWTAuth::refresh($input['token']);
+                return response()->json(compact('token'), $code);
+            }
+        } catch (Exception $e) {
+            $code = 401;
+            $error = $e->getMessage();
+            return response()->json(compact('error'), $code);
         }
-    }
-
-    public function toUser($input)
-    {
-        $user = JWTAuth::toUser($input['token']);
-        if ($user->id = $input['id']) {
-            $code = 200;
-        }
-        return response()->json(compact('user', 'error'), $code);
     }
 
     private function getUser($input)
     {
-        $user = $this->user
-            ->where('id', $input['id'])
-            ->where('pwd', strtoupper($input['password']))
-            ->where('state', 'Y')
-            ->first();
-        return $user;
+        try {
+            $user = $this->user
+                ->where('id', $input['id'])
+                ->where('pwd', strtoupper($input['password']))
+                ->where('state', 'Y')
+                ->first();
+            if (!$user) {
+                throw new Exception('could_not_found_user');
+            }
+            return $user;
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
     }
     
 }

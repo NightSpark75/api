@@ -59,7 +59,7 @@ class AuthController extends Controller
 
     public function logout()
     {
-        $system = session('system')||'ppm';
+        $system = session('system')? session('system'): 'ppm';
         $this->auth->logout();
         return redirect('/web/login/'.$system);
     }
@@ -97,40 +97,5 @@ class AuthController extends Controller
         } else {
             return response()->json(['result' => false]);
         }
-    }
-
-    public function jwtAuth(User $user, $id, $pwd)
-    {
-        // grab credentials from the request
-        $pwd = strtoupper($pwd);     
-        $credentials = ['email' => $id, 'password' => $pwd];
-        $input = request()->all();
-        $auth = $user
-            ->where('id', $id)
-            ->where('pwd', $pwd)
-            ->where('state', 'Y')
-            ->first();
-        $payloadable = [
-            'iss' => $auth->id,
-        ];
-        
-        try {
-            // attempt to verify the credentials and create a token for the user
-            if (! $token = JWTAuth::fromUser($auth, $payloadable)) {
-                return response()->json(['error' => 'invalid_credentials'], 401);
-            }
-        } catch (JWTException $e) {
-            // something went wrong whilst attempting to encode the token
-            return response()->json(['error' => 'could_not_create_token'], 500);
-        }
-
-        // all good so return the token
-        return response()->json(compact('token'));
-    }
-
-    public function toUser($token)
-    {
-        $user = JWTAuth::toUser($token);
-        return response()->json(compact('user'));
     }
 }

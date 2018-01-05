@@ -2,11 +2,12 @@
 
 namespace App\Http\Middleware;
 
+use Exception;
 use Closure;
 use App\Models\Web\UserPrg;
-use Illuminate\Support\Facades\Auth;
+use JWTAuth;
 
-class RoleMiddleware
+class JwtRoleMiddleware
 {
     /**
      * Handle an incoming request.
@@ -17,22 +18,30 @@ class RoleMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $user = JWTAuth::toUser($request->input('token')); 
-        if ($user) {
-            $user_id = Auth::user()->id;
-            $sys_id = session('system');
-            $prg_id = session('program');
-            $prg_role = session('prg_role');
-            if  ($prg_role['prg_id'] !== $prg_id) {
-                $result = UserPrg::where('user_id', $user_id)->where('prg_id', $prg_id)->first();
-                if (!$result) {
-                    return redirect('/error')->with('message', '你無權限進行此一操作');
-                }  
-                session(['prg_role' => $result]);
+        try {
+            $user = JWTAuth::toUser($request->input('token')); 
+            if ($user) {
+                $user_id = $user['id'];
+                $sys_id = $user['sys'];
+                $prg_id = session('program');
+                $prg_role = session('prg_role');
+                if  ($prg_role['prg_id'] !== $prg_id) {
+                    $result = UserPrg::where('user_id', $user_id)->where('prg_id', $prg_id)->first();
+                    if (!$result) {
+                        $code = 401;
+                        $error = 'permission_denied';
+                        return response()->json(compact('error'), $code);
+                    }  
+                    session(['prg_role' => $result]);
+                }
+                return $next($request);
             }
-            return $next($request);
+            throw new Exception('could_not_found_user');
+        } catch (Exception $e) {
+            $code = 401;
+            $error = $e->getMessage();
         }
-        return redirect('/error')->with('message', '你無權限進行此一操作');
+        return response()->json(compact('error'), $code);
     }
 
     

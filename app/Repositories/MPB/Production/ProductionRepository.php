@@ -566,16 +566,16 @@ class ProductionRepository
             // 如果已經完成領料確認程序，即不再更新領料確認資訊
             $isCheck = DB::selectOne("
                 select count(*) v_check
-                from mpb_order_e
-                where sno = '$sno' and psno = $psno and ukid is null
+                    from mpb_order_e
+                    where sno = '$sno' and psno = $psno and ukid is null
             ")->v_check;
 
             if ($isCheck > 0) {
                 $user = auth()->user()->id;
                 DB::update("
                     update mpb_order_e
-                    set ukid = '$user', duser = '$user', ddate = sysdate
-                    where sno = '$sno' and psno = $psno
+                        set ukid = '$user', duser = '$user', ddate = sysdate
+                        where sno = '$sno' and psno = $psno
                 ");
             }
             return $this->success();
@@ -590,9 +590,9 @@ class ProductionRepository
             $user_id = auth()->user()->id;
             $clear = DB::select("
                 select unique m.*
-                from mpb_order_m m, mpa_dept_emp e, mpb_order_f f
-                where m.deptno = e.deptno(+) and m.sno = f.sno 
-                and (e.empno = '$user_id' or f.empno = '$user_id')
+                    from mpb_order_m m, mpa_dept_emp e, mpb_order_f f
+                    where m.deptno = e.deptno(+) and m.sno = f.sno 
+                        and (e.empno = '$user_id' or f.empno = '$user_id')
             ");
             return $this->success(['clearJob' => $clear]);
         } catch (Exception $e) {

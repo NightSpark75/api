@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 use Closure;
-use Tymon\JWTAuth\Facades\JWTAuth;
+use JWTAuth;
 use Exception;
 
 class authJWT
@@ -14,12 +14,16 @@ class authJWT
             $user = JWTAuth::toUser($request->input('token')); 
         } catch (Exception $e) {
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
-                return response()->json(['error' => 'Token invalid']);
+                $code = 401;
+                $error = 'Token invalid';
             } else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException){
-                return response()->json(['error' => 'Token Expired']);
+                $code = 401;
+                $error = 'Token Expired';
             } else {
-                return response()->json(['error' => $e->getMessage()]);
+                $code = 500;
+                $error = $e->getMessage();
             }
+            return response()->json(compact('error'), $code);
         }
         return $next($request);
     }
