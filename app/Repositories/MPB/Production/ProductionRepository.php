@@ -88,9 +88,9 @@ class ProductionRepository
                 select pk_mpb.fu_order_where('2', '', '$user_id') as str
                 from dual
             ");
-            if ($where->str === 'x') {
-                return '1 = 2';
-            }
+        }
+        if ($where->str === 'x') {
+            return '1 = 2';
         }
         return $where->str;
     }
