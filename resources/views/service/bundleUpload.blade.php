@@ -19,10 +19,14 @@
                     <div class="box">
                         <div class="column">
                             <form role="form" action="/api/native/pad/bundle/save" method="post" enctype="multipart/form-data">
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <div class="column">
+                                    <h2>上傳bundle檔</h2>
+                                </div>
+                                <div class="column">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <input type="text" class="input" name="version" placeholder="請輸入版本號"/>
-                                    <small>bundle版本號開頭{1}</small>
+                                    <small>version: 200.000.00.01 [系統號].[主版號].[次版號].[修訂號]</small>
+                                    <small>bundle檔系統號為200開始</small>
                                 </div>
                                 <div class="column"> 
                                     <input type="file" name="bundle"/>

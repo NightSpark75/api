@@ -68,6 +68,9 @@ class PadRepository
     public function downloadBundle($app)
     {
         try {
+            if ((int)substr($app, 0, 1) != 2) {
+                throw new Exception('invalid bundle number');
+            }
             $file = DB::selectOne("
                 select bundle_file
                 from(select bundle_file, rownum
@@ -76,6 +79,11 @@ class PadRepository
                     order by version desc)
                 where rownum = 1
             ")->bundle_file;
+
+            if (!isset($file)) {
+                throw new Exception('bundle not found');
+            }
+
             return [
                 'result' => true,
                 'file' => $file,
@@ -88,23 +96,27 @@ class PadRepository
     public function downloadApk($app)
     {
         try {
+            if ((int)substr($app, 0, 1) != 1) {
+                throw new Exception('invalid apk number');
+            }
             $file = DB::selectOne("
-                select bundle_file, version
+                select apk_file, version
                     from(
-                        select bundle_file, version
+                        select bundle_file apk_file, version
                             from api_bundle_version
                             where substr(version, 1, 3) = to_char($app)
                             order by version desc
                         )
                     where rownum = 1
-
-                select bundle_file, version
-                    from api_bundle_version
-                    where substr(version, 1, 3) = to_char($app) 
             ");
+
+            if (!isset($file)) {
+                throw new Exception('apk not found');
+            }
+
             return [
                 'result' => true,
-                'file' => $file->bundle_file,
+                'file' => $file->apk_file,
                 'version' => $file->version,
             ];
         } catch (Exception $e) {

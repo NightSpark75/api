@@ -43,8 +43,8 @@ Route::get('/web/file/upload/{store_type}/{file_id}/{user_id}/{version?}',  func
         ->with('version', $version);
 });
 
-Route::get('/native/pad/bundle/upload', 'Native\PadController@upload');
-Route::get('/native/pad/apk/upload', 'Native\PadController@apkUpload');
+Route::get('/native/bundle/upload', 'Native\PadController@upload');
+Route::get('/native/apk/upload', 'Native\PadController@apkUpload');
 
 // ReactJs 須認證的頁面
 Route::get('/auth/{path?}', function($path = null){

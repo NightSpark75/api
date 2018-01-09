@@ -25,7 +25,8 @@
                                 <div class="column">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <input type="text" class="input" name="version" placeholder="請輸入版本號"/>
-                                    <small>apk版本號開頭{3}</small>
+                                    <small>version: 100.000.00.01 [系統號].[主版號].[次版號].[修訂號]</small>
+                                    <small>apk檔系統號為200開始</small>
                                 </div>
                                 <div class="column"> 
                                     <input type="file" name="apk"/>
