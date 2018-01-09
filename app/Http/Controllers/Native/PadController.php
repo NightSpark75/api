@@ -19,7 +19,7 @@ class PadController extends Controller
 
     public function download($app)
     {
-        $result = $this->pad->downloadBundle();
+        $result = $this->pad->downloadBundle($app);
         
         if ($result['result']) {
             $file = $result['file'];
@@ -53,7 +53,7 @@ class PadController extends Controller
 
     public function apkDownload($app)
     {
-        $result = $this->pad->downloadApk();
+        $result = $this->pad->downloadApk($app);
         
         if ($result['result']) {
             $file = $result['file'];
