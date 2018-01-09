@@ -42,7 +42,7 @@ class ProductionRepository
     {
         try{
             $user_id = auth()->user()->id;
-            $where = $this->getProductionWhere($user_id);
+            //$where = $this->getProductionWhere($user_id);
             $order_d = DB::select("
                 select d.*, 
                     pk_mpa.fu_pno_name(d.pno) pname, 
@@ -51,8 +51,8 @@ class ProductionRepository
                     pk_mpb.fu_oredr_m_msg('1', d.sno)||chr(13)||pk_mpb.fu_oredr_m_msg('2', d.sno)||chr(13)||
                         '用料號='||pk_mpb.fu_oredr_d_msg('1', d.sno, d.psno) as info
                     , pk_mpb.fu_check_litm(d.sno, d.psno) check_litm
-                from mpb_order_d d
-                where $where
+                from v_mpb_order_prod d
+                where empno = '$user_id'
                 order by d.sno, d.psno
             ");
             $result = [
