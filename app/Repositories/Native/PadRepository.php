@@ -65,14 +65,14 @@ class PadRepository
         }
     }
 
-    public function downloadBundle()
+    public function downloadBundle($app)
     {
         try {
             $file = DB::selectOne("
                 select bundle_file
                 from(select bundle_file, rownum
                     from api_bundle_version
-                    where version between 1000000000 and 1999999999
+                    where substr(version, 1, 3) = to_char($app)
                     order by version desc)
                 where rownum = 1
             ")->bundle_file;
@@ -85,45 +85,53 @@ class PadRepository
         }
     }
 
-    public function downloadApk()
+    public function downloadApk($app)
     {
         try {
             $file = DB::selectOne("
                 select bundle_file, version
-                from(select bundle_file, version, rownum
+                    from(
+                        select bundle_file, version
+                            from api_bundle_version
+                            where substr(version, 1, 3) = to_char($app)
+                            order by version desc
+                        )
+                    where rownum = 1
+
+                select bundle_file, version
                     from api_bundle_version
-                    where version between 3000000000 and 3999999999
-                    order by version desc)
-                where rownum = 1
+                    where substr(version, 1, 3) = to_char($app) 
             ");
             return [
                 'result' => true,
                 'file' => $file->bundle_file,
-                'ver' => $file->version,
+                'version' => $file->version,
             ];
         } catch (Exception $e) {
             return $this->exception($e);
         }
     }
 
-    public function getVersion()
+    public function getVersion($app)
     {
         try {
             $version_info = DB::selectOne("
                 select version_number, file_size
-                from (  
-                    select version version_number, file_size, rownum
-                    from api_bundle_version
-                    where version between 1000000000 and 1999999999
-                    order by version desc
-                )
-                where rownum = 1           
+                    from(
+                        select version version_number, file_size, rownum
+                            from api_bundle_version
+                            where substr(version, 1, 3) = to_char($app)    
+                            order by version desc
+                    )
+                    where rownum = 1     
             ");
-            $version =  (int)substr($version_info->version_number, 1, 3) . '.' .
-                        (int)substr($version_info->version_number, 4, 3) . '.' .
-                        (int)substr($version_info->version_number, 7, 3);
+            $version =  (int)substr($version_info->version_number, 3, 3) . '.' .
+                        (int)substr($version_info->version_number, 6, 2) . '.' .
+                        (int)substr($version_info->version_number, 8, 2);
+            $app = substr($version_info->version_number, 0, 3);
             return [
                 'result' => true,
+                'app' => $app,
                 'version' => $version,
                 'version_number' => $version_info->version_number,
                 'size' => $version_info->file_size

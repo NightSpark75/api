@@ -17,7 +17,7 @@ class PadController extends Controller
         $this->pad = $pad;
     }
 
-    public function download()
+    public function download($app)
     {
         $result = $this->pad->downloadBundle();
         
@@ -35,9 +35,9 @@ class PadController extends Controller
         return $result['msg'];
     }
 
-    public function version()
+    public function version($app)
     {
-        $result = $this->pad->getVersion();
+        $result = $this->pad->getVersion($app);
         return response()->json($result);
     }
 
@@ -51,15 +51,15 @@ class PadController extends Controller
         return view('service.apkUpload');
     }
 
-    public function apkDownload()
+    public function apkDownload($app)
     {
         $result = $this->pad->downloadApk();
         
         if ($result['result']) {
             $file = $result['file'];
-            $version = $result['ver'];
+            $version = $result['version'];
             $decode = base64_decode($file);
-            $name = "stdnative-$version.apk";
+            $name = "stdapp-$version.apk";
     
             $response = response($decode)->header('Content-Disposition', 'attachment; filename=' . $name);
             return $response;

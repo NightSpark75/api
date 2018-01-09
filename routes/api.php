@@ -37,10 +37,10 @@ Route::group(['prefix' => 'web', 'namespace' => 'Web'], function () {
 // react native api
 Route::group(['prefix' => 'native', 'namespace' => 'Native'], function () {
     Route::group(['prefix' => 'pad'], function () {
-        Route::get('/bundle/download', 'PadController@download');
-        Route::get('/bundle/version', 'PadController@version');
+        Route::get('/bundle/download/{app}', 'PadController@download');
+        Route::get('/bundle/version/{app}', 'PadController@version');
         Route::post('/bundle/save', 'PadController@save');
-        Route::get('/apk/download', 'PadController@apkDownload');
+        Route::get('/apk/download/{app}', 'PadController@apkDownload');
         Route::post('/apk/save', 'PadController@apkSave');
     });
 });
