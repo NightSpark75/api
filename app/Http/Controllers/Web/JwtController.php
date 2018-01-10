@@ -47,4 +47,9 @@ class JwtController extends Controller
         $result = $this->jwt->refresh($input);
         return $result;
     }
+
+    public function test($str)
+    {
+        return response()->json(compact('str'), 200);
+    }
 }

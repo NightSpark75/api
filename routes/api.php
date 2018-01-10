@@ -32,6 +32,7 @@ Route::group(['prefix' => 'web', 'namespace' => 'Web'], function () {
 
     Route::post('jwt/login', 'JwtController@login');
     Route::post('jwt/refresh', 'JwtController@refresh');
+    Route::get('jwt/test/{str}', 'JwtController@test');
 });
 
 // react native api
