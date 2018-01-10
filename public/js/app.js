@@ -14641,9 +14641,26 @@ var Hello = function (_React$Component) {
                 "div",
                 null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    "span",
-                    null,
-                    "\uD83C\uDFA8Standart D2K API\uD83C\uDFA8"
+                    "section",
+                    { "class": "hero is-medium is-primary is-bold" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { "class": "hero-body" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { "class": "container" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "h1",
+                                { "class": "title" },
+                                "Primary bold title"
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "h2",
+                                { "class": "subtitle" },
+                                "Primary bold subtitle"
+                            )
+                        )
+                    )
                 )
             );
         }

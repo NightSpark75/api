@@ -26,7 +26,7 @@ class JwtController extends Controller
     /**
      * construct
      * 
-     * @param AuthRepository $auth
+     * @param JwtRepository $auth
      * @return void
      */
     public function __construct(JwtRepository $jwt)

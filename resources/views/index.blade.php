@@ -7,11 +7,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Standard web</title>
-    <link href="{{ url('/css/app.css?x=17') }}" rel="stylesheet">
+    <link href="{{ url('/css/app.css?x=') . rand() }}" rel="stylesheet">
     <link href="{{ url('/css/font-awesome.min.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app"></div>
-    <script src="{{ url('/js/app.js?x=17') }}"></script>
+    <script src="{{ url('/js/app.js?x=') . rand() }}"></script>
 </body>
 </html>
