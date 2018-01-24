@@ -524,6 +524,22 @@ class PackageRepository
                     'psno' => $params['psno'],
                 ]);
 
+                $sno = $params['sno'];
+
+                DB::update("
+                    update mpb_order_m m
+                        set m.state = 'O'
+                        where m.state = 'Y' and m.sno = '$sno' and exists (
+                            select sno from (
+                                select sno, sum(case when state = 'Y' then 0 else 1 end) co
+                                    from mpb_order_d
+                                    where sno = '$sno'
+                                    group by sno
+                                )
+                                where sno = '$sno' and co = 0
+                        )
+                ");
+
                 DB::delete("
                     delete from mpb_proc_now
                         where sno = :sno

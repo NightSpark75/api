@@ -1,11 +1,11 @@
 <?php
 /**
- * pad資料處理
+ * 揀貨資料處理
  *
  * @version 1.0.0
  * @author spark Lin.yupin@standart.com.tw
- * @date 17/06/22
- * @since 1.0.0 spark: 建立檔案寫入與讀取相關的資料處理
+ * @date 18/01/22
+ * @since 1.0.0 spark: build database I/O function 
  * 
  */
 namespace App\Repositories\Native;
@@ -15,14 +15,17 @@ use Exception;
 use App\Traits\Sqlexecute;
 
 /**
- * Class PadRepository
+ * Class PickingRepository
  *
  * @package App\Repositories
  */
-class PadRepository
+class PickingRepository
 {   
     use Sqlexecute;
 
+
+
+    
     public function saveBundle($version, $file)
     {
         try {

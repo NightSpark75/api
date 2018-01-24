@@ -17213,413 +17213,386 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 var Job = function (_React$Component) {
-    _inherits(Job, _React$Component);
+  _inherits(Job, _React$Component);
 
-    function Job(props) {
-        _classCallCheck(this, Job);
+  function Job(props) {
+    _classCallCheck(this, Job);
 
-        var _this = _possibleConstructorReturn(this, (Job.__proto__ || Object.getPrototypeOf(Job)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Job.__proto__ || Object.getPrototypeOf(Job)).call(this, props));
 
-        _this.state = {
-            sno: _this.props.params.sno,
-            psno: _this.props.params.psno,
-            pgno: _this.props.params.pgno,
-            duty: _this.props.params.duty,
-            group: _this.props.params.group,
-            waiting_list: [],
-            working_list: [],
-            updated: false,
-            lock: false
-        };
-        return _this;
+    _this.state = {
+      sno: _this.props.params.sno,
+      psno: _this.props.params.psno,
+      pgno: _this.props.params.pgno,
+      duty: _this.props.params.duty,
+      group: _this.props.params.group,
+      waiting_list: [],
+      working_list: [],
+      updated: false,
+      lock: false
+    };
+    return _this;
+  }
+
+  _createClass(Job, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.getMember();
+      this.timer = setInterval(this.getMember.bind(this), 5000);
     }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this.timer && clearInterval(this.timer);
+    }
+  }, {
+    key: 'getMember',
+    value: function getMember() {
+      var _state = this.state,
+          sno = _state.sno,
+          psno = _state.psno,
+          pgno = _state.pgno,
+          duty = _state.duty,
+          group = _state.group;
 
-    _createClass(Job, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            this.getMember();
-            this.timer = setInterval(this.getMember.bind(this), 5000);
-        }
-    }, {
-        key: 'componentWillUnmount',
-        value: function componentWillUnmount() {
-            this.timer && clearInterval(this.timer);
-        }
-    }, {
-        key: 'getMember',
-        value: function getMember() {
-            var _state = this.state,
-                sno = _state.sno,
-                psno = _state.psno,
-                pgno = _state.pgno,
-                duty = _state.duty,
-                group = _state.group;
-
-            var self = this;
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/web/mpb/prod/package/member/' + sno + '/' + psno + '/' + pgno + '/' + duty + '/' + group).then(function (response) {
-                if (response.data.result) {
-                    if (!self.state.updated) {
-                        self.setState({
-                            waiting_list: response.data.waiting,
-                            working_list: response.data.working
-                        });
-                    } else {
-                        self.setState({
-                            updated: false
-                        });
-                    }
-                    console.log(response.data);
-                } else {
-                    console.log(response.data);
-                    window.location = '/web/login/ppm';
-                }
-            }).catch(function (error) {
-                console.log(error);
+      var self = this;
+      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/web/mpb/prod/package/member/' + sno + '/' + psno + '/' + pgno + '/' + duty + '/' + group).then(function (response) {
+        if (response.data.result) {
+          if (!self.state.updated) {
+            self.setState({
+              waiting_list: response.data.waiting,
+              working_list: response.data.working
             });
-        }
-    }, {
-        key: 'updateWorking',
-        value: function updateWorking(empno, action, event) {
-            var _state2 = this.state,
-                waiting_list = _state2.waiting_list,
-                working_list = _state2.working_list,
-                sno = _state2.sno,
-                psno = _state2.psno;
-
-            var self = this;
-            var form_data = new FormData();
-            this.setState({ lock: true });
-            form_data.append('sno', sno);
-            form_data.append('psno', psno);
-            form_data.append('empno', empno);
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpb/prod/package/working/' + action, form_data).then(function (response) {
-                if (response.data.result) {
-                    console.log(response.data);
-                    self.setState({ lock: false });
-                } else {
-                    console.log(response.data);
-                    window.location = '/web/login/ppm';
-                }
-            }).catch(function (error) {
-                console.log(error);
+          } else {
+            self.setState({
+              updated: false
             });
-            if (action === 'join') {
-                self.updateList(working_list, waiting_list, action, empno);
-            } else {
-                self.updateList(waiting_list, working_list, action, empno);
-            }
+          }
+          console.log(response.data);
+        } else {
+          console.log(response.data);
+          window.location = '/web/login/ppm';
         }
-    }, {
-        key: 'updateList',
-        value: function updateList(add, remove, action, empno) {
-            for (var r = 0; r < remove.length; r++) {
-                if (remove[r]['empno'] === empno) {
-                    add.push(remove[r]);
-                    remove.splice(r, 1);
-                    if (action === 'join') {
-                        this.setState({
-                            working_list: add,
-                            waiting_list: remove,
-                            updated: true
-                        });
-                    } else {
-                        this.setState({
-                            working_list: remove,
-                            waiting_list: add,
-                            updated: true
-                        });
-                    }
-                    return;
-                }
-            }
-        }
-    }, {
-        key: 'allUpdateList',
-        value: function allUpdateList(action) {
-            if (action === 'join') {
-                var add = this.state.working_list;
-                var remove = this.state.waiting_list;
-                add = add.concat(remove);
-                this.setState({
-                    working_list: add,
-                    waiting_list: [],
-                    updated: true
-                });
-            } else {
-                var _add = this.state.waiting_list;
-                var _remove = this.state.working_list;
-                _add = _add.concat(_remove);
-                this.setState({
-                    working_list: [],
-                    waiting_list: _add,
-                    updated: true
-                });
-            }
-        }
-    }, {
-        key: 'allUpdate',
-        value: function allUpdate(action, event) {
-            if (action === 'join' && this.state.waiting_list.length > 0 || action === 'leave' && this.state.working_list.length > 0) {
-                this.setState({ lock: true });
-                var self = this;
-                var _state3 = this.state,
-                    sno = _state3.sno,
-                    psno = _state3.psno,
-                    duty = _state3.duty,
-                    group = _state3.group,
-                    working_list = _state3.working_list,
-                    waiting_list = _state3.waiting_list;
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+  }, {
+    key: 'updateWorking',
+    value: function updateWorking(empno, action, event) {
+      var _state2 = this.state,
+          waiting_list = _state2.waiting_list,
+          working_list = _state2.working_list,
+          sno = _state2.sno,
+          psno = _state2.psno;
 
-                var form_data = new FormData();
-                form_data.append('sno', sno);
-                form_data.append('psno', psno);
-                form_data.append('duty', duty);
-                form_data.append('group', group);
-                __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpb/prod/package/all/' + action, form_data).then(function (response) {
-                    if (response.data.result) {
-                        console.log(response.data);
-                        self.setState({ lock: false });
-                    } else {
-                        console.log(response.data);
-                        window.location = '/web/login/ppm';
-                    }
-                }).catch(function (error) {
-                    console.log(error);
-                });
-                self.allUpdateList(action);
-            }
+      var self = this;
+      var form_data = new FormData();
+      this.setState({ lock: true });
+      form_data.append('sno', sno);
+      form_data.append('psno', psno);
+      form_data.append('empno', empno);
+      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpb/prod/package/working/' + action, form_data).then(function (response) {
+        if (response.data.result) {
+          console.log(response.data);
+          self.setState({ lock: false });
+        } else {
+          console.log(response.data);
+          window.location = '/web/login/ppm';
         }
-    }, {
-        key: 'workingComplete',
-        value: function workingComplete(event) {
-            var msg = '按確定後, 此製程完工..';
-            if (confirm(msg)) {
-                var self = this;
-                var _state4 = this.state,
-                    sno = _state4.sno,
-                    psno = _state4.psno;
-
-                var form_data = new FormData();
-                this.setState({ lock: true });
-                form_data.append('sno', sno);
-                form_data.append('psno', psno);
-                __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpb/prod/package/work/complete', form_data).then(function (response) {
-                    if (response.data.result) {
-                        console.log(response.data);
-                        self.props.router.push('/auth/web/mpb/package/list');
-                    } else {
-                        console.log(response.data);
-                        window.location = '/web/login/ppm';
-                    }
-                }).catch(function (error) {
-                    console.log(error);
-                });
-            }
+      }).catch(function (error) {
+        console.log(error);
+      });
+      if (action === 'join') {
+        self.updateList(working_list, waiting_list, action, empno);
+      } else {
+        self.updateList(waiting_list, working_list, action, empno);
+      }
+    }
+  }, {
+    key: 'updateList',
+    value: function updateList(add, remove, action, empno) {
+      for (var r = 0; r < remove.length; r++) {
+        if (remove[r]['empno'] === empno) {
+          add.push(remove[r]);
+          remove.splice(r, 1);
+          if (action === 'join') {
+            this.setState({
+              working_list: add,
+              waiting_list: remove,
+              updated: true
+            });
+          } else {
+            this.setState({
+              working_list: remove,
+              waiting_list: add,
+              updated: true
+            });
+          }
+          return;
         }
-    }, {
-        key: 'dutyClose',
-        value: function dutyClose() {
-            var msg = '按確定後, 完成此班報工..';
-            if (confirm(msg)) {
-                var self = this;
-                var _state5 = this.state,
-                    sno = _state5.sno,
-                    psno = _state5.psno,
-                    pgno = _state5.pgno,
-                    duty = _state5.duty,
-                    group = _state5.group;
+      }
+    }
+  }, {
+    key: 'allUpdateList',
+    value: function allUpdateList(action) {
+      if (action === 'join') {
+        var add = this.state.working_list;
+        var remove = this.state.waiting_list;
+        add = add.concat(remove);
+        this.setState({
+          working_list: add,
+          waiting_list: [],
+          updated: true
+        });
+      } else {
+        var _add = this.state.waiting_list;
+        var _remove = this.state.working_list;
+        _add = _add.concat(_remove);
+        this.setState({
+          working_list: [],
+          waiting_list: _add,
+          updated: true
+        });
+      }
+    }
+  }, {
+    key: 'allUpdate',
+    value: function allUpdate(action, event) {
+      if (action === 'join' && this.state.waiting_list.length > 0 || action === 'leave' && this.state.working_list.length > 0) {
+        this.setState({ lock: true });
+        var self = this;
+        var _state3 = this.state,
+            sno = _state3.sno,
+            psno = _state3.psno,
+            duty = _state3.duty,
+            group = _state3.group,
+            working_list = _state3.working_list,
+            waiting_list = _state3.waiting_list;
 
-                var par = sno + '/' + psno;
-                var form_data = new FormData();
-                this.setState({ lock: true });
-                form_data.append('sno', sno);
-                form_data.append('psno', psno);
-                form_data.append('pgno', pgno);
-                form_data.append('duty', duty);
-                form_data.append('gro', group);
-                __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpb/prod/package/working/duty/close', form_data).then(function (response) {
-                    if (response.data.result) {
-                        console.log(response.data);
-                        self.props.router.push('/auth/web/mpb/package/duty/' + par);
-                    } else {
-                        console.log(response.data);
-                        window.location = '/web/login/ppm';
-                    }
-                }).catch(function (error) {
-                    console.log(error);
-                });
-            }
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
+        var form_data = new FormData();
+        form_data.append('sno', sno);
+        form_data.append('psno', psno);
+        form_data.append('duty', duty);
+        form_data.append('group', group);
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpb/prod/package/all/' + action, form_data).then(function (response) {
+          if (response.data.result) {
+            console.log(response.data);
+            self.setState({ lock: false });
+          } else {
+            console.log(response.data);
+            window.location = '/web/login/ppm';
+          }
+        }).catch(function (error) {
+          console.log(error);
+        });
+        self.allUpdateList(action);
+      }
+    }
+  }, {
+    key: 'workingComplete',
+    value: function workingComplete(event) {
+      var msg = '按確定後, 此製程完工..';
+      if (confirm(msg)) {
+        var self = this;
+        var _state4 = this.state,
+            sno = _state4.sno,
+            psno = _state4.psno;
 
-            var _state6 = this.state,
-                job_list = _state6.job_list,
-                lock = _state6.lock,
-                sno = _state6.sno,
-                psno = _state6.psno;
+        var form_data = new FormData();
+        this.setState({ lock: true });
+        form_data.append('sno', sno);
+        form_data.append('psno', psno);
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpb/prod/package/work/complete', form_data).then(function (response) {
+          if (response.data.result) {
+            console.log(response.data);
+            self.props.router.push('/auth/web/mpb/package/list');
+          } else {
+            console.log(response.data);
+            window.location = '/web/login/ppm';
+          }
+        }).catch(function (error) {
+          console.log(error);
+        });
+      }
+    }
+  }, {
+    key: 'dutyClose',
+    value: function dutyClose() {
+      var msg = '按確定後, 完成此班報工..';
+      if (confirm(msg)) {
+        var self = this;
+        var _state5 = this.state,
+            sno = _state5.sno,
+            psno = _state5.psno,
+            pgno = _state5.pgno,
+            duty = _state5.duty,
+            group = _state5.group;
 
-            var par = sno + '/' + psno;
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        var par = sno + '/' + psno;
+        var form_data = new FormData();
+        this.setState({ lock: true });
+        form_data.append('sno', sno);
+        form_data.append('psno', psno);
+        form_data.append('pgno', pgno);
+        form_data.append('duty', duty);
+        form_data.append('gro', group);
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpb/prod/package/working/duty/close', form_data).then(function (response) {
+          if (response.data.result) {
+            console.log(response.data);
+            self.props.router.push('/auth/web/mpb/package/duty/' + par);
+          } else {
+            console.log(response.data);
+            window.location = '/web/login/ppm';
+          }
+        }).catch(function (error) {
+          console.log(error);
+        });
+      }
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      var _state6 = this.state,
+          job_list = _state6.job_list,
+          lock = _state6.lock,
+          sno = _state6.sno,
+          psno = _state6.psno;
+
+      var par = sno + '/' + psno;
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        null,
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'box', style: { marginTop: '10px', marginBottom: '10px' } },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'level' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'div',
+              { className: 'level-left' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
-                null,
+                { className: 'level-item' },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'box', style: { marginTop: '10px', marginBottom: '10px' } },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'level' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'level-left' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'level-item' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_1_react_router__["e" /* Link */],
-                                    { className: 'button is-medium', to: "/auth/web/mpb/package/duty/" + par },
-                                    '\u2190 \u56DE\u751F\u7522\u6E05\u55AE'
-                                )
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'level-item is-hidden-touch' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'button',
-                                    { className: 'button is-primary is-large', onClick: this.allUpdate.bind(this, 'join'), disabled: lock },
-                                    '\u6574\u6279\u5DE5\u4F5C'
-                                )
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'level-item is-hidden-touch' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'button',
-                                    { className: 'button is-success is-large', onClick: this.allUpdate.bind(this, 'leave'), disabled: lock },
-                                    '\u6574\u6279\u9000\u51FA'
-                                )
-                            )
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'level-right is-hidden-touch' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'level-item', style: { marginRight: '50px' } },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'button',
-                                    { className: 'button is-info is-large', onClick: this.dutyClose.bind(this), disabled: lock },
-                                    '\u6B64\u73ED\u5B8C\u5DE5'
-                                )
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'level-item' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'button',
-                                    { className: 'button is-primary is-large', onClick: this.workingComplete.bind(this), disabled: lock },
-                                    '\u9014\u7A0B\u5B8C\u5DE5'
-                                )
-                            )
-                        )
-                    )
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'column is-hidden-desktop' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'label',
-                        { className: 'is-size-4' },
-                        '\u8ACB\u5C07\u756B\u9762\u8F49\u6A6B'
-                    )
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'columns is-hidden-touch' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'column' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'article',
-                            { className: 'message is-success' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'message-header' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'h4',
-                                    { className: 'title is-3 has-text-white-ter' },
-                                    '\u5F85\u6D3E\u5DE5\u751F\u7522\u4EBA\u54E1'
-                                )
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'message-body', style: { height: '500px' } },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'div',
-                                    { className: 'field is-grouped is-grouped-multiline' },
-                                    this.state.waiting_list.map(function (item, index) {
-                                        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            'p',
-                                            { className: 'control', key: index },
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                'button',
-                                                { className: 'button is-success is-large', disabled: lock,
-                                                    onClick: _this2.updateWorking.bind(_this2, item.empno, 'join')
-                                                },
-                                                item.ename
-                                            )
-                                        );
-                                    })
-                                )
-                            )
-                        )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'column' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'article',
-                            { className: 'message is-primary' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'message-header' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'h4',
-                                    { className: 'title is-3 has-text-white-ter' },
-                                    '\u76EE\u524D\u751F\u7522\u4EBA\u54E1'
-                                )
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'message-body', style: { height: '500px' } },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'div',
-                                    { className: 'field is-grouped is-grouped-multiline' },
-                                    this.state.working_list.map(function (item, index) {
-                                        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            'p',
-                                            { className: 'control', key: index },
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                'button',
-                                                { className: 'button is-primary is-large', disabled: lock,
-                                                    onClick: _this2.updateWorking.bind(_this2, item.empno, 'leave')
-                                                },
-                                                item.ename
-                                            )
-                                        );
-                                    })
-                                )
-                            )
-                        )
-                    )
+                  __WEBPACK_IMPORTED_MODULE_1_react_router__["e" /* Link */],
+                  { className: 'button is-medium', to: "/auth/web/mpb/package/duty/" + par },
+                  '\u2190 \u56DE\u751F\u7522\u6E05\u55AE'
                 )
-            );
-        }
-    }]);
+              )
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'div',
+              { className: 'level-right is-hidden-touch' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'level-item' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                  'button',
+                  { className: 'button is-primary is-large', onClick: this.workingComplete.bind(this), disabled: lock },
+                  '\u9014\u7A0B\u5B8C\u5DE5'
+                )
+              )
+            )
+          )
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'column is-hidden-desktop' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'label',
+            { className: 'is-size-4' },
+            '\u8ACB\u5C07\u756B\u9762\u8F49\u6A6B'
+          )
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'columns is-hidden-touch' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'column' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'article',
+              { className: 'message is-success' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'message-header' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                  'h4',
+                  { className: 'title is-3 has-text-white-ter' },
+                  '\u5F85\u6D3E\u5DE5\u751F\u7522\u4EBA\u54E1'
+                )
+              ),
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'message-body', style: { height: '500px' } },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                  'div',
+                  { className: 'field is-grouped is-grouped-multiline' },
+                  this.state.waiting_list.map(function (item, index) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                      'p',
+                      { className: 'control', key: index },
+                      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'button',
+                        { className: 'button is-success is-large', disabled: lock,
+                          onClick: _this2.updateWorking.bind(_this2, item.empno, 'join')
+                        },
+                        item.ename
+                      )
+                    );
+                  })
+                )
+              )
+            )
+          ),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'column' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'article',
+              { className: 'message is-primary' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'message-header' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                  'h4',
+                  { className: 'title is-3 has-text-white-ter' },
+                  '\u76EE\u524D\u751F\u7522\u4EBA\u54E1'
+                )
+              ),
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'message-body', style: { height: '500px' } },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                  'div',
+                  { className: 'field is-grouped is-grouped-multiline' },
+                  this.state.working_list.map(function (item, index) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                      'p',
+                      { className: 'control', key: index },
+                      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'button',
+                        { className: 'button is-primary is-large', disabled: lock,
+                          onClick: _this2.updateWorking.bind(_this2, item.empno, 'leave')
+                        },
+                        item.ename
+                      )
+                    );
+                  })
+                )
+              )
+            )
+          )
+        )
+      );
+    }
+  }]);
 
-    return Job;
+  return Job;
 }(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
 
 /* harmony default export */ __webpack_exports__["a"] = (Job);

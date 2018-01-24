@@ -1,6 +1,6 @@
 <?php
 /**
- * 帳號驗證處理
+ * JWT帳號驗證處理
  *
  * @version 1.0.0
  * @author spark Lin.yupin@standart.com.tw
@@ -46,10 +46,5 @@ class JwtController extends Controller
         $input = request()->all();
         $result = $this->jwt->refresh($input);
         return $result;
-    }
-
-    public function test($str)
-    {
-        return response()->json(compact('str'), 200);
     }
 }
