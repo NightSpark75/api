@@ -12,120 +12,31 @@ namespace App\Repositories\Web;
 
 use Exception;
 use App\Traits\Sqlexecute;
+use App\Repositories\Repository;
 
-use App\Models\Web\UserList;
-use App\Models\Web\UserPrg;
 
 /**
  * Class UserRepository
  *
  * @package App\Repositories
  */
-class UserRepository
+class UserRepository extends Repository
 {   
-    use Sqlexecute;
-    
-    private $user;
-    private $prg;
-
-    public function __construct(UserList $user, UserPrg $prg)
+    /**
+     * Specify Model class name
+     *
+     * @return mixed
+     */
+    function model()
     {
-        $this->user = $user;
-        $this->prg = $prg;
+        return 'App\Models\Web\User';
     }
 
-    public function getUser()
-    {
-        $result = $this->user->get()->toArray();
-        return $result;
-    }
-
-    public function getPrg($user_id, $prg_id)
-    {
-        $result = $this->prg
-            ->where('user_id', $user_id)
-            ->where('prg_id', $prg_id)->first();
-        return $result;
-    }
-
-    public function insert($params)
-    {
-        try{
-            $this->user->insert($params);
-            $user = $this->user->where('user_id', $params['user_id'])->first();
-            $result = [
-                'result' => true,
-                'msg' => '新增使用者資料成功(#0001)',
-                'user' => $user,
-            ];
-            return $result;
-        } catch (\Exception $e) {
-            $result = [
-                'result' => false,
-                'msg' => $e->getMessage(),
-            ];
-            return $result;
-        }
-    }
-    
-    public function update($params, $user_id)
-    {
-        try{
-            $this->user->where('user_id', $user_id)->update($params);
-            $user = $this->user->where('user_id', $user_id)->first();
-            $result = [
-                'result' => true,
-                'msg' => '更新使用者資料成功(#0002)',
-                'user' => $user,
-            ];
-            return $result;
-        } catch (\Exception $e) {
-            $result = [
-                'result' => false,
-                'msg' => $e->getMessage(),
-            ];
-            return $result;
-        }
-    }
-
-    public function delete($user_id)
-    {
-        try{
-            $this->user->where('user_id', $user_id)->delete();
-            $result = [
-                'result' => true,
-                'msg' => '刪除使用者資料成功(#0003)',
-            ];
-            return $result;
-        } catch (\Exception $e) {
-            $result = [
-                'result' => false,
-                'msg' => $e->getMessage(),
-            ];
-            return $result;
-        }
-    }
-
-    public function search($str)
-    {
-        $search = '%'.$str.'%';
-        try{
-            $user = $this->user
-                ->where('user_id', 'like', $search)
-                ->orWhere('user_name', 'like', $search)
-                ->orWhere('rmk', 'like', $search)->get()->toArray();
-            $result = [
-                'result' => true,
-                'msg' => '搜尋使用者資料成功(#0004)',
-                'user' => $user,
-            ];
-            return $result;
-        } catch (\Exception $e) {
-            $result = [
-                'result' => false,
-                'msg' => $e->getMessage(),
-            ];
-            return $result;
-        }
+    public function authUser($id, $password) {
+        return $this->model
+            ->where('id', $id)
+            ->where('pwd', $password)
+            ->where('state', 'Y')
+            ->first();
     }
 }

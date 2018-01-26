@@ -2,6 +2,7 @@
 namespace App\Repositories\Criteria;
 
 use App\Interfaces\RepositoryInterface as Repository;
+use App\Interfaces\RepositoryInterface;
 
 abstract class Criteria {
 

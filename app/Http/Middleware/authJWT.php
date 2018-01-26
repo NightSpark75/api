@@ -11,7 +11,11 @@ class authJWT
     {
         try {
             // 如果用户登陆后的所有请求没有jwt的token抛出异常
-            $user = JWTAuth::toUser($request->input('token')); 
+            $token = JWTAuth::getToken();
+            $user = JWTAuth::toUser($token); 
+            if (!isset($user)) {
+                throw new Exception('user not found');
+            }
         } catch (Exception $e) {
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
                 $code = 401;

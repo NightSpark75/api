@@ -11,7 +11,10 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Web\JwtRepository;
+use App\Services\Web\JwtService;
+use JWTAuth;
+use Exception;
+use App\Traits\Common;
 
 /**
  * Class JwtController
@@ -20,31 +23,41 @@ use App\Repositories\Web\JwtRepository;
  */
 class JwtController extends Controller
 {
-    //
-    private $jwt;
+    use Common;
+
+    private $jwtService;
 
     /**
      * construct
      * 
-     * @param JwtRepository $auth
+     * @param JwtService $auth
      * @return void
      */
-    public function __construct(JwtRepository $jwt)
+    public function __construct(JwtService $jwtService)
     {
-        $this->jwt = $jwt;
+        $this->jwtService = $jwtService;
     }
 
     public function login()
     {
-        $input = request()->all();
-        $result = $this->jwt->login($input);
-        return $result;
+        try {
+            $id = request()->input('id');
+            $password = request()->input('password');
+            $token = $this->jwtService->login($id, $password);
+            return response()->json(compact('token'), 200);
+        } catch (Exception $e) {
+            return response()->json($this->getException($e), 400);
+        }
     }
 
     public function refresh()
     {
-        $input = request()->all();
-        $result = $this->jwt->refresh($input);
-        return $result;
+        try {
+            $token = JWTAuth::getToken();
+            $token = $this->jwtService->refresh($token);
+            return response()->json(compact('token'), 200);
+        } catch (Exception $e) {
+            return response()->json($this->getException($e), 400);
+        }
     }
 }

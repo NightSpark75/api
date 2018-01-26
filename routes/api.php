@@ -20,6 +20,11 @@ Route::middleware('web')->get('/user', function (Request $request) {
 });
 */
 
+Route::group(['prefix' => 'jwt', 'namespace' => 'Web'], function () {
+    Route::post('login', 'JwtController@login');
+    Route::post('refresh', 'JwtController@refresh');
+});
+
 // login
 Route::group(['prefix' => 'web', 'namespace' => 'Web'], function () {
     Route::post('login', 'AuthController@login');
@@ -28,10 +33,7 @@ Route::group(['prefix' => 'web', 'namespace' => 'Web'], function () {
     Route::get('commonMenu/{class}', 'AuthController@commonMenu');
     Route::middleware('web')->get('menu', 'AuthController@menu');
     Route::middleware('web')->get('user/info', 'AuthController@user');
-    Route::get('checkLogin', 'AuthController@checkLogin');
-
-    Route::post('jwt/login', 'JwtController@login');
-    Route::post('jwt/refresh', 'JwtController@refresh');
+    Route::get('checkLogin', 'AuthController@checkLogin');    
 });
 
 // react native api
@@ -42,6 +44,18 @@ Route::group(['prefix' => 'native', 'namespace' => 'Native'], function () {
         Route::post('/bundle/save', 'PadController@save');
         Route::get('/apk/download/{app}', 'PadController@apkDownload');
         Route::post('/apk/save', 'PadController@apkSave');
+    });
+});
+
+// ProductWarehouse
+Route::group(['prefix' => 'productWarehouse', 'namespace' => 'ProductWarehouse', 'middleware' => 'jwt'], function () {
+    // picking
+    Route::group(['prefix' => 'picking'], function () {
+        Route::post('post', 'PickingController@test');
+        Route::get('list', 'PickingController@getPickingList');
+        Route::get('items/{stop}', 'PickingController@getPickingItems');
+        Route::post('start', 'pickingController@startPicking');
+        Route::post('end', 'pickingController@endPicking');
     });
 });
 

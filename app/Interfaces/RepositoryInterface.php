@@ -1,4 +1,7 @@
 <?php
+
+namespace App\Interfaces;
+
 interface RepositoryInterface {
  
     public function all($columns = array('*'));
@@ -14,4 +17,6 @@ interface RepositoryInterface {
     public function find($id, $columns = array('*'));
  
     public function findBy($field, $value, $columns = array('*'));
+
+    public function search($where, $columns = array('*'));
 }
