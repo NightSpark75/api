@@ -17,10 +17,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 use App\Http\Controllers\ProductWarehouse\PickingController;
 use App\Services\ProductWarehouse\PickingService;
-use App\Traits\Common;
 use Exception;
 use App\Models\Web\User;
-use DB;
 
 /**
  * Class PickingControllerTest
@@ -31,7 +29,6 @@ class PickingControllersTest extends TestCase
 {
     use DatabaseTransactions;
     use WithoutMiddleware;
-    use Common;
     
     /**
      * @var PickingService

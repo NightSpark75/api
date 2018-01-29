@@ -13,7 +13,6 @@ namespace App\Http\Controllers\ProductWarehouse;
 use App\Http\Controllers\Controller;
 use App\Services\ProductWarehouse\PickingService;
 use Exception;
-use JWTAuth;
 use App\Traits\Common;
 
 /**
