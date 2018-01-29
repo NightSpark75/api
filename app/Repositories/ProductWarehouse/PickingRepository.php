@@ -1,6 +1,6 @@
 <?php
 /**
- * 揀貨資料處理
+ * picking repository
  *
  * @version 1.0.0
  * @author spark Lin.yupin@standart.com.tw
@@ -33,7 +33,7 @@ class PickingRepository extends Repository
      */
     function model()
     {
-        return 'App\Models\ProductWarehouse\Pick';
+        return 'App\Models\ProductWarehouse\PickingList';
     }
 
     /**

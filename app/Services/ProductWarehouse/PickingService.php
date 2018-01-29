@@ -1,6 +1,6 @@
 <?php
 /**
- * 揀貨資料處理服務
+ * picking service
  *
  * @version 1.0.0
  * @author spark Lin.yupin@standart.com.tw

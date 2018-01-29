@@ -1,5 +1,13 @@
 <?php
-
+/**
+ * PickingController unit test
+ *
+ * @version 1.0.0
+ * @author spark Lin.yupin@standart.com.tw
+ * @date 18/01/29
+ * @since 1.0.0 spark: complete six test
+ * 
+ */
 namespace Tests\Unit\Controllers;
 
 use Tests\TestCase;
@@ -13,16 +21,26 @@ use App\Traits\Common;
 use Exception;
 use App\Models\Web\User;
 use DB;
-use JWTAuth;
 
+/**
+ * Class PickingControllerTest
+ *
+ * @package Tests\Unit\Controllers
+ */
 class PickingControllersTest extends TestCase
 {
     use DatabaseTransactions;
     use WithoutMiddleware;
-    //use Sqlexecute;
     use Common;
     
+    /**
+     * @var PickingService
+     */
     private $mock;
+    
+    /**
+     * @var PickingController
+     */
     private $target;
 
     /**
@@ -34,6 +52,7 @@ class PickingControllersTest extends TestCase
         $this->mock = $this->initMock(PickingService::class);
         $this->target = $this->app->make(PickingController::class);
     }
+
     /**
      * tearDown()
      */
@@ -44,6 +63,9 @@ class PickingControllersTest extends TestCase
         parent::tearDown();
     }
     
+    /**
+     * test getPickingList()
+     */
     public function test_getPickingList()
     {
         // arrange
@@ -60,6 +82,9 @@ class PickingControllersTest extends TestCase
         $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
     }
 
+    /**
+     * tes getPickingList() return exception 
+     */
     public function test_getPickingList_exception()
     {
         // arrange
@@ -76,6 +101,9 @@ class PickingControllersTest extends TestCase
         $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
     }
 
+    /**
+     * test getPickingList()
+     */
     public function test_getPickingItems()
     {
         // arrange
@@ -93,6 +121,9 @@ class PickingControllersTest extends TestCase
         $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
     }
 
+    /**
+     * tes getPickingList() return exception 
+     */
     public function test_getPickingItems_exception()
     {
         // arrange
@@ -110,6 +141,9 @@ class PickingControllersTest extends TestCase
         $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
     }
 
+    /**
+     * test getPickingList()
+     */
     public function test_startPicking()
     {
         // arrange
@@ -130,6 +164,9 @@ class PickingControllersTest extends TestCase
         $this->flushSession();
     }
 
+    /**
+     * tes getPickingList() return exception 
+     */
     public function test_startPicking_exception()
     {
         // arrange

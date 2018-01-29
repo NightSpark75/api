@@ -5,12 +5,17 @@ namespace Tests;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Mockery;
 
+/**
+ * Class TestCase
+ *
+ * @package Tests
+ */
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
     /**
-     * 初始化mock物件
+     * initialization mock object
      *
      * @param string $class
      * @return Mockery\MockInterface

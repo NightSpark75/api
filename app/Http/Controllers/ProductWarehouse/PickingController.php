@@ -1,6 +1,6 @@
 <?php
 /**
- * 揀貨處理
+ * picking controller
  *
  * @version 1.0.0
  * @author spark Lin.yupin@standart.com.tw
@@ -16,6 +16,11 @@ use Exception;
 use JWTAuth;
 use App\Traits\Common;
 
+/**
+ * Class PickingController
+ *
+ * @package App\Http\Controllers\ProductWarehouse
+ */
 class PickingController extends Controller
 {
     use Common;
