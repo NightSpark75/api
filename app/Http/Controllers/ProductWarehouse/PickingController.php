@@ -34,12 +34,6 @@ class PickingController extends Controller
         $this->pickingService = $pickingService;
     }
 
-    public function test()
-    {
-        $user = JWTAuth::parseToken()->toUser();
-        return $user;
-    }
-
     /**
      * get today picking list
      *
@@ -82,9 +76,10 @@ class PickingController extends Controller
     public function startPicking()
     {
         try {
-            $user = JWTAuth::parseToken()->toUser();
+            $user = session('user');
+            $id = $user->id;
             $stop = request()->input('stop');
-            $result = $this->pickingService->startPicking($stop, $user->id);
+            $result = $this->pickingService->startPicking($stop, $id);
             return response()->json($result, 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
@@ -100,7 +95,7 @@ class PickingController extends Controller
     public function endPicking()
     {
         try {
-            $user = JWTAuth::parseToken()->toUser();
+            $user = session('user');
             $stop = request()->input('stop');
             $result = $this->pickingService->endPicking($stop, $user->id);
             return response()->json($result, 200);

@@ -29,6 +29,10 @@ class authJWT
             }
             return response()->json(compact('error'), $code);
         }
+        session([
+            'token' => $token,
+            'user' => $user,
+        ]);
         return $next($request);
     }
 }
