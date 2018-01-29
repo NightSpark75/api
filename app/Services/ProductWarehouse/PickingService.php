@@ -48,7 +48,7 @@ class PickingService {
      * call procedure proc_upd_f594921
      * 
      * @param string $stop
-     * @param string $date
+     * @param string $date // ex: 2018/01/05
      * @param string $empno
      * @param string $ky3
      * @param string $ky6
@@ -96,16 +96,17 @@ class PickingService {
      * @param string $stop
      * @param string $empno
      */
-    public function startPicking($stop, $empno, $today = null)
+    public function startPicking($stop, $empno, $today = null, $ky3 = null)
     {
         $date = $today? $today: date('Y-m-d').' 00:00:00';
         $picking = $this->pickingListRepository->getPicking($stop, $date);
         
         if ($picking) {
-            $ky3 = date('H:i:s');
-            $ky6 = $picking->stky6;
-            $ky7 = $picking->stky7;
-            $this->procUpdF594921($stop, $date, $empno, $ky3, $ky6, $ky7);
+            $staddj = date_format(date_create($date), 'Y/m/d');
+            $stky3 = $ky3? $ky3: date('H:i:s');
+            $stky6 = $picking->stky6;
+            $stky7 = $picking->stky7;
+            $this->procUpdF594921($stop, $staddj, $empno, $stky3, $stky6, $stky7);
             return true;
         }
         throw new Exception("ststop='$stop' and staddj='$date', data not found!");
@@ -117,15 +118,16 @@ class PickingService {
      * @param string $stop
      * @param string $empno
      */
-    public function endPicking($stop, $empno, $today = null)
+    public function endPicking($stop, $empno, $today = null, $ky6 = null, $ky7 = null)
     {
         $date = $today? $today: date('Y-m-d').' 00:00:00';
         $picking = $this->pickingListRepository->getPicking($stop, $date);
         if ($picking) {
+            $staddj = date_format(date_create($date), 'Y/m/d');
             $ky3 = $picking->stky3;
-            $ky6 = 'Y';
-            $ky7 = date('H:i:s');
-            $this->procUpdF594921($stop, $date, $empno, $ky3, $ky6, $ky7);
+            $stky6 = $ky6? $ky6: 'Y';
+            $stky7 = $ky7? $ky7: date('H:i:s');
+            $this->procUpdF594921($stop, $staddj, $empno, $ky3, $stky6, $stky7);
             return true;
         }
         throw new Exception("ststop='$stop' and staddj='$date', data not found!");

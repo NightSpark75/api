@@ -90,18 +90,22 @@ class PickingServiceTest extends TestCase
         // arrange
         $data = PickingList::first();
         $stop = $data->ststop;
-        $empno = $data->empno;
+        $empno = 'test user';
         $datetime = $data->staddj;
+        $ky3 = '99:99:99';
 
         // act
         $this->mock->shouldReceive('getPicking')
             ->once()
             ->with($stop, $datetime)
             ->andReturn($data);
-        $actual = $this->target->startPicking($stop, $empno, $datetime);
+        $actual = $this->target->startPicking($stop, $empno, $datetime, $ky3);
+        $updated = PickingList::first();
 
         // assert
         $this->assertTrue($actual);
+        $this->assertEquals($empno, trim($updated->stky2));
+        $this->assertEquals($ky3, trim($updated->stky3));
     }
 
     /**
@@ -142,16 +146,21 @@ class PickingServiceTest extends TestCase
         $stop = $data->ststop;
         $empno = $data->empno;
         $datetime = $data->staddj;
+        $ky6 = 'T';
+        $ky7 = '88:88:88';
 
         // act
         $this->mock->shouldReceive('getPicking')
             ->once()
             ->with($stop, $datetime)
             ->andReturn($data);
-        $actual = $this->target->endPicking($stop, $empno, $datetime);
-
+        $actual = $this->target->endPicking($stop, $empno, $datetime, $ky6, $ky7);
+        $updated = PickingList::first();
+        
         // assert
         $this->assertTrue($actual);
+        $this->assertEquals($ky6, trim($updated->stky6));
+        $this->assertEquals($ky7, trim($updated->stky7));
     }
 
 
