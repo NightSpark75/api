@@ -100,8 +100,9 @@ class PickingController extends Controller
     {
         try {
             $user = session('user');
+            $id = $user->id;
             $stop = request()->input('stop');
-            $result = $this->pickingService->endPicking($stop, $user->id);
+            $result = $this->pickingService->endPicking($stop, $id);
             return response()->json($result, 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);

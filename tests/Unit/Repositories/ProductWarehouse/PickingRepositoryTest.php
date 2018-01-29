@@ -1,6 +1,6 @@
 <?php
 /**
- * PickingController unit test
+ * PickingRepository unit test
  *
  * @version 1.0.0
  * @author spark Lin.yupin@standart.com.tw
@@ -8,24 +8,23 @@
  * @since 1.0.0 spark: complete six test
  * 
  */
-namespace Tests\Unit\Controllers;
+namespace Tests\Unit\Repositories;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-use App\Http\Controllers\ProductWarehouse\PickingController;
-use App\Services\ProductWarehouse\PickingService;
 use Exception;
+use App\Models\ProductWarehouse\PickingList;
 use App\Models\Web\User;
 
 /**
- * Class PickingControllerTest
+ * Class PickingRepositoryTest
  *
- * @package Tests\Unit\Controllers
+ * @package Tests\Unit\Repositories
  */
-class PickingControllersTest extends TestCase
+class PickingRepositoryTest extends TestCase
 {
     use DatabaseTransactions;
     use WithoutMiddleware;
@@ -139,7 +138,7 @@ class PickingControllersTest extends TestCase
     }
 
     /**
-     * test startPicking()
+     * test getPickingList()
      */
     public function test_startPicking()
     {
@@ -162,7 +161,7 @@ class PickingControllersTest extends TestCase
     }
 
     /**
-     * tes startPicking() return exception 
+     * tes getPickingList() return exception 
      */
     public function test_startPicking_exception()
     {
@@ -179,53 +178,6 @@ class PickingControllersTest extends TestCase
             ->with($stop, $id)
             ->andThrow(new Exception());
         $actual = $this->target->startPicking($stop);
-
-        // assert
-        $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
-        $this->flushSession();
-    }
-
-    /**
-     * test endPicking()
-     */
-    public function test_endPicking()
-    {
-        // arrange
-        $user = User::first();
-        $this->session(['user' => $user]);
-        $stop = request()->input('stop');
-        $id = $user->id;
-        $expected = response()->json([], 200);
-
-        // act
-        $this->mock->shouldReceive('endPicking')
-            ->once()
-            ->with($stop, $id)
-            ->andReturn($expected);
-        $actual = $this->target->endPicking();
-        // assert
-        $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
-        $this->flushSession();
-    }
-
-    /**
-     * tes endPicking() return exception 
-     */
-    public function test_endPicking_exception()
-    {
-        // arrange
-        $user = User::first();
-        $this->session(['user' => $user]);
-        $stop = request()->input('stop');
-        $id = $user->id;
-        $expected = response()->json([], 400);
-
-        // act
-        $this->mock->shouldReceive('endPicking')
-            ->once()
-            ->with($stop, $id)
-            ->andThrow(new Exception());
-        $actual = $this->target->endPicking($stop);
 
         // assert
         $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
