@@ -1,6 +1,6 @@
 <?php
 /**
- * 揀貨清單處理
+ * picking items repository
  *
  * @version 1.0.0
  * @author spark Lin.yupin@standart.com.tw
@@ -39,11 +39,7 @@ class PickingItemsRepository extends Repository
      */
     function getPickingItems($stop, $date)
     {
-        $list = $this->model
-            ->where('staddj', $date)
-            ->where('stky3', null)
-            ->get();
-        return $list;
+        return true;
     }
 
     /**
@@ -55,10 +51,6 @@ class PickingItemsRepository extends Repository
      */
     function getPicking($stop, $date)
     {
-        $picking = $this->model
-            ->where('ststop', $stop)
-            ->where('staddj', $date)
-            ->first();
-        return $picking;
+        return true;
     }
 }
