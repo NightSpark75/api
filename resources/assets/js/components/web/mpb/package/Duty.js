@@ -89,8 +89,7 @@ export default class Duty extends React.Component{
                                     <th>品名規格</th>
                                     <th>途程</th>
                                     <th>班別</th>
-                                    <th>組別</th>
-                                    <th></th>
+                                    <th width="62"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -103,7 +102,6 @@ export default class Duty extends React.Component{
                                             {item.duty === '2' && "中班"}
                                             {item.duty === '3' && "晚班"}
                                         </td>
-                                        <td>{item.gro}</td>
                                         <td>
                                             <Link className="button is-primary is-medium" 
                                                 to={"/auth/web/mpb/package/working/" 

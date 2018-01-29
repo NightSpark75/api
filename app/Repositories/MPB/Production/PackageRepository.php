@@ -161,15 +161,15 @@ class PackageRepository
      * @param string $psno 途程代號
      * @return array
      */
-    public function getMember($sno, $psno, $pgno, $duty, $group)
+    public function getMember($sno, $psno, $pgno, $duty)
     {
         try {
             $prod = $this->getProcessInfo($sno, $psno);
             $rno = $prod->rno;
             $mno = $prod->mno;
             
-            $waiting = $this->getWaiting($sno, $psno, $pgno, $duty, $group, $rno, $mno);
-            $working = $this->getWorking($sno, $psno, $pgno, $duty, $group);
+            $waiting = $this->getWaiting($sno, $psno, $pgno, $duty, $rno, $mno);
+            $working = $this->getWorking($sno, $psno, $pgno, $duty);
 
             $result = [
                 'result' => true,
@@ -191,13 +191,13 @@ class PackageRepository
      * @param string $rno 房室代號
      * @return stdClass
      */
-    private function getItmMember($sno, $psno, $pgno, $duty, $group)
+    private function getItmMember($sno, $psno, $pgno, $duty)
     {
         $list = DB::select("
             select empno
                 from v_pgdialy_d 
                 where sno = :sno and psno = :psno and pgno = :pgno
-                    and duty = :duty and gro = :gro
+                    and duty = :duty
             union
             select mno empno from mpb_order_g 
                 where sno = :sno and psno = :psno
@@ -206,7 +206,6 @@ class PackageRepository
             'psno' => $psno,
             'pgno' => $pgno,
             'duty' => $duty,
-            'gro' => $group,
             'sno' => $sno,
             'psno' => $psno,
         ]);
@@ -321,10 +320,10 @@ class PackageRepository
      * @param string $psno 途程代號
      * @return array
      */
-    private function getWaiting($sno, $psno, $pgno, $duty, $group, $rno, $mno)
+    private function getWaiting($sno, $psno, $pgno, $duty, $rno, $mno)
     {
         $waiting = [];
-        $member = $this->getItmMember($sno, $psno, $pgno, $duty, $group);
+        $member = $this->getItmMember($sno, $psno, $pgno, $duty);
         for ($i = 0; $i < count($member); $i++) {
             $empno = $member[$i]->empno;
             $member_state = $this->memberStateCheck($sno, $psno, $empno);
@@ -344,10 +343,10 @@ class PackageRepository
      * @param string $psno 途程代號
      * @return array
      */
-    private function getWorking($sno, $psno, $pgno, $duty, $group)
+    private function getWorking($sno, $psno, $pgno, $duty)
     {
         $working = [];
-        $member = $this->getWorkingMember($sno, $psno, $pgno, $duty, $group);
+        $member = $this->getWorkingMember($sno, $psno, $pgno, $duty);
         for ($i = 0; $i < count($member); $i++) {
             $empno = $member[$i]->empno;
             $working = $this->pushMemberInfo($working, $empno);
@@ -362,7 +361,7 @@ class PackageRepository
      * @param string $psno 途程代號
      * @return stdClass
      */
-    private function getWorkingMember($sno, $psno, $pgno, $duty, $group)
+    private function getWorkingMember($sno, $psno, $pgno, $duty)
     {
         $member = DB::select("
             select t.* 
@@ -373,7 +372,7 @@ class PackageRepository
                             from v_pgdialy_d d
                             where d.sno = :sno
                                 and d.psno = :psno and pgno = :pgno and d.duty = :duty
-                                and d.gro = :gro and t.empno = d.empno) or exists (
+                                and t.empno = d.empno) or exists (
                             select * 
                                 from mpb_order_g g
                                 where t.sno = g.sno and t.psno = g.psno and t.empno = g.mno
@@ -385,7 +384,6 @@ class PackageRepository
             'psno' => $psno,
             'pgno' => $pgno,
             'duty' => $duty,
-            'gro' => $group,
         ]);
         return $member;
     }
@@ -576,7 +574,7 @@ class PackageRepository
                 DB::update("
                     update mpb_pgdialy_d
                         set sta = 'Y'
-                        where sno = :sno and psno = :psno and pgno = :pgno and duty = :duty and gro = :gro
+                        where sno = :sno and psno = :psno and pgno = :pgno and duty = :duty
                 ", $params);
 
                 DB::delete("
@@ -649,13 +647,14 @@ class PackageRepository
     {
         try {
             $list = DB::select("
-                select pgno, sno, psno, duty, gro,
+                select pgno, sno, psno, duty,
                         pk_mpb.fu_get_iname(sno) iname,
                         pk_mpb.fu_get_psname(sno, psno) pname
                     from v_mpb_pgdialy
                     where pday = pk_date.fu_number(sysdate)
                         and sno = '$sno' and psno = '$psno' and sta is null
-                    order by duty, gro
+                    group by pgno, sno, psno, duty
+                    order by duty
             ");
             return $this->success(['duty' => $list]);
         } catch (Exception $e) {

@@ -14,7 +14,6 @@ export default class Job extends React.Component {
       psno: this.props.params.psno,
       pgno: this.props.params.pgno,
       duty: this.props.params.duty,
-      group: this.props.params.group,
       waiting_list: [],
       working_list: [],
       updated: false,
@@ -34,7 +33,7 @@ export default class Job extends React.Component {
   getMember() {
     const { sno, psno, pgno, duty, group } = this.state
     let self = this
-    axios.get('/api/web/mpb/prod/package/member/' + sno + '/' + psno + '/' + pgno + '/' + duty + '/' + group)
+    axios.get('/api/web/mpb/prod/package/member/' + sno + '/' + psno + '/' + pgno + '/' + duty)
       .then(function (response) {
         if (response.data.result) {
           if (!self.state.updated) {
@@ -192,7 +191,6 @@ export default class Job extends React.Component {
       form_data.append('psno', psno)
       form_data.append('pgno', pgno)
       form_data.append('duty', duty)
-      form_data.append('gro', group)
       axios.post('/api/web/mpb/prod/package/working/duty/close', form_data)
         .then(function (response) {
           if (response.data.result) {

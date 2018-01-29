@@ -35,9 +35,9 @@ class PackageController extends Controller
         return $response;
     }
 
-    public function member($sno, $psno, $pgno, $duty, $group)
+    public function member($sno, $psno, $pgno, $duty)
     {
-        $result = $this->work->getMember($sno, $psno, $pgno, $duty, $group);
+        $result = $this->work->getMember($sno, $psno, $pgno, $duty);
         $response = response()->json($result);
         return $response;
     }

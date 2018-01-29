@@ -16535,12 +16535,7 @@ var Duty = function (_React$Component) {
                                     null,
                                     '\u73ED\u5225'
                                 ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'th',
-                                    null,
-                                    '\u7D44\u5225'
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('th', null)
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('th', { width: '62' })
                             )
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -16566,11 +16561,6 @@ var Duty = function (_React$Component) {
                                         item.duty === '1' && "早班",
                                         item.duty === '2' && "中班",
                                         item.duty === '3' && "晚班"
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'td',
-                                        null,
-                                        item.gro
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         'td',
@@ -17225,7 +17215,6 @@ var Job = function (_React$Component) {
       psno: _this.props.params.psno,
       pgno: _this.props.params.pgno,
       duty: _this.props.params.duty,
-      group: _this.props.params.group,
       waiting_list: [],
       working_list: [],
       updated: false,
@@ -17256,7 +17245,7 @@ var Job = function (_React$Component) {
           group = _state.group;
 
       var self = this;
-      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/web/mpb/prod/package/member/' + sno + '/' + psno + '/' + pgno + '/' + duty + '/' + group).then(function (response) {
+      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/web/mpb/prod/package/member/' + sno + '/' + psno + '/' + pgno + '/' + duty).then(function (response) {
         if (response.data.result) {
           if (!self.state.updated) {
             self.setState({
@@ -17436,7 +17425,6 @@ var Job = function (_React$Component) {
         form_data.append('psno', psno);
         form_data.append('pgno', pgno);
         form_data.append('duty', duty);
-        form_data.append('gro', group);
         __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/web/mpb/prod/package/working/duty/close', form_data).then(function (response) {
           if (response.data.result) {
             console.log(response.data);
