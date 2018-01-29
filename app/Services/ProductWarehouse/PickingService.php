@@ -12,7 +12,6 @@ namespace App\Services\ProductWarehouse;
 
 use App\Repositories\ProductWarehouse\PickingRepository;
 use App\Repositories\ProductWarehouse\PickingItemsRepository;
-use JWTAuth;
 use DB;
 
 /**
@@ -24,15 +23,17 @@ class PickingService {
 
     /**
      * @var PickingRepository
-     * @var PickingItemsRepository
      */
     private $pickingRepository;
+    
+    /**
+     * @var PickingItemsRepository
+     */
     private $pickingItemsRepository;
 
     /**
      * @param PickingRepository $pickingRepository
      * @param PickingItemRepository $pickingItemsRepository
-     * @throws Exception
      */
     public function __construct(
         PickingRepository $pickingRepository,
@@ -51,7 +52,6 @@ class PickingService {
      * @param string $ky3
      * @param string $ky6
      * @param string $ky7
-     * @return mixed
      */
     private function procUpdF594921($stop, $date, $empno, $ky3, $ky6, $ky7)
     {
@@ -98,8 +98,6 @@ class PickingService {
      *
      * @param string $stop
      * @param string $empno
-     * @throws Exception
-     * @return mixed
      */
     public function startPicking($stop, $empno)
     {
@@ -111,7 +109,6 @@ class PickingService {
         $ky6 = $picking->stky6;
         $ky7 = $picking->stky7;
         $this->procUpdF594921($stop, $date, $empno, $ky3, $ky6, $ky7);
-        return null;
     }
 
     /**
@@ -119,8 +116,6 @@ class PickingService {
      *
      * @param string $stop
      * @param string $empno
-     * @throws Exception
-     * @return mixed
      */
     public function endPicking($stop, $empno)
     {
@@ -132,6 +127,5 @@ class PickingService {
         $ky6 = 'Y';
         $ky7 = date('H:i:s');
         $this->procUpdF594921($stop, $date, $empno, $ky3, $ky6, $ky7);
-        return null;
     }
 }
