@@ -17,11 +17,11 @@ use App\Traits\Oracle;
 use App\Repositories\Repository;
 
 /**
- * Class PickingRepository
+ * Class PickingListRepository
  *
  * @package App\Repositories
  */
-class PickingRepository extends Repository
+class PickingListRepository extends Repository
 {   
     use Sqlexecute;
     use Oracle;

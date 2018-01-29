@@ -10,7 +10,7 @@
  */
 namespace App\Services\ProductWarehouse;
 
-use App\Repositories\ProductWarehouse\PickingRepository;
+use App\Repositories\ProductWarehouse\PickingListRepository;
 use App\Repositories\ProductWarehouse\PickingItemsRepository;
 use DB;
 
@@ -22,9 +22,9 @@ use DB;
 class PickingService {
 
     /**
-     * @var PickingRepository
+     * @var PickingListRepository
      */
-    private $pickingRepository;
+    private $pickingListRepository;
     
     /**
      * @var PickingItemsRepository
@@ -32,14 +32,14 @@ class PickingService {
     private $pickingItemsRepository;
 
     /**
-     * @param PickingRepository $pickingRepository
+     * @param PickingListRepository $pickingListRepository
      * @param PickingItemRepository $pickingItemsRepository
      */
     public function __construct(
-        PickingRepository $pickingRepository,
+        PickingListRepository $pickingListRepository,
         PickingItemsRepository $pickingItemsRepository
     ) {
-        $this->pickingRepository = $pickingRepository;
+        $this->pickingListRepository = $pickingListRepository;
         $this->pickingItemsRepository = $pickingItemsRepository;
     }
 
@@ -76,7 +76,7 @@ class PickingService {
     {
         $today = '2018-01-24 00:00:00';
         //$today = date('Y-m-d').' 00:00:00';
-        $items = $this->pickingRepository->getPickingList($today);
+        $items = $this->pickingListRepository->getPickingList($today);
         return $items;
     }
 
@@ -89,7 +89,7 @@ class PickingService {
     {
         $today = '2018-01-25 00:00:00';
         //$today = date('Y-m-d').' 00:00:00';
-        $list = $this->pickingRepository->getPickingList($today);
+        $list = $this->pickingListRepository->getPickingList($today);
         return $list;
     }
 
@@ -104,7 +104,7 @@ class PickingService {
         $today = '2018-01-25 00:00:00';
         $date = '2018/01/25';
         //$today = date('Y-m-d').' 00:00:00';
-        $picking = $this->pickingRepository->getPicking($stop, $today);
+        $picking = $this->pickingListRepository->getPicking($stop, $today);
         $ky3 = date('H:i:s');
         $ky6 = $picking->stky6;
         $ky7 = $picking->stky7;
@@ -122,7 +122,7 @@ class PickingService {
         $today = '2018-01-25 00:00:00';
         $date = '2018/01/25';
         //$today = date('Y-m-d').' 00:00:00';
-        $picking = $this->pickingRepository->getPicking($stop, $today);
+        $picking = $this->pickingListRepository->getPicking($stop, $today);
         $ky3 = $picking->stky3;
         $ky6 = 'Y';
         $ky7 = date('H:i:s');
