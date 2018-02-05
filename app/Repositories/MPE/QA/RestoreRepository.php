@@ -63,6 +63,12 @@ class RestoreRepository
                         where barcode = :barcode
                 ", ['barcode' => $barcode, 'amt' => $amt]);
 
+                DB::update("
+                    update mpe_lsa_e
+                        set status = 'C'
+                        where barcode = :barcode and status = 'R'
+                ", ['barcode' => $barcode]);
+
                 $rec_no = DB::selectOne("select pk_mpe.fu_create_no('PI') rec_no from dual")->rec_no;
                 $dept_no = DB::selectOne("select deptno from stdadm.v_hra_emp_dept1 where empno = '$user'")->deptno;
 
