@@ -135,7 +135,7 @@ export default class Pointlog extends React.Component{
                         <div className="field-body">
                             <div className="field is-grouped">
                                 <div className="field" style={{marginRight: '10px'}}>
-                                    <input type="password" className="input is-large" placeholder="掃描條碼"
+                                    <input type="text" className="input is-large" placeholder="掃描條碼"
                                         value={this.state.point_no}
                                         disabled={this.state.scan}
                                         onChange={this.scanChange.bind(this)}

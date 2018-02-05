@@ -148,6 +148,7 @@ Route::group(['prefix' => 'web/mpe', 'namespace' => 'MPE'], function () {
         Route::group(['prefix' => 'stock'], function () {
             Route::get('list/{str?}', 'StockController@getStockList');
             Route::put('storage/change', 'StockController@storageChange');
+            Route::get('item/{barcode}', 'StockController@itemInfo');
         });
     });
 

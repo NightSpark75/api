@@ -104,4 +104,17 @@ class StockRepository
         }
     }
 
+    public function getItemByBarcode($barcode)
+    {
+        $info = DB::selectOne("
+            select e.partno, pk_mpe.fu_pname(e.partno) pname, e.whouse, pk_mpe.fu_posit(e.whouse) posit, e.stor, pk_mpe.fu_storn(e.whouse, e.stor) storn
+                    , e.batch, e.amt, m.unit, m.usize, e.rmk
+                    , case when e.sta = 'N' then '在庫' when e.sta = 'Y' then '領用' else e.sta end sta 
+                from mpe_house_e e, mpe_house_m m
+                where e.code = '04' and e.barcode = '$barcode'
+                    and m.partno = e.partno and m.batch = e.batch
+                    and m.whouse = e.whouse and m.stor = e.stor and m.grid = e.grid
+        ");
+        return $info;
+    }
 }   

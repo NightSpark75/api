@@ -15,6 +15,7 @@ import Pointlog from "./components/web/mpz/pointlog/Pointlog"
 import QAReceive from "./components/web/mpe/qa/receive/Receive"
 import QAReceiveCheck from "./components/web/mpe/qa/receive/Check"
 import QARestore from "./components/web/mpe/qa/restore/Restore"
+import QAStockInfo from "./components/web/mpe/qa/Stock/item/info"
 import Retained from "./components/web/mpe/qa/retained/Retained"
 import Change from "./components/web/mpe/qa/stock/storage/Change"
 import QCReceive from "./components/web/mpe/qc/receive/Receive"
@@ -98,6 +99,7 @@ ReactDOM.render(
             <Route path="retained/list" component={Retained}></Route>
             <Route path="stock">
               <Route path="storage/Change" component={Change}></Route>
+              <Route path="item/info" component={QAStockInfo}></Route>
             </Route>
           </Route>
           <Route path="qc">
