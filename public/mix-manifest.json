@@ -22,5 +22,11 @@
   "/js/qaReceive.js": "/js/qaReceive.js",
   "/js/qaStoreChange.js": "/js/qaStoreChange.js",
   "/js/qaRetained.js": "/js/qaRetained.js",
-  "/js/navPage.js": "/js/navPage.js"
+  "/js/navPage.js": "/js/navPage.js",
+  "/js/vendor.js": "/js/vendor.js",
+  "/js/manifest.js": "/js/manifest.js",
+  "/js/app.js.map": "/js/app.js.map",
+  "/css/app.css.map": "/css/app.css.map",
+  "/js/vendor.js.map": "/js/vendor.js.map",
+  "/js/manifest.js.map": "/js/manifest.js.map"
 }

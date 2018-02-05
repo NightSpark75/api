@@ -12,6 +12,8 @@
 </head>
 <body>
     <div id="app"></div>
+    <script src="{{ url('/js/manifest.js?x=') . rand() }}"></script>
+    <script src="{{ url('/js/vendor.js?x=') . rand() }}"></script>
     <script src="{{ url('/js/app.js?x=') . rand() }}"></script>
 </body>
 </html>
