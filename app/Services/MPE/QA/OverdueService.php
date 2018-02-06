@@ -21,6 +21,11 @@ use DB;
  */
 class OverdueService {
 
+    /**
+     * get overdue list at today
+     * 
+     * @return array
+     */
     private function overdueList() {
         $list = DB::select("
             select m.no, m.doc_class, m.reason, e.barcode, e.partno, pk_mpe.fu_pname(e.partno) pname
@@ -36,6 +41,11 @@ class OverdueService {
         return $list;
     }
 
+    /**
+     * handle overdue notice to apply user, receiver and administrator
+     * 
+     * @return mixed
+     */
     public function overdueNotice() {
         try {
             $today = date('Ymd');
@@ -58,6 +68,14 @@ class OverdueService {
         }
     }
 
+
+    /**
+     * get work date
+     * 
+     * @param int $date
+     * @param int $day
+     * @return int
+     */
     private function getWorkDate($date, $day) {
         $workDate = DB::selectOne("
             select stdadm.pk_hra.fu_work_day('ALL', $date, $day) d from dual
@@ -65,6 +83,13 @@ class OverdueService {
         return $workDate;
     }
 
+    /**
+     * unique user and return 1d array
+     * 
+     * @param array $list
+     * @param string $user
+     * @return array
+     */
     private function uniqueUser($list, $user)
     {
         $arr = [];
@@ -76,6 +101,13 @@ class OverdueService {
         return $uni;
     }
 
+    /**
+     * handle apply user notice
+     * 
+     * @param array $list
+     * @param array $user
+     * @return int
+     */
     private function applyUserNotice($list, $user)
     {
         $count = 0;
@@ -86,6 +118,13 @@ class OverdueService {
         return $count;
     }
 
+    /**
+     * handle receiver notice
+     * 
+     * @param array $list
+     * @param array $user
+     * @return int
+     */
     private function receiveUserNotice($list, $user)
     {
         $count = 0;
@@ -96,6 +135,12 @@ class OverdueService {
         return $count;
     }
 
+    /**
+     * handle administrator notice
+     * 
+     * @param array $list
+     * @return int
+     */
     private function adminNotice($list)
     {
         $user = DB::selectOne("
@@ -104,6 +149,13 @@ class OverdueService {
         return $this->sendOverdueList($list, $user);
     }
 
+    /**
+     * get overdue list by apply user
+     * 
+     * @param array $list
+     * @param array $user
+     * @return array
+     */
     private function applyUserOverdueList($list, $user)
     {
         $overList = [];
@@ -115,6 +167,13 @@ class OverdueService {
         return $overList;
     }
 
+    /**
+     * get overdue lsit by receiver
+     * 
+     * @param array $list
+     * @param array $user
+     * @return array
+     */
     private function receiveUserOverdueList($list, $user)
     {
         $overList = [];
@@ -127,6 +186,12 @@ class OverdueService {
         return $overList;
     }
 
+    /**
+     * set mail content of apply user's overdue list
+     * 
+     * @param array $list
+     * @return int
+     */
     private function sendApplyOverdueMail($list)
     {
         if (count($list) > 0) {
@@ -178,6 +243,12 @@ class OverdueService {
         return 0;
     }
 
+    /**
+     * set mail content of receiver's overdue list
+     * 
+     * @param array $list
+     * @return int
+     */
     private function sendReceiveOverdueMail($list)
     {
         if (count($list) > 0) {
@@ -231,6 +302,12 @@ class OverdueService {
         return 0;
     }
 
+    /**
+     * set mail content of overdue list for administrator
+     * 
+     * @param array $list
+     * @return int
+     */
     private function sendOverdueList($list, $user)
     {
         if (count($list) > 0) {
@@ -261,18 +338,18 @@ class OverdueService {
                 $item = json_decode(json_encode($list[$i]));
                 $a = $item->no;
                 $content2 = $content2."
-                            <tr>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->no</td>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->apply_user.$item->apply_ename</td>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->doc_class</td>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->reason</td>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->barcode</td>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->partno</td>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->pname</td>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->bno</td>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->rdate</td>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->receive_user.$item->receive_ename</td>
-                            <tr>
+                        <tr>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->no</td>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->apply_user.$item->apply_ename</td>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->doc_class</td>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->reason</td>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->barcode</td>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->partno</td>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->pname</td>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->bno</td>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->rdate</td>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->receive_user.$item->receive_ename</td>
+                        <tr>
                 ";
             }
             
@@ -287,6 +364,15 @@ class OverdueService {
         return 0;
     }
 
+    /**
+     * send mail handler
+     * 
+     * @param string $subject
+     * @param string $sender
+     * @param string $recipient
+     * @param string $content
+     * @return void
+     */
     private function sendMail($subject, $sender, $recipient, $content)
     {
         $nu = null;
