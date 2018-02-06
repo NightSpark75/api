@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        \App\Console\Commands\Testlog::class,
+        \App\COnsole\Commands\QAOverdue::class,
     ];
 
     /**
@@ -26,6 +27,9 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        // 每分鐘執行 Artisan 命令 test:Log
+        $schedule->command('test:Log')->everyMinute();
+        $schedule->command('Web:QA:Overdue')->dailyAt('07:00');
     }
 
     /**
