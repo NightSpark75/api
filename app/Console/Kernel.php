@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\Testlog::class,
-        \App\COnsole\Commands\QAOverdue::class,
+        \App\Console\Commands\QAOverdue::class,
     ];
 
     /**
