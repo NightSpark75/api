@@ -19,6 +19,7 @@ class RuntestController extends Controller
     
     public function test()
     {
-        $a = $this->overdue->overdueNotice();
+        //$a = $this->overdue->overdueNotice();
+        return 'hello test';
     }
 }
