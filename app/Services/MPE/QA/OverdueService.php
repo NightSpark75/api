@@ -198,45 +198,9 @@ class OverdueService {
             $subject = '留樣品逾期歸還通知!(申請)';
             $sender = 'qa.inventory@standard.com.tw';
             $recipient = $list[0]['aemail'];
-            $content1 = "
-                <table style=\"border: 1px solid black; border-collapse: collapse\">
-                    <header>
-                        <tr>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">申請單號</th>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">附件類別</th>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">申請事由</th>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">條碼號</th>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">料號</th>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">品名</th>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">批號</th>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">收樣日期</th>
-                        <tr>
-                    </header>
-                    <tbody>
-            ";
-            $content2 = '';
-            for ($i = 0; $i < count($list); $i++) {
-                $item = json_decode(json_encode($list[$i]));
-                $a = $item->no;
-                $content2 = $content2."
-                        <tr>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->no</td>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->doc_class</td>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->reason</td>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->barcode</td>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->partno</td>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->pname</td>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->bno</td>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->rdate</td>
-                        <tr>
-                ";
-            }
-            
-            $content3 = "
-                    </tbody>
-                </table>
-            ";
-            $content = $content1.$content2.$content3;
+            $head = ['申請單號', '附件類別', '申請事由', '條碼號', '料號', '品名', '批號', '收樣日期'];
+            $key = ['no', 'doc_class', 'reason', 'barcode', 'partno', 'pname', 'bno', 'rdate'];
+            $content = $this->mailContent($list, $head, $key);
             $this->sendMail($subject, $sender, $recipient, $content);
             return 1;
         }
@@ -255,47 +219,9 @@ class OverdueService {
             $subject = '留樣品逾期歸還通知!(收樣)';
             $sender = 'qa.inventory@standard.com.tw';
             $recipient = $list[0]['aemail'];
-            $content1 = "
-                <table style=\"border: 1px solid black; border-collapse: collapse\">
-                    <header>
-                        <tr>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">申請單號</th>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">申請人</th>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">附件類別</th>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">申請事由</th>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">條碼號</th>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">料號</th>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">品名</th>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">批號</th>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">收樣日期</th>
-                        <tr>
-                    </header>
-                    <tbody>
-            ";
-            $content2 = '';
-            for ($i = 0; $i < count($list); $i++) {
-                $item = json_decode(json_encode($list[$i]));
-                $a = $item->no;
-                $content2 = $content2."
-                        <tr>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->no</td>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->apply_user.$item->apply_ename</td>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->doc_class</td>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->reason</td>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->barcode</td>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->partno</td>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->pname</td>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->bno</td>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->rdate</td>
-                        <tr>
-                ";
-            }
-            
-            $content3 = "
-                    </tbody>
-                </table>
-            ";
-            $content = $content1.$content2.$content3;
+            $head = ['申請單號', '申請人', '姓名', '附件類別', '申請事由', '條碼號', '料號', '品名', '批號', '收樣日期'];
+            $key = ['no', 'apply_user', 'apply_ename', 'doc_class', 'reason', 'barcode', 'partno', 'pname', 'bno', 'rdate'];
+            $content = $this->mailContent($list, $head, $key);
             $this->sendMail($subject, $sender, $recipient, $content);
             return 1;
         }
@@ -314,53 +240,79 @@ class OverdueService {
             $subject = '留樣品逾期歸還清單!';
             $sender = 'qa.inventory@standard.com.tw';
             $recipient = $user;
-            $content1 = "
-                <table style=\"border: 1px solid black; border-collapse: collapse\">
-                    <header>
-                        <tr>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">申請單號</th>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">申請人</th>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">附件類別</th>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">申請事由</th>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">條碼號</th>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">料號</th>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">品名</th>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">批號</th>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">收樣日期</th>
-                            <th style=\"border: 1px solid black;padding: 15px;text-align: left;\">收樣人</th>
-                        <tr>
-                    </header>
-                    <tbody>
-            ";
-            $content2 = '';
-            for ($i = 0; $i < count($list); $i++) {
-                $item = json_decode(json_encode($list[$i]));
-                $a = $item->no;
-                $content2 = $content2."
-                        <tr>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->no</td>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->apply_user.$item->apply_ename</td>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->doc_class</td>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->reason</td>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->barcode</td>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->partno</td>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->pname</td>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->bno</td>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->rdate</td>
-                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->receive_user.$item->receive_ename</td>
-                        <tr>
-                ";
-            }
-            
-            $content3 = "
-                    </tbody>
-                </table>
-            ";
-            $content = $content1.$content2.$content3;
+            $head = ['申請單號', '申請人', '姓名', '附件類別', '申請事由', '條碼號', '料號', '品名', '批號', '收樣日期', '收樣人', '姓名'];
+            $key = ['no', 'apply_user', 'apply_ename', 'doc_class', 'reason', 'barcode', 'partno', 'pname', 'bno', 'rdate', 'receive_user', 'receive_ename'];
+            $content = $this->mailContent($list, $head, $key);
             $this->sendMail($subject, $sender, $recipient, $content);
             return 1;
         }
         return 0;
+    }
+
+    /**
+     * build mail content
+     * 
+     * @param array $list
+     * @param array $head
+     * @param array $key
+     * @return string
+     */
+    private function mailContent($list, $head, $key)
+    {
+        $thead = $this->tableHead($head);
+        $tbody = $this->tableBody($list, $key);
+        $table = '<table style=\"border: 1px solid black; border-collapse: collapse\">'.$thead.$tbody.'</table>';
+        return $table;
+    }
+
+    /**
+     * build table head
+     * 
+     * @param array $head
+     * @return string
+     */
+    private function tableHead($head)
+    {
+        $th = '';
+        for ($i = 0; $i < count($head); $i++) {
+            $th = '<th style=\"border: 1px solid black;padding: 15px;text-align: left;\">'.$head[$i].'</th>';
+        }
+        $thead = '<thead><tr>'.$th.'</tr></thead>';
+        return $thead;
+    }
+
+    /**
+     * build table body
+     * 
+     * @param array $list
+     * @param array $key
+     * @return string
+     */
+    private function tableBody($list, $key)
+    {
+        $rows = '';
+        for ($i = 0; $i < count($list); $i++) {
+            $rows = $rows.$this->tableBodyRow($list[$i], $key);
+        }
+        $body = '<tbody>'.$rows.'</tbody>';
+        return $body;
+    }
+
+    /**
+     * build table body row
+     * 
+     * @param array $item
+     * @param array $key
+     * @return string
+     */
+    private function tableBodyRow($item, $key)
+    {
+        $td = '';
+        for ($i = 0; $i < count($item); $i++) {
+            $td = $td.'<td style=\"border: 1px solid black;padding: 15px;text-align: left;\">'.$item[$i][$key[$i]].'</td>';
+        }
+        $tr = '<tr>'.$td.'</tr>';
+        return $tr;
     }
 
     /**
