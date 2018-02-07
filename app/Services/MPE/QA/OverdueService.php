@@ -219,16 +219,16 @@ class OverdueService {
                 $item = json_decode(json_encode($list[$i]));
                 $a = $item->no;
                 $content2 = $content2."
-                            <tr>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->no</td>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->doc_class</td>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->reason</td>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->barcode</td>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->partno</td>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->pname</td>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->bno</td>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->rdate</td>
-                            <tr>
+                        <tr>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->no</td>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->doc_class</td>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->reason</td>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->barcode</td>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->partno</td>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->pname</td>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->bno</td>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->rdate</td>
+                        <tr>
                 ";
             }
             
@@ -277,17 +277,17 @@ class OverdueService {
                 $item = json_decode(json_encode($list[$i]));
                 $a = $item->no;
                 $content2 = $content2."
-                            <tr>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->no</td>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->apply_user.$item->apply_ename</td>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->doc_class</td>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->reason</td>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->barcode</td>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->partno</td>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->pname</td>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->bno</td>
-                                <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->rdate</td>
-                            <tr>
+                        <tr>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->no</td>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->apply_user.$item->apply_ename</td>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->doc_class</td>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->reason</td>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->barcode</td>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->partno</td>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->pname</td>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->bno</td>
+                            <td style=\"border: 1px solid black;padding: 15px;text-align: left;\">$item->rdate</td>
+                        <tr>
                 ";
             }
             
@@ -313,8 +313,7 @@ class OverdueService {
         if (count($list) > 0) {
             $subject = '留樣品逾期歸還清單!';
             $sender = 'qa.inventory@standard.com.tw';
-            //$recipient = $user;
-            $recipient = 'Lin.Yupin@standard.com.tw';
+            $recipient = $user;
             $content1 = "
                 <table style=\"border: 1px solid black; border-collapse: collapse\">
                     <header>
