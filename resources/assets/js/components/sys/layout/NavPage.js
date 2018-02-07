@@ -12,6 +12,7 @@ export default class NavPage extends React.Component {
     this.state = {
       user: [],
       nav: '',
+      menu: false,
     }
   }
 
@@ -42,23 +43,35 @@ export default class NavPage extends React.Component {
     this.setState({ nav: nav })
   }
 
+  menu() {
+    this.setState({menu: !this.state.menu})
+  }
+
   render() {
+      let isActive = this.state.menu? ' is-active': ''
     return (
       <div>
-        <nav className="navbar is-primary">
+        <nav className="navbar is-primary is-transparent">
           <div className="container">
-            <div className="navbar-start">
+            <div className="navbar-brand">
               <div className="nav-item">
                   {this.state.user.length === 0 ? '資料讀取中...' : this.state.user['user_name'] + ' 您好'}
               </div>
+              <div className="navbar-burger burger" onClick={this.menu.bind(this)}>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
             </div>
-            <div className="navbar-end">
-              <Link className="navbar-item" to="/auth/web/menu">
-                <span className="is-size-4">回功能頁</span>
-              </Link>
-              <a className="navbar-item" onClick={this.onLogout.bind(this)} href="#">
-                <span className="is-size-4">登出</span>
-              </a>
+            <div className={"navbar-menu" + isActive}>
+              <div className="navbar-end">
+                <Link className="navbar-item" to="/auth/web/menu">
+                  <span className="is-size-4">回功能頁</span>
+                </Link>
+                <a className="navbar-item" onClick={this.onLogout.bind(this)} href="#">
+                  <span className="is-size-4">登出</span>
+                </a>
+              </div>
             </div>
           </div>
         </nav>
@@ -71,3 +84,24 @@ export default class NavPage extends React.Component {
     )
   }
 }
+
+/*
+<nav className="navbar is-primary">
+  <div className="container">
+    <div className="navbar-start">
+      <div className="nav-item">
+          {this.state.user.length === 0 ? '資料讀取中...' : this.state.user['user_name'] + ' 您好'}
+      </div>
+    </div>
+    <div className="navbar-end">
+      <Link className="navbar-item" to="/auth/web/menu">
+        <span className="is-size-4">回功能頁</span>
+      </Link>
+      <a className="navbar-item" onClick={this.onLogout.bind(this)} href="#">
+        <span className="is-size-4">登出</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+*/
