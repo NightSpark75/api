@@ -220,7 +220,7 @@ class OverdueService {
         if (count($list) > 0) {
             $subject = '留樣品逾期歸還通知!(收樣)';
             $sender = 'qa.inventory@standard.com.tw';
-            $recipient = $list[0]['aemail'];
+            $recipient = $list[0]['remail'];
             //$recipient = 'Lin.Yupin@standard.com.tw';
             $head = ['申請單號', '申請人', '姓名', '附件類別', '申請事由', '條碼號', '料號', '品名', '批號', '收樣日期'];
             $key = ['no', 'apply_user', 'apply_ename', 'doc_class', 'reason', 'barcode', 'partno', 'pname', 'bno', 'rdate'];
