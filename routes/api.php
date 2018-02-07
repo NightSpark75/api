@@ -21,7 +21,7 @@ Route::middleware('web')->get('/user', function (Request $request) {
 */
 
 Route::group(['prefix' => 'run', 'namespace' => 'Web'], function () {
-    Route::post('test', 'RuntestController@test');
+    Route::get('test', 'RuntestController@test');
 });
 
 Route::group(['prefix' => 'jwt', 'namespace' => 'Web'], function () {

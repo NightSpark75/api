@@ -50,16 +50,17 @@ class OverdueService {
         try {
             $today = date('Ymd');
             $workDate = $this->getWorkDate($today, 1);
-            $ap = 0;
-            $re = 0;
+            $applicant = 0;
+            $receiver = 0;
+            $admin = 0;
             if ($today === $workDate) {
                 $list = json_decode(json_encode($this->overdueList()), true);
                 $auser = $this->uniqueUser($list, 'apply_user');
                 $ruser = $this->uniqueUser($list, 'receive_user');
-                //$ap = $this->applyUserNotice($list, $auser);
-                //$re = $this->receiveUserNotice($list, $ruser);
-                $ad = $this->adminNotice($list);
-                $logs = "send mail apply = $ap, receive = $re, admin = $ad";
+                //$applicant = $this->applyUserNotice($list, $auser);
+                //$receiver = $this->receiveUserNotice($list, $ruser);
+                $admin = $this->adminNotice($list);
+                $logs = "send mail apply = $applicant, receive = $receiver, admin = $admin";
                 return $logs;
             }
             return 'today is holiday';
@@ -198,6 +199,7 @@ class OverdueService {
             $subject = '留樣品逾期歸還通知!(申請)';
             $sender = 'qa.inventory@standard.com.tw';
             $recipient = $list[0]['aemail'];
+            //$recipient = 'Lin.Yupin@standard.com.tw';
             $head = ['申請單號', '附件類別', '申請事由', '條碼號', '料號', '品名', '批號', '收樣日期'];
             $key = ['no', 'doc_class', 'reason', 'barcode', 'partno', 'pname', 'bno', 'rdate'];
             $content = $this->mailContent($list, $head, $key);
@@ -219,6 +221,7 @@ class OverdueService {
             $subject = '留樣品逾期歸還通知!(收樣)';
             $sender = 'qa.inventory@standard.com.tw';
             $recipient = $list[0]['aemail'];
+            //$recipient = 'Lin.Yupin@standard.com.tw';
             $head = ['申請單號', '申請人', '姓名', '附件類別', '申請事由', '條碼號', '料號', '品名', '批號', '收樣日期'];
             $key = ['no', 'apply_user', 'apply_ename', 'doc_class', 'reason', 'barcode', 'partno', 'pname', 'bno', 'rdate'];
             $content = $this->mailContent($list, $head, $key);
@@ -240,6 +243,7 @@ class OverdueService {
             $subject = '留樣品逾期歸還清單!';
             $sender = 'qa.inventory@standard.com.tw';
             $recipient = $user;
+            //$recipient = 'Lin.Yupin@standard.com.tw';
             $head = ['申請單號', '申請人', '姓名', '附件類別', '申請事由', '條碼號', '料號', '品名', '批號', '收樣日期', '收樣人', '姓名'];
             $key = ['no', 'apply_user', 'apply_ename', 'doc_class', 'reason', 'barcode', 'partno', 'pname', 'bno', 'rdate', 'receive_user', 'receive_ename'];
             $content = $this->mailContent($list, $head, $key);
@@ -261,7 +265,7 @@ class OverdueService {
     {
         $thead = $this->tableHead($head);
         $tbody = $this->tableBody($list, $key);
-        $table = '<table style=\"border: 1px solid black; border-collapse: collapse\">'.$thead.$tbody.'</table>';
+        $table = '<table style="border: 1px solid black; border-collapse: collapse">'.$thead.$tbody.'</table>';
         return $table;
     }
 
@@ -275,7 +279,7 @@ class OverdueService {
     {
         $th = '';
         for ($i = 0; $i < count($head); $i++) {
-            $th = '<th style=\"border: 1px solid black;padding: 15px;text-align: left;\">'.$head[$i].'</th>';
+            $th = $th.'<th style="border: 1px solid black;padding: 15px;text-align: left;">'.$head[$i].'</th>';
         }
         $thead = '<thead><tr>'.$th.'</tr></thead>';
         return $thead;
@@ -308,8 +312,8 @@ class OverdueService {
     private function tableBodyRow($item, $key)
     {
         $td = '';
-        for ($i = 0; $i < count($item); $i++) {
-            $td = $td.'<td style=\"border: 1px solid black;padding: 15px;text-align: left;\">'.$item[$i][$key[$i]].'</td>';
+        for ($i = 0; $i < count($key); $i++) {
+            $td = $td.'<td style="border: 1px solid black;padding: 8 4;text-align: left;">'.$item[$key[$i]].'</td>';
         }
         $tr = '<tr>'.$td.'</tr>';
         return $tr;
