@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use Exception;
 use App\Traits\Common;
 use App\Services\MPE\QA\OverdueService;
+use DB;
 
 class RuntestController extends Controller
 {
@@ -20,6 +21,10 @@ class RuntestController extends Controller
     public function test()
     {
         //$a = $this->overdue->overdueNotice();
-        return 'hello test';
+        $a = DB::select("
+            select *
+                from mpz_point
+        ");
+        return $a;
     }
 }
