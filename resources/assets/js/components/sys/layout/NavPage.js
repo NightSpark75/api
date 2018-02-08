@@ -76,7 +76,7 @@ export default class NavPage extends React.Component {
           </div>
         </nav>
         <section>
-          <div className="container">
+          <div className="container" style={{padding: '5px'}}>
             {this.props.children}
           </div>
         </section>
