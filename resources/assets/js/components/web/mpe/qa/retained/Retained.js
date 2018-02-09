@@ -18,8 +18,8 @@ export default class Retained extends React.Component {
 
   componentDidMount() {
     let today = new Date()
-    var yyyy = today.toLocaleDateString().slice(0, 4)
-    var MM = (today.getMonth() + 1 < 10 ? '0' : '') + (today.getMonth() + 1)
+    var yyyy = today.getFullYear()
+    var MM = ((today.getMonth() + 1) < 10 ? '0' : '') + (today.getMonth() + 1)
     var dd = (today.getDate() < 10 ? '0' : '') + today.getDate()
     let ldate = yyyy + MM + dd
     this.setState({ ldate: ldate })
