@@ -1,6 +1,7 @@
 import React from "react"
 export default class Replace extends React.Component {
   render() {
+    const catchDate = this.props.catchDate
     return (
       <div className="field is-horizontal" onChange={this.props.onChange}>
         <div className="field-body">

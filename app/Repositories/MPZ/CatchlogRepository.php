@@ -87,7 +87,10 @@ class CatchlogRepository
     {
         $twoMonthAgo = (int)substr(date('Ymd', strtotime('-2 month')), 0, 6);
         $twoMonthAgoCount = array_sum($this->getAllCatchCount($point_no, $twoMonthAgo));
-        $growth = ($lastTotalCount - $twoMonthAgoCount) / $twoMonthAgoCount;
+        $growth = 0;
+        if ($twoMonthAgoCount > 0) {
+            $growth = ($lastTotalCount - $twoMonthAgoCount) / $twoMonthAgoCount;
+        }
         return $growth;
     }
 

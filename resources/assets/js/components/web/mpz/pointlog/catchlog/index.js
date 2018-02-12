@@ -23,7 +23,7 @@ export default class Catchlog extends React.Component {
       vc1: false, vc2: false, vc3: false, vc4: false, vc5: false, vc6: false,
       vlp: false,
       rmkShow: false, rmkOption: [], rmkList: [],
-      thisMonth: 0, lastMonth: 0,
+      thisTotalCount: 0, lastTotalCount: 0,
       isLoading: false, init: false,
       msg_type: '', msg: '',
       growthShow: false,
@@ -52,8 +52,11 @@ export default class Catchlog extends React.Component {
             point_no: point_no,
             ldate: response.data.ldate,
             device_type: device_type,
-            thisMonth: response.data.thisMonth,
-            lastMonth: response.data.lastMonth,
+            thisAllCount: response.data.thisAllCount,
+            lastAllCount: response.data.lastAllCount,
+            thisTotalCount: response.data.thisTotalCount,
+            lastTotalCount: response.data.lastTotalCount,
+            lastGrowth: response.data.lastGrowth,
             changeDate: response.data.changeDate,
             init: false,
           })
@@ -125,14 +128,14 @@ export default class Catchlog extends React.Component {
       vn1: false, vn2: false, vn3: false, vn4: false, vn5: false, vn6: false,
       vc1: false, vc2: false, vc3: false, vc4: false, vc5: false, vc6: false,
       vlp: false,
-      thisMonth: 0, lastMonth: 0,
+      thisTotalCount: 0, lastTotalCount: 0,
       isLoading: false, init: false,
       msg_type: '', msg: '',
     })
   }
 
   catchChange(item, e) {
-    let val = e.target.value
+    let val = Number(e.target.value)
     this.setState({[item]: val})
   }
 
@@ -189,8 +192,18 @@ export default class Catchlog extends React.Component {
 
   render() {
     const { pointInfo } = this.props
-    const { init, isLoading, isChecked, isDeviation, isOverdue } = this.state 
+    const { 
+      init, isLoading, isChecked, isDeviation, isOverdue,
+      thisTotalCount, lastTotalCount, lastGrowth,
+      catch_num1, catch_num2, catch_num3,
+      catch_num4, catch_num5, catch_num6,
+    } = this.state 
     const isComplete = !(this.state.log_data === null)
+    const allCount = thisTotalCount + catch_num1 + catch_num2 + catch_num3 + catch_num4 + catch_num5 + catch_num6
+    let thisGrowth = 0
+    if (lastTotalCount > 0) {
+      thisGrowth = (allCount - lastTotalCount) / lastTotalCount
+    }
     let today = new Date()
     return (
       <div>
@@ -216,20 +229,20 @@ export default class Catchlog extends React.Component {
             <tr>
               <td colSpan={2}>
                 <span>
-                  本月累計：{this.state.thisMonth} 
+                  本月累計：{allCount} 
                 </span>
                 {this.state.growthShow && 
                   <span style={{marginLeft: '20px'}}>
-                    本月累計成長率：{null}
+                    本月累計成長率：{thisGrowth}
                   </span>
                 }
                 <br/>
                 <span>
-                  上月統計：{this.state.lastMonth} 
+                  上月統計：{lastTotalCount} 
                 </span>
                 {this.state.growthShow &&
                 <span style={{marginLeft: '20px'}}>
-                  上月成長率：{null}
+                  上月成長率：{lastGrowth}
                 </span>
                 }
               </td>
@@ -258,7 +271,9 @@ export default class Catchlog extends React.Component {
                       key={index}
                       label={item.label}
                       value={this.state[item.key]}
+                      catchDate={this.state.catchDate}
                       checked={this.state[item.key]}
+                      type={item.type}
                       onChange={this.checkboxChange.bind(this, item.type)}
                       msg={index}
                     />)

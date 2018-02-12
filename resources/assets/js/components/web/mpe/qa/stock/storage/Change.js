@@ -121,11 +121,12 @@ export default class Change extends React.Component {
       batch: this.state.select_item.batch,
       whouse: item.whouse,
       stor: item.stor,
+      search_str: this.state.search_str
     }
     axios.put('/api/web/mpe/qa/stock/storage/change', data)
       .then(function (response) {
         if (response.data.result) {
-          self.setList(data)
+          self.setState({ search: response.data.list})
           self.hideStorage()
         } else {
           console.log(response.data)

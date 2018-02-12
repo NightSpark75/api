@@ -71,7 +71,16 @@ class StockRepository
 
     public function storageChange($params) {
         try {
+            $search_str = array_pop($params);
             DB::transaction( function () use($params) {  
+                DB::update("
+                    update mpe_house_m
+                        set whouse = :whouse,
+                            stor = :stor
+                        where partno = :partno
+                            and batch = :batch
+                ", $params);   
+                
                 DB::update("
                     update mpe_house_e
                         set whouse = :whouse,
@@ -79,19 +88,13 @@ class StockRepository
                         where partno = :partno
                             and batch = :batch
                 ", $params);
-
-                DB::update("
-                    update mpe_house_m
-                        set whouse = :whouse,
-                            stor = :stor
-                        where partno = :partno
-                            and batch = :batch
-                ", $params);                
             });
             DB::commit();
+            $list = $this->getStockList($search_str)['list'];
             $result = [
                 'result' => true,
-                'msg' => '變更儲位成功!(#0002)'
+                'msg' => '變更儲位成功!(#0002)',
+                'list' => $list,
             ];
             return $result;
         } catch (Exception $e) {
