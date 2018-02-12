@@ -19,7 +19,6 @@ export default class Catchlog extends React.Component {
       change1: 'N', change2: 'N', change3: 'N', change4: 'N', change5: 'N', change6: 'N', check_lamp: 'N',
       rmk: '', discription: '', deviation: 'N',
       changeDate: [],
-      co: false,
       vn1: false, vn2: false, vn3: false, vn4: false, vn5: false, vn6: false,
       vc1: false, vc2: false, vc3: false, vc4: false, vc5: false, vc6: false,
       vlp: false,
@@ -27,6 +26,7 @@ export default class Catchlog extends React.Component {
       thisMonth: 0, lastMonth: 0,
       isLoading: false, init: false,
       msg_type: '', msg: '',
+      growthShow: false,
       confirmShow: false,
       isDeviation: false,
       isChecked: false,
@@ -82,20 +82,20 @@ export default class Catchlog extends React.Component {
         this.setState({
           vn1: true, vn2: true,
           vc1: true, vc2: true, vc3: true,
+          growthShow: true,
         })
         break
       case '3':
         this.setState({
-          co: true,
           vn3: true, vn4: true, vn5: true, vn6: true,
-          vc5: true, vc6: true,
+          vc6: true,
         })
         break
       case '4':
         this.setState({
-          co: true,
           vn1: true, vn2: true, vlp: true,
           vc1: true, vc2: true, vc3: true, vc4: true,
+          growthShow: true,
         })
         break
     }
@@ -216,11 +216,22 @@ export default class Catchlog extends React.Component {
             <tr>
               <td colSpan={2}>
                 <span>
-                  本月累計：{this.state.thisMonth} {this.state.co ? ' 本月累計成長率：' : null}
+                  本月累計：{this.state.thisMonth} 
                 </span>
-                <span style={{marginLeft: '10px'}}>
-                  上月統計：{this.state.lastMonth} {this.state.co ? ' 上月累計成長率：' : null}
+                {this.state.growthShow && 
+                  <span style={{marginLeft: '20px'}}>
+                    本月累計成長率：{null}
+                  </span>
+                }
+                <br/>
+                <span>
+                  上月統計：{this.state.lastMonth} 
                 </span>
+                {this.state.growthShow &&
+                <span style={{marginLeft: '20px'}}>
+                  上月成長率：{null}
+                </span>
+                }
               </td>
             </tr>
             <tr>
@@ -255,38 +266,40 @@ export default class Catchlog extends React.Component {
                 })}
               </td>
             </tr>
-            <tr>
-              <td>撿查</td>
-              <td>
-                <div className="field is-horizontal">
-                  <div className="field-label is-normal" style={{flexGrow: '0', paddingTop: '0px'}}>
-                    <label className="label" style={{width: '60px'}}>驅蚊燈</label>
-                  </div>
-                  <div className="field-body">
-                    <div className="field has-addons">
-                      <div className="control">
-                        <label className="radio">
-                          <input type="radio" name="lamp"
-                            value={this.state.check_lamp}
-                            checked={this.state.check_lamp === 'Y'}
-                            onChange={this.checkboxChange.bind(this, 'check_lamp')}
-                          />
-                          正常
-                        </label>
-                        <label className="radio" style={{marginLeft: '15px'}}>
-                          <input type="radio" name="lamp"
-                            value={this.state.check_lamp}
-                            checked={this.state.check_lamp === 'N'}
-                            onChange={this.checkboxChange.bind(this, 'check_lamp')}
-                          />
-                          異常
-                        </label>
+            {this.state.vlp && 
+              <tr>
+                <td>撿查</td>
+                <td>
+                  <div className="field is-horizontal">
+                    <div className="field-label is-normal" style={{flexGrow: '0', paddingTop: '0px'}}>
+                      <label className="label" style={{width: '60px'}}>驅蚊燈</label>
+                    </div>
+                    <div className="field-body">
+                      <div className="field has-addons">
+                        <div className="control">
+                          <label className="radio">
+                            <input type="radio" name="lamp"
+                              value={this.state.check_lamp}
+                              checked={this.state.check_lamp === 'Y'}
+                              onChange={this.checkboxChange.bind(this, 'check_lamp')}
+                            />
+                            正常
+                          </label>
+                          <label className="radio" style={{marginLeft: '15px'}}>
+                            <input type="radio" name="lamp"
+                              value={this.state.check_lamp}
+                              checked={this.state.check_lamp === 'N'}
+                              onChange={this.checkboxChange.bind(this, 'check_lamp')}
+                            />
+                            異常
+                          </label>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </td>
-            </tr>
+                </td>
+              </tr>
+            }
             <tr>
               <td>逾時原因</td>
               <td>

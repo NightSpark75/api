@@ -31,29 +31,30 @@ class CatchlogRepository
     {
         try{
             $ldate = date('Ymd');
-            $data = DB::selectOne("
-                select *
-                from mpz_catchlog
-                where point_no = '$point_no' and ldate = $ldate
-            ");
-            $month = (int)substr($ldate, 0, 6);
-            $thisMonth = $this->getCatchCount($point_no, $month);
-            $lastMonth = $this->getCatchCount($point_no, $month - 1);
-            $changeDate = [
-                'change1' => $this->getChangeDate($point_no, $ldate, 'change1'),
-                'change2' => $this->getChangeDate($point_no, $ldate, 'change2'),
-                'change3' => $this->getChangeDate($point_no, $ldate, 'change3'),
-                'change4' => $this->getChangeDate($point_no, $ldate, 'change4'),
-                'change5' => $this->getChangeDate($point_no, $ldate, 'change5'),
-                'change6' => $this->getChangeDate($point_no, $ldate, 'change6'),
-            ];
+            $thisMonth = (int)substr($ldate, 0, 6);
+            $lastMonth = (int)substr(date('Ymd', strtotime('-1 month')), 0, 6);
+            $data = $this->getLogData($point_no, $ldate);
+            
+            $thisAllCount = $this->getAllCatchCount($point_no, $thisMonth);
+            $lastAllCount = $this->getAllCatchCount($point_no, $lastMonth);
+
+            $thisTotalCount = array_sum($thisAllCount);
+            $lastTotalCount = array_sum($lastAllCount);
+
+            $lastGrowth = $this->getLastMonthGrowth($point_no, $lastTotalCount);
+            
+            $changeDate = $this->getAllChangeDate($point_no, $ldate);
+            
             $result = [
                 'result' => true,
                 'msg' => '',
                 'log_data' => $data,
                 'ldate' => $ldate,
-                'thisMonth' => $thisMonth,
-                'lastMonth' => $lastMonth,
+                'thisAllCount' => $thisAllCount,
+                'lastAllCount' => $lastAllCount,
+                'thisTotalCount' => $thisTotalCount,
+                'lastTotalCount' => $lastTotalCount,
+                'lastGrowth' => $lastGrowth,
                 'changeDate' => $changeDate,
             ];
             return $result;
@@ -62,25 +63,68 @@ class CatchlogRepository
         }
     }
 
-    private function getCatchCount($point_no, $month)
+    private function getLogData($point_no, $ldate)
+    {
+        $data = DB::selectOne("
+                select *
+                from mpz_catchlog
+                where point_no = '$point_no' and ldate = $ldate
+            ");
+        return $data;
+    }
+
+    private function getCatchCount($point_no, $month, $num)
     {
         $count = DB::selectOne("
-            select count(catch_num1) + count(catch_num2) + count(catch_num3) 
-                + count(catch_num4) + count(catch_num5) + count(catch_num6) as n
+            select sum($num) as n
             from mpz_catchlog
             where ldate like '$month%' and point_no = '$point_no'
         ");
         return $count->n;
-    }   
+    }
+
+    private function getLastMonthGrowth($point_no, $lastTotalCount)
+    {
+        $twoMonthAgo = (int)substr(date('Ymd', strtotime('-2 month')), 0, 6);
+        $twoMonthAgoCount = array_sum($this->getAllCatchCount($point_no, $twoMonthAgo));
+        $growth = ($lastTotalCount - $twoMonthAgoCount) / $twoMonthAgoCount;
+        return $growth;
+    }
+
+    private function getAllCatchCount($point_no, $month)
+    {
+        $catchCount = [
+            'catch1' => (int)$this->getCatchCount($point_no, $month, 'catch_num1'),
+            'catch2' => (int)$this->getCatchCount($point_no, $month, 'catch_num2'),
+            'catch3' => (int)$this->getCatchCount($point_no, $month, 'catch_num3'),
+            'catch4' => (int)$this->getCatchCount($point_no, $month, 'catch_num4'),
+            'catch5' => (int)$this->getCatchCount($point_no, $month, 'catch_num5'),
+            'catch6' => (int)$this->getCatchCount($point_no, $month, 'catch_num6'),
+        ];
+        return $catchCount;
+    }
+
+    private function getAllChangeDate($point_no, $ldate)
+    {
+        $changeDate = [
+            'change1' => $this->getChangeDate($point_no, $ldate, 'change1'),
+            'change2' => $this->getChangeDate($point_no, $ldate, 'change2'),
+            'change3' => $this->getChangeDate($point_no, $ldate, 'change3'),
+            'change4' => $this->getChangeDate($point_no, $ldate, 'change4'),
+            'change5' => $this->getChangeDate($point_no, $ldate, 'change5'),
+            'change6' => $this->getChangeDate($point_no, $ldate, 'change6'),
+        ];
+        return $changeDate;
+    }
 
     private function getChangeDate($point_no, $ldate, $item)
     {
         $date = DB::selectOne("
-            select max(ldate) as d
+            select max(ldate) as pday, to_date($ldate, 'YYYYMMDD') - to_date(max(ldate), 'YYYYMMDD') as dday
             from mpz_catchlog
             where point_no = '$point_no' and ldate < $ldate and $item = 'Y'
         ");
-        return $date->d;
+        return $date;
     }
 
     public function save($params)

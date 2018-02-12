@@ -17,7 +17,7 @@ class CatchlogController extends Controller
         $this->catchlog = $catchlog;
         $this->program = 'MPZW0010';
         session(['program' => $this->program]);
-        $this->middleware('role');
+        //$this->middleware('role');
     }
 
     public function save()
