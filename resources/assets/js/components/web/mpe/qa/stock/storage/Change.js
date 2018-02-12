@@ -23,7 +23,7 @@ export default class Change extends React.Component {
   }
 
   componentDidMount() {
-    this.init()
+    //this.init()
   }
 
   init() {
@@ -164,7 +164,13 @@ export default class Change extends React.Component {
                     />
                   </div>
                   <div className="control">
-                    {searching && <a className="button is-danger" onClick={this.cancelSearch.bind(this)}>取消</a>}
+                    {searching && 
+                      <a className="button is-danger" 
+                        onClick={this.cancelSearch.bind(this)}
+                      >
+                        取消
+                      </a>
+                    }
                     <button type="submit" className="button" onClick={this.onSearch.bind(this)}>查詢</button>
                   </div>
                 </div>
@@ -282,7 +288,7 @@ export default class Change extends React.Component {
           :
           <div className="notification is-warning" style={{ padding: '1rem 1rem 1rem 1rem' }}>
             無庫存資料
-                    </div>
+          </div>
         }
       </div>
     )
