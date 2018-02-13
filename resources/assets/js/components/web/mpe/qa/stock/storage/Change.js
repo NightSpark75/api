@@ -22,25 +22,7 @@ export default class Change extends React.Component {
   }
 
   componentDidMount() {
-    //this.init()
-  }
-
-  init() {
-    let self = this
-    axios.get('/api/web/mpe/qa/stock/list')
-      .then(function (response) {
-        if (response.data.result) {
-          self.setState({
-            //list: response.data.list,
-            storage: response.data.storage,
-          })
-          console.log(response.data)
-        } else {
-          console.log(response.data)
-        }
-      }).catch(function (error) {
-        console.log(error)
-      })
+    
   }
 
   onSearch(event) {
