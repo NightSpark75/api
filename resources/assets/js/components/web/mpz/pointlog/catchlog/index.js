@@ -275,10 +275,10 @@ export default class Catchlog extends React.Component {
                       label={item.label}
                       value={this.state[item.key]}
                       changeDate={this.state.changeDate}
+                      rule={this.state.rule}
                       checked={this.state[item.key]}
                       type={item.type}
                       onChange={this.checkboxChange.bind(this, item.type)}
-                      msg={index}
                     />)
                   }
                 })}

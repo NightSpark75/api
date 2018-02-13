@@ -20,7 +20,7 @@ export default class Deviation extends React.Component {
       btnSubmit = (<button className="button is-success">今日已完成記錄</button>)
     }
     if (isOverdue) {
-      btnSubmit = (<button className="button is-success">目前已逾時</button>)
+      btnSubmit = (<button className="button is-warning">目前已逾時</button>)
     }
     return (
       <div className="buttons">

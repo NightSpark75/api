@@ -77,13 +77,20 @@ class CatchlogRepository
 
     private function getPointRule($point_no)
     {
+        $arr = [];
         $rule = DB::select("
             select r.*
                 from mpz_point_rule r, mpz_point p
                 where p.point_type = r.point_type and (r.device_type = p.device_type or r.device_type = 'N')
                     and p.point_no = '$point_no'
         ");
-        return $rule;
+        $rule = json_decode(json_encode($rule), true);
+        for ($i = 0; $i < count($rule); $i++) {
+            $rname = $rule[$i]['rname'];
+            $item = $rule[$i];
+            $arr[$rname] = $item;
+        }
+        return $arr;
     }
 
     private function getCatchCount($point_no, $month, $num)
