@@ -38,12 +38,12 @@ class StockRepository
                     and m.partno = mm.partno
                 order by ldate desc, batch
             ", ['str' => '%'.$str.'%']);
-            $storage = $str === '' ? null : $this->getStorageList();
+            //$storage = $str === '' ? null : $this->getStorageList();
             $result = [
                 'result' => true,
                 'msg' => '查詢庫存清單成功!(#0001)',
                 'list' => $stock,
-                'storage' => $storage,
+                //'storage' => $storage,
             ];
             return $result;
         } catch (Exception $e) {
@@ -55,15 +55,21 @@ class StockRepository
         }
     }
 
-    private function getStorageList() {
+    public function getStorageList($str) {
         try{
-            $storage = DB::select("
+            $list = DB::select("
                 select m.whouse, m.posit, d.stor, d.storn
-                from mpe_whs_m m, mpe_whs_d d
-                where m.whouse = d.whouse and m.code = '04'
-                order by m.whouse, d.stor desc
+                    from mpe_whs_m m, mpe_whs_d d
+                    where m.whouse = d.whouse and m.code = '04'
+                        and d.stor like '%$str%'
+                    order by m.whouse, d.stor desc
             ");
-            return $storage;
+            $result = [
+                'result' => true,
+                'msg' => '查詢儲位成功!(#0001)',
+                'list' => $list,
+            ];
+            return $result;
         } catch (Excepation $e) {
             throw new Exception($e->getMessage());
         }

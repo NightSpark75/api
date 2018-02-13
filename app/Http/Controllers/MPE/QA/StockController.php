@@ -30,6 +30,11 @@ class StockController extends Controller
         return $result;
     }
 
+    public function getStorageList($str = null) {
+        $result = $this->stock->getStorageList($str);
+        return $result;
+    }
+
     public function storageChange() {
         $input = request()->all();
         $result = $this->stock->storageChange($input);

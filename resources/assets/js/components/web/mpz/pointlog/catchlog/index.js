@@ -13,7 +13,8 @@ export default class Catchlog extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      log_data: {},
+      log_data: [],
+      rule: [],
       point_no: '', ldate: 0, device_type: '',
       catch_num1: 0, catch_num2: 0, catch_num3: 0, catch_num4: 0, catch_num5: 0, catch_num6: 0,
       change1: 'N', change2: 'N', change3: 'N', change4: 'N', change5: 'N', change6: 'N', check_lamp: 'N',
@@ -47,8 +48,10 @@ export default class Catchlog extends React.Component {
     axios.get('/api/web/mpz/pointlog/catch/init/' + point_no)
       .then(function (response) {
         if (response.data.result) {
+          console.log(response.data)
           self.setState({
             log_data: response.data.log_data,
+            rule: response.data.rule,
             point_no: point_no,
             ldate: response.data.ldate,
             device_type: device_type,
@@ -271,7 +274,7 @@ export default class Catchlog extends React.Component {
                       key={index}
                       label={item.label}
                       value={this.state[item.key]}
-                      catchDate={this.state.catchDate}
+                      changeDate={this.state.changeDate}
                       checked={this.state[item.key]}
                       type={item.type}
                       onChange={this.checkboxChange.bind(this, item.type)}

@@ -34,7 +34,8 @@ class CatchlogRepository
             $thisMonth = (int)substr($ldate, 0, 6);
             $lastMonth = (int)substr(date('Ymd', strtotime('-1 month')), 0, 6);
             $data = $this->getLogData($point_no, $ldate);
-            
+            $rule = $this->getPointRule($point_no);
+
             $thisAllCount = $this->getAllCatchCount($point_no, $thisMonth);
             $lastAllCount = $this->getAllCatchCount($point_no, $lastMonth);
 
@@ -49,6 +50,7 @@ class CatchlogRepository
                 'result' => true,
                 'msg' => '',
                 'log_data' => $data,
+                'rule' => $rule,
                 'ldate' => $ldate,
                 'thisAllCount' => $thisAllCount,
                 'lastAllCount' => $lastAllCount,
@@ -66,11 +68,22 @@ class CatchlogRepository
     private function getLogData($point_no, $ldate)
     {
         $data = DB::selectOne("
-                select *
-                from mpz_catchlog
-                where point_no = '$point_no' and ldate = $ldate
-            ");
+            select *
+            from mpz_catchlog
+            where point_no = '$point_no' and ldate = $ldate
+        ");
         return $data;
+    }
+
+    private function getPointRule($point_no)
+    {
+        $rule = DB::select("
+            select r.*
+                from mpz_point_rule r, mpz_point p
+                where p.point_type = r.point_type and (r.device_type = p.device_type or r.device_type = 'N')
+                    and p.point_no = '$point_no'
+        ");
+        return $rule;
     }
 
     private function getCatchCount($point_no, $month, $num)

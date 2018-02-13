@@ -1,7 +1,8 @@
 import React from "react"
 export default class Replace extends React.Component {
   render() {
-    const catchDate = this.props.catchDate
+    const changeDate = this.props.changeDate
+    const warrning = this.props.warring
     return (
       <div className="field is-horizontal" onChange={this.props.onChange}>
         <div className="field-body">
@@ -21,4 +22,8 @@ export default class Replace extends React.Component {
       </div>
     )
   }
+}
+
+function getStyle(changeDate, type) {
+  changeDate[type]['dday'];
 }
