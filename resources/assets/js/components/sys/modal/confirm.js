@@ -14,7 +14,7 @@ export default class Confirm extends React.Component {
               {content}
             </section>
             <footer className="modal-card-foot" style={{float: 'right'}}>
-              <button className="button is-success" onClick={onConfirm}>{btnConfirm}</button>
+              <button className="button is-primary" onClick={onConfirm}>{btnConfirm}</button>
               <button className="button" onClick={onCancel}>{btnCancel}</button>
             </footer>
           </div>

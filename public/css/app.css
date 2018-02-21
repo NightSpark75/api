@@ -157,6 +157,10 @@ div.v-menu-item:hover .v-menu {
   display: block;
 }
 
+.buttons.space .button:not(:last-child) {
+  margin-right: 0.5rem;
+}
+
 /*! bulma.io v0.5.3 | MIT License | github.com/jgthms/bulma */
 
 @-webkit-keyframes spinAround {

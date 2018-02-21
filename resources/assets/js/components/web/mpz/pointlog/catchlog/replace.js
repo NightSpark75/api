@@ -1,4 +1,5 @@
 import React from "react"
+import { operatorHandle } from './rule'
 export default class Replace extends React.Component {
   render() {
     const { changeDate, value, checked, onChange, label, type, rule } = this.props
@@ -25,28 +26,8 @@ export default class Replace extends React.Component {
 
 function getChangeDate(changeDate, type, rule) {
   let className = ''
-  if (operatorHandle(changeDate[type]['dday']), rule.CHANGE_WARNING.cond, rule.CHANGE_WARNING.val) {
+  if (operatorHandle(changeDate[type]['dday'], rule.CHANGE_WARNING.cond, rule.CHANGE_WARNING.val)) {
     className = 'tag is-warning'
   }
   return (<span className={className}>上次更換日期：{changeDate[type]['pday']}</span>)
-}
-
-function operatorHandle(v1, ope, v2) {
-  switch (ope) {
-    case '=':
-      return v1 = v2
-      break
-    case '>':
-      return v1 > v2
-      break
-    case '<':
-      return v1 < v2
-      break
-    case '>=':
-      return v1 >= v2
-      break
-    case '<=':
-      return v1 <= v2
-      break
-  }
 }

@@ -8,12 +8,14 @@ import Capture from './capture'
 import Replace from './replace'
 import Confirm from '../../../../sys/modal/confirm'
 import Deviation from '../deviation'
+import { operatorHandle } from './rule'
 
 export default class Catchlog extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       log_data: [],
+      alertMsg: [],
       rule: [],
       point_no: '', ldate: 0, device_type: '',
       catch_num1: 0, catch_num2: 0, catch_num3: 0, catch_num4: 0, catch_num5: 0, catch_num6: 0,
@@ -23,7 +25,6 @@ export default class Catchlog extends React.Component {
       vn1: false, vn2: false, vn3: false, vn4: false, vn5: false, vn6: false,
       vc1: false, vc2: false, vc3: false, vc4: false, vc5: false, vc6: false,
       vlp: false,
-      rmkShow: false, rmkOption: [], rmkList: [],
       thisTotalCount: 0, lastTotalCount: 0,
       isLoading: false, init: false,
       msg_type: '', msg: '',
@@ -65,6 +66,7 @@ export default class Catchlog extends React.Component {
           })
           self.setLayout()
           self.setValue(response.data.log_data)
+          self.checkFillTime()
         } else {
           self.props.sendMsg(response.data.msg)
           self.onCancel()
@@ -142,6 +144,11 @@ export default class Catchlog extends React.Component {
     this.setState({[item]: val})
   }
 
+  rmkChange(e) {
+    this.setState({rmk: e.target.value})
+    this.checkFillTime(e.target.value)
+  }
+
   checkboxChange(item, e) {
     let state, value
     state = this.state[item]
@@ -150,6 +157,8 @@ export default class Catchlog extends React.Component {
   }
 
   onSave(e) {
+    alert('onSave')
+    return
     this.setState({confirmShow: false})
     let self = this
     this.setState({ isLoading: true })
@@ -192,10 +201,46 @@ export default class Catchlog extends React.Component {
   checkDeviation() {
     this.setState({checkDeviation: true})
   }
+  
+  formCheck() {
+    //檢查填表時間
+    this.checkFillTime()
+
+    //檢查補獲數
+
+  }
+
+  checkFillTime(rmk = '') {
+    let date = new Date()
+    //let hours = date.getHours() * 100
+    let hours = 1030
+    let rule = this.state.rule
+    let isOverdue = true
+    //檢查填表時間
+    if (operatorHandle(hours, rule.START_TIME.cond, Number(rule.START_TIME.val)) && 
+      operatorHandle(hours, rule.END_TIME.cond, Number(rule.END_TIME.val))
+    ) {
+      isOverdue = false
+    } else {
+      if (operatorHandle(hours, rule.OTHER_TIME.cond, Number(rule.OTHER_TIME.val)) && 
+        operatorHandle(hours, '>=', Number(rule.END_TIME.val)) && rmk !== ''
+      ) {
+        isOverdue = false
+      } else {
+        isOverdue = true
+      }
+    }
+    this.setState({isOverdue: isOverdue})
+  }
+
+  checkCatchAmount() {
+
+  }
 
   render() {
     const { pointInfo } = this.props
     const { 
+      alertMsg, 
       init, isLoading, isChecked, isDeviation, isOverdue,
       thisTotalCount, lastTotalCount, lastGrowth,
       catch_num1, catch_num2, catch_num3,
@@ -210,6 +255,18 @@ export default class Catchlog extends React.Component {
     let today = new Date()
     return (
       <div>
+        {alertMsg.length > 0 &&
+          <article className="message is-warning">
+            <div className="message-header">
+              <p>請排除下列異常</p>
+            </div>
+            <div className="message-body">
+              {alertMsg.map((item, index) => (
+                <div></div>
+              ))}
+            </div>
+          </article>
+        }
         <table className="table is-bordered table is-fullwidth">
           <tbody>
             <tr>
@@ -231,22 +288,21 @@ export default class Catchlog extends React.Component {
             </tr>
             <tr>
               <td colSpan={2}>
-                <span>
-                  本月累計：{allCount} 
-                </span>
+                <div>
+                    本月累計：{allCount} 
+                </div>
                 {this.state.growthShow && 
-                  <span style={{marginLeft: '20px'}}>
-                    本月累計成長率：{thisGrowth}
-                  </span>
+                  <div>
+                      本月累計成長率：{thisGrowth}
+                  </div>
                 }
-                <br/>
-                <span>
+                <div>
                   上月統計：{lastTotalCount} 
-                </span>
+                </div>
                 {this.state.growthShow &&
-                <span style={{marginLeft: '20px'}}>
-                  上月成長率：{lastGrowth}
-                </span>
+                  <div>
+                      上月成長率：{lastGrowth}
+                  </div>
                 }
               </td>
             </tr>
@@ -323,7 +379,7 @@ export default class Catchlog extends React.Component {
               <td>
                 <select className="select"
                   placeholder="請選擇"
-                  onChange={this.catchChange.bind(this, 'rmk')}
+                  onChange={this.rmkChange.bind(this)}
                   value={this.state.rmk || ""}
                 >
                   <option value=""></option>
@@ -332,24 +388,26 @@ export default class Catchlog extends React.Component {
                 </select>
               </td>
             </tr>
-            <tr>
-              <td>備註說明</td>
-              <td>
-                <div className="field is-horizontal">
-                  <div className="field-body">
-                    <div className="field">
-                      <div className="control">
-                        <textarea className="textarea" placeholder="請輸入其它說明"
-                          value={this.state.discription || ''}
-                          onChange={this.catchChange.bind(this, 'discription')}
-                        >
-                        </textarea>
+            {this.state.rmk === '其它' &&
+              <tr>
+                <td>備註說明</td>
+                <td>
+                  <div className="field is-horizontal">
+                    <div className="field-body">
+                      <div className="field">
+                        <div className="control">
+                          <textarea className="textarea" placeholder="請輸入其它說明"
+                            value={this.state.discription || ''}
+                            onChange={this.catchChange.bind(this, 'discription')}
+                          >
+                          </textarea>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </td>
-            </tr>
+                </td>
+              </tr>
+            }
             {isDeviation &&
               <tr>
                 <td>開立偏差</td>

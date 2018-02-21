@@ -8,10 +8,10 @@ export default class Deviation extends React.Component {
       btnSubmit = (<button className="button is-warning" title="Disabled button" disabled>請點選開立偏差</button>)
     }
     if (isDeviation && isChecked) {
-      btnSubmit = (<button type="button" className="button is-warning" onClick={onSave}>儲存</button>)
+      btnSubmit = (<button className="button is-warning" onClick={onSave}>儲存</button>)
     }
     if (!isDeviation) {
-      btnSubmit = (<button type="button" className="button is-primary" onClick={onSave}>儲存</button>)
+      btnSubmit = (<button className="button is-primary" onClick={onSave}>儲存</button>)
     }
     if (isLoading) {
       btnSubmit = (<button className="button is-loading is-primary" style={{width: '58px'}}></button>)
@@ -23,7 +23,7 @@ export default class Deviation extends React.Component {
       btnSubmit = (<button className="button is-warning">目前已逾時</button>)
     }
     return (
-      <div className="buttons">
+      <div className="buttons space">
         {btnSubmit}
         {btnCancel}
       </div>
