@@ -157,6 +157,8 @@ export default class Catchlog extends React.Component {
   }
 
   onSave(e) {
+    this.formCheck()
+    return
     alert('onSave')
     return
     this.setState({confirmShow: false})
@@ -208,12 +210,14 @@ export default class Catchlog extends React.Component {
 
     //檢查補獲數
 
+    //檢查必填項目
+    this.checkRequire()
   }
 
   checkFillTime(rmk = '') {
     let date = new Date()
     //let hours = date.getHours() * 100
-    let hours = 1030
+    let hours = 800
     let rule = this.state.rule
     let isOverdue = true
     //檢查填表時間
@@ -235,6 +239,34 @@ export default class Catchlog extends React.Component {
 
   checkCatchAmount() {
 
+  }
+
+  checkRequire() {
+    const { rule, changeDate } = this.state
+    replaceList.map((item) => {
+      if (operatorHandle(changeDate[item.key]['dday'], rule.CHANGE_REQUEST.cond, rule.CHANGE_REQUEST.val) 
+        && this.state[item.show] && this.state[item.key] === 'N') {
+        this.pushAlert(item.label + '必須更換')
+      } else {
+        this.removeAlert(item.label + '必須更換')
+      }
+    })
+  }
+
+  pushAlert(msg) {
+    let alertMsg = this.state.alertMsg
+    if (alertMsg.indexOf(msg) < 0) {
+      alertMsg.push(msg)
+    } 
+    this.setState({alertMsg: alertMsg})
+  }
+
+  removeAlert(msg) {
+    let alertMsg = this.state.alertMsg
+    if (alertMsg.indexOf(msg) >= 0) {
+      alertMsg.splice(alertMsg.indexOf(msg), 1)
+    }
+    this.setState({alertMsg: alertMsg})
   }
 
   render() {
@@ -262,7 +294,9 @@ export default class Catchlog extends React.Component {
             </div>
             <div className="message-body">
               {alertMsg.map((item, index) => (
-                <div></div>
+                <div key={index}>
+                  {item}
+                </div>
               ))}
             </div>
           </article>
@@ -444,7 +478,6 @@ export default class Catchlog extends React.Component {
           onSave={this.openConfirm.bind(this)}
           onCancel={this.onCancel.bind(this)}
         />
-        
         {this.state.confirmShow &&
           <Confirm 
             show={this.state.confirmShow}
