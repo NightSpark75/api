@@ -159,25 +159,54 @@ class CatchlogRepository
                 $params['state'] = 'Y';
                 DB::table('mpz_catchlog')->insert($params);
 
-                $params = [
+                $params2 = [
                     'point_no' => $params['point_no'],
                     'ldate' => $params['ldate'],
                     'duser' => $params['duser'],
                     'ddate' => $params['ddate'],
                     'point_type' => 'C', 
                 ];
-                DB::table('mpz_point_log')->insert($params);
-                $result = [
-                    'result' => true,
-                    'msg' => '新增檢查點資料成功(#0003)'
-                ];
-                
+                DB::table('mpz_point_log')->insert($params2);
+                DB::commit();
+                if ($params['deviation'] === 'Y') {
+                    $this->mailhandler($params['point_no']);
+                }
             });
-            DB::commit();
+            $result = [
+                'result' => true,
+                'msg' => '新增檢查點資料成功(#0003)'
+            ];
             return $result;
         } catch (Exception $e) {
             DB::rollback();
             return $this->exception($e);
         }
+    }
+
+    private function mailhandler($point_no)
+    {
+        $subject = '鼠蟲防治開立偏差通知!';
+        $sender = 'mpz.system@standard.com.tw';
+        //$recipient = 'Lin.Guanwei@standard.com.tw';
+        $recipient = 'Lin.Yupin@standard.com.tw';
+        $content = '位置編號['.$point_no.']開立偏差';
+        $this->sendMail($subject, $sender, $recipient, $content);
+    }
+
+    private function sendMail($subject, $sender, $recipient, $content)
+    {
+        $nu = null;
+        $pdo = DB::getPdo();
+        $stmt = $pdo->prepare("begin pk_mail.proc_mail_02(:f, :t1, :t2, :t3, :c1, :c2, :c3, :s, :m); end;");
+        $stmt->bindParam(':f', $sender);
+        $stmt->bindParam(':t1', $recipient);
+        $stmt->bindParam(':t2', $nu);
+        $stmt->bindParam(':t3', $nu);
+        $stmt->bindParam(':c1', $nu);
+        $stmt->bindParam(':c2', $nu);
+        $stmt->bindParam(':c3', $nu);
+        $stmt->bindParam(':s', $subject);
+        $stmt->bindParam(':m', $content);
+        $stmt->execute();
     }
 }

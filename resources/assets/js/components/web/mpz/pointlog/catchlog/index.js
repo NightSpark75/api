@@ -40,7 +40,6 @@ export default class Catchlog extends React.Component {
 
   componentDidMount() {
     let point = this.props.pointInfo
-    this.setState({ rmkList: ['參加集會', '偏差', '其它'] })
     this.init(point.point_no, point.device_type)
   }
 
@@ -114,10 +113,10 @@ export default class Catchlog extends React.Component {
       let rmk = (data.rmk === null) ? '' : data.rmk
       this.setState({
         point_no: data.point_no, ldate: data.ldate,
-        catch_num1: data.catch_num1, catch_num2: data.catch_num2, catch_num3: data.catch_num3,
-        catch_num4: data.catch_num4, catch_num5: data.catch_num5, catch_num6: data.catch_num6,
+        catch_num1: Number(data.catch_num1), catch_num2: Number(data.catch_num2), catch_num3: Number(data.catch_num3),
+        catch_num4: Number(data.catch_num4), catch_num5: Number(data.catch_num5), catch_num6: Number(data.catch_num6),
         change1: data.change1, change2: data.change2, change3: data.change3,
-        change4: data.change4, change5: data.change5, change6: data.change6, check_lamp: data.lamp,
+        change4: data.change4, change5: data.change5, change6: data.change6, check_lamp: data.check_lamp,
         rmk: rmk, discription: data.discription, deviation: data.deviation,
       }, () => (this.formCheck()))
     }
@@ -157,7 +156,11 @@ export default class Catchlog extends React.Component {
     this.setState({[item.key]: value}, () => (this.checkRequire(item, this.state[item.show], value )))
   }
 
-  onSave(e) {
+  lampChange(type) {
+    this.setState({check_lamp: type})
+  }
+
+  onSave() {
     this.setState({confirmShow: false})
     let self = this
     this.setState({ isLoading: true })
@@ -165,17 +168,17 @@ export default class Catchlog extends React.Component {
     keyList.map((item) => {
       form_data.append(item, this.state[item])
     })
-    return
+    form_data.append('deviation', this.state.isChecked ? 'Y' : 'N')
     axios.post('/api/web/mpz/pointlog/catch/save', form_data)
       .then(function (response) {
         if (response.data.result) {
-          self.sendMsg(point_no + '檢查點記錄成功!')
+          self.sendMsg(self.state.point_no + '檢查點記錄成功!')
           self.setState({ isLoading: false })
           self.initState()
           self.onCancel()
         } else {
-          self.sendMsg(response.data.msg)
           self.setState({ isLoading: false })
+          console.log(response.data.msg)
         }
       }).catch(function (error) {
         console.log(error)
@@ -213,8 +216,8 @@ export default class Catchlog extends React.Component {
 
   checkFillTime(rmk = '') {
     let date = new Date()
-    let hours = date.getHours() * 100
-    //let hours = 800
+    //let hours = date.getHours() * 100
+    let hours = 800
     let rule = this.state.rule
     let isOverdue = true
     //檢查填表時間
@@ -235,7 +238,8 @@ export default class Catchlog extends React.Component {
   }
 
   checkAllCatchAmount() {
-    const { rule, isChecked,
+    const { pointInfo } = this.props
+    const { rule,
       thisTotalCount, lastTotalCount, lastGrowth,
       catch_num1, catch_num2, catch_num3,
       catch_num4, catch_num5, catch_num6,
@@ -248,12 +252,7 @@ export default class Catchlog extends React.Component {
       r = rule.TWO_MONTH_GROWTH
       let c1 = operatorHandle(thisGrowth, r.cond, r.val)
       let c2 = operatorHandle(lastGrowth, r.cond, r.val)
-      if (c1 && c2 && !isChecked) {
-        this.pushAlert(r.dis + r.cond + r.val + ', 請開立偏差')
-        n++
-      } else {
-        this.removeAlert(r.dis + r.cond + r.val + ', 請開立偏差')
-      }
+      n = this.setAlert(r, c1 && c2, n)
     }
 
     if (rule.GROWTH_MORE_LAST) {
@@ -265,13 +264,31 @@ export default class Catchlog extends React.Component {
         v = (thisGrowth - lastGrowth) / lastGrowth
       }
       let c = operatorHandle(v, r.cond, r.val)
-      if (c && !isChecked) {
-        this.pushAlert(r.dis + r.cond + r.val + ', 請開立偏差')
-        n++
-      } else {
-        this.removeAlert(r.dis + r.cond + r.val + ', 請開立偏差')
+      n = this.setAlert(r, c, n)
+    }
+
+    if (rule.MOUSE_MAT || rule.MOUSE_OFF) {
+      r = rule.MOUSE_MAT ? rule.MOUSE_MAT : rule.MOUSE_OFF
+      let c = operatorHandle(catch_num5, r.cond, r.val)
+      n = this.setAlert(r, c , n)
+    }
+
+    if (rule.MONTH_TOTAL_MAT || rule.MONTH_TOTAL_OFF) {
+      r = rule.MONTH_TOTAL_MAT ? rule.MONTH_TOTAL_MAT : rule.MONTH_TOTAL_OFF
+      if (!operatorHandle(thisTotalCount, r.cond, r.val)) {
+        let c2 = operatorHandle(allCount, r.cond, r.val)
+        n = this.setAlert(r, c2, n)
       }
     }
+
+    if (rule.TWO_MONTH_ALL_MAT || rule.TWO_MONTH_ALL_OFF) {
+      r = rule.TWO_MONTH_ALL_MAT ? rule.TWO_MONTH_ALL_MAT : rule.TWO_MONTH_ALL_OFF
+      if (!operatorHandle(lastTotalCount + thisTotalCount, r.cond, r.val)) {
+        let c = operatorHandle(lastTotalCount + allCount, r.cond, r.val)
+        n = this.setAlert(r, c, n)
+      }
+    }
+
     this.setState({isDeviation: n > 0})
   }
 
@@ -292,15 +309,25 @@ export default class Catchlog extends React.Component {
     }
   }
 
-  pushAlert(msg) {
+  setAlert(r, b, n) {
+    if (b && !this.state.isChecked) {
+      this.pushAlert(r.dis + r.cond + r.val + ', 請開立偏差')
+      return n + 1
+    } else {
+      this.removeAlert(r.dis + r.cond + r.val + ', 請開立偏差')
+      return n
+    }
+  }
+
+  pushAlert(msg, s) {
     let alertMsg = this.state.alertMsg
     if (alertMsg.indexOf(msg) < 0) {
       alertMsg.push(msg)
-    } 
+    }
     this.setState({alertMsg: alertMsg})
   }
 
-  removeAlert(msg) {
+  removeAlert(msg, s) {
     let alertMsg = this.state.alertMsg
     if (alertMsg.indexOf(msg) >= 0) {
       alertMsg.splice(alertMsg.indexOf(msg), 1)
@@ -332,7 +359,7 @@ export default class Catchlog extends React.Component {
     return (
       <div>
         {alertMsg.length > 0 &&
-          <article className="message is-warning">
+          <article className="message is-warning" style={{marginBottom: '10px'}}>
             <div className="message-header">
               <p>請排除下列異常</p>
             </div>
@@ -431,17 +458,15 @@ export default class Catchlog extends React.Component {
                         <div className="control">
                           <label className="radio">
                             <input type="radio" name="lamp"
-                              value={this.state.check_lamp}
                               checked={this.state.check_lamp === 'Y'}
-                              onChange={this.checkboxChange.bind(this, 'check_lamp')}
+                              onChange={this.lampChange.bind(this, 'Y')}
                             />
                             正常
                           </label>
                           <label className="radio" style={{marginLeft: '15px'}}>
                             <input type="radio" name="lamp"
-                              value={this.state.check_lamp}
                               checked={this.state.check_lamp === 'N'}
-                              onChange={this.checkboxChange.bind(this, 'check_lamp')}
+                              onChange={this.lampChange.bind(this, 'N')}
                             />
                             異常
                           </label>
@@ -543,7 +568,7 @@ const keyList =[
   'catch_num4', 'catch_num5', 'catch_num6', 
   'change1', 'change2', 'change3', 
   'change4', 'change5', 'change6', 
-  'check_lamp', 'rmk', 'discription', 
+  'check_lamp', 'rmk', 'discription'
 ]
 
 const catchList = [
