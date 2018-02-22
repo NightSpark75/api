@@ -16,7 +16,7 @@ export default class Catchlog extends React.Component {
     this.state = {
       log_data: [],
       alertMsg: [],
-      rule: [],
+      rule: {},
       point_no: '', ldate: 0, device_type: '',
       catch_num1: 0, catch_num2: 0, catch_num3: 0, catch_num4: 0, catch_num5: 0, catch_num6: 0,
       change1: 'N', change2: 'N', change3: 'N', change4: 'N', change5: 'N', change6: 'N', check_lamp: 'N',
@@ -33,6 +33,7 @@ export default class Catchlog extends React.Component {
       isDeviation: false,
       isChecked: false,
       isOverdue: false,
+      isOK: false,
     }
     this.sendMsg = this.props.sendMsg.bind(this)
   }
@@ -66,7 +67,6 @@ export default class Catchlog extends React.Component {
           })
           self.setLayout()
           self.setValue(response.data.log_data)
-          self.checkFillTime()
         } else {
           self.props.sendMsg(response.data.msg)
           self.onCancel()
@@ -84,27 +84,27 @@ export default class Catchlog extends React.Component {
         this.setState({
           vn3: true, vn4: true, vn5: true, vn6: true,
           vc5: true
-        })
+        }, () => (this.formCheck()))
         break
       case '2':
         this.setState({
           vn1: true, vn2: true,
           vc1: true, vc2: true, vc3: true,
           growthShow: true,
-        })
+        }, () => (this.formCheck()))
         break
       case '3':
         this.setState({
           vn3: true, vn4: true, vn5: true, vn6: true,
           vc6: true,
-        })
+        }, () => (this.formCheck()))
         break
       case '4':
         this.setState({
           vn1: true, vn2: true, vlp: true,
           vc1: true, vc2: true, vc3: true, vc4: true,
           growthShow: true,
-        })
+        }, () => (this.formCheck()))
         break
     }
   }
@@ -119,7 +119,7 @@ export default class Catchlog extends React.Component {
         change1: data.change1, change2: data.change2, change3: data.change3,
         change4: data.change4, change5: data.change5, change6: data.change6, check_lamp: data.lamp,
         rmk: rmk, discription: data.discription, deviation: data.deviation,
-      })
+      }, () => (this.formCheck()))
     }
   }
 
@@ -140,8 +140,9 @@ export default class Catchlog extends React.Component {
   }
 
   catchChange(item, e) {
+    const { isChecked } = this.state
     let val = Number(e.target.value)
-    this.setState({[item]: val})
+    this.setState({[item]: val}, () => (this.checkAllCatchAmount(isChecked)))
   }
 
   rmkChange(e) {
@@ -151,16 +152,12 @@ export default class Catchlog extends React.Component {
 
   checkboxChange(item, e) {
     let state, value
-    state = this.state[item]
+    state = this.state[item.key]
     value = state === 'Y' ? 'N' : 'Y'
-    this.setState({[item]: value})
+    this.setState({[item.key]: value}, () => (this.checkRequire(item, this.state[item.show], value )))
   }
 
   onSave(e) {
-    this.formCheck()
-    return
-    alert('onSave')
-    return
     this.setState({confirmShow: false})
     let self = this
     this.setState({ isLoading: true })
@@ -205,19 +202,19 @@ export default class Catchlog extends React.Component {
   }
   
   formCheck() {
+    const { isChecked } = this.state
     //檢查填表時間
     this.checkFillTime()
-
     //檢查補獲數
-
+    this.checkAllCatchAmount(isChecked)
     //檢查必填項目
-    this.checkRequire()
+    this.checkAllRequire()
   }
 
   checkFillTime(rmk = '') {
     let date = new Date()
-    //let hours = date.getHours() * 100
-    let hours = 800
+    let hours = date.getHours() * 100
+    //let hours = 800
     let rule = this.state.rule
     let isOverdue = true
     //檢查填表時間
@@ -237,20 +234,62 @@ export default class Catchlog extends React.Component {
     this.setState({isOverdue: isOverdue})
   }
 
-  checkCatchAmount() {
+  checkAllCatchAmount() {
+    const { rule, isChecked,
+      thisTotalCount, lastTotalCount, lastGrowth,
+      catch_num1, catch_num2, catch_num3,
+      catch_num4, catch_num5, catch_num6,
+    } = this.state
+    const allCount = thisTotalCount + catch_num1 + catch_num2 + catch_num3 + catch_num4 + catch_num5 + catch_num6
+    const thisGrowth = (allCount - lastTotalCount) / lastTotalCount
+    let r = {}
+    let n = 0
+    if (rule.TWO_MONTH_GROWTH) {
+      r = rule.TWO_MONTH_GROWTH
+      let c1 = operatorHandle(thisGrowth, r.cond, r.val)
+      let c2 = operatorHandle(lastGrowth, r.cond, r.val)
+      if (c1 && c2 && !isChecked) {
+        this.pushAlert(r.dis + r.cond + r.val + ', 請開立偏差')
+        n++
+      } else {
+        this.removeAlert(r.dis + r.cond + r.val + ', 請開立偏差')
+      }
+    }
 
+    if (rule.GROWTH_MORE_LAST) {
+      r = rule.GROWTH_MORE_LAST
+      let v
+      if (lastGrowth === 0) {
+        v = thisGrowth
+      } else {
+        v = (thisGrowth - lastGrowth) / lastGrowth
+      }
+      let c = operatorHandle(v, r.cond, r.val)
+      if (c && !isChecked) {
+        this.pushAlert(r.dis + r.cond + r.val + ', 請開立偏差')
+        n++
+      } else {
+        this.removeAlert(r.dis + r.cond + r.val + ', 請開立偏差')
+      }
+    }
+    this.setState({isDeviation: n > 0})
   }
 
-  checkRequire() {
+  checkAllRequire() {
     const { rule, changeDate } = this.state
     replaceList.map((item) => {
-      if (operatorHandle(changeDate[item.key]['dday'], rule.CHANGE_REQUEST.cond, rule.CHANGE_REQUEST.val) 
-        && this.state[item.show] && this.state[item.key] === 'N') {
-        this.pushAlert(item.label + '必須更換')
-      } else {
-        this.removeAlert(item.label + '必須更換')
-      }
+      this.checkRequire(item, this.state[item.show], this.state[item.key])
     })
+  }
+
+  checkRequire(item, show, value) {
+    const { rule, changeDate } = this.state
+    if (operatorHandle(changeDate[item.key]['dday'], rule.CHANGE_REQUEST.cond, rule.CHANGE_REQUEST.val) 
+      && show && value === 'N') {
+      this.pushAlert(item.label + '必須更換')
+    } else {
+      this.removeAlert(item.label + '必須更換')
+    }
   }
 
   pushAlert(msg) {
@@ -269,10 +308,15 @@ export default class Catchlog extends React.Component {
     this.setState({alertMsg: alertMsg})
   }
 
+  deviationChange() {
+    const { isChecked } = this.state
+    this.setState({isChecked: !isChecked}, () => (this.checkAllCatchAmount()))
+  }
+
   render() {
     const { pointInfo } = this.props
     const { 
-      alertMsg, 
+      alertMsg, getInfo,
       init, isLoading, isChecked, isDeviation, isOverdue,
       thisTotalCount, lastTotalCount, lastGrowth,
       catch_num1, catch_num2, catch_num3,
@@ -327,7 +371,7 @@ export default class Catchlog extends React.Component {
                 </div>
                 {this.state.growthShow && 
                   <div>
-                      本月累計成長率：{thisGrowth}
+                      本月累計成長率：{(thisGrowth * 100).toFixed(2) + '%'}
                   </div>
                 }
                 <div>
@@ -335,7 +379,7 @@ export default class Catchlog extends React.Component {
                 </div>
                 {this.state.growthShow &&
                   <div>
-                      上月成長率：{lastGrowth}
+                      上月成長率：{(lastGrowth * 100).toFixed(2) + '%'}
                   </div>
                 }
               </td>
@@ -368,7 +412,7 @@ export default class Catchlog extends React.Component {
                       rule={this.state.rule}
                       checked={this.state[item.key]}
                       type={item.type}
-                      onChange={this.checkboxChange.bind(this, item.type)}
+                      onChange={this.checkboxChange.bind(this, item)}
                     />)
                   }
                 })}
@@ -442,31 +486,29 @@ export default class Catchlog extends React.Component {
                 </td>
               </tr>
             }
-            {isDeviation &&
-              <tr>
-                <td>開立偏差</td>
-                <td>
-                  <div className="field is-horizontal">
-                    <div className="field-body">
-                      <div className="field has-addons">
-                        <div className="control">
-                          <label className="checkbox">
-                            <input type="checkbox"
-                              value={this.state.deviation}
-                              checked={this.state.deviation === 'Y'}
-                              onChange={this.checkboxChange.bind(this, 'deviation')}
-                            />
-                              <span style={{fontSize: '16px', fontWeight: 'bolder'}}>
-                                開立偏差
-                              </span>
-                          </label>
-                        </div>
+            <tr>
+              <td>開立偏差</td>
+              <td>
+                <div className="field is-horizontal">
+                  <div className="field-body">
+                    <div className="field has-addons">
+                      <div className="control">
+                        <label className="checkbox">
+                          <input type="checkbox"
+                            value={this.state.isChecked}
+                            checked={this.state.isChecked}
+                            onChange={this.deviationChange.bind(this)}
+                          />
+                            <span style={{fontSize: '16px', fontWeight: 'bolder'}}>
+                              開立偏差
+                            </span>
+                        </label>
                       </div>
                     </div>
                   </div>
-                </td>
-              </tr>
-            }
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
         <Deviation 
@@ -475,6 +517,7 @@ export default class Catchlog extends React.Component {
           isDeviation={isDeviation}
           isChecked={isChecked}
           isOverdue={isOverdue}
+          alert={alertMsg}
           onSave={this.openConfirm.bind(this)}
           onCancel={this.onCancel.bind(this)}
         />
@@ -518,22 +561,3 @@ const replaceList = [
   {label: '粘鼠板', key: 'change5', type: 'change5', show: 'vc5'},
   {label: '粘鼠板+防蟻措施', key: 'change6', type: 'change6', show: 'vc6'},
 ]
-
-/*
-
-<div className="field is-grouped" style={{marginLeft: '0px'}}>
-          <p className="control">
-            {comp ?
-              <button className="button is-primary is-static">今日已完成記錄</button>
-              : 
-                isLoading ?
-                  <button className="button is-loading is-primary" style={{width: '58px'}}></button>
-                :
-                  <button type="button" className="button is-primary" onClick={this.openConfirm.bind(this)}>儲存</button>
-            }
-          </p>
-          <p>
-            <button className="button" onClick={this.onCancel.bind(this)}>取消</button>
-          </p>
-        </div>
-        */

@@ -10,10 +10,9 @@ export default class Capture extends React.Component {
           <div className="field has-addons">
             <p className="control">
               <input className="input is-small" type="number"
-                min={0}
-                value={this.props.value}
+                pattern="[0-9]*"
+                value={Number(this.props.value)}
                 onChange={this.props.onChange}
-                required
               />
             </p>
           </div>
