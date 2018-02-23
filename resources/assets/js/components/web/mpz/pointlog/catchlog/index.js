@@ -386,8 +386,7 @@ export default class Catchlog extends React.Component {
             <tr>
               <td width="120">位置</td>
               <td>
-                <span>{pointInfo.point_no}</span>
-                <span style={{marginLeft: '10px'}}>{pointInfo.point_name}</span>
+                <span>{pointInfo.point_name}</span>
                 <span style={{marginLeft: '10px'}}>{pointInfo.point_des}</span>
               </td>
             </tr>

@@ -63,7 +63,7 @@ class PointlogRepository
             $today =  (int)date('Ymd');
             $check = DB::select("
                 select *
-                from mpz_point_log
+                from v_mpz_point_log
                 where point_no = '$point_no' and ldate = $today
             ");
             if (count($check) > 0) {
@@ -82,5 +82,59 @@ class PointlogRepository
         } catch (Exception $e) {
             return $this->exception($e);
         }
+    }
+
+    public function noRecord($date)
+    {
+        $list = DB::select("
+            select *
+                from mpz_point p
+                where p.state = 'Y'
+                    and not exists(
+                        select *
+                            from v_mpz_point_log g
+                            where g.ldate = $date and p.point_no = g.point_no
+                    )
+                order by point_type, point_no
+        ");
+        return $list;
+    }
+
+    public function noRecordByType($table, $type, $cls, $date)
+    {
+        $ck = $cls.'_user';
+        $list = DB::select("
+            select p.point_no, p.point_name, p.point_des
+                from mpz_point p  
+                where p.state = 'Y' and p.point_type = '$type'
+                    and not exists (
+                        select *
+                            from $table t
+                            where t.ldate = $date and  p.point_no = t.point_no and $ck is not null
+                    )
+        ");
+        return $list;
+    }
+
+    public function noRecordDetail()
+    {
+        $list = DB::select("
+            select p.point_no, p.point_name, p.point_des, p.point_type, 'X' mo, 'X' af, 'X' ev
+                from mpz_point p  
+                where p.state = 'Y' and p.point_type = '$type'
+                    and not exists (
+                        select *
+                            from $table t
+                            where t.ldate = $date and  p.point_no = t.point_no
+                )
+            union
+            select p.point_no, p.point_name, p.point_des, p.point_type,
+                    case when mo_user is null then 'X' else '' end mo,
+                    case when af_user is null then 'X' else '' end af,
+                    case when ev_user is null then 'X' else '' end ev
+                from mpz_point p, $table t
+                where p.state = 'Y' and p.point_type = '$type' and p.point_no = t.point_no and ldate = $date
+                order by 4, 1
+        ");
     }
 }

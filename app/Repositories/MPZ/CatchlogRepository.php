@@ -158,15 +158,6 @@ class CatchlogRepository
                 $params['ddate'] = date("Y-m-d H:i:s");
                 $params['state'] = 'Y';
                 DB::table('mpz_catchlog')->insert($params);
-
-                $params2 = [
-                    'point_no' => $params['point_no'],
-                    'ldate' => $params['ldate'],
-                    'duser' => $params['duser'],
-                    'ddate' => $params['ddate'],
-                    'point_type' => 'C', 
-                ];
-                DB::table('mpz_point_log')->insert($params2);
                 DB::commit();
                 if ($params['deviation'] === 'Y') {
                     $this->mailhandler($params['point_no']);

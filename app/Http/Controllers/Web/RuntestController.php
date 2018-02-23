@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use Exception;
 use App\Traits\Common;
-use App\Services\MPE\QA\OverdueService;
+use App\Services\MPZ\OverdueService;
 use DB;
 
 class RuntestController extends Controller
@@ -20,10 +20,8 @@ class RuntestController extends Controller
     
     public function test()
     {
-        //$a = $this->overdue->overdueNotice();
-        $list = DB::select("
-            select 'hello test' from dual
-        ");
-        return $list;
+        $a = $this->overdue->notice1330();
+        $a = $this->overdue->notice1700();
+        return $a;
     }
 }

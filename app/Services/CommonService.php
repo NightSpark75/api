@@ -8,7 +8,8 @@
  * @since 1.0.0 spark: 完成檔案上傳與下載功能
  * 
  */
-namespace Services;
+namespace App\Services;
+use DB;
 
 /**
  * Class CommonService
@@ -32,5 +33,45 @@ class CommonService
             .substr($charid,16, 4).$hyphen
             .substr($charid,20,12);
         return $uuid;
+    }
+
+    /**
+     * send mail handler
+     * 
+     * @param string $subject
+     * @param string $sender
+     * @param string $recipient
+     * @param string $content
+     * @return void
+     */
+    public function sendMail($subject, $sender, $recipient, $content)
+    {
+        $nu = null;
+        $pdo = DB::getPdo();
+        $stmt = $pdo->prepare("begin pk_mail.proc_mail_02(:f, :t1, :t2, :t3, :c1, :c2, :c3, :s, :m); end;");
+        $stmt->bindParam(':f', $sender);
+        $stmt->bindParam(':t1', $recipient);
+        $stmt->bindParam(':t2', $nu);
+        $stmt->bindParam(':t3', $nu);
+        $stmt->bindParam(':c1', $nu);
+        $stmt->bindParam(':c2', $nu);
+        $stmt->bindParam(':c3', $nu);
+        $stmt->bindParam(':s', $subject);
+        $stmt->bindParam(':m', $content);
+        $stmt->execute();
+    }
+
+    /**
+     * get work date
+     * 
+     * @param int $date
+     * @param int $day
+     * @return int
+     */
+    public function getWorkDate($date, $day) {
+        $workDate = DB::selectOne("
+            select stdadm.pk_hra.fu_work_day('ALL', $date, $day) d from dual
+        ")->d;
+        return $workDate;
     }
 }
