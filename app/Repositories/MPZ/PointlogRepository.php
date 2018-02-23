@@ -49,6 +49,7 @@ class PointlogRepository
                 p.hum_range, p.temp_range, p.pa_range, p.aq_range, p.point_des
             from mpz_point p, mpz_device d
             where p.state = 'Y' and d.device_no(+) = p.device_type
+            order by p.point_type, p.point_no
         ");
         if (count($list) === 0) {
             throw new Exception('查詢不到檢查點資料!(#0002)');
@@ -116,25 +117,15 @@ class PointlogRepository
         return $list;
     }
 
-    public function noRecordDetail()
-    {
+    public function noRecordDetail($table, $date, $type, $mo, $af, $ev) {
         $list = DB::select("
-            select p.point_no, p.point_name, p.point_des, p.point_type, 'X' mo, 'X' af, 'X' ev
-                from mpz_point p  
-                where p.state = 'Y' and p.point_type = '$type'
-                    and not exists (
-                        select *
-                            from $table t
-                            where t.ldate = $date and  p.point_no = t.point_no
-                )
-            union
-            select p.point_no, p.point_name, p.point_des, p.point_type,
-                    case when mo_user is null then 'X' else '' end mo,
-                    case when af_user is null then 'X' else '' end af,
-                    case when ev_user is null then 'X' else '' end ev
-                from mpz_point p, $table t
-                where p.state = 'Y' and p.point_type = '$type' and p.point_no = t.point_no and ldate = $date
-                order by 4, 1
+            select p.point_no, p.point_name, p.point_des, t.ldate, $mo, $af, $ev
+                from mpz_point p, (
+                        select * 
+                        from $table c where ldate = $date 
+                    ) t
+                where p.state = 'Y' and p.point_type = '$type' and p.point_no = t.point_no(+)
         ");
+        return $list;
     }
 }
