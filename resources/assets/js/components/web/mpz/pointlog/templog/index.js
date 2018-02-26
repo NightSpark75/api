@@ -19,13 +19,12 @@ export default class Templog extends React.Component {
     super(props)
     this.state = {
       alertMsg: [],
-      point_no: '', ldate: '', zone: '', mach_no: '', ch_date: '', temp_high: '', temp_low: '', humi_high: '', humi_low: '',
+      point_no: '', ldate: '', mach_no: '', ch_date: '', temp_high: '', temp_low: '', humi_high: '', humi_low: '',
       mo_temp: '', mo_hum: '', mo_rmk: '', mo_dis: '', mo_ed: 'N', mo_eth: 'N', mo_devia: 'N', 
       af_temp: '', af_hum: '', af_ed: 'N', af_eth: 'N', af_devia: 'N', 
       ev_temp: '', ev_hum: '', ev_ed: 'N', ev_eth: 'N', ev_devia: 'N', 
       log_data: {},
       isLoading: false,
-      growthShow: false,
       confirmShow: false,
       isDeviation: false,
       isChecked: false,
@@ -51,7 +50,6 @@ export default class Templog extends React.Component {
             ldate: response.data.ldate,
             rule: response.data.rule,
             point_name: point_info.point_name,
-            zone: point_info.zone,
             mach_no: response.data.dev.mach_no,
             ch_date: response.data.dev.stadlj,
             log_data: response.data.log_data,
@@ -288,7 +286,7 @@ export default class Templog extends React.Component {
     const { pointInfo } = this.props
     const { 
       init, point_name, alertMsg, rule,
-      zone, mach_no, ch_date, temp_high, temp_low, humi_high, humi_low,
+      mach_no, ch_date, temp_high, temp_low, humi_high, humi_low,
       isLoading, isChecked, isDeviation, isOverdue,
     } = this.state
     const { mo, af, ev } = this.state
