@@ -163,14 +163,12 @@ export default class Pointlog extends React.Component {
           </Catchlog>
         }
           {this.state.templog_show &&
-            <div className="box">
-              <Templog
-                pointInfo={this.state.point_info}
-                onCancel={this.onCancel.bind(this)}
-                sendMsg={this.componentMsg.bind(this)}
-              >
-              </Templog>
-            </div>
+            <Templog
+              pointInfo={this.state.point_info}
+              onCancel={this.onCancel.bind(this)}
+              sendMsg={this.componentMsg.bind(this)}
+            >
+            </Templog>
           }
           {this.state.wetestlog_show &&
             <div className="box">

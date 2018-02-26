@@ -8,7 +8,7 @@ import Capture from './capture'
 import Replace from './replace'
 import Confirm from '../../../../sys/modal/confirm'
 import Deviation from '../deviation'
-import { operatorHandle } from './rule'
+import { operatorHandle } from '../rule'
 
 export default class Catchlog extends React.Component {
   constructor(props) {
@@ -216,8 +216,8 @@ export default class Catchlog extends React.Component {
 
   checkFillTime(rmk = '') {
     let date = new Date()
-    //let hours = date.getHours() * 100
-    let hours = 800
+    let hours = date.getHours() * 100
+    //let hours = 800
     let rule = this.state.rule
     let isOverdue = true
     //檢查填表時間
@@ -319,7 +319,7 @@ export default class Catchlog extends React.Component {
     }
   }
 
-  pushAlert(msg, s) {
+  pushAlert(msg) {
     let alertMsg = this.state.alertMsg
     if (alertMsg.indexOf(msg) < 0) {
       alertMsg.push(msg)
@@ -327,7 +327,7 @@ export default class Catchlog extends React.Component {
     this.setState({alertMsg: alertMsg})
   }
 
-  removeAlert(msg, s) {
+  removeAlert(msg) {
     let alertMsg = this.state.alertMsg
     if (alertMsg.indexOf(msg) >= 0) {
       alertMsg.splice(alertMsg.indexOf(msg), 1)
@@ -561,7 +561,7 @@ export default class Catchlog extends React.Component {
   }
 }
 
-const keyList =[
+const keyList = [
   'point_no', 'ldate', 
   'catch_num1', 'catch_num2', 'catch_num3', 
   'catch_num4', 'catch_num5', 'catch_num6', 
