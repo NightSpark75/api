@@ -31,6 +31,9 @@ class PressurelogRepository
     {
         try{
             $ldate = date('Ymd');
+            $range = $this->getPaRange($point_no);
+            $dev = $this->getDevInfo($point_no);
+            $rule = $this->getPointRule($point_no);
             $data = DB::selectOne("
                 select *
                 from mpz_pressurelog
@@ -39,44 +42,87 @@ class PressurelogRepository
             $result = [
                 'result' => true,
                 'log_data' => $data,
-                'ldate' => $ldate,
+                'dev' => $dev,
+                'rule' => $rule,
+                'pa_low' => $range->pa_low,
+                'pa_high' => $range->pa_high,
+                'aq_low' => $range->aq_low,
+                'aq_high' => $range->aq_high,
             ];
             return $result;
         } catch (Exception $e) {
             return $this->exception($e);
         }
     }
+
+    private function getPointRule($point_no)
+    {
+        $arr = [];
+        $rule = DB::select("
+            select r.*
+                from mpz_point_rule r, mpz_point p
+                where p.point_type = r.point_type and (r.device_type = p.device_type or r.device_type = 'N')
+                    and p.point_no = '$point_no'
+        ");
+        $rule = json_decode(json_encode($rule), true);
+        for ($i = 0; $i < count($rule); $i++) {
+            $rname = $rule[$i]['rname'];
+            $item = $rule[$i];
+            $arr[$rname] = $item;
+        }
+        return $arr;
+    }
+
+    private function getDevInfo($point_no)
+    {
+        $dev = DB::selectOne("
+            select p.mach_no, f.stadjj, f.stadlj
+                from mpz_point p, jdv_f594343@JDBPRD.STANDARD.COM.TW f
+                where p.mach_no = f.stapid(+) and p.point_no = '$point_no'
+        ");
+        return $dev;
+    }
+
+
+    private function getPaRange($point_no)
+    {
+        $hum_range = DB::selectOne("
+            select pa_low, pa_high, mmaq_low aq_low, mmaq_high aq_high
+                from mpz_point
+                where point_no = '$point_no' and point_type = 'P'
+        ");
+        return $hum_range;
+    }
+
+
     
     public function save($params)
     {
         try{
             DB::transaction( function () use($params) {
                 $user = auth()->user()->id;
-                $params['duser'] = $user;
-                $params['ddate'] = date("Y-m-d H:i:s");
-                $params['state'] = 'Y';
-                $params = $this->setLogData($params, $user);
-                $check = $this->checkPressurelog($params);
-                if ($check) {
-                    DB::table('mpz_pressurelog')->insert($params);
-                    $params = [
-                        'point_no' => $params['point_no'],
-                        'ldate' => $params['ldate'],
-                        'duser' => $params['duser'],
-                        'ddate' => $params['ddate'],
-                        'point_type' => 'P', 
-                    ];
-                    DB::table('mpz_point_log')->insert($params);
-                } else {
+                $point_no = $params['point_no'];
+                $ldate = date('Ymd');
+                $date = date('Y-m-d H:i:s');
+                $data = DB::selectOne("
+                    select *
+                        from mpz_Pressurelog
+                        where point_no = '$point_no' and ldate = $ldate
+                ");
+                if (isset($data)) {
+                    $upd = $this->setUpdateSQL($user, $params, $data);
                     DB::update("
                         update mpz_pressurelog
-                        set duser = :duser, ddate = :ddate, state = :state, 
-                            mo_pa = :mo_pa, mo_aq = :mo_aq, mo_time = :mo_time, mo_user = :mo_user, mo_err = :mo_err,
-                            af_pa = :af_pa, af_aq = :af_aq, af_time = :af_time, af_user = :af_user, af_err = :af_err,
-                            ev_pa = :ev_pa, ev_aq = :ev_aq, ev_time = :ev_time, ev_user = :ev_user, ev_err = :ev_err,
-                            rmk = :rmk
-                        where point_no = :point_no and ldate = :ldate
-                    ", $params);
+                            set $upd
+                            where point_no = $point_no and ldate = $ldate
+                    ");
+                } else {
+                    $params['state'] = 'Y';
+                    $params['duser'] = $user;
+                    $params['ddate'] = $date;
+                    $params['ldate'] = $ldate;
+                    $params = $this->setInsertParams($user, $params);
+                    DB::table('mpz_pressurelog')->insert($params);
                 }
             });
             DB::commit();
@@ -91,61 +137,69 @@ class PressurelogRepository
         }
     }
 
-    private function setLogData($params, $user)
+    private function setInsertParams($user, $params)
     {
-        $point_no = $params['point_no'];
-        $ldate = (int)$params['ldate'];
-        $params['mo_time'] = null;
-        $params['mo_user'] = null;
-        $params['af_time'] = null;
-        $params['af_user'] = null;
-        $params['ev_time'] = null;
-        $params['ev_user'] = null;
-
-        $log = DB::selectOne("
-            select *
-            from mpz_pressurelog
-            where point_no = '$point_no' and ldate = $ldate
-        ");
-
-        $params = $this->setLogTime($params, $log, 'mo');
-        $params = $this->setLogTime($params, $log, 'af');
-        $params = $this->setLogTime($params, $log, 'ev');
-
-        return $params;
-    }
-
-    private function setLogTime($params, $log, $cls)
-    {
-        $date = (int)date("Hi");
-        $log = json_decode(json_encode($log), true);
-        if ($params[$cls.'_pa'] !== null || $params[$cls.'_aq']) {
-            $params[$cls.'_pa'] = (float) $params[$cls.'_pa'];
-            $params[$cls.'_aq'] = (float) $params[$cls.'_aq'];
-            if (!isset($log[$cls.'_pa']) || !isset($log[$cls.'_aq'])) {
-                $params[$cls.'_time'] = (int) $date;
-                $params[$cls.'_user'] = $params['duser'];
-            } else {
-                $params[$cls.'_time'] = (int) $log[$cls.'_time'];
-                $params[$cls.'_user'] = $log[$cls.'_user'];
-            }
+        if (isset($params['mo_pa'])) {
+            return $this->setParams($user, $params, 'mo');
+        }
+        if (isset($params['af_pa'])) {
+            return $this->setParams($user, $params, 'af');
+        }
+        if (isset($params['ev_pa'])) {
+            return $this->setParams($user, $params, 'ev');
         }
         return $params;
     }
 
-    private function checkPressurelog($params)
+    private function setParams($user, $params, $type)
     {
-        $point_no = $params['point_no'];
-        $ldate = $params['ldate'];
-        $check = DB::selectOne("
-            select count(*) count
-            from mpz_point_log
-            where point_no = '$point_no' and ldate = $ldate and point_type = 'P'
-        ");
+        $time = date('Hi');
+        $params[$type.'_time'] = $time;
+        $params[$type.'_user'] = $user;
+        return $params;
+    }
 
-        if ($check->count === '0') {
-            return true;
+    private function setUpdateSQL($user, $params, $data)
+    {
+        $time = date('Hi');
+        if (isset($params['mo_pa']) && isset($data->mo_time)) {
+            return $this->getUpdateString($user, $params, 'mo');
         }
-        return false;
+        if (isset($params['af_pa']) && isset($data->af_time)) {
+            return $this->getUpdateString($user, $params, 'af');
+        }
+        if (isset($params['ev_pa']) && isset($data->ev_time)) {
+            return $this->getUpdateString($user, $params, 'ev');
+        }
+        return '';
+    }
+    
+    private function getUpdateString($user, $params, $type)
+    {
+        $time = date('Hi');
+        $k_pa = $type.'_pa';
+        $k_aq = $type.'_aq';
+        $k_ed = $type.'_ed';
+        $k_ep = $type.'_ep';
+        $k_devia = $type.'_devia';
+        $k_time = $type.'_time';
+        $k_user = $type.'_user';
+        $pa = $params[$k_pa];
+        $aq = $params[$k_aq];
+        $ed = $params[$k_ed];
+        $ep = $params[$k_ep];
+        $devia = $params[$k_devia];
+        $str = "
+            duser = '$user', ddate = sysdate,
+            $k_pa = $pa, $k_aq = $aq, 
+            $k_ed = '$ed', $k_ep = '$ep', $k_devia = '$devia'
+            $k_time = $time, $k_user = $user
+        ";
+        if ($type === 'mo') {
+            $rmk = $params['mo_rmk'];
+            $dis = $params['mo_dis'];
+            $str = $str . ", mo_rmk = '$rmk', mo_dis = '$dis'";
+        }
+        return $str;
     }
 }

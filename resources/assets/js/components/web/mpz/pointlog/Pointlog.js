@@ -10,6 +10,14 @@ import Wetestlog from './Wetestlog'
 import Refrilog from './Refrilog'
 import Pressurelog from './Pressurelog'
 
+const pointType = {
+  C: 'catchlog_show',
+  P: 'pressurelog_show',
+  W: 'wetestlog_show',
+  R: 'refrilog_show',
+  T: 'templog_show',
+}
+
 export default class Pointlog extends React.Component {
   constructor(props) {
     super(props)
@@ -17,13 +25,14 @@ export default class Pointlog extends React.Component {
     this.state = {
       point: [],
       point_no: '',
+      point_info: {},
       scan: false,
       scan_message: '',
-      point_info: {},
       catchlog_show: false,
       templog_show: false,
       wetestlog_show: false,
       refrilog_show: false,
+      prerilog_show: false,
       pressurelog_show: false,
     }
   }
@@ -54,51 +63,21 @@ export default class Pointlog extends React.Component {
 
   scanChange(e) {
     let point_no = e.target.value
-    this.setState({
-      point_no: point_no,
-    })
-    this.pointSearch(point_no)
+    this.setState({ point_no: point_no }, () => { this.pointSearch(point_no) })
+
   }
 
   pointSearch(point_no) {
     let list = this.state.point
-    for (var i = 0; i < list.length; i++) {
-      let item = []
-      Object.keys(list[i]).map(function (e) {
-        item[e] = list[i][e]
-      })
-      if (item['point_no'] === point_no) {
-        let device_type = list[i]['device_type']
+    list.map((item, index) => {
+      if (item.point_no === point_no) {
         this.setState({
-          point_info: list[i],
+          point_info: item,
+          [pointType[item.point_type]]: true,
           scan: false,
-          scan_message: '資料驗證中...'
         })
-        this.setComponent(list[i])
-        break
       }
-    }
-  }
-
-  setComponent(point) {
-    let point_type = point.point_type
-    switch (point_type) {
-      case 'C':   // 鼠蟲防治紀錄
-        this.setState({ catchlog_show: true, scan_message: '' })
-        break
-      case 'T':   // 溫溼紀錄
-        this.setState({ templog_show: true, scan_message: '' })
-        break
-      case 'W':   // 最濕點紀錄
-        this.setState({ wetestlog_show: true, scan_message: '' })
-        break
-      case 'R':   // 冷藏櫃操作紀錄
-        this.setState({ refrilog_show: true, scan_message: '' })
-        break
-      case 'P':   // 壓差紀錄
-        this.setState({ pressurelog_show: true, scan_message: '' })
-        break
-    }
+    })
   }
 
   onCancel() {
@@ -110,7 +89,6 @@ export default class Pointlog extends React.Component {
       pressurelog_show: false,
       point_no: '',
       scan: true,
-      point_info: {},
     })
   }
 
@@ -124,7 +102,7 @@ export default class Pointlog extends React.Component {
 
   render() {
     let today = new Date()
-    const { point_info } = this.state 
+    const { point_info, scan } = this.state
     return (
       <div>
         <div className="box" style={{ marginTop: '10px', marginBottom: '10px' }}>
@@ -132,7 +110,7 @@ export default class Pointlog extends React.Component {
             <Link className="button" to="/auth/web/menu">&larr; 功能選單</Link>
           </p>
         </div>
-        {this.state.scan &&
+        {scan &&
           <div className="box" style={{ marginBottom: '10px' }}>
             <div className="field is-horizontal">
               <div className="field-body">
@@ -156,51 +134,46 @@ export default class Pointlog extends React.Component {
         }
         {this.state.catchlog_show &&
           <Catchlog
-            pointInfo={this.state.point_info}
+            pointInfo={point_info}
             onCancel={this.onCancel.bind(this)}
             sendMsg={this.componentMsg.bind(this)}
           >
           </Catchlog>
         }
-          {this.state.templog_show &&
-            <Templog
-              pointInfo={this.state.point_info}
-              onCancel={this.onCancel.bind(this)}
-              sendMsg={this.componentMsg.bind(this)}
-            >
-            </Templog>
-          }
-          {this.state.wetestlog_show &&
-            <div className="box">
-              <Wetestlog
-                pointInfo={this.state.point_info}
-                onCancel={this.onCancel.bind(this)}
-                sendMsg={this.componentMsg.bind(this)}
-              >
-              </Wetestlog>
-            </div>
-          }
-          {this.state.refrilog_show &&
-            <div className="box">
-              <Refrilog
-                pointInfo={this.state.point_info}
-                onCancel={this.onCancel.bind(this)}
-                sendMsg={this.componentMsg.bind(this)}
-              >
-              </Refrilog>
-            </div>
-          }
-          {this.state.pressurelog_show &&
-            <div className="box">
-              <Pressurelog
-                pointInfo={this.state.point_info}
-                onCancel={this.onCancel.bind(this)}
-                sendMsg={this.componentMsg.bind(this)}
-              >
-              </Pressurelog>
-            </div>
-          }
+        {this.state.templog_show &&
+          <Templog
+            pointInfo={point_info}
+            onCancel={this.onCancel.bind(this)}
+            sendMsg={this.componentMsg.bind(this)}
+          >
+          </Templog>
+        }
+        {this.state.wetestlog_show &&
+          <Wetestlog
+            pointInfo={point_info}
+            onCancel={this.onCancel.bind(this)}
+            sendMsg={this.componentMsg.bind(this)}
+          >
+          </Wetestlog>
+        }
+        {this.state.refrilog_show &&
+          <Refrilog
+            pointInfo={point_info}
+            onCancel={this.onCancel.bind(this)}
+            sendMsg={this.componentMsg.bind(this)}
+          >
+          </Refrilog>
+        }
+        {this.state.pressurelog_show &&
+          <Pressurelog
+            pointInfo={point_info}
+            onCancel={this.onCancel.bind(this)}
+            sendMsg={this.componentMsg.bind(this)}
+          >
+          </Pressurelog>
+        }
       </div>
     )
   }
 }
+

@@ -27,11 +27,4 @@ class PointlogController extends Controller
         $response = response()->json($result);
         return $response;
     }
-
-    public function check($point_no)
-    {
-        $result = $this->pointlog->check($point_no);
-        $response = response()->json($result);
-        return $response;
-    }
 }

@@ -10,14 +10,46 @@ import Confirm from '../../../../sys/modal/confirm'
 import Deviation from '../deviation'
 import { operatorHandle } from '../rule'
 
+const deviceSet = {
+  1: ['vn3', 'vn4', 'vn5', 'vn6', 'vc5'],
+  2: ['vn1', 'vn2', 'vc1', 'vc2', 'vc3', 'growthShow'],
+  3: ['vn3', 'vn4', 'vn5', 'vn6', 'vc6'],
+  4: ['vn1', 'vn2', 'vlp', 'vc1', 'vc2', 'vc3', 'vc4', 'growthShow'],
+}
+
+const keyList = [
+  'point_no', 'ldate',
+  'catch_num1', 'catch_num2', 'catch_num3',
+  'catch_num4', 'catch_num5', 'catch_num6',
+  'change1', 'change2', 'change3',
+  'change4', 'change5', 'change6',
+  'check_lamp', 'rmk', 'discription'
+]
+
+const catchList = [
+  { label: '承接', key: 'catch_num2', type: 'catch_num2', show: 'vn2' },
+  { label: '壁虎', key: 'catch_num3', type: 'catch_num3', show: 'vn3' },
+  { label: '昆蟲', key: 'catch_num4', type: 'catch_num4', show: 'vn4' },
+  { label: '鼠類', key: 'catch_num5', type: 'catch_num5', show: 'vn5' },
+  { label: '其他', key: 'catch_num6', type: 'catch_num6', show: 'vn6' },
+]
+
+const replaceList = [
+  { label: '捕蚊紙', key: 'change1', type: 'change1', show: 'vc1' },
+  { label: '捕蚊燈管', key: 'change3', type: 'change3', show: 'vc3' },
+  { label: '驅蚊燈管', key: 'change4', type: 'change4', show: 'vc4' },
+  { label: '粘鼠板', key: 'change5', type: 'change5', show: 'vc5' },
+  { label: '粘鼠板+防蟻措施', key: 'change6', type: 'change6', show: 'vc6' },
+]
+
 export default class Catchlog extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      point_no: '',
       log_data: [],
       alertMsg: [],
       rule: {},
-      point_no: '', ldate: 0, device_type: '',
       catch_num1: 0, catch_num2: 0, catch_num3: 0, catch_num4: 0, catch_num5: 0, catch_num6: 0,
       change1: 'N', change2: 'N', change3: 'N', change4: 'N', change5: 'N', change6: 'N', check_lamp: 'N',
       rmk: '', discription: '', deviation: 'N',
@@ -26,36 +58,31 @@ export default class Catchlog extends React.Component {
       vc1: false, vc2: false, vc3: false, vc4: false, vc5: false, vc6: false,
       vlp: false,
       thisTotalCount: 0, lastTotalCount: 0,
-      isLoading: false, init: false,
-      msg_type: '', msg: '',
+      isLoading: false,
       growthShow: false,
       confirmShow: false,
       isDeviation: false,
       isChecked: false,
       isOverdue: false,
-      isOK: false,
     }
     this.sendMsg = this.props.sendMsg.bind(this)
   }
 
   componentDidMount() {
-    let point = this.props.pointInfo
-    this.init(point.point_no, point.device_type)
+    this.init()
   }
 
-  init(point_no, device_type) {
+  init() {
     let self = this
-    this.setState({ init: true })
+    let point_no = this.props.pointInfo.point_no
     axios.get('/api/web/mpz/pointlog/catch/init/' + point_no)
       .then(function (response) {
         if (response.data.result) {
           console.log(response.data)
           self.setState({
+            point_no: point_no,
             log_data: response.data.log_data,
             rule: response.data.rule,
-            point_no: point_no,
-            ldate: response.data.ldate,
-            device_type: device_type,
             thisAllCount: response.data.thisAllCount,
             lastAllCount: response.data.lastAllCount,
             thisTotalCount: response.data.thisTotalCount,
@@ -63,9 +90,7 @@ export default class Catchlog extends React.Component {
             lastGrowth: response.data.lastGrowth,
             changeDate: response.data.changeDate,
             init: false,
-          })
-          self.setLayout()
-          self.setValue(response.data.log_data)
+          }, () => { self.setValue() })
         } else {
           self.props.sendMsg(response.data.msg)
           self.onCancel()
@@ -77,54 +102,29 @@ export default class Catchlog extends React.Component {
   }
 
   setLayout() {
-    let device = this.state.device_type
-    switch (device) {
-      case '1':
-        this.setState({
-          vn3: true, vn4: true, vn5: true, vn6: true,
-          vc5: true
-        }, () => (this.formCheck()))
-        break
-      case '2':
-        this.setState({
-          vn1: true, vn2: true,
-          vc1: true, vc2: true, vc3: true,
-          growthShow: true,
-        }, () => (this.formCheck()))
-        break
-      case '3':
-        this.setState({
-          vn3: true, vn4: true, vn5: true, vn6: true,
-          vc6: true,
-        }, () => (this.formCheck()))
-        break
-      case '4':
-        this.setState({
-          vn1: true, vn2: true, vlp: true,
-          vc1: true, vc2: true, vc3: true, vc4: true,
-          growthShow: true,
-        }, () => (this.formCheck()))
-        break
-    }
+    let device = this.props.pointInfo.device_type
+    deviceSet[device].map((item) => {
+      this.setState({ [item]: true })
+    })
   }
 
-  setValue(data) {
+  setValue() {
+    this.setLayout()
+    let data = this.state.log_data
     if (data !== null) {
-      let rmk = (data.rmk === null) ? '' : data.rmk
       this.setState({
         point_no: data.point_no, ldate: data.ldate,
         catch_num1: Number(data.catch_num1), catch_num2: Number(data.catch_num2), catch_num3: Number(data.catch_num3),
         catch_num4: Number(data.catch_num4), catch_num5: Number(data.catch_num5), catch_num6: Number(data.catch_num6),
         change1: data.change1, change2: data.change2, change3: data.change3,
         change4: data.change4, change5: data.change5, change6: data.change6, check_lamp: data.check_lamp,
-        rmk: rmk, discription: data.discription, deviation: data.deviation,
-      }, () => (this.formCheck()))
+        rmk: data.rmk || '', discription: data.discription, deviation: data.deviation,
+      }, () => { this.formCheck() })
     }
   }
 
   initState() {
     this.setState({
-      point_no: '', ldate: 0, device_type: '',
       catch_num1: 0, catch_num2: 0, catch_num3: 0, catch_num4: 0, catch_num5: 0, catch_num6: 0,
       change1: 'N', change2: 'N', change3: 'N', change4: 'N', change5: 'N', change6: 'N', check_lamp: 'N',
       rmk: '', discription: '', deviation: 'N',
@@ -133,19 +133,19 @@ export default class Catchlog extends React.Component {
       vc1: false, vc2: false, vc3: false, vc4: false, vc5: false, vc6: false,
       vlp: false,
       thisTotalCount: 0, lastTotalCount: 0,
-      isLoading: false, init: false,
-      msg_type: '', msg: '',
+      isLoading: false, growthShow: false, confirmShow: false,
+      isDeviation: false, isChecked: false, isOverdue: false,
     })
   }
 
   catchChange(item, e) {
     const { isChecked } = this.state
     let val = Number(e.target.value)
-    this.setState({[item]: val}, () => (this.checkAllCatchAmount(isChecked)))
+    this.setState({ [item]: val }, () => { this.checkAllCatchAmount(isChecked) })
   }
 
   rmkChange(e) {
-    this.setState({rmk: e.target.value})
+    this.setState({ rmk: e.target.value })
     this.checkFillTime(e.target.value)
   }
 
@@ -153,15 +153,15 @@ export default class Catchlog extends React.Component {
     let state, value
     state = this.state[item.key]
     value = state === 'Y' ? 'N' : 'Y'
-    this.setState({[item.key]: value}, () => (this.checkRequire(item, this.state[item.show], value )))
+    this.setState({ [item.key]: value }, () => { this.checkRequire(item, this.state[item.show], value) })
   }
 
   lampChange(type) {
-    this.setState({check_lamp: type})
+    this.setState({ check_lamp: type })
   }
 
   onSave() {
-    this.setState({confirmShow: false})
+    this.setState({ confirmShow: false })
     let self = this
     this.setState({ isLoading: true })
     let form_data = new FormData()
@@ -193,17 +193,17 @@ export default class Catchlog extends React.Component {
   }
 
   openConfirm() {
-    this.setState({confirmShow: true})
+    this.setState({ confirmShow: true })
   }
 
   hideConfirm() {
-    this.setState({confirmShow: false})
+    this.setState({ confirmShow: false })
   }
 
   checkDeviation() {
-    this.setState({checkDeviation: true})
+    this.setState({ checkDeviation: true })
   }
-  
+
   formCheck() {
     const { isChecked } = this.state
     //檢查填表時間
@@ -221,12 +221,12 @@ export default class Catchlog extends React.Component {
     let rule = this.state.rule
     let isOverdue = true
     //檢查填表時間
-    if (operatorHandle(hours, rule.START_TIME.cond, Number(rule.START_TIME.val)) && 
+    if (operatorHandle(hours, rule.START_TIME.cond, Number(rule.START_TIME.val)) &&
       operatorHandle(hours, rule.END_TIME.cond, Number(rule.END_TIME.val))
     ) {
       isOverdue = false
     } else {
-      if (operatorHandle(hours, rule.OTHER_TIME.cond, Number(rule.OTHER_TIME.val)) && 
+      if (operatorHandle(hours, rule.OTHER_TIME.cond, Number(rule.OTHER_TIME.val)) &&
         operatorHandle(hours, '>=', Number(rule.END_TIME.val)) && rmk !== ''
       ) {
         isOverdue = false
@@ -234,7 +234,7 @@ export default class Catchlog extends React.Component {
         isOverdue = true
       }
     }
-    this.setState({isOverdue: isOverdue})
+    this.setState({ isOverdue: isOverdue })
   }
 
   checkAllCatchAmount() {
@@ -270,7 +270,7 @@ export default class Catchlog extends React.Component {
     if (rule.MOUSE_MAT || rule.MOUSE_OFF) {
       r = rule.MOUSE_MAT ? rule.MOUSE_MAT : rule.MOUSE_OFF
       let c = operatorHandle(catch_num5, r.cond, r.val)
-      n = this.setAlert(r, c , n)
+      n = this.setAlert(r, c, n)
     }
 
     if (rule.MONTH_TOTAL_MAT || rule.MONTH_TOTAL_OFF) {
@@ -289,7 +289,7 @@ export default class Catchlog extends React.Component {
       }
     }
 
-    this.setState({isDeviation: n > 0})
+    this.setState({ isDeviation: n > 0 })
   }
 
   checkAllRequire() {
@@ -301,7 +301,7 @@ export default class Catchlog extends React.Component {
 
   checkRequire(item, show, value) {
     const { rule, changeDate } = this.state
-    if (operatorHandle(changeDate[item.key]['dday'], rule.CHANGE_REQUEST.cond, rule.CHANGE_REQUEST.val) 
+    if (operatorHandle(changeDate[item.key]['dday'], rule.CHANGE_REQUEST.cond, rule.CHANGE_REQUEST.val)
       && show && value === 'N') {
       this.pushAlert(item.label + '必須更換')
     } else {
@@ -324,7 +324,7 @@ export default class Catchlog extends React.Component {
     if (alertMsg.indexOf(msg) < 0) {
       alertMsg.push(msg)
     }
-    this.setState({alertMsg: alertMsg})
+    this.setState({ alertMsg: alertMsg })
   }
 
   removeAlert(msg) {
@@ -332,23 +332,23 @@ export default class Catchlog extends React.Component {
     if (alertMsg.indexOf(msg) >= 0) {
       alertMsg.splice(alertMsg.indexOf(msg), 1)
     }
-    this.setState({alertMsg: alertMsg})
+    this.setState({ alertMsg: alertMsg })
   }
 
   deviationChange() {
     const { isChecked } = this.state
-    this.setState({isChecked: !isChecked}, () => (this.checkAllCatchAmount()))
+    this.setState({ isChecked: !isChecked }, () => { this.checkAllCatchAmount() })
   }
 
   render() {
     const { pointInfo } = this.props
-    const { 
+    const {
       alertMsg, getInfo,
       init, isLoading, isChecked, isDeviation, isOverdue,
       thisTotalCount, lastTotalCount, lastGrowth,
       catch_num1, catch_num2, catch_num3,
       catch_num4, catch_num5, catch_num6,
-    } = this.state 
+    } = this.state
     const isComplete = !(this.state.log_data === null)
     const allCount = thisTotalCount + catch_num1 + catch_num2 + catch_num3 + catch_num4 + catch_num5 + catch_num6
     let thisGrowth = 0
@@ -359,7 +359,7 @@ export default class Catchlog extends React.Component {
     return (
       <div>
         {alertMsg.length > 0 &&
-          <article className="message is-warning" style={{marginBottom: '10px'}}>
+          <article className="message is-warning" style={{ marginBottom: '10px' }}>
             <div className="message-header">
               <p>請排除下列異常</p>
             </div>
@@ -377,35 +377,35 @@ export default class Catchlog extends React.Component {
             <tr>
               <td colSpan={2}>
                 <span className="title is-4">鼠蟲防治記錄表</span>
-                <span className="title is-5" style={{marginLeft: '10px'}}>{pointInfo.device_name}</span>
-                <span className="title is-6" style={{marginLeft: '10px'}}>
-                  日期：{today.getFullYear()+ "/" + (today.getMonth()+1) + "/" + today.getDate()}
+                <span className="title is-5" style={{ marginLeft: '10px' }}>{pointInfo.device_name}</span>
+                <span className="title is-6" style={{ marginLeft: '10px' }}>
+                  日期：{today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate()}
                 </span>
-              </td>  
+              </td>
             </tr>
             <tr>
               <td width="120">位置</td>
               <td>
                 <span>{pointInfo.point_name}</span>
-                <span style={{marginLeft: '10px'}}>{pointInfo.point_des}</span>
+                <span style={{ marginLeft: '10px' }}>{pointInfo.point_des}</span>
               </td>
             </tr>
             <tr>
               <td colSpan={2}>
                 <div>
-                    本月累計：{allCount} 
-                </div>
-                {this.state.growthShow && 
-                  <div>
-                      本月累計成長率：{(thisGrowth * 100).toFixed(2) + '%'}
-                  </div>
-                }
-                <div>
-                  上月統計：{lastTotalCount} 
+                  本月累計：{allCount}
                 </div>
                 {this.state.growthShow &&
                   <div>
-                      上月成長率：{(lastGrowth * 100).toFixed(2) + '%'}
+                    本月累計成長率：{(thisGrowth * 100).toFixed(2) + '%'}
+                  </div>
+                }
+                <div>
+                  上月統計：{lastTotalCount}
+                </div>
+                {this.state.growthShow &&
+                  <div>
+                    上月成長率：{(lastGrowth * 100).toFixed(2) + '%'}
                   </div>
                 }
               </td>
@@ -415,7 +415,7 @@ export default class Catchlog extends React.Component {
               <td>
                 {catchList.map((item, index) => {
                   if (this.state[item.show]) {
-                    return (<Capture 
+                    return (<Capture
                       key={index}
                       label={item.label}
                       value={this.state[item.key]}
@@ -430,7 +430,7 @@ export default class Catchlog extends React.Component {
               <td>
                 {replaceList.map((item, index) => {
                   if (this.state[item.show]) {
-                    return (<Replace 
+                    return (<Replace
                       key={index}
                       label={item.label}
                       value={this.state[item.key]}
@@ -444,13 +444,13 @@ export default class Catchlog extends React.Component {
                 })}
               </td>
             </tr>
-            {this.state.vlp && 
+            {this.state.vlp &&
               <tr>
                 <td>撿查</td>
                 <td>
                   <div className="field is-horizontal">
-                    <div className="field-label is-normal" style={{flexGrow: '0', paddingTop: '0px'}}>
-                      <label className="label" style={{width: '60px'}}>驅蚊燈</label>
+                    <div className="field-label is-normal" style={{ flexGrow: '0', paddingTop: '0px' }}>
+                      <label className="label" style={{ width: '60px' }}>驅蚊燈</label>
                     </div>
                     <div className="field-body">
                       <div className="field has-addons">
@@ -462,7 +462,7 @@ export default class Catchlog extends React.Component {
                             />
                             正常
                           </label>
-                          <label className="radio" style={{marginLeft: '15px'}}>
+                          <label className="radio" style={{ marginLeft: '15px' }}>
                             <input type="radio" name="lamp"
                               checked={this.state.check_lamp === 'N'}
                               onChange={this.lampChange.bind(this, 'N')}
@@ -523,8 +523,8 @@ export default class Catchlog extends React.Component {
                             checked={this.state.isChecked}
                             onChange={this.deviationChange.bind(this)}
                           />
-                            <span style={{fontSize: '16px', fontWeight: 'bolder'}}>
-                              開立偏差
+                          <span style={{ fontSize: '16px', fontWeight: 'bolder' }}>
+                            開立偏差
                             </span>
                         </label>
                       </div>
@@ -535,7 +535,7 @@ export default class Catchlog extends React.Component {
             </tr>
           </tbody>
         </table>
-        <Deviation 
+        <Deviation
           isLoading={isLoading}
           isComplete={isComplete}
           isDeviation={isDeviation}
@@ -546,42 +546,17 @@ export default class Catchlog extends React.Component {
           onCancel={this.onCancel.bind(this)}
         />
         {this.state.confirmShow &&
-          <Confirm 
+          <Confirm
             show={this.state.confirmShow}
             title="送出表單確認"
             content="您是否確定要送出表單？"
             onConfirm={this.onSave.bind(this)}
             onCancel={this.hideConfirm.bind(this)}
             btnConfirm="確定"
-            btnCancel="取消" 
+            btnCancel="取消"
           />
         }
       </div>
     )
   }
 }
-
-const keyList = [
-  'point_no', 'ldate', 
-  'catch_num1', 'catch_num2', 'catch_num3', 
-  'catch_num4', 'catch_num5', 'catch_num6', 
-  'change1', 'change2', 'change3', 
-  'change4', 'change5', 'change6', 
-  'check_lamp', 'rmk', 'discription'
-]
-
-const catchList = [
-  {label: '承接', key: 'catch_num2', type: 'catch_num2', show: 'vn2'},
-  {label: '壁虎', key: 'catch_num3', type: 'catch_num3', show: 'vn3'},
-  {label: '昆蟲', key: 'catch_num4', type: 'catch_num4', show: 'vn4'},
-  {label: '鼠類', key: 'catch_num5', type: 'catch_num5', show: 'vn5'},
-  {label: '其他', key: 'catch_num6', type: 'catch_num6', show: 'vn6'},
-]
-
-const replaceList = [
-  {label: '捕蚊紙', key: 'change1', type: 'change1', show: 'vc1'},
-  {label: '捕蚊燈管', key: 'change3', type: 'change3', show: 'vc3'},
-  {label: '驅蚊燈管', key: 'change4', type: 'change4', show: 'vc4'},
-  {label: '粘鼠板', key: 'change5', type: 'change5', show: 'vc5'},
-  {label: '粘鼠板+防蟻措施', key: 'change6', type: 'change6', show: 'vc6'},
-]

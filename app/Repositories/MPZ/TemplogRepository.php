@@ -42,7 +42,6 @@ class TemplogRepository
             $result = [
                 'result' => true,
                 'log_data' => $data,
-                'ldate' => $ldate,
                 'rule' => $rule,
                 'dev' => $dev,
                 'temp_high' => $zone->temp_high,
@@ -118,6 +117,7 @@ class TemplogRepository
                     $params['state'] = 'Y';
                     $params['duser'] = $user;
                     $params['ddate'] = $date;
+                    $params['ldate'] = $ldate;
                     $params = $this->setInsertParams($user, $params);
                     DB::table('mpz_templog')->insert($params);
                 }
@@ -158,7 +158,6 @@ class TemplogRepository
 
     private function setUpdateSQL($user, $params, $data)
     {
-        $time = date('Hi');
         if (isset($params['mo_temp']) && isset($data->mo_time)) {
             return $this->getUpdateString($user, $params, 'mo');
         }
@@ -173,20 +172,28 @@ class TemplogRepository
     
     private function getUpdateString($user, $params, $type)
     {
-        $temp = $params[$type.'_temp'];
-        $hum = $params[$type.'_hum'];
-        $ed = $params[$type.'_ed'];
-        $eth = $params[$type.'_eth'];
-        $edevia = $params[$type.'_edevia'];
+        $time = date('Hi');
+        $k_temp = $type.'_temp';
+        $k_hum = $type.'_hum';
+        $k_ed = $type.'_ed';
+        $k_eth = $type.'_eth';
+        $k_devia = $type.'_devia';
+        $k_time = $type.'_time';
+        $k_user = $type.'_user';
+        $temp = $params[$k_temp];
+        $hum = $params[$k_hum];
+        $ed = $params[$k_ed];
+        $eth = $params[$k_eth];
+        $devia = $params[$k_devia];
         $str = "
             duser = '$user', ddate = sysdate,
-            mo_temp = $temp, mo_hum = $hum,
-            mo_ed = '$mo_ed', mo_eth = '$mo_eth', mo_edevia = '$edevia'
-            mo_time = $time, mo_user = $user
+            $k_temp = $temp, $k_hum = $hum,
+            $k_ed = '$mo_ed', $k_eth = '$eth', $k_devia = '$devia'
+            $k_time = $time, $k_user = $user
         ";
         if ($type === 'mo') {
-            $rmk = $params[$type.'_rmk'];
-            $dis = $params[$type.'_dis'];
+            $rmk = $params['mo_rmk'];
+            $dis = $params['mo_dis'];
             $str = $str . ", mo_rmk = '$rmk', mo_dis = '$dis'";
         }
         return $str;

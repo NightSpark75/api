@@ -1,5 +1,5 @@
 /** 
- * Templog.js
+ * Wetestlog.js
  */
 import React from "react"
 import { Link } from "react-router"
@@ -11,30 +11,30 @@ import Confirm from '../../../../sys/modal/confirm'
 import Deviation from '../deviation'
 
 const keyList = [
-  'point_no', 'ldate', 
-  'mo_temp', 'mo_hum', 'mo_ed', 'mo_eth', 'mo_devia', 'mo_rmk', 'mo_dis',
-  'af_temp', 'af_hum', 'af_ed', 'af_eth', 'af_devia',
-  'ev_temp', 'ev_hum', 'ev_ed', 'ev_eth', 'ev_devia',
+  'point_no',
+  'mo_pa', 'mo_aq', 'mo_ed', 'mo_ep', 'mo_devia', 'mo_rmk', 'mo_dis',
+  'af_pa', 'af_aq', 'af_ed', 'af_ep', 'af_devia',
+  'ev_pa', 'ev_aq', 'ev_ed', 'ev_ep', 'ev_devia',
 ]
 
-const key = ['_temp', '_hum']
-const keyLabel = ['溫度 ℃', '相對溼度 %R.H']
-const err = ['_ed', '_eth', '_devia']
-const errLabel = ['儀器異常', '溫溼度異常', '開立偏差']
+const key = ['_pa', '_aq']
+const keyLabel = ['壓差(Pa)', '壓差(mmAq)']
+const err = ['_ed', '_ep', '_devia']
+const errLabel = ['儀器異常', '壓差異常', '開立偏差']
 
 let today = new Date()
-let hours = today.getHours() * 100
-//let hours = 1030
+//let hours = today.getHours() * 100
+let hours = 830
 
-export default class Templog extends React.Component {
+export default class Pressurelog extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       alertMsg: [],
-      point_no: '', mach_no: '', ch_date: '', temp_high: '', temp_low: '', humi_high: '', humi_low: '',
-      mo_temp: '', mo_hum: '', mo_rmk: '', mo_dis: '', mo_ed: 'N', mo_eth: 'N', mo_devia: 'N', 
-      af_temp: '', af_hum: '', af_ed: 'N', af_eth: 'N', af_devia: 'N', 
-      ev_temp: '', ev_hum: '', ev_ed: 'N', ev_eth: 'N', ev_devia: 'N', 
+      point_no: '', mach_no: '', ch_date: '', pa_high: '', pa_low: '', aq_high: '', aq_low: '',
+      mo_pa: '', mo_aq: '', mo_rmk: '', mo_dis: '', mo_ed: '', mo_ep: '', mo_devia: '',
+      af_pa: '', af_aq: '', af_ed: '', af_ep: '', af_devia: '',
+      ev_pa: '', ev_aq: '', ev_ed: '', ev_ep: '', ev_devia: '',
       log_data: {},
       isLoading: false,
       confirmShow: false,
@@ -51,7 +51,7 @@ export default class Templog extends React.Component {
   init() {
     let self = this
     let point_no = this.props.pointInfo.point_no
-    axios.get('/api/web/mpz/pointlog/temp/init/' + point_no)
+    axios.get('/api/web/mpz/pointlog/pressure/init/' + point_no)
       .then(function (response) {
         if (response.data.result) {
           self.setState({
@@ -60,16 +60,16 @@ export default class Templog extends React.Component {
             mach_no: response.data.dev.mach_no,
             ch_date: response.data.dev.stadlj,
             log_data: response.data.log_data,
-            temp_high: response.data.temp_high,
-            temp_low: response.data.temp_low,
-            humi_high: response.data.humi_high,
-            humi_low: response.data.humi_low,
-          }, () => { 
+            pa_low: response.data.pa_low,
+            pa_high: response.data.pa_high,
+            aq_low: response.data.aq_low,
+            aq_high: response.data.aq_high,
+          }, () => {
+            self.formCheck()
             self.setValue()
-            self.formCheck() 
           })
           console.log(response.data)
-          
+
         } else {
           self.props.sendMsg(response.data.msg)
           self.onCancel()
@@ -84,12 +84,12 @@ export default class Templog extends React.Component {
     let data = this.state.log_data
     if (data !== null) {
       this.setState({
-        mo_temp: data.mo_temp, mo_hum: data.mo_hum,
-        mo_rmk: data.mo_rmk, mo_dis: data.mo_dis, mo_ed: data.mo_ed, mo_eth: data.mo_eth, mo_devia: data.mo_devia, 
-        af_temp: data.af_temp, af_hum: data.af_hum,
-        af_ed: data.af_ed, af_eth: data.af_eth, af_devia: data.af_devia, 
-        ev_temp: data.ev_temp, ev_hum: data.ev_hum,
-        ev_ed: data.ev_ed, ev_eth: data.ev_eth, ev_devia: data.ev_devia, 
+        mo_pa: data.mo_pa, mo_aq: data.mo_aq, 
+        mo_rmk: data.mo_rmk, mo_dis: data.mo_dis, mo_ed: data.mo_ed, mo_ep: data.mo_ep, mo_devia: data.mo_devia,
+        af_pa: data.af_pa, af_aq: data.af_aq, 
+        af_ed: data.af_ed, af_ep: data.af_ep, af_devia: data.af_devia,
+        ev_pa: data.ev_pa, ev_aq: data.ev_aq, 
+        ev_ed: data.ev_ed, ev_ep: data.ev_ep, ev_devia: data.ev_devia,
       })
     }
   }
@@ -101,7 +101,7 @@ export default class Templog extends React.Component {
     keyList.map((item) => {
       form_data.append(item, this.state[item])
     })
-    axios.post('/api/web/mpz/pointlog/temp/save', form_data)
+    axios.post('/api/web/mpz/pointlog/pressure/save', form_data)
       .then(function (response) {
         if (response.data.result) {
           self.sendMsg(self.state.point_no + '檢查點記錄成功!')
@@ -120,7 +120,22 @@ export default class Templog extends React.Component {
 
   inputChange(key, e) {
     let value = e.target.value
-    this.setState({ [key]: value}, () => (this.inputCheck(key)))
+    if (key.substr(3, 2) === 'pa') {
+      let aq = key.substr(0, 3) + 'aq'
+      this.setState({
+        [key]: value,
+        [aq]: '',
+      }, () => { this.inputCheck(key) })
+    } else {
+      let pa = key.substr(0, 3) + 'pa'
+      this.setState({
+        [pa]: value * 9.8,
+        [key]: value,
+      }, () => { 
+        this.inputCheck(pa)
+      })
+    }
+    this.setState({ [key]: value }, () => { this.inputCheck(key) })
   }
 
   formCheck() {
@@ -133,7 +148,7 @@ export default class Templog extends React.Component {
     let isOverdue = true
     if (this.checkTime() !== '') {
       isOverdue = false
-      if (operatorHandle(hours, rule.MO_OTHER.cond, Number(rule.MO_OTHER.val)) && 
+      if (operatorHandle(hours, rule.MO_OTHER.cond, Number(rule.MO_OTHER.val)) &&
         operatorHandle(hours, '>=', Number(rule.MO_START.val))) {
         if (mo_rmk === '') {
           isOverdue = true
@@ -142,36 +157,38 @@ export default class Templog extends React.Component {
         }
       }
     }
-    this.setState({isOverdue: isOverdue})
+    this.setState({ isOverdue: isOverdue })
   }
 
   inputCheck(key) {
-    const { temp_high, temp_low, humi_high, humi_low, isChecked } = this.state
+    const { pa_high, pa_low, aq_low, aq_high, isChecked } = this.state
     const value = Number(this.state[key])
-    if (key.substr(3, 1) === 't' && !isChecked) {
-      if (Number(temp_high) < value) {
-        this.pushAlert('溫度超過上限，請註記異常')
+    if (key.substr(3, 2) === 'pa' && !isChecked) {
+      if (Number(pa_high) < value) {
+        this.pushAlert('壓差(Pa)超過上限，請註記異常')
       } else {
-        this.removeAlert('溫度超過上限，請註記異常')
+        this.removeAlert('壓差(Pa)超過上限，請註記異常')
       }
-      if (Number(temp_low) > value) {
-        this.pushAlert('溫度超過下限，請註記異常')
+      if (Number(pa_low) > value) {
+        this.pushAlert('壓差(Pa)超過下限，請註記異常')
       } else {
-        this.removeAlert('溫度超過下限，請註記異常')
-      }
-    }
-    if (key.substr(3, 1) === 'h' && !isChecked) {
-      if (Number(humi_high) < value) {
-        this.pushAlert('溼度超過上限，請註記異常')
-      } else {
-        this.removeAlert('溼度超過上限，請註記異常')
-      }
-      if (Number(humi_low) > value) {
-        this.pushAlert('溼度超過下限，請註記異常')
-      } else {
-        this.removeAlert('溼度超過下限，請註記異常')
+        this.removeAlert('壓差(Pa)超過下限，請註記異常')
       }
     }
+    /*
+    if (key.substr(3, 2) === 'mm' && !isChecked) {
+      if (Number(aq_high) < value) {
+        this.pushAlert('壓差(mmAq)超過上限，請註記異常')
+      } else {
+        this.removeAlert('壓差(mmAq)超過上限，請註記異常')
+      }
+      if (Number(aq_low) > value) {
+        this.pushAlert('壓差(mmAq)超過下限，請註記異常')
+      } else {
+        this.removeAlert('壓差(mmAq)超過下限，請註記異常')
+      }
+    }
+    */
   }
 
   exceptionCheck() {
@@ -181,9 +198,9 @@ export default class Templog extends React.Component {
     if (this.state[type + err[0]] === 'Y' || this.state[type + err[1]] === 'Y' || this.state[type + err[2]] === 'Y') {
       isChecked = true
       alertMsg = []
-      this.setState({isChecked: isChecked, alertMsg: alertMsg})
+      this.setState({ isChecked: isChecked, alertMsg: alertMsg })
     } else {
-      this.setState({isChecked: isChecked}, () => {
+      this.setState({ isChecked: isChecked }, () => {
         key.map((item) => {
           this.inputCheck(type + item)
         })
@@ -196,7 +213,7 @@ export default class Templog extends React.Component {
     if (alertMsg.indexOf(msg) < 0) {
       alertMsg.push(msg)
     }
-    this.setState({alertMsg: alertMsg})
+    this.setState({ alertMsg: alertMsg })
   }
 
   removeAlert(msg) {
@@ -204,14 +221,14 @@ export default class Templog extends React.Component {
     if (alertMsg.indexOf(msg) >= 0) {
       alertMsg.splice(alertMsg.indexOf(msg), 1)
     }
-    this.setState({alertMsg: alertMsg})
+    this.setState({ alertMsg: alertMsg })
   }
 
   checkboxChange(key, e) {
     let state, value
     state = this.state[key]
     value = state === 'Y' ? 'N' : 'Y'
-    this.setState({[key]: value}, () => (this.exceptionCheck()))
+    this.setState({ [key]: value }, () => (this.exceptionCheck()))
   }
 
   layoutInput(col) {
@@ -221,7 +238,7 @@ export default class Templog extends React.Component {
         <td>{col}</td>
         <td colSpan={3}>
           {key.map((item, index) => (
-            <Record 
+            <Record
               key={index}
               label={keyLabel[index]}
               value={this.state[type + item]}
@@ -240,7 +257,7 @@ export default class Templog extends React.Component {
         <td>異常選項</td>
         <td colSpan={3}>
           {err.map((item, index) => (
-            <Exception 
+            <Exception
               key={index}
               label={errLabel[index]}
               value={this.state[type + item]}
@@ -290,18 +307,18 @@ export default class Templog extends React.Component {
 
   render() {
     const { pointInfo } = this.props
-    const { 
+    const {
       alertMsg,
-      mach_no, ch_date, temp_high, temp_low, humi_high, humi_low,
+      mach_no, ch_date, pa_high, pa_low, aq_high, aq_low,
       isLoading, isChecked, isDeviation, isOverdue,
     } = this.state
     const { mo, af, ev } = this.state
     const isComplete = !(this.state.log_data === null)
-    //10A1THA105001
+    
     return (
       <div>
         {alertMsg.length > 0 &&
-          <article className="message is-warning" style={{marginBottom: '10px'}}>
+          <article className="message is-warning" style={{ marginBottom: '10px' }}>
             <div className="message-header">
               <p>請排除下列異常</p>
             </div>
@@ -318,26 +335,26 @@ export default class Templog extends React.Component {
           <tbody>
             <tr>
               <td colSpan={4}>
-                <span className="title is-4">溫溼度記錄表</span>
-                <span className="title is-6" style={{marginLeft: '10px'}}>
-                  日期：{today.getFullYear()+ "/" + (today.getMonth()+1) + "/" + today.getDate()}
+                <span className="title is-4">最溼點溼度記錄表</span>
+                <span className="title is-6" style={{ marginLeft: '10px' }}>
+                  日期：{today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate()}
                 </span>
-              </td>  
+              </td>
             </tr>
             <tr>
               <td width="120">位置</td>
               <td colSpan={3}>
                 <span>{pointInfo.point_name}</span>
-                <span style={{marginLeft: '10px'}}>{pointInfo.point_des}</span>
+                <span style={{ marginLeft: '10px' }}>{pointInfo.point_des}</span>
               </td>
             </tr>
             <tr>
               <td>儀器編號</td><td>{mach_no}</td>
-              <td width="120">儀器校期</td><td>{ch_date}</td>
+              <td width="160">儀器校期</td><td>{ch_date}</td>
             </tr>
             <tr>
-              <td>溫度範圍</td><td>{(temp_low !== 0 ? temp_low : '') + " ~ " + (temp_high !== 0 ? temp_high : '')}</td>
-              <td>溼度範圍</td><td>{(humi_low !== 0 ? humi_low : '') + " ~ " + (humi_high !== 0 ? humi_high : '')}</td>
+              <td>合格範圍pa</td><td>{(pa_low !== 0 ? pa_low : '') + " ~ " + (pa_high !== 0 ? pa_high : '')}</td>
+              <td>合格範圍mmAq</td><td>{(aq_low !== 0 ? aq_low : '') + " ~ " + (aq_high !== 0 ? aq_high : '')}</td>
             </tr>
             {this.checkTime() === 'mo' &&
               this.layoutInput('上午記錄')
@@ -395,7 +412,7 @@ export default class Templog extends React.Component {
             }
           </tbody>
         </table>
-        <Deviation 
+        <Deviation
           isLoading={isLoading}
           isComplete={isComplete}
           isDeviation={isDeviation}
@@ -406,14 +423,14 @@ export default class Templog extends React.Component {
           onCancel={this.onCancel.bind(this)}
         />
         {this.state.confirmShow &&
-          <Confirm 
+          <Confirm
             show={this.state.confirmShow}
             title="送出表單確認"
             content="您是否確定要送出表單？"
             onConfirm={this.onSave.bind(this)}
             onCancel={this.hideConfirm.bind(this)}
             btnConfirm="確定"
-            btnCancel="取消" 
+            btnCancel="取消"
           />
         }
       </div>

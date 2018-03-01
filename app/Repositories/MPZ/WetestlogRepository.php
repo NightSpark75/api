@@ -31,6 +31,9 @@ class WetestlogRepository
     {
         try{
             $ldate = date('Ymd');
+            $dev = $this->getDevInfo($point_no);
+            $hum_range = $this->getHumRange($point_no);
+            $rule = $this->getPointRule($point_no);
             $data = DB::selectOne("
                 select *
                 from mpz_wetestlog
@@ -39,12 +42,53 @@ class WetestlogRepository
             $result = [
                 'result' => true,
                 'log_data' => $data,
-                'ldate' => $ldate,
+                'rule' => $rule,
+                'dev' => $dev,
+                'humi_low' => $hum_range->humi_high,
+                'humi_high' => $hum_range->humi_high,
             ];
             return $result;
         } catch (Exception $e) {
             return $this->exception($e);
         }
+    }
+
+    private function getPointRule($point_no)
+    {
+        $arr = [];
+        $rule = DB::select("
+            select r.*
+                from mpz_point_rule r, mpz_point p
+                where p.point_type = r.point_type and (r.device_type = p.device_type or r.device_type = 'N')
+                    and p.point_no = '$point_no'
+        ");
+        $rule = json_decode(json_encode($rule), true);
+        for ($i = 0; $i < count($rule); $i++) {
+            $rname = $rule[$i]['rname'];
+            $item = $rule[$i];
+            $arr[$rname] = $item;
+        }
+        return $arr;
+    }
+
+    private function getDevInfo($point_no)
+    {
+        $dev = DB::selectOne("
+            select p.mach_no, f.stadjj, f.stadlj
+                from mpz_point p, jdv_f594343@JDBPRD.STANDARD.COM.TW f
+                where p.mach_no = f.stapid(+) and p.point_no = '$point_no'
+        ");
+        return $dev;
+    }
+
+    private function getHumRange($point_no)
+    {
+        $hum_range = DB::selectOne("
+            select humi_low, humi_high
+                from mpz_point
+                where point_no = '$point_no' and point_type = 'W'
+        ");
+        return $hum_range;
     }
     
     public function save($params)
@@ -52,31 +96,28 @@ class WetestlogRepository
         try{
             DB::transaction( function () use($params) {
                 $user = auth()->user()->id;
-                $params['duser'] = $user;
-                $params['ddate'] = date("Y-m-d H:i:s");
-                $params['state'] = 'Y';
-                $params = $this->setLogData($params, $user);
-                $check = $this->checkWetestlog($params);
-                if ($check) {
-                    DB::table('mpz_wetestlog')->insert($params);
-                    $params = [
-                        'point_no' => $params['point_no'],
-                        'ldate' => $params['ldate'],
-                        'duser' => $params['duser'],
-                        'ddate' => $params['ddate'],
-                        'point_type' => 'W', 
-                    ];
-                    DB::table('mpz_point_log')->insert($params);
-                } else {
+                $point_no = $params['point_no'];
+                $ldate = date('Ymd');
+                $date = date('Y-m-d H:i:s');
+                $data = DB::selectOne("
+                    select *
+                        from mpz_wetestlog
+                        where point_no = '$point_no' and ldate = $ldate
+                ");
+                if (isset($data)) {
+                    $upd = $this->setUpdateSQL($user, $params, $data);
                     DB::update("
                         update mpz_wetestlog
-                        set duser = :duser, ddate = :ddate, state = :state, 
-                            mo_hum = :mo_hum, mo_max = :mo_max, mo_min = :mo_min, mo_time = :mo_time, mo_user = :mo_user, mo_rmk = :mo_rmk,
-                            af_hum = :af_hum, af_max = :af_max, af_min = :af_min, af_time = :af_time, af_user = :af_user, af_rmk = :af_rmk,
-                            ev_hum = :ev_hum, ev_max = :ev_max, ev_min = :ev_min, ev_time = :ev_time, ev_user = :ev_user, ev_rmk = :ev_rmk,
-                            zero = :zero, rmk = :rmk
-                        where point_no = :point_no and ldate = :ldate
-                    ", $params);
+                            set $upd
+                            where point_no = $point_no and ldate = $ldate
+                    ");
+                } else {
+                    $params['state'] = 'Y';
+                    $params['duser'] = $user;
+                    $params['ddate'] = $date;
+                    $params['ldate'] = $ldate;
+                    $params = $this->setInsertParams($user, $params);
+                    DB::table('mpz_wetestlog')->insert($params);
                 }
             });
             DB::commit();
@@ -91,62 +132,70 @@ class WetestlogRepository
         }
     }
 
-    private function setLogData($params, $user)
+    private function setInsertParams($user, $params)
     {
-        $point_no = $params['point_no'];
-        $ldate = (int)$params['ldate'];
-        $params['mo_time'] = null;
-        $params['mo_user'] = null;
-        $params['af_time'] = null;
-        $params['af_user'] = null;
-        $params['ev_time'] = null;
-        $params['ev_user'] = null;
-
-        $log = DB::selectOne("
-            select *
-            from mpz_wetestlog
-            where point_no = '$point_no' and ldate = $ldate
-        ");
-
-        $params = $this->setLogTime($params, $log, 'mo');
-        $params = $this->setLogTime($params, $log, 'af');
-        $params = $this->setLogTime($params, $log, 'ev');
-
-        return $params;
-    }
-
-    private function setLogTime($params, $log, $cls)
-    {
-        $date = (int)date("Hi");
-        $log = json_decode(json_encode($log), true);
-        if ($params[$cls.'_hum'] !== null || $params[$cls.'_max'] !== null || $params[$cls.'_min']) {
-            $params[$cls.'_hum'] = (float) $params[$cls.'_hum'];
-            $params[$cls.'_max'] = (float) $params[$cls.'_max'];
-            $params[$cls.'_min'] = (float) $params[$cls.'_min'];
-            if (!isset($log[$cls.'_hum']) || !isset($log[$cls.'_max']) || !isset($log[$cls.'_min'])) {
-                $params[$cls.'_time'] = (int) $date;
-                $params[$cls.'_user'] = $params['duser'];
-            } else {
-                $params[$cls.'_time'] = (int) $log[$cls.'_time'];
-                $params[$cls.'_user'] = $log[$cls.'_user'];
-            }
+        if (isset($params['mo_hum'])) {
+            return $this->setParams($user, $params, 'mo');
+        }
+        if (isset($params['af_hum'])) {
+            return $this->setParams($user, $params, 'af');
+        }
+        if (isset($params['ev_hum'])) {
+            return $this->setParams($user, $params, 'ev');
         }
         return $params;
     }
 
-    private function checkWetestlog($params)
+    private function setParams($user, $params, $type)
     {
-        $point_no = $params['point_no'];
-        $ldate = $params['ldate'];
-        $check = DB::selectOne("
-            select count(*) count
-            from mpz_point_log
-            where point_no = '$point_no' and ldate = $ldate and point_type = 'W'
-        ");
+        $time = date('Hi');
+        $params[$type.'_time'] = $time;
+        $params[$type.'_user'] = $user;
+        return $params;
+    }
 
-        if ($check->count === '0') {
-            return true;
+    private function setUpdateSQL($user, $params, $data)
+    {
+        if (isset($params['mo_hum']) && isset($data->mo_time)) {
+            return $this->getUpdateString($user, $params, 'mo');
         }
-        return false;
+        if (isset($params['af_hum']) && isset($data->af_time)) {
+            return $this->getUpdateString($user, $params, 'af');
+        }
+        if (isset($params['ev_hum']) && isset($data->ev_time)) {
+            return $this->getUpdateString($user, $params, 'ev');
+        }
+        return '';
+    }
+    
+    private function getUpdateString($user, $params, $type)
+    {
+        $time = date('Hi');
+        $k_hum = $type.'_hum';
+        $k_max = $type.'_max';
+        $k_min = $type.'_min';
+        $k_ed = $type.'_ed';
+        $k_eh = $type.'_eh';
+        $k_devia = $type.'_devia';
+        $k_time = $type.'_time';
+        $k_user = $type.'_user';
+        $hum = $params[$k_hum];
+        $max = $params[$k_max];
+        $min = $params[$k_min];
+        $ed = $params[$k_ed];
+        $eh = $params[$k_eh];
+        $devia = $params[$k_devia];
+        $str = "
+            duser = '$user', ddate = sysdate,
+            $k_hum = $hum, $k_max = $max, $k_min = $min
+            $k_ed = '$ed', $k_eh = '$eh', $k_devia = '$devia'
+            $k_time = $time, $k_user = $user
+        ";
+        if ($type === 'mo') {
+            $rmk = $params['mo_rmk'];
+            $dis = $params['mo_dis'];
+            $str = $str . ", mo_rmk = '$rmk', mo_dis = '$dis'";
+        }
+        return $str;
     }
 }

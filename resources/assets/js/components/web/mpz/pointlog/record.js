@@ -9,7 +9,7 @@ export default class Record extends React.Component {
         <div className="field-body">
           <div className="field has-addons">
             <p className="control">
-              <input className="input is-small" type="number"
+              <input className="input is-small" type="number" style={{width: '100px'}}
                 min={-999}
                 max={999}
                 value={Number(this.props.value)}
