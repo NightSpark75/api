@@ -6,6 +6,7 @@
  * @author spark Lin.yupin@standart.com.tw
  * @date 17/08/01
  * @since 1.0.0 spark: 建立檔案寫入與讀取相關的資料處理
+ * @since 1.1.0 spark: 依上線前需求修正
  * 
  */
 namespace App\Repositories\MPB\Production;
@@ -245,10 +246,8 @@ class PackageRepository
         $result = DB::selectOne("
             select count(*) count
                 from mpb_order_tw 
-                where sno = :sno and psno = :psno and empno = :empno
+                where empno = :empno
         ", [
-            'sno' => $sno,
-            'psno' => $psno,
             'empno' => $empno,
         ]);
         if ((int)$result->count === 0) {
