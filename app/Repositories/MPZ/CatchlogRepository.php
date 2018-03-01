@@ -156,6 +156,8 @@ class CatchlogRepository
             DB::transaction( function () use($params) {
                 $params['duser'] = auth()->user()->id;
                 $params['ddate'] = date("Y-m-d H:i:s");
+                $params['cuser'] = auth()->user()->id;
+                $params['ctime'] = date("Hi");
                 $params['state'] = 'Y';
                 DB::table('mpz_catchlog')->insert($params);
                 DB::commit();
