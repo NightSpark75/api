@@ -157,7 +157,13 @@ export default class Catchlog extends React.Component {
   }
 
   lampChange(type) {
-    this.setState({ check_lamp: type })
+    this.setState({ check_lamp: type }, () => { 
+      if (type === 'N' && !this.state.isChecked) {
+        this.pushAlert('驅蚊燈異常')
+      } else {
+        this.removeAlert('驅蚊燈異常')
+      } 
+    })
   }
 
   onSave() {
