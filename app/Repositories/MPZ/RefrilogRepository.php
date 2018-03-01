@@ -31,6 +31,9 @@ class RefrilogRepository
     {
         try{
             $ldate = date('Ymd');
+            $range = $this->getTempRange($point_no);
+            $dev = $this->getDevInfo($point_no);
+            $rule = $this->getPointRule($point_no);
             $data = DB::selectOne("
                 select *
                 from mpz_refrilog
@@ -39,12 +42,54 @@ class RefrilogRepository
             $result = [
                 'result' => true,
                 'log_data' => $data,
-                'ldate' => $ldate,
+                'dev' => $dev,
+                'rule' => $rule,
+                'temp_low' => $range->temp_low,
+                'temp_high' => $range->temp_high,
             ];
             return $result;
         } catch (Exception $e) {
             return $this->exception($e);
         }
+    }
+
+    private function getPointRule($point_no)
+    {
+        $arr = [];
+        $rule = DB::select("
+            select r.*
+                from mpz_point_rule r, mpz_point p
+                where p.point_type = r.point_type and (r.device_type = p.device_type or r.device_type = 'N')
+                    and p.point_no = '$point_no'
+        ");
+        $rule = json_decode(json_encode($rule), true);
+        for ($i = 0; $i < count($rule); $i++) {
+            $rname = $rule[$i]['rname'];
+            $item = $rule[$i];
+            $arr[$rname] = $item;
+        }
+        return $arr;
+    }
+
+    private function getDevInfo($point_no)
+    {
+        $dev = DB::selectOne("
+            select p.mach_no, f.stadjj, f.stadlj
+                from mpz_point p, jdv_f594343@JDBPRD.STANDARD.COM.TW f
+                where p.mach_no = f.stapid(+) and p.point_no = '$point_no'
+        ");
+        return $dev;
+    }
+
+
+    private function getTempRange($point_no)
+    {
+        $range = DB::selectOne("
+            select temp_low, temp_high
+                from mpz_point
+                where point_no = '$point_no' and point_type = 'R'
+        ");
+        return $range;
     }
     
     public function save($params)
@@ -52,31 +97,28 @@ class RefrilogRepository
         try{
             DB::transaction( function () use($params) {
                 $user = auth()->user()->id;
-                $params['duser'] = $user;
-                $params['ddate'] = date("Y-m-d H:i:s");
-                $params['state'] = 'Y';
-                $params = $this->setLogData($params, $user);
-                $check = $this->checkRefrilog($params);
-                if ($check) {
-                    DB::table('mpz_refrilog')->insert($params);
-                    $params = [
-                        'point_no' => $params['point_no'],
-                        'ldate' => $params['ldate'],
-                        'duser' => $params['duser'],
-                        'ddate' => $params['ddate'],
-                        'point_type' => 'R', 
-                    ];
-                    DB::table('mpz_point_log')->insert($params);
-                } else {
+                $point_no = $params['point_no'];
+                $ldate = date('Ymd');
+                $date = date('Y-m-d H:i:s');
+                $data = DB::selectOne("
+                    select *
+                        from mpz_refrilog
+                        where point_no = '$point_no' and ldate = $ldate
+                ");
+                if (isset($data)) {
+                    $upd = $this->setUpdateSQL($user, $params, $data);
                     DB::update("
                         update mpz_refrilog
-                        set duser = :duser, ddate = :ddate, state = :state, rmk = :rmk, error_item = :error_item
-                            mo_temp = :mo_temp, mo_putt = :mo_putt, mo_bell = :mo_bell, mo_light = :mo_light, 
-                                mo_time = :mo_time, mo_user = :mo_user, mo_rmk = :mo_rmk,
-                            af_temp = :af_temp, af_putt = :af_putt, af_bell = :af_bell, af_light = :af_light, 
-                                af_time = :af_time, af_user = :af_user, af_rmk = :af_rmk
-                        where point_no = :point_no and ldate = :ldate
-                    ", $params);
+                            set $upd
+                            where point_no = $point_no and ldate = $ldate
+                    ");
+                } else {
+                    $params['state'] = 'Y';
+                    $params['duser'] = $user;
+                    $params['ddate'] = $date;
+                    $params['ldate'] = $ldate;
+                    $params = $this->setInsertParams($user, $params);
+                    DB::table('mpz_refrilog')->insert($params);
                 }
             });
             DB::commit();
@@ -91,67 +133,64 @@ class RefrilogRepository
         }
     }
 
-    private function setLogData($params, $user)
+    private function setInsertParams($user, $params)
     {
-        $point_no = $params['point_no'];
-        $ldate = (int)$params['ldate'];
-        $params['mo_time'] = null;
-        $params['mo_user'] = null;
-        $params['af_time'] = null;
-        $params['af_user'] = null;
-
-        $log = DB::selectOne("
-            select *
-            from mpz_refrilog
-            where point_no = '$point_no' and ldate = $ldate
-        ");
-
-        $params = $this->setLogTime($params, $log, 'mo');
-        $params = $this->setLogTime($params, $log, 'af');
-
-        $params = $this->setErrorItem($params, $log);
-
-        return $params;
-    }
-
-    private function setErrorItem($params, $log)
-    {
-        if ($params['error_item'] !== $log['error_item']) {
-            $params['error_user'] = $params['duser'];
+        if (isset($params['mo_pa'])) {
+            return $this->setParams($user, $params, 'mo');
+        }
+        if (isset($params['af_pa'])) {
+            return $this->setParams($user, $params, 'af');
         }
         return $params;
     }
 
-    private function setLogTime($params, $log, $cls)
+    private function setParams($user, $params, $type)
     {
-        $date = (int)date("Hi");
-        $log = json_decode(json_encode($log), true);
-        if ($params[$cls.'_temp'] !== null) {
-            $params[$cls.'_temp'] = (float) $params[$cls.'_temp'];
-            if (!isset($log[$cls.'_temp'])) {
-                $params[$cls.'_time'] = (int) $date;
-                $params[$cls.'_user'] = $params['duser'];
-            } else {
-                $params[$cls.'_time'] = (int) $log[$cls.'_time'];
-                $params[$cls.'_user'] = $log[$cls.'_user'];
-            }
-        }
+        $time = date('Hi');
+        $params[$type.'_time'] = $time;
+        $params[$type.'_user'] = $user;
         return $params;
     }
 
-    private function checkRefrilog($params)
+    private function setUpdateSQL($user, $params, $data)
     {
-        $point_no = $params['point_no'];
-        $ldate = $params['ldate'];
-        $check = DB::selectOne("
-            select count(*) count
-            from mpz_point_log
-            where point_no = '$point_no' and ldate = $ldate and point_type = 'R'
-        ");
-
-        if ($check->count === '0') {
-            return true;
+        $time = date('Hi');
+        if (isset($params['mo_temp']) && isset($data->mo_time)) {
+            return $this->getUpdateString($user, $params, 'mo');
         }
-        return false;
-     }
+        if (isset($params['af_temp']) && isset($data->af_time)) {
+            return $this->getUpdateString($user, $params, 'af');
+        }
+        return '';
+    }
+    
+    private function getUpdateString($user, $params, $type)
+    {
+        $time = date('Hi');
+        $k_temp = $type.'_temp';
+        $k_ed = $type.'_ed';
+        $k_ep = $type.'_ep';
+        $k_devia = $type.'_devia';
+        $k_time = $type.'_time';
+        $k_user = $type.'_user';
+        $temp = $params[$k_temp];
+        $ed = $params[$k_ed];
+        $ep = $params[$k_ep];
+        $devia = $params[$k_devia];
+        $str = "
+            duser = '$user', ddate = sysdate,
+            $k_temp = $temp,  
+            $k_ed = '$ed', $k_ep = '$ep', $k_devia = '$devia'
+            $k_time = $time, $k_user = $user
+        ";
+        if ($type === 'mo') {
+            $putt = $params['mo_putt'];
+            $bell = $params['mo_bell'];
+            $light = $params['mo_light'];
+            $rmk = $params['mo_rmk'];
+            $dis = $params['mo_dis'];
+            $str = $str . "mo_putt = '$putt', mo_bell = '$mo_bell', mo_light = '$mo_light', mo_rmk = '$rmk', mo_dis = '$dis'";
+        }
+        return $str;
+    }
 }

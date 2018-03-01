@@ -9,32 +9,33 @@ import Record from '../record'
 import Exception from '../exception'
 import Confirm from '../../../../sys/modal/confirm'
 import Deviation from '../deviation'
+import Checking from './checking'
 
 const keyList = [
   'point_no',
-  'mo_pa', 'mo_aq', 'mo_ed', 'mo_ep', 'mo_devia', 'mo_rmk', 'mo_dis',
-  'af_pa', 'af_aq', 'af_ed', 'af_ep', 'af_devia',
-  'ev_pa', 'ev_aq', 'ev_ed', 'ev_ep', 'ev_devia',
+  'mo_temp', 'mo_putt', 'mo_bell', 'mo_light', 'mo_ed', 'mo_et', 'mo_devia', 'mo_rmk', 'mo_dis',
+  'af_temp', 'af_ed', 'af_et', 'af_devia',
 ]
 
-const key = ['_pa', '_aq']
-const keyLabel = ['壓差(Pa)', '壓差(mmAq)']
-const err = ['_ed', '_ep', '_devia']
-const errLabel = ['儀器異常', '壓差異常', '開立偏差']
+const key = ['_temp']
+const keyLabel = ['溫度']
+const checking = ['_putt', '_bell', '_light']
+const checkingLabel = ['安全推桿', '無線門鈴發報機', '照明設備']
+const err = ['_ed', '_et', '_devia']
+const errLabel = ['儀器異常', '溫度異常', '開立偏差']
 
 let today = new Date()
 //let hours = today.getHours() * 100
 let hours = 830
 
-export default class Pressurelog extends React.Component {
+export default class Refrilog extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       alertMsg: [],
-      point_no: '', mach_no: '', ch_date: '', pa_high: '', pa_low: '', aq_high: '', aq_low: '',
-      mo_pa: '', mo_aq: '', mo_rmk: '', mo_dis: '', mo_ed: '', mo_ep: '', mo_devia: '',
-      af_pa: '', af_aq: '', af_ed: '', af_ep: '', af_devia: '',
-      ev_pa: '', ev_aq: '', ev_ed: '', ev_ep: '', ev_devia: '',
+      point_no: '', mach_no: '', ch_date: '', temp_high: '', temp_low: '',
+      mo_temp: '', mo_putt: 'N', mo_bell: 'N', mo_light: 'N', mo_rmk: '', mo_dis: '', mo_ed: '', mo_et: '', mo_devia: '',
+      af_temp: '', af_ed: '', af_et: '', af_devia: '',
       log_data: {},
       isLoading: false,
       confirmShow: false,
@@ -51,7 +52,7 @@ export default class Pressurelog extends React.Component {
   init() {
     let self = this
     let point_no = this.props.pointInfo.point_no
-    axios.get('/api/web/mpz/pointlog/pressure/init/' + point_no)
+    axios.get('/api/web/mpz/pointlog/refri/init/' + point_no)
       .then(function (response) {
         if (response.data.result) {
           self.setState({
@@ -60,10 +61,8 @@ export default class Pressurelog extends React.Component {
             mach_no: response.data.dev.mach_no,
             ch_date: response.data.dev.stadlj,
             log_data: response.data.log_data,
-            pa_low: response.data.pa_low,
-            pa_high: response.data.pa_high,
-            aq_low: response.data.aq_low,
-            aq_high: response.data.aq_high,
+            temp_low: response.data.temp_low,
+            temp_high: response.data.temp_high,
           }, () => {
             self.formCheck()
             self.setValue()
@@ -84,12 +83,10 @@ export default class Pressurelog extends React.Component {
     let data = this.state.log_data
     if (data !== null) {
       this.setState({
-        mo_pa: data.mo_pa, mo_aq: data.mo_aq, 
-        mo_rmk: data.mo_rmk, mo_dis: data.mo_dis, mo_ed: data.mo_ed, mo_ep: data.mo_ep, mo_devia: data.mo_devia,
-        af_pa: data.af_pa, af_aq: data.af_aq, 
-        af_ed: data.af_ed, af_ep: data.af_ep, af_devia: data.af_devia,
-        ev_pa: data.ev_pa, ev_aq: data.ev_aq, 
-        ev_ed: data.ev_ed, ev_ep: data.ev_ep, ev_devia: data.ev_devia,
+        mo_temp: data.mo_temp, mo_putt: data.mo_putt, mo_bell: data.mo_bell, mo_light: data.mo_light, 
+        mo_rmk: data.mo_rmk, mo_dis: data.mo_dis, mo_ed: data.mo_ed, mo_et: data.mo_et, mo_devia: data.mo_devia,
+        af_temp: data.af_temp,
+        af_ed: data.af_ed, af_et: data.af_et, af_devia: data.af_devia,
       })
     }
   }
@@ -101,7 +98,7 @@ export default class Pressurelog extends React.Component {
     keyList.map((item) => {
       form_data.append(item, this.state[item])
     })
-    axios.post('/api/web/mpz/pointlog/pressure/save', form_data)
+    axios.post('/api/web/mpz/pointlog/refri/save', form_data)
       .then(function (response) {
         if (response.data.result) {
           self.sendMsg(self.state.point_no + '檢查點記錄成功!')
@@ -120,19 +117,7 @@ export default class Pressurelog extends React.Component {
 
   inputChange(key, e) {
     let value = e.target.value
-    if (key.substr(3, 2) === 'pa') {
-      let aq = key.substr(0, 3) + 'aq'
-      this.setState({
-        [key]: value,
-        [aq]: '',
-      }, () => { this.inputCheck(key) })
-    } else {
-      let pa = key.substr(0, 3) + 'pa'
-      this.setState({
-        [pa]: value * 9.8,
-        [key]: value,
-      }, () => { this.inputCheck(pa) })
-    }
+    this.setState({ [key]: value }, () => { this.inputCheck(key) })
   }
 
   formCheck() {
@@ -158,34 +143,30 @@ export default class Pressurelog extends React.Component {
   }
 
   inputCheck(key) {
-    const { pa_high, pa_low, aq_low, aq_high, isChecked } = this.state
+    const { temp_high, temp_low, isChecked } = this.state
     const value = Number(this.state[key])
-    if (key.substr(3, 2) === 'pa' && !isChecked) {
-      if (Number(pa_high) < value) {
-        this.pushAlert('壓差(Pa)超過上限，請註記異常')
+    if (key.substr(3, 1) === 't' && !isChecked) {
+      if (Number(temp_high) < value) {
+        this.pushAlert('溫度超過上限，請註記異常')
       } else {
-        this.removeAlert('壓差(Pa)超過上限，請註記異常')
+        this.removeAlert('溫度超過上限，請註記異常')
       }
-      if (Number(pa_low) > value) {
-        this.pushAlert('壓差(Pa)超過下限，請註記異常')
+      if (Number(temp_low) > value) {
+        this.pushAlert('溫度超過下限，請註記異常')
       } else {
-        this.removeAlert('壓差(Pa)超過下限，請註記異常')
-      }
-    }
-    /*
-    if (key.substr(3, 2) === 'mm' && !isChecked) {
-      if (Number(aq_high) < value) {
-        this.pushAlert('壓差(mmAq)超過上限，請註記異常')
-      } else {
-        this.removeAlert('壓差(mmAq)超過上限，請註記異常')
-      }
-      if (Number(aq_low) > value) {
-        this.pushAlert('壓差(mmAq)超過下限，請註記異常')
-      } else {
-        this.removeAlert('壓差(mmAq)超過下限，請註記異常')
+        this.removeAlert('溫度超過下限，請註記異常')
       }
     }
-    */
+  }
+
+  checkingCheck() {
+    checking.map((item, index) => {
+      if (this.state['mo' + item] === 'N' && !this.state.isChecked) {
+        this.pushAlert(checkingLabel[index] + '異常，請註記異常')
+      } else {
+        this.removeAlert(checkingLabel[index] + '異常，請註記異常')
+      }
+    })
   }
 
   exceptionCheck() {
@@ -200,6 +181,7 @@ export default class Pressurelog extends React.Component {
       this.setState({ isChecked: isChecked }, () => {
         key.map((item) => {
           this.inputCheck(type + item)
+          this.checkingCheck()
         })
       })
     }
@@ -221,6 +203,13 @@ export default class Pressurelog extends React.Component {
     this.setState({ alertMsg: alertMsg })
   }
 
+  checkingChange(key, e) {
+    let state, value
+    state = this.state[key]
+    value = state === 'Y' ? 'N' : 'Y'
+    this.setState({ [key]: value }, () => { this.checkingCheck() })
+  }
+
   checkboxChange(key, e) {
     let state, value
     state = this.state[key]
@@ -240,6 +229,25 @@ export default class Pressurelog extends React.Component {
               label={keyLabel[index]}
               value={this.state[type + item]}
               onChange={this.inputChange.bind(this, type + item)}
+            />
+          ))}
+        </td>
+      </tr>
+    )
+  }
+
+  layoutChecking() {
+    return (
+      <tr>
+        <td>撿查</td>
+        <td colSpan={3}>
+          {checking.map((item, index) => (
+            <Checking
+              name={item}
+              key={index}
+              label={checkingLabel[index]}
+              value={this.state['mo' + item]}
+              onChange={this.checkingChange.bind(this, 'mo' + item)}
             />
           ))}
         </td>
@@ -278,10 +286,6 @@ export default class Pressurelog extends React.Component {
         operatorHandle(hours, rule.AF_END.cond, Number(rule.AF_END.val))) {
         return 'af'
       }
-      if (operatorHandle(hours, rule.EV_START.cond, Number(rule.EV_START.val)) &&
-        operatorHandle(hours, rule.EV_END.cond, Number(rule.EV_END.val))) {
-        return 'ev'
-      }
     }
     return ''
   }
@@ -306,7 +310,7 @@ export default class Pressurelog extends React.Component {
     const { pointInfo } = this.props
     const {
       alertMsg,
-      mach_no, ch_date, pa_high, pa_low, aq_high, aq_low,
+      mach_no, ch_date, temp_high, temp_low, 
       isLoading, isChecked, isDeviation, isOverdue,
     } = this.state
     const { mo, af, ev } = this.state
@@ -332,7 +336,7 @@ export default class Pressurelog extends React.Component {
           <tbody>
             <tr>
               <td colSpan={4}>
-                <span className="title is-4">最溼點溼度記錄表</span>
+                <span className="title is-4">冷藏櫃操作記錄表</span>
                 <span className="title is-6" style={{ marginLeft: '10px' }}>
                   日期：{today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate()}
                 </span>
@@ -350,26 +354,22 @@ export default class Pressurelog extends React.Component {
               <td width="160">儀器校期</td><td>{ch_date}</td>
             </tr>
             <tr>
-              <td>合格範圍pa</td><td>{(pa_low !== 0 ? pa_low : '') + " ~ " + (pa_high !== 0 ? pa_high : '')}</td>
-              <td>合格範圍mmAq</td><td>{(aq_low !== 0 ? aq_low : '') + " ~ " + (aq_high !== 0 ? aq_high : '')}</td>
+              <td >合格範圍</td><td colSpan={3}>{'溫度： ' + (temp_low !== 0 ? temp_low : '') + " ~ " + (temp_high !== 0 ? temp_high : '') + ' ℃'}</td>
             </tr>
             {this.checkTime() === 'mo' &&
               this.layoutInput('上午記錄')
             }
-            {this.checkTime() === 'af' &&
-              this.layoutInput('下午記錄(1)')
+            {this.checkTime() === 'mo' &&
+              this.layoutChecking()
             }
-            {this.checkTime() === 'ev' &&
-              this.layoutInput('下午記錄(2)')
+            {this.checkTime() === 'af' &&
+              this.layoutInput('下午記錄')
             }
             {this.checkTime() === 'mo' &&
               this.layoutCheck('mo')
             }
             {this.checkTime() === 'af' &&
               this.layoutCheck('af')
-            }
-            {this.checkTime() === 'ev' &&
-              this.layoutCheck('ev')
             }
             {this.checkTime() === 'mo' &&
               <tr>

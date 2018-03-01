@@ -86,12 +86,12 @@ class PressurelogRepository
 
     private function getPaRange($point_no)
     {
-        $hum_range = DB::selectOne("
+        $range = DB::selectOne("
             select pa_low, pa_high, mmaq_low aq_low, mmaq_high aq_high
                 from mpz_point
                 where point_no = '$point_no' and point_type = 'P'
         ");
-        return $hum_range;
+        return $range;
     }
 
 
