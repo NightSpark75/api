@@ -90,7 +90,10 @@ export default class Catchlog extends React.Component {
             lastGrowth: response.data.lastGrowth,
             changeDate: response.data.changeDate,
             init: false,
-          }, () => { self.setValue() })
+          }, () => { 
+            self.setValue()
+            self.formCheck() 
+          })
         } else {
           self.props.sendMsg(response.data.msg)
           self.onCancel()
