@@ -107,7 +107,10 @@ export default class Catchlog extends React.Component {
   setLayout() {
     let device = this.props.pointInfo.device_type
     deviceSet[device].map((item) => {
-      this.setState({ [item]: true })
+      this.setState({ [item]: true }, () => { 
+        this.checkAllRequire() 
+        this.lampCheck()
+      })
     })
   }
 
@@ -160,13 +163,16 @@ export default class Catchlog extends React.Component {
   }
 
   lampChange(type) {
-    this.setState({ check_lamp: type }, () => { 
-      if (type === 'N' && !this.state.isChecked) {
-        this.pushAlert('驅蚊燈異常')
-      } else {
-        this.removeAlert('驅蚊燈異常')
-      } 
-    })
+    this.setState({ check_lamp: type }, () => { this.lampCheck() }) 
+  }
+
+  lampCheck() {
+    const { check_lamp, isChecked } = this.state
+    if (check_lamp === 'N' && !isChecked) {
+      this.pushAlert('驅蚊燈異常')
+    } else {
+      this.removeAlert('驅蚊燈異常')
+    } 
   }
 
   onSave() {
