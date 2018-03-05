@@ -9,12 +9,13 @@ import Record from '../record'
 import Exception from '../exception'
 import Confirm from '../../../../sys/modal/confirm'
 import Deviation from '../deviation'
+import Remark from '../remark'
 
 const keyList = [
   'point_no',
-  'mo_pa', 'mo_aq', 'mo_ed', 'mo_ep', 'mo_devia', 'mo_rmk', 'mo_dis',
-  'af_pa', 'af_aq', 'af_ed', 'af_ep', 'af_devia',
-  'ev_pa', 'ev_aq', 'ev_ed', 'ev_ep', 'ev_devia',
+  'mo_pa', 'mo_aq', 'mo_ed', 'mo_ep', 'mo_devia', 'mo_rmk', 'mo_dis', 'mo_urmk',
+  'af_pa', 'af_aq', 'af_ed', 'af_ep', 'af_devia', 'af_urmk',
+  'ev_pa', 'ev_aq', 'ev_ed', 'ev_ep', 'ev_devia', 'ev_urmk',
 ]
 
 const key = ['_pa', '_aq']
@@ -32,9 +33,9 @@ export default class Pressurelog extends React.Component {
     this.state = {
       alertMsg: [],
       point_no: '', mach_no: '', ch_date: '', pa_high: '', pa_low: '', aq_high: '', aq_low: '',
-      mo_pa: '', mo_aq: '', mo_rmk: '', mo_dis: '', mo_ed: '', mo_ep: '', mo_devia: '',
-      af_pa: '', af_aq: '', af_ed: '', af_ep: '', af_devia: '',
-      ev_pa: '', ev_aq: '', ev_ed: '', ev_ep: '', ev_devia: '',
+      mo_pa: '', mo_aq: '', mo_rmk: '', mo_dis: '', mo_ed: '', mo_ep: '', mo_devia: '', mo_urmk: '',
+      af_pa: '', af_aq: '', af_ed: '', af_ep: '', af_devia: '', af_urmk: '',
+      ev_pa: '', ev_aq: '', ev_ed: '', ev_ep: '', ev_devia: '', ev_urmk: '',
       log_data: {},
       isLoading: false,
       confirmShow: false,
@@ -85,10 +86,11 @@ export default class Pressurelog extends React.Component {
     if (data !== null) {
       this.setState({
         mo_pa: data.mo_pa, mo_aq: data.mo_aq, 
-        mo_rmk: data.mo_rmk, mo_dis: data.mo_dis, mo_ed: data.mo_ed, mo_ep: data.mo_ep, mo_devia: data.mo_devia,
-        af_pa: data.af_pa, af_aq: data.af_aq, 
+        mo_rmk: data.mo_rmk, mo_dis: data.mo_dis, mo_urmk: data.mo_urmk,
+        mo_ed: data.mo_ed, mo_ep: data.mo_ep, mo_devia: data.mo_devia,
+        af_pa: data.af_pa, af_aq: data.af_aq, af_urmk: af_urmk,
         af_ed: data.af_ed, af_ep: data.af_ep, af_devia: data.af_devia,
-        ev_pa: data.ev_pa, ev_aq: data.ev_aq, 
+        ev_pa: data.ev_pa, ev_aq: data.ev_aq, ev_urmk: ev_urmk,
         ev_ed: data.ev_ed, ev_ep: data.ev_ep, ev_devia: data.ev_devia,
       })
     }
@@ -172,20 +174,6 @@ export default class Pressurelog extends React.Component {
         this.removeAlert('壓差(Pa)超過下限，請註記異常')
       }
     }
-    /*
-    if (key.substr(3, 2) === 'mm' && !isChecked) {
-      if (Number(aq_high) < value) {
-        this.pushAlert('壓差(mmAq)超過上限，請註記異常')
-      } else {
-        this.removeAlert('壓差(mmAq)超過上限，請註記異常')
-      }
-      if (Number(aq_low) > value) {
-        this.pushAlert('壓差(mmAq)超過下限，請註記異常')
-      } else {
-        this.removeAlert('壓差(mmAq)超過下限，請註記異常')
-      }
-    }
-    */
   }
 
   exceptionCheck() {
@@ -389,7 +377,7 @@ export default class Pressurelog extends React.Component {
             }
             {this.checkTime() === 'mo' && this.state.mo_rmk === '其它' &&
               <tr>
-                <td>備註說明</td>
+                <td>說明</td>
                 <td colSpan={3}>
                   <div className="field is-horizontal">
                     <div className="field-body">
@@ -406,6 +394,15 @@ export default class Pressurelog extends React.Component {
                   </div>
                 </td>
               </tr>
+            }
+            {this.checkTime() === 'mo' && 
+              <Remark value={this.state.mo_urmk} onChange={this.inputChange(this, 'mo_urmk')}/>
+            }
+            {this.checkTime() === 'af' && 
+              <Remark value={this.state.af_urmk} onChange={this.inputChange(this, 'af_urmk')}/>
+            }
+            {this.checkTime() === 'ev' && 
+              <Remark value={this.state.ev_urmk} onChange={this.inputChange(this, 'ev_urmk')}/>
             }
           </tbody>
         </table>

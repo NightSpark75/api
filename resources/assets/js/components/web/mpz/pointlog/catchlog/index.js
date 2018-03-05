@@ -8,6 +8,7 @@ import Capture from './capture'
 import Replace from './replace'
 import Confirm from '../../../../sys/modal/confirm'
 import Deviation from '../deviation'
+import Remark from '../remark'
 import { operatorHandle } from '../rule'
 
 const deviceSet = {
@@ -23,7 +24,7 @@ const keyList = [
   'catch_num4', 'catch_num5', 'catch_num6',
   'change1', 'change2', 'change3',
   'change4', 'change5', 'change6',
-  'check_lamp', 'rmk', 'discription'
+  'check_lamp', 'rmk', 'discription', 'urmk'
 ]
 
 const catchList = [
@@ -52,7 +53,7 @@ export default class Catchlog extends React.Component {
       rule: {},
       catch_num1: 0, catch_num2: 0, catch_num3: 0, catch_num4: 0, catch_num5: 0, catch_num6: 0,
       change1: 'N', change2: 'N', change3: 'N', change4: 'N', change5: 'N', change6: 'N', check_lamp: 'N',
-      rmk: '', discription: '', deviation: 'N',
+      rmk: '', discription: '', deviation: 'N', urmk: '',
       changeDate: [],
       vn1: false, vn2: false, vn3: false, vn4: false, vn5: false, vn6: false,
       vc1: false, vc2: false, vc3: false, vc4: false, vc5: false, vc6: false,
@@ -124,7 +125,7 @@ export default class Catchlog extends React.Component {
         catch_num4: Number(data.catch_num4), catch_num5: Number(data.catch_num5), catch_num6: Number(data.catch_num6),
         change1: data.change1, change2: data.change2, change3: data.change3,
         change4: data.change4, change5: data.change5, change6: data.change6, check_lamp: data.check_lamp,
-        rmk: data.rmk || '', discription: data.discription, deviation: data.deviation,
+        rmk: data.rmk || '', discription: data.discription, deviation: data.deviation, urmk: data.urmk,
       }, () => { this.formCheck() })
     }
   }
@@ -133,7 +134,7 @@ export default class Catchlog extends React.Component {
     this.setState({
       catch_num1: 0, catch_num2: 0, catch_num3: 0, catch_num4: 0, catch_num5: 0, catch_num6: 0,
       change1: 'N', change2: 'N', change3: 'N', change4: 'N', change5: 'N', change6: 'N', check_lamp: 'N',
-      rmk: '', discription: '', deviation: 'N',
+      rmk: '', discription: '', deviation: 'N', urmk: '',
       changeDate: [],
       vn1: false, vn2: false, vn3: false, vn4: false, vn5: false, vn6: false,
       vc1: false, vc2: false, vc3: false, vc4: false, vc5: false, vc6: false,
@@ -507,7 +508,7 @@ export default class Catchlog extends React.Component {
             </tr>
             {this.state.rmk === '其它' &&
               <tr>
-                <td>備註說明</td>
+                <td>說明</td>
                 <td>
                   <div className="field is-horizontal">
                     <div className="field-body">
@@ -548,6 +549,7 @@ export default class Catchlog extends React.Component {
                 </div>
               </td>
             </tr>
+            <Remark value={this.state.urmk} onChange={this.catchChange.bind(this, 'urmk')}/>
           </tbody>
         </table>
         <Deviation

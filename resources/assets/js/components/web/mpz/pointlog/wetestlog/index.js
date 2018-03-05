@@ -9,12 +9,13 @@ import Record from '../record'
 import Exception from '../exception'
 import Confirm from '../../../../sys/modal/confirm'
 import Deviation from '../deviation'
+import Remark from '../remark'
 
 const keyList = [
   'point_no', 'zero',
-  'mo_hum', 'mo_max', 'mo_min', 'mo_ed', 'mo_eh', 'mo_devia', 'mo_rmk', 'mo_dis',
-  'af_hum', 'af_max', 'af_min', 'af_ed', 'af_eh', 'af_devia',
-  'ev_hum', 'ev_max', 'ev_min', 'ev_ed', 'ev_eh', 'ev_devia',
+  'mo_hum', 'mo_max', 'mo_min', 'mo_ed', 'mo_eh', 'mo_devia', 'mo_rmk', 'mo_dis', 'mo_urmk',
+  'af_hum', 'af_max', 'af_min', 'af_ed', 'af_eh', 'af_devia', 'af_urmk',
+  'ev_hum', 'ev_max', 'ev_min', 'ev_ed', 'ev_eh', 'ev_devia', 'ev_urmk',
 ]
 
 const key = ['_hum', '_max', '_min']
@@ -32,9 +33,9 @@ export default class Wetestlog extends React.Component {
     this.state = {
       alertMsg: [],
       point_no: '', mach_no: '', ch_date: '', humi_high: '', humi_low: '',
-      mo_hum: '', mo_max: '', mo_min: '', mo_rmk: '', mo_dis: '', mo_ed: '', mo_eh: '', mo_devia: '',
-      af_hum: '', af_max: '', af_min: '', af_ed: '', af_eh: '', af_devia: '',
-      ev_hum: '', ev_max: '', ev_min: '', ev_ed: '', ev_eh: '', ev_devia: '',
+      mo_hum: '', mo_max: '', mo_min: '', mo_rmk: '', mo_dis: '', mo_ed: '', mo_eh: '', mo_devia: '', mo_urmk: '',
+      af_hum: '', af_max: '', af_min: '', af_ed: '', af_eh: '', af_devia: '', af_urmk: '',
+      ev_hum: '', ev_max: '', ev_min: '', ev_ed: '', ev_eh: '', ev_devia: '', ev_urmk: '',
       zero: 'N',
       log_data: {},
       isLoading: false,
@@ -83,11 +84,11 @@ export default class Wetestlog extends React.Component {
     let data = this.state.log_data
     if (data !== null) {
       this.setState({
-        mo_hum: data.mo_hum, mo_max: data.mo_max, mo_min: data.mo_min,
+        mo_hum: data.mo_hum, mo_max: data.mo_max, mo_min: data.mo_min, mo_urmk: data.mo_urmk,
         mo_rmk: data.mo_rmk, mo_dis: data.mo_dis, mo_ed: data.mo_ed, mo_eh: data.mo_eh, mo_devia: data.mo_devia,
-        af_hum: data.af_hum, af_max: data.af_max, af_min: data.af_min,
+        af_hum: data.af_hum, af_max: data.af_max, af_min: data.af_min, af_urmk: data.af_urmk,
         af_ed: data.af_ed, af_eh: data.af_eh, af_devia: data.af_devia,
-        ev_hum: data.mo_hum, ev_max: data.ev_max, ev_min: data.ev_min,
+        ev_hum: data.mo_hum, ev_max: data.ev_max, ev_min: data.ev_min, ev_urmk: data.ev_urmk,
         ev_ed: data.ev_ed, ev_eh: data.ev_eh, ev_devia: data.ev_devia,
         zero: data.zero,
       })
@@ -386,7 +387,7 @@ export default class Wetestlog extends React.Component {
             }
             {this.checkTime() === 'mo' && this.state.mo_rmk === '其它' &&
               <tr>
-                <td>備註說明</td>
+                <td>說明</td>
                 <td colSpan={3}>
                   <div className="field is-horizontal">
                     <div className="field-body">
@@ -403,6 +404,15 @@ export default class Wetestlog extends React.Component {
                   </div>
                 </td>
               </tr>
+            }
+            {this.checkTime() === 'mo' && 
+              <Remark value={this.state.mo_urmk} onChange={this.inputChange(this, 'mo_urmk')}/>
+            }
+            {this.checkTime() === 'af' && 
+              <Remark value={this.state.af_urmk} onChange={this.inputChange(this, 'af_urmk')}/>
+            }
+            {this.checkTime() === 'ev' && 
+              <Remark value={this.state.ev_urmk} onChange={this.inputChange(this, 'ev_urmk')}/>
             }
           </tbody>
         </table>

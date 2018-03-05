@@ -10,11 +10,13 @@ import Exception from '../exception'
 import Confirm from '../../../../sys/modal/confirm'
 import Deviation from '../deviation'
 import Checking from './checking'
+import Remark from '../remark'
 
 const keyList = [
   'point_no',
-  'mo_temp', 'mo_putt', 'mo_bell', 'mo_light', 'mo_ed', 'mo_et', 'mo_devia', 'mo_rmk', 'mo_dis',
-  'af_temp', 'af_ed', 'af_et', 'af_devia',
+  'mo_temp', 'mo_putt', 'mo_bell', 'mo_light', 'mo_urmk',
+  'mo_ed', 'mo_et', 'mo_devia', 'mo_rmk', 'mo_dis',
+  'af_temp', 'af_ed', 'af_et', 'af_devia', 'af_urmk',
 ]
 
 const key = ['_temp']
@@ -34,8 +36,9 @@ export default class Refrilog extends React.Component {
     this.state = {
       alertMsg: [],
       point_no: '', mach_no: '', ch_date: '', temp_high: '', temp_low: '',
-      mo_temp: '', mo_putt: 'N', mo_bell: 'N', mo_light: 'N', mo_rmk: '', mo_dis: '', mo_ed: '', mo_et: '', mo_devia: '',
-      af_temp: '', af_ed: '', af_et: '', af_devia: '',
+      mo_temp: '', mo_putt: 'N', mo_bell: 'N', mo_light: 'N', mo_rmk: '', mo_urmk: '',
+      mo_dis: '', mo_ed: '', mo_et: '', mo_devia: '',
+      af_temp: '', af_ed: '', af_et: '', af_devia: '', af_urmk: '',
       log_data: {},
       isLoading: false,
       confirmShow: false,
@@ -83,9 +86,9 @@ export default class Refrilog extends React.Component {
     let data = this.state.log_data
     if (data !== null) {
       this.setState({
-        mo_temp: data.mo_temp, mo_putt: data.mo_putt, mo_bell: data.mo_bell, mo_light: data.mo_light, 
+        mo_temp: data.mo_temp, mo_putt: data.mo_putt, mo_bell: data.mo_bell, mo_light: data.mo_light, mo_umrk: data.mo_urmk,
         mo_rmk: data.mo_rmk, mo_dis: data.mo_dis, mo_ed: data.mo_ed, mo_et: data.mo_et, mo_devia: data.mo_devia,
-        af_temp: data.af_temp,
+        af_temp: data.af_temp, af_urmk: data.af_urmk,
         af_ed: data.af_ed, af_et: data.af_et, af_devia: data.af_devia,
       })
     }
@@ -389,7 +392,7 @@ export default class Refrilog extends React.Component {
             }
             {this.checkTime() === 'mo' && this.state.mo_rmk === '其它' &&
               <tr>
-                <td>備註說明</td>
+                <td>說明</td>
                 <td colSpan={3}>
                   <div className="field is-horizontal">
                     <div className="field-body">
@@ -406,6 +409,12 @@ export default class Refrilog extends React.Component {
                   </div>
                 </td>
               </tr>
+            }
+            {this.checkTime() === 'mo' && 
+              <Remark value={this.state.mo_urmk} onChange={this.inputChange(this, 'mo_urmk')}/>
+            }
+            {this.checkTime() === 'af' && 
+              <Remark value={this.state.af_urmk} onChange={this.inputChange(this, 'af_urmk')}/>
             }
           </tbody>
         </table>

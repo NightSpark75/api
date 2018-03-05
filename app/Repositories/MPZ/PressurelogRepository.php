@@ -22,6 +22,7 @@ use App\Traits\Sqlexecute;
 class PressurelogRepository
 {   
     use Sqlexecute;
+    private $type;
 
     public function __construct() {
 
@@ -124,6 +125,7 @@ class PressurelogRepository
                     $params = $this->setInsertParams($user, $params);
                     DB::table('mpz_pressurelog')->insert($params);
                 }
+                $this->mailhandler($params);
             });
             DB::commit();
             $result = [
@@ -140,22 +142,25 @@ class PressurelogRepository
     private function setInsertParams($user, $params)
     {
         if (isset($params['mo_pa'])) {
-            return $this->setParams($user, $params, 'mo');
+            $this->type = 'mo';
+            return $this->setParams($user, $params);
         }
         if (isset($params['af_pa'])) {
-            return $this->setParams($user, $params, 'af');
+            $this->type = 'af';
+            return $this->setParams($user, $params);
         }
         if (isset($params['ev_pa'])) {
-            return $this->setParams($user, $params, 'ev');
+            $this->type = 'ev';
+            return $this->setParams($user, $params);
         }
         return $params;
     }
 
-    private function setParams($user, $params, $type)
+    private function setParams($user, $params)
     {
         $time = date('Hi');
-        $params[$type.'_time'] = $time;
-        $params[$type.'_user'] = $user;
+        $params[$this->type.'_time'] = $time;
+        $params[$this->type.'_user'] = $user;
         return $params;
     }
 
@@ -163,27 +168,30 @@ class PressurelogRepository
     {
         $time = date('Hi');
         if (isset($params['mo_pa']) && isset($data->mo_time)) {
-            return $this->getUpdateString($user, $params, 'mo');
+            $this->type = 'mo';
+            return $this->getUpdateString($user, $params);
         }
         if (isset($params['af_pa']) && isset($data->af_time)) {
-            return $this->getUpdateString($user, $params, 'af');
+            $this->type = 'af';
+            return $this->getUpdateString($user, $params);
         }
         if (isset($params['ev_pa']) && isset($data->ev_time)) {
-            return $this->getUpdateString($user, $params, 'ev');
+            $this->type = 'ev';
+            return $this->getUpdateString($user, $params);
         }
         return '';
     }
     
-    private function getUpdateString($user, $params, $type)
+    private function getUpdateString($user, $params)
     {
         $time = date('Hi');
-        $k_pa = $type.'_pa';
-        $k_aq = $type.'_aq';
-        $k_ed = $type.'_ed';
-        $k_ep = $type.'_ep';
-        $k_devia = $type.'_devia';
-        $k_time = $type.'_time';
-        $k_user = $type.'_user';
+        $k_pa = $this->type.'_pa';
+        $k_aq = $this->type.'_aq';
+        $k_ed = $this->type.'_ed';
+        $k_ep = $this->type.'_ep';
+        $k_devia = $this->type.'_devia';
+        $k_time = $this->type.'_time';
+        $k_user = $this->type.'_user';
         $pa = $params[$k_pa];
         $aq = $params[$k_aq];
         $ed = $params[$k_ed];
@@ -195,11 +203,49 @@ class PressurelogRepository
             $k_ed = '$ed', $k_ep = '$ep', $k_devia = '$devia'
             $k_time = $time, $k_user = $user
         ";
-        if ($type === 'mo') {
+        if ($this->type === 'mo') {
             $rmk = $params['mo_rmk'];
             $dis = $params['mo_dis'];
             $str = $str . ", mo_rmk = '$rmk', mo_dis = '$dis'";
         }
         return $str;
+    }
+
+    private function mailhandler($params)
+    {
+        $point_no = $params['point_no'];
+        $subject = '壓差開立偏差通知!';
+        $sender = 'mpz.system@standard.com.tw';
+        $recipient = 'Lin.Yupin@standard.com.tw';
+        //$recipient = 'Lin.Guanwei@standard.com.tw';
+        if ($this->type === 'mo' && $params['mo_devia'] === 'Y') {
+            $content = '位置編號['.$point_no.']上午開立偏差';
+            $this->sendMail($subject, $sender, $recipient, $content);
+        }
+        if ($this->type === 'af' && $params['af_devia'] === 'Y') {
+            $content = '位置編號['.$point_no.']下午1開立偏差';
+            $this->sendMail($subject, $sender, $recipient, $content);
+        }
+        if ($this->type === 'ev' && $params['ev_devia'] === 'Y') {
+            $content = '位置編號['.$point_no.']下午2開立偏差';
+            $this->sendMail($subject, $sender, $recipient, $content);
+        }
+    }
+
+    private function sendMail($subject, $sender, $recipient, $content)
+    {
+        $nu = null;
+        $pdo = DB::getPdo();
+        $stmt = $pdo->prepare("begin pk_mail.proc_mail_02(:f, :t1, :t2, :t3, :c1, :c2, :c3, :s, :m); end;");
+        $stmt->bindParam(':f', $sender);
+        $stmt->bindParam(':t1', $recipient);
+        $stmt->bindParam(':t2', $nu);
+        $stmt->bindParam(':t3', $nu);
+        $stmt->bindParam(':c1', $nu);
+        $stmt->bindParam(':c2', $nu);
+        $stmt->bindParam(':c3', $nu);
+        $stmt->bindParam(':s', $subject);
+        $stmt->bindParam(':m', $content);
+        $stmt->execute();
     }
 }
