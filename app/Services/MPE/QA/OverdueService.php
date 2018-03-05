@@ -57,8 +57,8 @@ class OverdueService {
                 $list = json_decode(json_encode($this->overdueList()), true);
                 $auser = $this->uniqueUser($list, 'apply_user');
                 $ruser = $this->uniqueUser($list, 'receive_user');
-                //$applicant = $this->applyUserNotice($list, $auser);
-                //$receiver = $this->receiveUserNotice($list, $ruser);
+                $applicant = $this->applyUserNotice($list, $auser);
+                $receiver = $this->receiveUserNotice($list, $ruser);
                 $admin = $this->adminNotice($list);
                 $logs = "send mail apply = $applicant, receive = $receiver, admin = $admin";
                 return $logs;
