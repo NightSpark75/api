@@ -31,7 +31,7 @@ class OverdueService {
             select m.no, m.doc_class, m.reason, e.barcode, e.partno, pk_mpe.fu_pname(e.partno) pname
                     , e.bno, m.apply_user, stdadm.pk_hra.fu_emp_name(m.apply_user) apply_ename
                     , stdadm.pk_hra.fu_emp_email(m.apply_user) aemail
-                    , m.receive_user, stdadm.pk_hra.fu_emp_name(m.apply_user) receive_ename
+                    , m.receive_user, stdadm.pk_hra.fu_emp_name(m.receive_user) receive_ename
                     , stdadm.pk_hra.fu_emp_email(m.receive_user) remail, m.rdate
                 from mpe_lsa_e e, mpe_lsa_m m 
                 where e.status = 'R' and e.lsa_no = m.no 
