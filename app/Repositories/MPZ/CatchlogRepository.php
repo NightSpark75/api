@@ -144,8 +144,8 @@ class CatchlogRepository
     {
         $date = DB::selectOne("
             select max(ldate) as pday, to_date($ldate, 'YYYYMMDD') - to_date(max(ldate), 'YYYYMMDD') as dday
-            from mpz_catchlog
-            where point_no = '$point_no' and ldate < $ldate and $item = 'Y'
+                from mpz_catchlog
+                where point_no = '$point_no' and ldate < $ldate and $item = 'Y'
         ");
         return $date;
     }

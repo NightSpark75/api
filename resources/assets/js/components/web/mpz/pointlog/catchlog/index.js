@@ -167,8 +167,8 @@ export default class Catchlog extends React.Component {
   }
 
   lampCheck() {
-    const { check_lamp, isChecked } = this.state
-    if (check_lamp === 'N' && !isChecked) {
+    const { vl, check_lamp, isChecked } = this.state
+    if (vl && check_lamp === 'N' && !isChecked) {
       this.pushAlert('驅蚊燈異常')
     } else {
       this.removeAlert('驅蚊燈異常')
@@ -316,7 +316,7 @@ export default class Catchlog extends React.Component {
 
   checkRequire(item, show, value) {
     const { rule, changeDate } = this.state
-    if (operatorHandle(changeDate[item.key]['dday'], rule.CHANGE_REQUEST.cond, rule.CHANGE_REQUEST.val)
+    if (operatorHandle(Number(changeDate[item.key]['dday']), rule.CHANGE_REQUEST.cond, rule.CHANGE_REQUEST.val)
       && show && value === 'N') {
       this.pushAlert(item.label + '必須更換')
     } else {
