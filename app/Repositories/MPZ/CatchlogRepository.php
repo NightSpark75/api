@@ -154,6 +154,7 @@ class CatchlogRepository
     {
         try{
             DB::transaction( function () use($params) {
+                $params['ldate'] = date('Ymd');
                 $params['duser'] = auth()->user()->id;
                 $params['ddate'] = date("Y-m-d H:i:s");
                 $params['cuser'] = auth()->user()->id;
