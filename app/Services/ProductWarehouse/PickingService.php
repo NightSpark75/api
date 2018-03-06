@@ -45,29 +45,6 @@ class PickingService {
     }
 
     /**
-     * call procedure proc_upd_f594921
-     * 
-     * @param string $stop
-     * @param string $date // ex: 2018/01/05
-     * @param string $empno
-     * @param string $ky3
-     * @param string $ky6
-     * @param string $ky7
-     */
-    private function procUpdF594921($stop, $date, $empno, $ky3, $ky6, $ky7)
-    {
-        $pdo = DB::getPdo();
-        $stmt = $pdo->prepare("begin proc_upd_f594921(:stop, :date, :empno, :ky3, :ky6, :ky7); end;");;
-        $stmt->bindParam(':stop', $stop);
-        $stmt->bindParam(':date', $date);
-        $stmt->bindParam(':empno', $empno);
-        $stmt->bindParam(':ky3', $ky3);
-        $stmt->bindParam(':ky6', $ky6);
-        $stmt->bindParam(':ky7', $ky7);
-        $stmt->execute();
-    }
-
-    /**
      * get today picking items
      *
      * @param string $stop
@@ -75,7 +52,10 @@ class PickingService {
      */
     public function getPickingItems($stop)
     {
-        return true;
+        //$date = $today? $today: date('Y-m-d').' 00:00:00';
+        $date = date('Ymd', strtotime("20180305")).' 00:00:00';
+        $list = $this->pickingItemsRepository->getPickingItems($stop, $date);
+        return $list;
     }
 
     /**
@@ -85,7 +65,8 @@ class PickingService {
      */
     public function getTodayPickingList($today = null)
     {
-        $date = $today? $today: date('Y-m-d').' 00:00:00';
+        //$date = $today? $today: date('Y-m-d').' 00:00:00';
+        $date = date('Ymd', strtotime("20180306")).' 00:00:00';
         $list = $this->pickingListRepository->getPickingList($date);
         return $list;
     }
@@ -96,17 +77,14 @@ class PickingService {
      * @param string $stop
      * @param string $empno
      */
-    public function startPicking($stop, $empno, $today = null, $ky3 = null)
+    public function startPicking($stop, $user, $today = null)
     {
         $date = $today? $today: date('Y-m-d').' 00:00:00';
         $picking = $this->pickingListRepository->getPicking($stop, $date);
         
         if ($picking) {
             $staddj = date_format(date_create($date), 'Y/m/d');
-            $stky3 = $ky3? $ky3: date('H:i:s');
-            $stky6 = $picking->stky6;
-            $stky7 = $picking->stky7;
-            $this->procUpdF594921($stop, $staddj, $empno, $stky3, $stky6, $stky7);
+            $this->pickingListRepository->startPicking($stop, $staddj, $user);
             return true;
         }
         throw new Exception("ststop='$stop' and staddj='$date', data not found!");
@@ -118,16 +96,13 @@ class PickingService {
      * @param string $stop
      * @param string $empno
      */
-    public function endPicking($stop, $empno, $today = null, $ky6 = null, $ky7 = null)
+    public function endPicking($stop, $user, $today = null)
     {
         $date = $today? $today: date('Y-m-d').' 00:00:00';
         $picking = $this->pickingListRepository->getPicking($stop, $date);
         if ($picking) {
             $staddj = date_format(date_create($date), 'Y/m/d');
-            $ky3 = $picking->stky3;
-            $stky6 = $ky6? $ky6: 'Y';
-            $stky7 = $ky7? $ky7: date('H:i:s');
-            $this->procUpdF594921($stop, $staddj, $empno, $ky3, $stky6, $stky7);
+            $this->pickingListRepository->endPicking($stop, $staddj, $user);
             return true;
         }
         throw new Exception("ststop='$stop' and staddj='$date', data not found!");

@@ -28,29 +28,23 @@ class PickingItemsRepository extends Repository
      */
     function model()
     {
-        return 'App\Models\ProductWarehouse\PickingList';
+        return 'App\Models\ProductWarehouse\PickingItems';
     }
 
     /**
-     * get picking list by date
+     * get picking items by date and stop
      * 
+     * @param string $stop 
      * @param string $date => 'Y-m-d 00:00:00'
      * @return mixed
      */
-    function getPickingItems($stop, $date)
-    {
-        return true;
-    }
-
-    /**
-     * get picking by stop date
-     * 
-     * @param string $stop
-     * @param string $date => 'Y-m-d 00:00:00'
-     * @return mixed
-     */
-    function getPicking($stop, $date)
-    {
-        return true;
+    public function getPickingItems($stop, $date)
+    {   
+        $stop = str_pad($stop, 3, " ", STR_PAD_RIGHT);
+        $list = $this->model
+            ->where('psaddj', $date)
+            ->where('psstop', $stop)
+            ->get();
+        return $list;
     }
 }

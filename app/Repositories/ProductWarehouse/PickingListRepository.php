@@ -42,11 +42,11 @@ class PickingListRepository extends Repository
      * @param string $date => 'Y-m-d 00:00:00'
      * @return mixed
      */
-    function getPickingList($date)
+    public function getPickingList($date)
     {
         $list = $this->model
             ->where('staddj', $date)
-            ->where('stky3', null)
+            ->where('STKY6', null)
             ->get();
         return $list;
     }
@@ -58,12 +58,80 @@ class PickingListRepository extends Repository
      * @param string $date => 'Y-m-d 00:00:00'
      * @return mixed
      */
-    function getPicking($stop, $date)
+    public function getPicking($stop, $date)
     {
         $picking = $this->model
             ->where('ststop', $stop)
             ->where('staddj', $date)
             ->first();
         return $picking;
+    }
+
+    /**
+     * call procedure proc_upd_f594921_pick_s
+     * 
+     * @param string $stop
+     * @param string $date // ex: 2018/01/05
+     * @param string $user
+     */
+    public function startPicking($stop, $date, $user) 
+    {
+        $pdo = DB::getPdo();
+        $stmt = $pdo->prepare("begin proc_upd_f594921_pick_s(:stop, :date, :user); end;");;
+        $stmt->bindParam(':stop', $stop);
+        $stmt->bindParam(':date', $date);
+        $stmt->bindParam(':user', $user);
+        $stmt->execute();
+    }
+
+    /**
+     * call procedure proc_upd_f594921_pick_e
+     * 
+     * @param string $stop
+     * @param string $date // ex: 2018/01/05
+     * @param string $user
+     */
+    public function endPicking($stop, $date, $user) 
+    {
+        $pdo = DB::getPdo();
+        $stmt = $pdo->prepare("begin proc_upd_f594921_pick_e(:stop, :date, :user); end;");;
+        $stmt->bindParam(':stop', $stop);
+        $stmt->bindParam(':date', $date);
+        $stmt->bindParam(':user', $user);
+        $stmt->execute();
+    }
+
+    /**
+     * call procedure proc_upd_f594921_ship_s
+     * 
+     * @param string $stop
+     * @param string $date // ex: 2018/01/05
+     * @param string $user
+     */
+    public function startShiping($stop, $date, $user) 
+    {
+        $pdo = DB::getPdo();
+        $stmt = $pdo->prepare("begin proc_upd_f594921_ship_s(:stop, :date, :user); end;");;
+        $stmt->bindParam(':stop', $stop);
+        $stmt->bindParam(':date', $date);
+        $stmt->bindParam(':user', $user);
+        $stmt->execute();
+    }
+
+    /**
+     * call procedure proc_upd_f594921_ship_e
+     * 
+     * @param string $stop
+     * @param string $date // ex: 2018/01/05
+     * @param string $user
+     */
+    public function endShiping($stop, $date, $user) 
+    {
+        $pdo = DB::getPdo();
+        $stmt = $pdo->prepare("begin proc_upd_f594921_ship_e(:stop, :date, :user); end;");;
+        $stmt->bindParam(':stop', $stop);
+        $stmt->bindParam(':date', $date);
+        $stmt->bindParam(':user', $user);
+        $stmt->execute();
     }
 }
