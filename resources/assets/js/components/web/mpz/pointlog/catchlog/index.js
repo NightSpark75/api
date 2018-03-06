@@ -230,11 +230,11 @@ export default class Catchlog extends React.Component {
     this.checkAllRequire()
   }
 
-  checkFillTime(rmk = '') {
+  checkFillTime() {
     let date = new Date()
     let hours = date.getHours() * 100
     //let hours = 800
-    let rule = this.state.rule
+    let { rmk, rule } = this.state
     let isOverdue = true
     //檢查填表時間
     if (operatorHandle(hours, rule.START_TIME.cond, Number(rule.START_TIME.val)) &&

@@ -16,9 +16,7 @@ export default class Deviation extends React.Component {
     if (isLoading) {
       btnSubmit = (<button className="button is-loading is-primary" style={{width: '58px'}}></button>)
     }
-    if (isComplete) {
-      btnSubmit = (<button className="button is-success">今日已完成記錄</button>)
-    }
+    
     if (isOverdue) {
       btnSubmit = (<button className="button is-warning">目前已逾時</button>)
     }
@@ -33,3 +31,9 @@ export default class Deviation extends React.Component {
     )
   }
 }
+
+/*
+if (isComplete) {
+  btnSubmit = (<button className="button is-success">今日已完成記錄</button>)
+}
+*/
