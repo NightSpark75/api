@@ -1,5 +1,5 @@
 /** 
- * packing.Working.js
+ * production.Working.js
  */
 import React from 'react'
 import { Link } from 'react-router'
@@ -32,7 +32,7 @@ export default class Working extends React.Component{
     getMember() {
         const { sno, psno } = this.state
         let self = this       
-        axios.get('/api/web/mpb/prod/packing/member/' + sno + '/' + psno)
+        axios.get('/api/web/mpb/prod/prework/member/' + sno + '/' + psno)
         .then(function (response) {
             if (response.data.result) {
                 if (!self.state.updated) {
@@ -58,13 +58,13 @@ export default class Working extends React.Component{
 
     updateWorking(empno, action, event) {
         const { waiting_list, working_list, sno, psno } = this.state
+        this.setState({lock: true})
         let self = this    
-        let form_data = new FormData()  
-        this.setState({lock: true}) 
+        let form_data = new FormData()   
         form_data.append('sno', sno) 
         form_data.append('psno', psno)
         form_data.append('empno', empno)
-        axios.post('/api/web/mpb/prod/packing/working/' + action, form_data)
+        axios.post('/api/web/mpb/prod/prework/working/' + action, form_data)
         .then(function (response) {
             if (response.data.result) {
                 console.log(response.data)
@@ -131,14 +131,13 @@ export default class Working extends React.Component{
     allUpdate(action, event) {
         if ((action === 'join' && this.state.waiting_list.length > 0) ||
             (action === 'leave' && this.state.working_list.length > 0)) {
-            
             this.setState({lock: true})
             let self = this
             let {sno, psno, working_list, waiting_list} = this.state
             let form_data = new FormData()   
             form_data.append('sno', sno) 
             form_data.append('psno', psno)
-            axios.post('/api/web/mpb/prod/packing/all/' + action, form_data)
+            axios.post('/api/web/mpb/prod/prework/all/' + action, form_data)
             .then(function (response) {
                 if (response.data.result) {
                     console.log(response.data)
@@ -154,21 +153,20 @@ export default class Working extends React.Component{
         }
     }
 
-    workingComplete(clean, event) {
-        let msg =  (clean === 'N') ? '按確定後, 該製程完工(無清潔)..' : '按確定後,該製程完工(清潔)..'
+    workingComplete(event) {
+        let msg = '按確定後, 該製程完工!'
         if(confirm(msg)) {
+            this.setState({ lock: true })
             let self = this
             let {sno, psno} = this.state
-            let form_data = new FormData()  
-            this.setState({lock: true}) 
+            let form_data = new FormData()   
             form_data.append('sno', sno) 
             form_data.append('psno', psno)
-            form_data.append('clean', clean)
-            axios.post('/api/web/mpb/prod/packing/work/complete', form_data)
+            axios.post('/api/web/mpb/prod/prework/work/complete', form_data)
             .then(function (response) {
                 if (response.data.result) {
                     console.log(response.data)
-                    self.props.router.push('/auth/web/mpb/packing/list')
+                    self.props.router.push('/auth/web/mpb/prework/list')
                 } else {
                     console.log(response.data)
                     window.location = '/web/login/ppm'
@@ -187,7 +185,7 @@ export default class Working extends React.Component{
                     <div className="level">
                         <div className="level-left">
                             <div className="level-item">
-                                <Link className="button is-medium " to="/auth/web/mpb/packing/list">&larr; 回生產清單</Link>
+                                <Link className="button is-medium" to="/auth/web/mpb/prework/list">&larr; 回生產清單</Link>
                             </div>
                             <div className="level-item is-hidden-touch">
                                 <button className="button is-primary is-large" onClick={this.allUpdate.bind(this, 'join')} disabled={ lock }>整批工作</button>
@@ -196,14 +194,14 @@ export default class Working extends React.Component{
                                 <button className="button is-success is-large" onClick={this.allUpdate.bind(this, 'leave')} disabled={ lock }>整批退出</button>
                             </div>
                         </div>
-                        <div className="level-right">
+                        <div className="level-right is-hidden-touch">
                             {/*
-                            <div className="level-item is-hidden-touch">
+                            <div className="level-item">
                                 <button className="button is-primary is-large" onClick={this.workingComplete.bind(this, 'N')} disabled={ lock }>結束且完工(無清潔)</button>
                             </div>
                             */}
                             <div className="level-item">
-                                <button className="button is-primary is-large" onClick={this.workingComplete.bind(this, 'Y')} disabled={ lock }>結束且完工</button>
+                                <button className="button is-primary is-large" onClick={this.workingComplete.bind(this)} disabled={ lock }>結束且完工</button>
                             </div>
                         </div>
                     </div>
@@ -211,7 +209,7 @@ export default class Working extends React.Component{
                 <div className="column is-hidden-desktop">
                     <label className="is-size-4">請將畫面轉橫</label>
                 </div>
-                <span className="tag is-info is-large" style={{marginBottom: '10px'}}>{'[' + prod.bno + '][' + prod.pname + '] 分包裝報工'}</span>
+                <span className="tag is-info is-large" style={{marginBottom: '10px'}}>{'[' + prod.bno + '][' + prod.pname + '] 前置作業報工'}</span>
                 <div className="columns is-hidden-touch">
                     <div className="column">
                         <article className="message is-success">

@@ -89,7 +89,7 @@ export default class Job extends React.Component {
                   <th>短料號</th>
                   <th>料號</th>
                   <th>批號</th>
-                  <th></th>
+                  <th width="114"></th>
                 </tr>
               </thead>
               <tbody>

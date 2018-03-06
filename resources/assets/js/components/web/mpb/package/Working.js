@@ -5,7 +5,7 @@ import React from 'react'
 import { Link } from 'react-router'
 import axios from 'axios'
 
-export default class Job extends React.Component {
+export default class Working extends React.Component {
   constructor(props) {
     super(props)
 

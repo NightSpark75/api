@@ -1,6 +1,6 @@
 <?php
 /**
- * 生產派工流程資料
+ * 生產前置作業派工流程資料
  *
  * @version 1.0.0
  * @author spark Lin.yupin@standart.com.tw
@@ -19,9 +19,9 @@ use App\Traits\Sqlexecute;
 /**
  * Class WorkOrderRepository
  *
- * @package App\Repositories\MPB\Production
+ * @package App\Repositories\MPB\Prework
  */
-class ProductionRepository
+class PreworkRepository
 {   
     use Sqlexecute;
 
@@ -249,7 +249,7 @@ class ProductionRepository
         $result = DB::selectOne("
             select count(*) count
                 from mpb_order_tw 
-                where empno = :empno and rmk is null
+                where empno = :empno and rmk = '3'
         ", [
             'empno' => $empno,
         ]);
@@ -272,7 +272,7 @@ class ProductionRepository
         $result = DB::selectOne("
             select count(*) count
                 from mpb_order_tw 
-                where sno = :sno and psno = :psno and empno = substr(:mno, 3, 7) and rmk is null
+                where sno = :sno and psno = :psno and empno = substr(:mno, 3, 7) and rmk = '3'
         ", [
             'sno' => $sno,
             'psno' => $psno,
@@ -378,7 +378,7 @@ class ProductionRepository
         $member = DB::select("
             select * 
                 from mpb_order_tw 
-                where sno = :sno and psno = :psno and rmk is null
+                where sno = :sno and psno = :psno and rmk = '3'
         ", [
             'sno' => $sno,
             'psno' => $psno,
@@ -401,7 +401,7 @@ class ProductionRepository
             //$params['empno'] = $this->formatNo($params['empno']);
             DB::insert("
                 insert into mpb_order_tw 
-                    values (:sno, :psno, :empno, '', sysdate)
+                    values (:sno, :psno, :empno, '3', sysdate)
             ", $params);
             $result = [
                 'result' => true,
@@ -425,7 +425,7 @@ class ProductionRepository
             //$params['empno'] = $this->formatNo($params['empno']);
             DB::delete("
                 delete from mpb_order_tw 
-                    where sno = :sno and psno = :psno and empno = :empno and rmk is null
+                    where sno = :sno and psno = :psno and empno = :empno and rmk = '3'
             ", $params);
             $result = [
                 'result' => true,
@@ -506,21 +506,15 @@ class ProductionRepository
             DB::transaction( function () use($params) {
                 DB::delete("
                     delete from mpb_order_tw
-                        where sno = :sno and psno = :psno and rmk is null
+                        where sno = :sno and psno = :psno and rmk = '3'
                 ", [
                     'sno' => $params['sno'],
                     'psno' => $params['psno'],
                 ]);
 
-                DB::update("
-                    update mpb_order_d
-                        set state = 'Y'
-                        where sno = :sno and psno = :psno
-                ", $params);
-
                 DB::delete("
                     delete from mpb_proc_now
-                        where sno = :sno
+                    where sno = :sno
                 ", ['sno' => $params['sno']]);
                 $pdo = DB::getPdo();
                 $stmt = $pdo->prepare("begin pk_mpb.proc_create_next_proc(:sno); end;");

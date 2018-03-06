@@ -247,7 +247,7 @@ class PackageRepository
         $result = DB::selectOne("
             select count(*) count
                 from mpb_order_tw 
-                where empno = :empno
+                where empno = :empno and rmk is null
         ", [
             'empno' => $empno,
         ]);
@@ -270,7 +270,7 @@ class PackageRepository
         $result = DB::selectOne("
             select count(*) count
                 from mpb_order_tw 
-                where sno = :sno and psno = :psno and empno = substr(:mno, 3, 7)
+                where sno = :sno and psno = :psno and empno = substr(:mno, 3, 7) and rmk is null
         ", [
             'sno' => $sno,
             'psno' => $psno,
@@ -366,7 +366,7 @@ class PackageRepository
         $member = DB::select("
             select t.* 
                 from mpb_order_tw t 
-                where t.sno = :sno and t.psno = :psno
+                where t.sno = :sno and t.psno = :psno and rmk is null
                     and (exists (
                         select * 
                             from v_pgdialy_d d
@@ -427,7 +427,7 @@ class PackageRepository
             //$params['empno'] = $this->formatNo($params['empno']);
             DB::delete("
                 delete from mpb_order_tw 
-                    where sno = :sno and psno = :psno and empno = :empno
+                    where sno = :sno and psno = :psno and empno = :empno and rmk is null
             ", $params);
             $result = [
                 'result' => true,
@@ -507,7 +507,7 @@ class PackageRepository
             DB::transaction( function () use($params) {
                 DB::delete("
                     delete from mpb_order_tw
-                        where sno = :sno and psno = :psno
+                        where sno = :sno and psno = :psno and rmk is null
                 ", [
                     'sno' => $params['sno'],
                     'psno' => $params['psno'],
@@ -565,7 +565,7 @@ class PackageRepository
             DB::transaction( function () use($params) {
                 DB::delete("
                     delete from mpb_order_tw
-                        where sno = :sno and psno = :psno
+                        where sno = :sno and psno = :psno and rmk is null
                 ", [
                     'sno' => $params['sno'],
                     'psno' => $params['psno'],

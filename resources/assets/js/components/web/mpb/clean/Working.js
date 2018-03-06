@@ -5,7 +5,7 @@ import React from 'react'
 import { Link } from 'react-router'
 import axios from 'axios'
 
-export default class Job extends React.Component {
+export default class Working extends React.Component {
   constructor(props) {
     super(props)
 
@@ -109,7 +109,7 @@ export default class Job extends React.Component {
   }
 
   render() {
-    const { job_list, lock, sno, deptno } = this.state
+    const { job_list, lock, sno, deptno, prod } = this.state
     let dno = deptno.substr(0, 4) + '0'
     return (
       <div>
@@ -125,7 +125,7 @@ export default class Job extends React.Component {
         <div className="column is-hidden-desktop">
           <label className="is-size-4">請將畫面轉橫</label>
         </div>
-        <span className="tag is-info is-large" style={{marginBottom: '10px'}}>{'[' + prod.bno + ']'}</span>
+        <span className="tag is-info is-large" style={{marginBottom: '10px'}}>{'[' + prod.bno + '] 清潔報工'}</span>
         <div className="columns is-hidden-touch">
           <div className="column">
             <article className="message is-success">

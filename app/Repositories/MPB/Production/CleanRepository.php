@@ -185,7 +185,7 @@ class CleanRepository
                 where v.deptno = '$deptno' and not exists
                     (select * 
                         from mpb_order_tw t 
-                        where t.sno = '$sno' and psno = $psno and t.empno = v.empno
+                        where t.sno = '$sno' and psno = $psno and t.empno = v.empno and rmk = '2'
                     )
         ");
         return $waiting;
@@ -221,7 +221,7 @@ class CleanRepository
         $member = DB::select("
             select t.*, stdadm.pk_hra.fu_emp_name(t.empno) ename
                 from mpb_order_tw t
-                where t.sno = :sno and t.psno = :psno
+                where t.sno = :sno and t.psno = :psno and rmk = '2'
         ", [
             'sno' => $sno,
             'psno' => $psno,
@@ -268,7 +268,7 @@ class CleanRepository
             $params['psno'] = $this->getFirstPsno($params['sno']);
             DB::delete("
                 delete from mpb_order_tw 
-                    where sno = :sno and psno = :psno and empno = :empno
+                    where sno = :sno and psno = :psno and empno = :empno and rmk = '2'
             ", $params);
             $result = [
                 'result' => true,
