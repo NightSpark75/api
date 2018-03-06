@@ -12,6 +12,7 @@ export default class Job extends React.Component {
     this.state = {
       sno: this.props.params.sno,
       deptno: this.props.params.deptno,
+      prod: {bno: ''},
       waiting_list: [],
       working_list: [],
       updated: false,
@@ -41,6 +42,7 @@ export default class Job extends React.Component {
             self.setState({
               waiting_list: response.data.waiting,
               working_list: response.data.working,
+              prod: response.data.prod
             })
           } else {
             self.setState({
@@ -123,6 +125,7 @@ export default class Job extends React.Component {
         <div className="column is-hidden-desktop">
           <label className="is-size-4">請將畫面轉橫</label>
         </div>
+        <span className="tag is-info is-large" style={{marginBottom: '10px'}}>{'[' + prod.bno + ']'}</span>
         <div className="columns is-hidden-touch">
           <div className="column">
             <article className="message is-success">

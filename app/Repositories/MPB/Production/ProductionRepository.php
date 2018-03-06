@@ -183,6 +183,7 @@ class ProductionRepository
                 'msg' => '取得生產人員資料成功!(#0002)',
                 'waiting' => $waiting,
                 'working' => $working,
+                'prod' => $prod,
             ];
             return $result;
         } catch (Exception $e) {
@@ -225,9 +226,9 @@ class ProductionRepository
     private function getProcessInfo($sno, $psno)
     {
         $process = DB::selectOne("
-            select *
-            from mpb_order_d
-            where sno = :sno and psno = :psno
+            select d.*, pk_mpa.fu_pno_name(d.pno) pname
+                from mpb_order_d d
+                where d.sno = :sno and d.psno = :psno
         ", [
             'sno' => $sno,
             'psno' => $psno,

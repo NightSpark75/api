@@ -136,17 +136,37 @@ class CleanRepository
         try {         
             $waiting = $this->getWaiting($sno, $deptno);
             $working = $this->getWorking($sno);
+            $prod = $this->getProcessInfo($sno);
 
             $result = [
                 'result' => true,
                 'msg' => '取得清潔人員資料成功!(#0002)',
                 'waiting' => $waiting,
                 'working' => $working,
+                'prod' => $prod,
             ];
             return $result;
         } catch (Exception $e) {
             return $this->exception($e);
         }
+    }
+
+    /**
+     * 取得資訊
+     * 
+     * @param string $sno 製程代號
+     * @return stdClass
+     */
+    private function getProcessInfo($sno)
+    {
+        $process = DB::selectOne("
+            select *
+                from mpb_order_m
+                where sno = :sno
+        ", [
+            'sno' => $sno,
+        ]);
+        return $process;
     }
     
     /**
