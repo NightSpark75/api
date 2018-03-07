@@ -55,11 +55,15 @@ Route::group(['prefix' => 'native', 'namespace' => 'Native'], function () {
 Route::group(['prefix' => 'productWarehouse', 'namespace' => 'ProductWarehouse', 'middleware' => 'jwt'], function () {
     // picking
     Route::group(['prefix' => 'picking'], function () {
-        Route::post('post', 'PickingController@test');
         Route::get('list', 'PickingController@getPickingList');
         Route::get('items/{stop}', 'PickingController@getPickingItems');
-        Route::post('start', 'pickingController@startPicking');
-        Route::post('end', 'pickingController@endPicking');
+        Route::post('start', 'PickingController@startPicking');
+        Route::post('end', 'PickingController@endPicking');
+    });
+    // shiping
+    Route::group(['prefix' => 'shiping'], function () {
+        Route::post('start', 'ShipingController@startShiping');
+        Route::post('end', 'ShipingController@endShiping');
     });
 });
 
@@ -97,14 +101,14 @@ Route::group(['prefix' => 'web/mpb', 'namespace' => 'MPB'], function () {
         Route::post('production/all/leave', 'ProductionController@allLeaveWorking');
         Route::post('production/work/complete', 'ProductionController@workComplete');
 
-        Route::get('prework/list', 'ProductionController@getProduction');
-        Route::post('prework/compare', 'ProductionController@compare');
-        Route::get('prework/member/{sno}/{psno}', 'ProductionController@member');
-        Route::post('prework/working/join', 'ProductionController@joinWorking');
-        Route::post('prework/working/leave', 'ProductionController@leaveWorking');
-        Route::post('prework/all/join', 'ProductionController@allJoinWorking');
-        Route::post('prework/all/leave', 'ProductionController@allLeaveWorking');
-        Route::post('prework/work/complete', 'ProductionController@workComplete');
+        Route::get('prework/list', 'PreworkController@getProduction');
+        Route::post('prework/compare', 'PreworkController@compare');
+        Route::get('prework/member/{sno}/{psno}', 'PreworkController@member');
+        Route::post('prework/working/join', 'PreworkController@joinWorking');
+        Route::post('prework/working/leave', 'PreworkController@leaveWorking');
+        Route::post('prework/all/join', 'PreworkController@allJoinWorking');
+        Route::post('prework/all/leave', 'PreworkController@allLeaveWorking');
+        Route::post('prework/work/complete', 'PreworkController@workComplete');
 
         Route::get('clean/list', 'CleanController@getCleanJob');
         Route::post('clean/compare', 'CleanController@compare');
