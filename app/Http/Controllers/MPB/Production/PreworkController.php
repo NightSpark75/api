@@ -12,7 +12,7 @@ class PreworkController extends Controller
     private $work;
     private $program;
 
-    public function __construct(ProductionRepository $work) {
+    public function __construct(PreworkRepository $work) {
         $this->work = $work;
         $this->program = 'MPBW0050';
         session(['program' => $this->program]);
