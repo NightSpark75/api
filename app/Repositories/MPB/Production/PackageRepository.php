@@ -45,14 +45,12 @@ class PackageRepository
             $user_id = auth()->user()->id;
             $where = $this->getPackageWhere($user_id);
             $order_d = DB::select("
-                select d.*, 
+                select  
+                        d.sno, d.bno, d.psno, 
+                        pk_mpb.fu_get_item(d.sno) itm,
                         pk_mpa.fu_pno_name(d.pno) pname, 
-                        pk_mpa.fu_mno_name(d.mno) mname, 
-                        pk_mpa.fu_rno_name(d.rno) rname,
                         pk_mpb.fu_get_iname(d.sno) iname,
-                        pk_mpb.fu_oredr_m_msg('1', d.sno)||chr(13)||pk_mpb.fu_oredr_m_msg('2', d.sno)||chr(13)||
-                            '用料號='||pk_mpb.fu_oredr_d_msg('1', d.sno, d.psno) as info
-                        , pk_mpb.fu_check_litm(d.sno, d.psno) check_litm
+                        pk_mpb.fu_check_litm(d.sno, d.psno) check_litm
                     from mpb_order_d d
                     where $where
                     order by d.sno, d.psno

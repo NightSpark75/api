@@ -83,7 +83,7 @@ export default class Duty extends React.Component{
                         <div className="column is-hidden-desktop">
                             <label className="is-size-4">請將畫面轉橫</label>
                         </div>
-                        <table className="table is-bordered is-fullwidth is-size-4 is-hidden-touch">
+                        <table className="table is-bordered is-striped is-fullwidth is-size-4 is-hidden-touch">
                             <thead>
                                 <tr>
                                     <th>品名規格</th>

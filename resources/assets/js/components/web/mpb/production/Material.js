@@ -164,7 +164,7 @@ export default class Material extends React.Component{
                             </div>
                         </article>
                         */}
-                        <table className="table is-bordered is-fullwidth is-size-4 is-hidden-touch">
+                        <table className="table is-bordered is-striped is-fullwidth is-size-4 is-hidden-touch">
                             <thead>
                                 <tr>
                                     <th>料號</th>

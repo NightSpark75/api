@@ -46,15 +46,12 @@ class PreworkRepository
             //$where = $this->getProductionWhere($user_id);
             $order_d = DB::select("
                 select d.*, 
-                    pk_mpa.fu_pno_name(d.pno) pname, 
-                    pk_mpa.fu_mno_name(d.mno) mname, 
-                    pk_mpa.fu_rno_name(d.rno) rname,
-                    pk_mpb.fu_oredr_m_msg('1', d.sno)||chr(13)||pk_mpb.fu_oredr_m_msg('2', d.sno)||chr(13)||
-                        '用料號='||pk_mpb.fu_oredr_d_msg('1', d.sno, d.psno) as info
-                    , pk_mpb.fu_check_litm(d.sno, d.psno) check_litm
-                from v_mpb_order_prod d
-                where empno = '$user_id'
-                order by d.sno, d.psno
+                        d.sno, d.bno, d.psno, 
+                        pk_mpa.fu_pno_name(d.pno) pname, 
+                        pk_mpb.fu_get_iname(d.sno) iname
+                    from v_mpb_order_prod d
+                    where empno = '$user_id'
+                    order by d.sno, d.psno
             ");
             $result = [
                 'result' => true,

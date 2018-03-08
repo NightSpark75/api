@@ -12,7 +12,6 @@ export default class Job extends React.Component {
     this.state = {
       ready: false,
       job_list: [],
-      showInfo: false,
       item: [],
     }
   }
@@ -82,23 +81,21 @@ export default class Job extends React.Component {
             <div className="column is-hidden-desktop">
               <label className="is-size-4">請將畫面轉橫</label>
             </div>
-            <table className="table is-bordered is-fullwidth is-size-4 is-hidden-touch">
+            <table className="table is-bordered is-striped is-fullwidth is-size-4 is-hidden-touch">
               <thead>
                 <tr>
-                  <th>製程單號</th>
-                  <th>短料號</th>
-                  <th>料號</th>
-                  <th>批號</th>
+                  <th width="108">料號</th>
+                  <th width="140">批號</th>
+                  <th>品名</th>
                   <th width="114"></th>
                 </tr>
               </thead>
               <tbody>
                 {job_list.map((item, index) => (
                   <tr key={index}>
-                    <td>{item.sno}</td>
                     <td>{item.item}</td>
-                    <td>{item.itm}</td>
                     <td>{item.bno}</td>
+                    <td>{item.iname}</td>
                     <td>
                       <Link className="button is-primary is-medium"
                         to={"/auth/web/mpb/clean/dept/" + item.sno + "/" + item.deptno}>清潔報工</Link>
@@ -111,7 +108,7 @@ export default class Job extends React.Component {
           :
           <div className="notification is-warning is-size-4" style={{ padding: '1rem 1rem 1rem 1rem' }}>
             目前尚無生產資訊...
-                    </div>
+          </div>
         }
       </div>
     )

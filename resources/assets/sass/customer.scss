@@ -28,6 +28,9 @@ $purple:       rgb(183, 107, 255) ;
 $red:          rgb(226, 17, 59) ;
 $newBlue:      rgb(94, 189, 237) ;
 
+$table-striped-hover:   hsl(0, 0%, 85%) ;
+$table-striped: hsl(0, 0%, 90%) ;
+
 $menu-background-color: #f7f7f7;
 $menu-item-hover-background-color: #dddddd;
 
@@ -207,6 +210,9 @@ table tr.is-orange td, table tr.is-orange th {
 table.is-orange tr td, table.is-orange tr th {
     border-color: $orange;
 }
+
+$table-striped-row-even-background-color: $table-striped;
+$table-striped-row-even-hover-background-color: $table-striped-hover;
 
 // container
 .container.is-full {
