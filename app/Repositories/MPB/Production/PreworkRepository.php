@@ -163,10 +163,6 @@ class PreworkRepository
     public function getMember($sno, $psno)
     {
         try {
-            $non_check = DB::selectOne("select pk_mpb.fu_check_litm('$sno', $psno) v_check from dual")->v_check;
-            if ($non_check > 0) {
-                return $this->success(['non_check' => true]);
-            }
 
             $prod = $this->getProcessInfo($sno, $psno);
             $rno = $prod->rno;
