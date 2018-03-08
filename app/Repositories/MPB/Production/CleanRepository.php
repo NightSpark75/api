@@ -38,11 +38,10 @@ class CleanRepository
         try {
             $user_id = auth()->user()->id;
             $clear = DB::select("
-                select m.sno, m.bno, m.iname, m.item
+                select unique m.*
                     from mpb_order_m m, mpa_dept_emp e, mpb_order_f f
                     where m.deptno = e.deptno(+) and m.sno = f.sno 
                         and (e.empno = '$user_id' or f.empno = '$user_id') and state in ('Y', 'O')
-                    group by m.sno, m.bno, m.iname, m.item
                     order by m.sno desc
             ");
             return $this->success(['job_list' => $clear]);
