@@ -24,7 +24,7 @@ const keyList = [
   'catch_num4', 'catch_num5', 'catch_num6',
   'change1', 'change2', 'change3',
   'change4', 'change5', 'change6',
-  'check_lamp', 'rmk', 'discription', 'urmk'
+  'check_lamp', 'rmk', 'discription', 'urmk', 'hde'
 ]
 
 const catchList = [
@@ -53,7 +53,7 @@ export default class Catchlog extends React.Component {
       rule: {},
       catch_num1: 0, catch_num2: 0, catch_num3: 0, catch_num4: 0, catch_num5: 0, catch_num6: 0,
       change1: 'N', change2: 'N', change3: 'N', change4: 'N', change5: 'N', change6: 'N', check_lamp: 'N',
-      rmk: '', discription: '', deviation: 'N', urmk: '',
+      rmk: '', discription: '', deviation: 'N', urmk: '', hde: 'N',
       changeDate: [],
       vn1: false, vn2: false, vn3: false, vn4: false, vn5: false, vn6: false,
       vc1: false, vc2: false, vc3: false, vc4: false, vc5: false, vc6: false,
@@ -125,7 +125,7 @@ export default class Catchlog extends React.Component {
         catch_num4: Number(data.catch_num4), catch_num5: Number(data.catch_num5), catch_num6: Number(data.catch_num6),
         change1: data.change1, change2: data.change2, change3: data.change3,
         change4: data.change4, change5: data.change5, change6: data.change6, check_lamp: data.check_lamp,
-        rmk: data.rmk || '', discription: data.discription, deviation: data.deviation, urmk: data.urmk,
+        rmk: data.rmk || '', discription: data.discription, deviation: data.deviation, urmk: data.urmk, hde: data.hde,
       }, () => { this.formCheck() })
     }
   }
@@ -134,7 +134,7 @@ export default class Catchlog extends React.Component {
     this.setState({
       catch_num1: 0, catch_num2: 0, catch_num3: 0, catch_num4: 0, catch_num5: 0, catch_num6: 0,
       change1: 'N', change2: 'N', change3: 'N', change4: 'N', change5: 'N', change6: 'N', check_lamp: 'N',
-      rmk: '', discription: '', deviation: 'N', urmk: '',
+      rmk: '', discription: '', deviation: 'N', urmk: '', hde: 'N',
       changeDate: [],
       vn1: false, vn2: false, vn3: false, vn4: false, vn5: false, vn6: false,
       vc1: false, vc2: false, vc3: false, vc4: false, vc5: false, vc6: false,
@@ -152,8 +152,7 @@ export default class Catchlog extends React.Component {
   }
 
   rmkChange(e) {
-    this.setState({ rmk: e.target.value })
-    this.checkFillTime(e.target.value)
+    this.setState({ rmk: e.target.value }, () => this.checkFillTime())
   }
 
   checkboxChange(item, e) {
@@ -352,8 +351,15 @@ export default class Catchlog extends React.Component {
   }
 
   deviationChange() {
-    const { isChecked } = this.state
-    this.setState({ isChecked: !isChecked }, () => { this.checkAllCatchAmount() })
+    let deviation = this.state.deviation === 'Y'? 'N': 'Y'
+    let isChecked = this.state.hde === 'Y' || deviation === 'Y'
+    this.setState({deviation, isChecked}, () => this.checkAllCatchAmount())
+  }
+
+  hdeChange() {
+    let hde = this.state.hde === 'Y'? 'N': 'Y'
+    let isChecked = hde === 'Y' || this.state.deviation === 'Y'
+    this.setState({hde, isChecked}, () => this.checkAllCatchAmount())
   }
 
   render() {
@@ -506,26 +512,6 @@ export default class Catchlog extends React.Component {
                 </select>
               </td>
             </tr>
-            {this.state.rmk === '其它' &&
-              <tr>
-                <td>說明</td>
-                <td>
-                  <div className="field is-horizontal">
-                    <div className="field-body">
-                      <div className="field">
-                        <div className="control">
-                          <textarea className="textarea" placeholder="請輸入其它說明"
-                            value={this.state.discription || ''}
-                            onChange={this.catchChange.bind(this, 'discription')}
-                          >
-                          </textarea>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            }
             <tr>
               <td>開立偏差</td>
               <td>
@@ -535,12 +521,30 @@ export default class Catchlog extends React.Component {
                       <div className="control">
                         <label className="checkbox">
                           <input type="checkbox"
-                            value={this.state.isChecked}
-                            checked={this.state.isChecked}
+                            value={this.state.deviation}
+                            checked={this.state.deviation === 'Y'}
                             onChange={this.deviationChange.bind(this)}
                           />
                           <span style={{ fontSize: '16px', fontWeight: 'bolder' }}>
                             開立偏差
+                            </span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="field is-horizontal">
+                  <div className="field-body">
+                    <div className="field has-addons">
+                      <div className="control">
+                        <label className="checkbox">
+                          <input type="checkbox"
+                            value={this.state.hde}
+                            checked={this.state.hde === 'Y'}
+                            onChange={this.hdeChange.bind(this)}
+                          />
+                          <span style={{ fontSize: '16px', fontWeight: 'bolder' }}>
+                            已開立偏差
                             </span>
                         </label>
                       </div>

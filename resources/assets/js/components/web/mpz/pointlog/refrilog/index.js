@@ -14,21 +14,20 @@ import Remark from '../remark'
 
 const keyList = [
   'point_no',
-  'mo_temp', 'mo_putt', 'mo_bell', 'mo_light', 'mo_urmk',
-  'mo_ed', 'mo_et', 'mo_devia', 'mo_rmk', 'mo_dis',
-  'af_temp', 'af_ed', 'af_et', 'af_devia', 'af_urmk',
+  'mo_temp', 'mo_putt', 'mo_bell', 'mo_light', 'mo_urmk', 'mo_hde',
+  'mo_ed', 'mo_et', 'mo_devia', 'mo_rmk', 'mo_dis', 
+  'af_temp', 'af_ed', 'af_et', 'af_devia', 'af_urmk', 'af_hde',
 ]
 
 const key = ['_temp']
 const keyLabel = ['溫度']
 const checking = ['_putt', '_bell', '_light']
 const checkingLabel = ['安全推桿', '無線門鈴發報機', '照明設備']
-const err = ['_ed', '_et', '_devia']
-const errLabel = ['儀器異常', '溫度異常', '開立偏差']
+const err = ['_ed', '_et', '_devia', '_hde']
+const errLabel = ['儀器異常', '溫度異常', '開立偏差', '已開立偏差']
 
 let today = new Date()
-//let hours = today.getHours() * 100
-let hours = 830
+let hours = today.getHours() * 100
 
 export default class Refrilog extends React.Component {
   constructor(props) {
@@ -36,9 +35,9 @@ export default class Refrilog extends React.Component {
     this.state = {
       alertMsg: [],
       point_no: '', mach_no: '', ch_date: '', temp_high: '', temp_low: '',
-      mo_temp: '', mo_putt: 'N', mo_bell: 'N', mo_light: 'N', mo_rmk: '', mo_urmk: '',
-      mo_dis: '', mo_ed: '', mo_et: '', mo_devia: '',
-      af_temp: '', af_ed: '', af_et: '', af_devia: '', af_urmk: '',
+      mo_temp: '', mo_putt: 'N', mo_bell: 'N', mo_light: 'N', mo_rmk: '', mo_urmk: '', mo_hde: 'N',
+      mo_dis: '', mo_ed: 'N', mo_et: 'N', mo_devia: 'N',
+      af_temp: '', af_ed: 'N', af_et: 'N', af_devia: 'N', af_urmk: '', af_hde: 'N',
       log_data: {},
       isLoading: false,
       confirmShow: false,
@@ -87,9 +86,9 @@ export default class Refrilog extends React.Component {
     if (data !== null) {
       this.setState({
         mo_temp: data.mo_temp, mo_putt: data.mo_putt, mo_bell: data.mo_bell, mo_light: data.mo_light, mo_umrk: data.mo_urmk,
-        mo_rmk: data.mo_rmk, mo_dis: data.mo_dis, mo_ed: data.mo_ed, mo_et: data.mo_et, mo_devia: data.mo_devia,
+        mo_rmk: data.mo_rmk, mo_dis: data.mo_dis, mo_ed: data.mo_ed, mo_et: data.mo_et, mo_devia: data.mo_devia, mo_hde: data.mo_hde,
         af_temp: data.af_temp, af_urmk: data.af_urmk,
-        af_ed: data.af_ed, af_et: data.af_et, af_devia: data.af_devia,
+        af_ed: data.af_ed, af_et: data.af_et, af_devia: data.af_devia, af_hde: data.af_hde
       })
     }
   }
@@ -176,7 +175,10 @@ export default class Refrilog extends React.Component {
     let type = this.checkTime()
     let { alertMsg } = this.state
     let isChecked = false
-    if (this.state[type + err[0]] === 'Y' || this.state[type + err[1]] === 'Y' || this.state[type + err[2]] === 'Y') {
+    if (this.state[type + err[0]] === 'Y' || 
+        this.state[type + err[1]] === 'Y' || 
+        this.state[type + err[2]] === 'Y' ||
+        this.state[type + err[3]] === 'Y') {
       isChecked = true
       alertMsg = []
       this.setState({ isChecked: isChecked, alertMsg: alertMsg })
@@ -390,31 +392,11 @@ export default class Refrilog extends React.Component {
                 </td>
               </tr>
             }
-            {this.checkTime() === 'mo' && this.state.mo_rmk === '其它' &&
-              <tr>
-                <td>說明</td>
-                <td colSpan={3}>
-                  <div className="field is-horizontal">
-                    <div className="field-body">
-                      <div className="field">
-                        <div className="control">
-                          <textarea className="textarea" placeholder="請輸入其它說明"
-                            value={this.state.mo_dis || ''}
-                            onChange={this.inputChange.bind(this, 'mo_dis')}
-                          >
-                          </textarea>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            }
             {this.checkTime() === 'mo' && 
-              <Remark value={this.state.mo_urmk} onChange={this.inputChange(this, 'mo_urmk')}/>
+              <Remark value={this.state.mo_urmk} onChange={this.inputChange.bind(this, 'mo_urmk')}/>
             }
             {this.checkTime() === 'af' && 
-              <Remark value={this.state.af_urmk} onChange={this.inputChange(this, 'af_urmk')}/>
+              <Remark value={this.state.af_urmk} onChange={this.inputChange.bind(this, 'af_urmk')}/>
             }
           </tbody>
         </table>

@@ -50,10 +50,10 @@ class PickingService {
      * @param string $stop
      * @return mixed
      */
-    public function getPickingItems($stop)
+    public function getPickingItems($stop, $today = null)
     {
-        //$date = $today? $today: date('Y-m-d').' 00:00:00';
-        $date = date('Ymd', strtotime("20180305")).' 00:00:00';
+        $date = $today? $today: date('Y-m-d').' 00:00:00';
+        //$date = date('Ymd', strtotime("20180308")).' 00:00:00';
         $list = $this->pickingItemsRepository->getPickingItems($stop, $date);
         return $list;
     }
@@ -65,8 +65,8 @@ class PickingService {
      */
     public function getTodayPickingList($today = null)
     {
-        //$date = $today? $today: date('Y-m-d').' 00:00:00';
-        $date = date('Ymd', strtotime("20180306")).' 00:00:00';
+        $date = $today? $today: date('Y-m-d').' 00:00:00';
+        //$date = date('Ymd', strtotime("20180308")).' 00:00:00';
         $list = $this->pickingListRepository->getPickingList($date);
         return $list;
     }

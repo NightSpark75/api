@@ -13,19 +13,18 @@ import Remark from '../remark'
 
 const keyList = [
   'point_no', 'zero',
-  'mo_hum', 'mo_max', 'mo_min', 'mo_ed', 'mo_eh', 'mo_devia', 'mo_rmk', 'mo_dis', 'mo_urmk',
-  'af_hum', 'af_max', 'af_min', 'af_ed', 'af_eh', 'af_devia', 'af_urmk',
-  'ev_hum', 'ev_max', 'ev_min', 'ev_ed', 'ev_eh', 'ev_devia', 'ev_urmk',
+  'mo_hum', 'mo_max', 'mo_min', 'mo_ed', 'mo_eh', 'mo_devia', 'mo_rmk', 'mo_dis', 'mo_urmk', 'mo_hde',
+  'af_hum', 'af_max', 'af_min', 'af_ed', 'af_eh', 'af_devia', 'af_urmk', 'af_hde',
+  'ev_hum', 'ev_max', 'ev_min', 'ev_ed', 'ev_eh', 'ev_devia', 'ev_urmk', 'ev_hde',
 ]
 
 const key = ['_hum', '_max', '_min']
 const keyLabel = ['顯示值', 'MAX', 'MIN']
-const err = ['_ed', '_eh', '_devia']
-const errLabel = ['儀器異常', '溼度異常', '開立偏差']
+const err = ['_ed', '_eh', '_devia', '_hde']
+const errLabel = ['儀器異常', '溼度異常', '開立偏差', '已開立偏差']
 
 let today = new Date()
-//let hours = today.getHours() * 100
-let hours = 830
+let hours = today.getHours() * 100
 
 export default class Wetestlog extends React.Component {
   constructor(props) {
@@ -33,9 +32,9 @@ export default class Wetestlog extends React.Component {
     this.state = {
       alertMsg: [],
       point_no: '', mach_no: '', ch_date: '', humi_high: '', humi_low: '',
-      mo_hum: '', mo_max: '', mo_min: '', mo_rmk: '', mo_dis: '', mo_ed: '', mo_eh: '', mo_devia: '', mo_urmk: '',
-      af_hum: '', af_max: '', af_min: '', af_ed: '', af_eh: '', af_devia: '', af_urmk: '',
-      ev_hum: '', ev_max: '', ev_min: '', ev_ed: '', ev_eh: '', ev_devia: '', ev_urmk: '',
+      mo_hum: '', mo_max: '', mo_min: '', mo_rmk: '', mo_dis: '', mo_ed: 'N', mo_eh: 'N', mo_devia: 'N', mo_urmk: '', mo_hde: 'N',
+      af_hum: '', af_max: '', af_min: '', af_ed: 'N', af_eh: 'N', af_devia: 'N', af_urmk: '', af_hde: 'N',
+      ev_hum: '', ev_max: '', ev_min: '', ev_ed: 'N', ev_eh: 'N', ev_devia: 'N', ev_urmk: '', ev_hde: 'N',
       zero: 'N',
       log_data: {},
       isLoading: false,
@@ -84,11 +83,11 @@ export default class Wetestlog extends React.Component {
     let data = this.state.log_data
     if (data !== null) {
       this.setState({
-        mo_hum: data.mo_hum, mo_max: data.mo_max, mo_min: data.mo_min, mo_urmk: data.mo_urmk,
+        mo_hum: data.mo_hum, mo_max: data.mo_max, mo_min: data.mo_min, mo_urmk: data.mo_urmk, mo_hde: data.mo_hde,
         mo_rmk: data.mo_rmk, mo_dis: data.mo_dis, mo_ed: data.mo_ed, mo_eh: data.mo_eh, mo_devia: data.mo_devia,
-        af_hum: data.af_hum, af_max: data.af_max, af_min: data.af_min, af_urmk: data.af_urmk,
+        af_hum: data.af_hum, af_max: data.af_max, af_min: data.af_min, af_urmk: data.af_urmk, af_hde: data.af_hde,
         af_ed: data.af_ed, af_eh: data.af_eh, af_devia: data.af_devia,
-        ev_hum: data.mo_hum, ev_max: data.ev_max, ev_min: data.ev_min, ev_urmk: data.ev_urmk,
+        ev_hum: data.mo_hum, ev_max: data.ev_max, ev_min: data.ev_min, ev_urmk: data.ev_urmk, ev_hde: data.ev_hde,
         ev_ed: data.ev_ed, ev_eh: data.ev_eh, ev_devia: data.ev_devia,
         zero: data.zero,
       })
@@ -191,7 +190,10 @@ export default class Wetestlog extends React.Component {
     let type = this.checkTime()
     let { alertMsg } = this.state
     let isChecked = false
-    if (this.state[type + err[0]] === 'Y' || this.state[type + err[1]] === 'Y' || this.state[type + err[2]] === 'Y') {
+    if (this.state[type + err[0]] === 'Y' || 
+        this.state[type + err[1]] === 'Y' || 
+        this.state[type + err[2]] === 'Y' || 
+        this.state[type + err[3]] === 'Y') {
       isChecked = true
       alertMsg = []
       this.setState({ isChecked: isChecked, alertMsg: alertMsg })
@@ -385,34 +387,14 @@ export default class Wetestlog extends React.Component {
                 </td>
               </tr>
             }
-            {this.checkTime() === 'mo' && this.state.mo_rmk === '其它' &&
-              <tr>
-                <td>說明</td>
-                <td colSpan={3}>
-                  <div className="field is-horizontal">
-                    <div className="field-body">
-                      <div className="field">
-                        <div className="control">
-                          <textarea className="textarea" placeholder="請輸入其它說明"
-                            value={this.state.mo_dis || ''}
-                            onChange={this.inputChange.bind(this, 'mo_dis')}
-                          >
-                          </textarea>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            }
             {this.checkTime() === 'mo' && 
-              <Remark value={this.state.mo_urmk} onChange={this.inputChange(this, 'mo_urmk')}/>
+              <Remark value={this.state.mo_urmk} onChange={this.inputChange.bind(this, 'mo_urmk')}/>
             }
             {this.checkTime() === 'af' && 
-              <Remark value={this.state.af_urmk} onChange={this.inputChange(this, 'af_urmk')}/>
+              <Remark value={this.state.af_urmk} onChange={this.inputChange.bind(this, 'af_urmk')}/>
             }
             {this.checkTime() === 'ev' && 
-              <Remark value={this.state.ev_urmk} onChange={this.inputChange(this, 'ev_urmk')}/>
+              <Remark value={this.state.ev_urmk} onChange={this.inputChange.bind(this, 'ev_urmk')}/>
             }
           </tbody>
         </table>

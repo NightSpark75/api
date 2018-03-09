@@ -163,7 +163,6 @@ class PreworkRepository
     public function getMember($sno, $psno)
     {
         try {
-
             $prod = $this->getProcessInfo($sno, $psno);
             $rno = $prod->rno;
             $mno = $prod->mno;
