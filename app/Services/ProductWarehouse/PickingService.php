@@ -37,11 +37,11 @@ class PickingService {
      * @param PickingItemsRepository $pickingItemsRepository
      */
     public function __construct(
-        PickingListRepository $pickingListRepository
-        //PickingItemsRepository $pickingItemsRepository
+        PickingListRepository $pickingListRepository,
+        PickingItemsRepository $pickingItemsRepository
     ) {
         $this->pickingListRepository = $pickingListRepository;
-        //$this->pickingItemsRepository = $pickingItemsRepository;
+        $this->pickingItemsRepository = $pickingItemsRepository;
     }
 
     /**

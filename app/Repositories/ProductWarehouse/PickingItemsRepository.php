@@ -10,7 +10,6 @@
  */
 namespace App\Repositories\ProductWarehouse;
 
-use App\Interfaces\RepositoryInterface;
 use App\Repositories\Repository;
 
 /**
@@ -40,7 +39,7 @@ class PickingItemsRepository extends Repository
      */
     public function getPickingItems($stop, $date)
     {   
-        $stop = str_pad($stop, 3, " ", STR_PAD_RIGHT);
+        //$stop = str_pad($stop, 3, " ", STR_PAD_RIGHT);
         $list = $this->model
             ->where('psaddj', $date)
             ->where('psstop', $stop)

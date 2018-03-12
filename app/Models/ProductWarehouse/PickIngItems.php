@@ -13,7 +13,7 @@ namespace App\Models\ProductWarehouse;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class PickingDetail
+ * Class PickingItems
  *
  * @package App\Models\ProductWarehouse
  */
