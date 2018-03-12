@@ -5,7 +5,7 @@ use Closure;
 use JWTAuth;
 use Exception;
 
-class authJWT
+class AuthJWT
 {
     public function handle($request, Closure $next)
     {
