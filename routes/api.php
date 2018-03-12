@@ -52,7 +52,7 @@ Route::group(['prefix' => 'native', 'namespace' => 'Native'], function () {
 });
 
 // ProductWarehouse
-Route::group(['prefix' => 'productWarehouse', 'namespace' => 'ProductWarehouse'/*, 'middleware' => 'jwt'*/], function () {
+Route::group(['prefix' => 'productWarehouse', 'namespace' => 'ProductWarehouse', 'middleware' => 'jwt'], function () {
     // picking
     Route::group(['prefix' => 'picking'], function () {
         Route::get('list', 'PickingController@getPickingList');
