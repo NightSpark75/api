@@ -38,7 +38,7 @@ class PickingService {
      */
     public function __construct(
         PickingListRepository $pickingListRepository,
-        PickingItemsRepository $pickingItemsRepository
+        PickingListRepository $pickingItemsRepository
     ) {
         $this->pickingListRepository = $pickingListRepository;
         $this->pickingItemsRepository = $pickingItemsRepository;
