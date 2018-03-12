@@ -11,6 +11,14 @@
             "localSourceRoot": "${workspaceRoot}"
         },
         {
+            "name": "remote XDebug",
+            "type": "php",
+            "request": "launch",
+            "port": 9000,
+            "serverSourceRoot": "/var/www/html/stdapi",
+            "localSourceRoot": "${workspaceRoot}"
+        },
+        {
             "name": "Launch currently open script",
             "type": "php",
             "request": "launch",
