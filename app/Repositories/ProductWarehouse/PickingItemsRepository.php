@@ -10,6 +10,10 @@
  */
 namespace App\Repositories\ProductWarehouse;
 
+use DB;
+use Exception;
+use App\Traits\Sqlexecute;
+use App\Traits\Oracle;
 use App\Repositories\Repository;
 
 /**
@@ -19,7 +23,9 @@ use App\Repositories\Repository;
  */
 class PickingItemsRepository extends Repository
 {   
-
+    use Sqlexecute;
+    use Oracle;
+    
     /**
      * Specify Model class name
      *
