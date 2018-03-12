@@ -187,19 +187,8 @@ export default class Working extends React.Component{
                             <div className="level-item">
                                 <Link className="button is-medium" to="/auth/web/mpb/prework/list">&larr; 回生產清單</Link>
                             </div>
-                            <div className="level-item is-hidden-touch">
-                                <button className="button is-primary is-large" onClick={this.allUpdate.bind(this, 'join')} disabled={ lock }>整批工作</button>
-                            </div>
-                            <div className="level-item is-hidden-touch">
-                                <button className="button is-success is-large" onClick={this.allUpdate.bind(this, 'leave')} disabled={ lock }>整批退出</button>
-                            </div>
                         </div>
                         <div className="level-right is-hidden-touch">
-                            {/*
-                            <div className="level-item">
-                                <button className="button is-primary is-large" onClick={this.workingComplete.bind(this, 'N')} disabled={ lock }>結束且完工(無清潔)</button>
-                            </div>
-                            */}
                             <div className="level-item">
                                 <button className="button is-primary is-large" onClick={this.workingComplete.bind(this)} disabled={ lock }>結束且完工</button>
                             </div>
