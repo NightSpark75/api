@@ -34,7 +34,7 @@ class ShipingService {
 
     /**
      * @param PickingListRepository $pickingListRepository
-     * @param PickingItemRepository $pickingItemsRepository
+     * @param PickingItemsRepository $pickingItemsRepository
      */
     public function __construct(
         PickingListRepository $pickingListRepository,
