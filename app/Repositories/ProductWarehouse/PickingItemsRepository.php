@@ -25,7 +25,7 @@ class PickingItemsRepository extends Repository
 {   
     use Sqlexecute;
     use Oracle;
-
+    
     /**
      * Specify Model class name
      *
@@ -33,7 +33,7 @@ class PickingItemsRepository extends Repository
      */
     function model()
     {
-        return 'App\Models\ProductWarehouse\PickingList';
+        return 'App\Models\ProductWarehouse\PickingItems';
     }
 
     /**
