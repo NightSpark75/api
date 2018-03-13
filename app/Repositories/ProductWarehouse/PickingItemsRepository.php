@@ -49,7 +49,7 @@ class PickingItemsRepository extends Repository
         $list = $this->model
             ->where('psaddj', $date)
             ->where('psstop', $stop)
-            ->select('psicu', 'psaddj', 'psstop', 'pslocn', 'psrmk', 'pslitm', 'pslotn', 'pssoqs', 'pspqoh')
+            ->select('psicu', 'psaddj', 'psstop', 'pslocn', 'psrmk', 'pslitm', 'pslotn', 'pssoqs', 'pspqoh', 'psuom')
             ->orderBy('pslocn')
             ->orderBy('psrmk')
             ->orderBy('pslitm')
