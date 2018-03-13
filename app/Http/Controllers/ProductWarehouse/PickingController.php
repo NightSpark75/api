@@ -77,12 +77,13 @@ class PickingController extends Controller
      * @throws Exception
      * @return mixed
      */
-    public function startPicking($date)
+    public function startPicking()
     {
         try {
             $user = session('user');
             $id = $user->id;
             $stop = request()->input('stop');
+            $date = request()->input('date');
             $result = $this->pickingService->startPicking($stop, $id, $date);
             return response()->json($result, 200);
         } catch (Exception $e) {
@@ -96,12 +97,13 @@ class PickingController extends Controller
      * @throws Exception
      * @return mixed
      */
-    public function endPicking($date)
+    public function endPicking()
     {
         try {
             $user = session('user');
             $id = $user->id;
             $stop = request()->input('stop');
+            $date = request()->input('date');
             $result = $this->pickingService->endPicking($stop, $id, $date);
             return response()->json($result, 200);
         } catch (Exception $e) {
