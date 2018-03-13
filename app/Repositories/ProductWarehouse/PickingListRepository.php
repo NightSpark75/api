@@ -65,6 +65,7 @@ class PickingListRepository extends Repository
      */
     public function getPicking($stop, $date)
     {
+        $stop = str_pad($stop, 3, " ", STR_PAD_RIGHT);
         $picking = $this->model
             ->where('ststop', $stop)
             ->where('staddj', $date)
