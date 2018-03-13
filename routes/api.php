@@ -55,10 +55,10 @@ Route::group(['prefix' => 'native', 'namespace' => 'Native'], function () {
 Route::group(['prefix' => 'productWarehouse', 'namespace' => 'ProductWarehouse', 'middleware' => 'jwt'], function () {
     // picking
     Route::group(['prefix' => 'picking'], function () {
-        Route::get('list', 'PickingController@getPickingList');
-        Route::get('items/{stop}', 'PickingController@getPickingItems');
-        Route::post('start', 'PickingController@startPicking');
-        Route::post('end', 'PickingController@endPicking');
+        Route::get('list/{date?}', 'PickingController@getPickingList');
+        Route::get('items/{stop}/{date?}', 'PickingController@getPickingItems');
+        Route::post('start/{date?}', 'PickingController@startPicking');
+        Route::post('end/{date?}', 'PickingController@endPicking');
     });
     // shiping
     Route::group(['prefix' => 'shiping'], function () {

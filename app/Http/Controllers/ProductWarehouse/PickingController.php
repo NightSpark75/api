@@ -44,10 +44,10 @@ class PickingController extends Controller
      * @throws Exception
      * @return mixed
      */
-    public function getPickingList()
+    public function getPickingList($date = null)
     {
         try {
-            $list = $this->pickingService->getTodayPickingList();
+            $list = $this->pickingService->getTodayPickingList($date);
             return response()->json($list, 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
@@ -61,10 +61,10 @@ class PickingController extends Controller
      * @throws Exception
      * @return mixed
      */
-    public function getPickingItems($stop)
+    public function getPickingItems($stop, $date = null)
     {
         try {
-            $items = $this->pickingService->getPickingItems($stop);
+            $items = $this->pickingService->getPickingItems($stop, $date);
             return response()->json($items, 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
@@ -77,13 +77,13 @@ class PickingController extends Controller
      * @throws Exception
      * @return mixed
      */
-    public function startPicking()
+    public function startPicking($date)
     {
         try {
             $user = session('user');
             $id = $user->id;
             $stop = request()->input('stop');
-            $result = $this->pickingService->startPicking($stop, $id);
+            $result = $this->pickingService->startPicking($stop, $id, $date);
             return response()->json($result, 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
@@ -96,13 +96,13 @@ class PickingController extends Controller
      * @throws Exception
      * @return mixed
      */
-    public function endPicking()
+    public function endPicking($date)
     {
         try {
             $user = session('user');
             $id = $user->id;
             $stop = request()->input('stop');
-            $result = $this->pickingService->endPicking($stop, $id);
+            $result = $this->pickingService->endPicking($stop, $id, $date);
             return response()->json($result, 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
