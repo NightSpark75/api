@@ -393,10 +393,14 @@ export default class Refrilog extends React.Component {
               </tr>
             }
             {this.checkTime() === 'mo' && 
-              <Remark value={this.state.mo_urmk} onChange={this.inputChange.bind(this, 'mo_urmk')}/>
+              <Remark value={this.state.mo_urmk} onChange={(e) => {
+                this.setState({ mo_urmk: e.target.value})
+              }}/>
             }
             {this.checkTime() === 'af' && 
-              <Remark value={this.state.af_urmk} onChange={this.inputChange.bind(this, 'af_urmk')}/>
+              <Remark value={this.state.af_urmk} onChange={(e) => {
+                this.setState({ af_urmk: e.target.value})
+              }}/>
             }
           </tbody>
         </table>

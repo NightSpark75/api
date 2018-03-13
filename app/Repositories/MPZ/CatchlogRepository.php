@@ -160,8 +160,30 @@ class CatchlogRepository
                 $params['cuser'] = auth()->user()->id;
                 $params['ctime'] = date("Hi");
                 $params['state'] = 'Y';
-                DB::table('mpz_catchlog')->insert($params);
-                DB::commit();
+                $point_no = $params['point_no'];
+                $ldate = $params['ldate'];
+                $data = DB::selectOne("
+                    select *
+                        from mpz_catchlog
+                        where point_no = '$point_no' and ldate = $ldate
+                ");
+                if (isset($data)) {
+                    DB::update("
+                        update mpz_catchlog
+                            set catch_num1 = :catch_num1, catch_num2 = :catch_num2, catch_num3 = :catch_num3,
+                                catch_num4 = :catch_num4, catch_num5 = :catch_num5, catch_num6 = :catch_num6,
+                                change1 = :change1, change2 = :change2, change3 = :change3,
+                                change4 = :change4, change5 = :change5, change6 = :change6,
+                                state = :state, rmk = :rmk, duser = :duser, ddate = :ddate, 
+                                check_lamp = :check_lamp, discription = :discription,
+                                deviation = :deviation, cuser = :cuser, ctime = :ctime, urmk = :urmk, hde = :hde
+                            where point_no = :point_no and ldate = :ldate
+                    ", $params);
+                } else {
+                    DB::table('mpz_catchlog')->insert($params);
+                    DB::commit();
+                }
+               
                 if ($params['deviation'] === 'Y') {
                     $this->mailhandler($params['point_no']);
                 }

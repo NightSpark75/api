@@ -125,7 +125,7 @@ export default class Catchlog extends React.Component {
         catch_num4: Number(data.catch_num4), catch_num5: Number(data.catch_num5), catch_num6: Number(data.catch_num6),
         change1: data.change1, change2: data.change2, change3: data.change3,
         change4: data.change4, change5: data.change5, change6: data.change6, check_lamp: data.check_lamp,
-        rmk: data.rmk || '', discription: data.discription, deviation: data.deviation, urmk: data.urmk, hde: data.hde,
+        rmk: data.rmk || '', discription: data.discription, deviation: data.deviation, urmk: data.urmk || '', hde: data.hde,
       }, () => { this.formCheck() })
     }
   }
@@ -553,7 +553,9 @@ export default class Catchlog extends React.Component {
                 </div>
               </td>
             </tr>
-            <Remark value={this.state.urmk} onChange={this.catchChange.bind(this, 'urmk')}/>
+            <Remark value={this.state.urmk} onChange={(e) => {
+              this.setState({ urmk: e.target.value})
+            }}/>
           </tbody>
         </table>
         <Deviation
