@@ -52,7 +52,7 @@ export default class Catchlog extends React.Component {
       alertMsg: [],
       rule: {},
       catch_num1: 0, catch_num2: 0, catch_num3: 0, catch_num4: 0, catch_num5: 0, catch_num6: 0,
-      change1: 'N', change2: 'N', change3: 'N', change4: 'N', change5: 'N', change6: 'N', check_lamp: 'N',
+      change1: 'N', change2: 'N', change3: 'N', change4: 'N', change5: 'N', change6: 'N', check_lamp: 'Y',
       rmk: '', discription: '', deviation: 'N', urmk: '', hde: 'N',
       changeDate: [],
       vn1: false, vn2: false, vn3: false, vn4: false, vn5: false, vn6: false,
@@ -133,7 +133,7 @@ export default class Catchlog extends React.Component {
   initState() {
     this.setState({
       catch_num1: 0, catch_num2: 0, catch_num3: 0, catch_num4: 0, catch_num5: 0, catch_num6: 0,
-      change1: 'N', change2: 'N', change3: 'N', change4: 'N', change5: 'N', change6: 'N', check_lamp: 'N',
+      change1: 'N', change2: 'N', change3: 'N', change4: 'N', change5: 'N', change6: 'N', check_lamp: 'Y',
       rmk: '', discription: '', deviation: 'N', urmk: '', hde: 'N',
       changeDate: [],
       vn1: false, vn2: false, vn3: false, vn4: false, vn5: false, vn6: false,
@@ -468,7 +468,7 @@ export default class Catchlog extends React.Component {
             </tr>
             {this.state.vlp &&
               <tr>
-                <td>撿查</td>
+                <td>檢查</td>
                 <td>
                   <div className="field is-horizontal">
                     <div className="field-label is-normal" style={{ flexGrow: '0', paddingTop: '0px' }}>
