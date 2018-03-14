@@ -62,7 +62,7 @@ export default class Material extends React.Component{
             })) {
                 return 
             }
-            this.setState({msg: litm + '並非此途程所需料號'})
+            this.setState({litm: '', msg: litm + '並非此途程所需料號'})
         }
     }
 
