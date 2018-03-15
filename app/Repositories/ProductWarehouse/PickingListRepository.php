@@ -49,7 +49,7 @@ class PickingListRepository extends Repository
             ->where('staddj', $date)
             ->where('stky6', null)
             ->where('stky2', null)
-            ->where('stky3', null)
+            ->where('stky5', null)
             ->select('sticu', 'ststop', 'staddj')
             ->orderBy('ststop')
             ->get();
