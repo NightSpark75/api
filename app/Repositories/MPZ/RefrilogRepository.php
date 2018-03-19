@@ -206,8 +206,8 @@ class RefrilogRepository
         $point_no = $params['point_no'];
         $subject = '冷藏櫃開立偏差通知!';
         $sender = 'mpz.system@standard.com.tw';
-        $recipient = 'Lin.Yupin@standard.com.tw';
-        //$recipient = 'Lin.Guanwei@standard.com.tw';
+        //$recipient = 'Lin.Yupin@standard.com.tw';
+        $recipient = 'Lin.Guanwei@standard.com.tw';
         if ($this->type === 'mo' && $params['mo_devia'] === 'Y') {
             $content = '位置編號['.$point_no.']上午開立偏差';
             $this->sendMail($subject, $sender, $recipient, $content);

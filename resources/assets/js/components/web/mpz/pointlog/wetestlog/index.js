@@ -316,6 +316,7 @@ export default class Wetestlog extends React.Component {
     let today = new Date()
     let date = today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate() + ' '
     let time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds()
+    let showHumi
     return (
       <div>
         {alertMsg.length > 0 &&
@@ -354,7 +355,14 @@ export default class Wetestlog extends React.Component {
               <td width="120">儀器校期</td><td>{ch_date}</td>
             </tr>
             <tr>
-              <td>合格範圍</td><td>{(humi_low !== 0 ? humi_low : '') + " ~ " + (humi_high !== 0 ? humi_high : '') + ' R.H(%)'}</td>
+              <td>合格範圍</td>
+              <td colSpan={3}>
+                {
+                  (humi_low === '0' || humi_low === '-200' ? '': humi_low) 
+                  + " ~ " + 
+                  (humi_high === '0' || humi_high === '200' ? '': humi_high) + ' R.H(%)'
+                }
+              </td>
             </tr>
             {this.checkTime() === 'mo' &&
               this.layoutInput('上午記錄')

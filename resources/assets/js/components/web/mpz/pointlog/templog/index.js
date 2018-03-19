@@ -342,8 +342,22 @@ export default class Templog extends React.Component {
               <td width="120">儀器校期</td><td>{ch_date}</td>
             </tr>
             <tr>
-              <td>溫度範圍</td><td>{(temp_low !== 0 ? temp_low : '') + " ~ " + (temp_high !== 0 ? temp_high : '')}</td>
-              <td>溼度範圍</td><td>{(humi_low !== 0 ? humi_low : '') + " ~ " + (humi_high !== 0 ? humi_high : '')}</td>
+              <td>溫度範圍</td>
+              <td>
+                {
+                  (temp_low === 0 || temp_low === '-200' ? '' : temp_low)
+                  + " ~ " + 
+                  (temp_high === 0 || temp_high === '200' ? '' : temp_high)
+                }
+              </td>
+              <td>溼度範圍</td>
+              <td>
+              {
+                (humi_low === 0 || humi_low === '-200' ? '' : humi_low) 
+                + " ~ " + 
+                (humi_high === 0 || humi_high === '200'? '' : humi_high)
+              }
+            </td>
             </tr>
             {this.checkTime() === 'mo' &&
               this.layoutInput('上午記錄')

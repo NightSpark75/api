@@ -362,7 +362,13 @@ export default class Refrilog extends React.Component {
               <td width="160">儀器校期</td><td>{ch_date}</td>
             </tr>
             <tr>
-              <td >合格範圍</td><td colSpan={3}>{'溫度： ' + (temp_low !== 0 ? temp_low : '') + " ~ " + (temp_high !== 0 ? temp_high : '') + ' ℃'}</td>
+              <td >合格範圍</td>
+              <td colSpan={3}>
+                {
+                  '溫度： ' + (temp_low === 0 || temp_low === '-200' ? '' : temp_low) 
+                  + " ~ " + (temp_high === 0 || temp_low === '200' ? '' : temp_high) + ' ℃'
+                }
+              </td>
             </tr>
             {this.checkTime() === 'mo' &&
               this.layoutInput('上午記錄')
