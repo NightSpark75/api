@@ -322,7 +322,7 @@ export default class Pressurelog extends React.Component {
           <tbody>
             <tr>
               <td colSpan={4}>
-                <span className="title is-4">最溼點溼度記錄表</span>
+                <span className="title is-4">工作室壓差記錄表</span>
                 <span className="title is-6" style={{ marginLeft: '10px' }}>
                   日期：{today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate()}
                 </span>
