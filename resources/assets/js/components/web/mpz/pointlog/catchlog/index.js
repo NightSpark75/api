@@ -378,6 +378,8 @@ export default class Catchlog extends React.Component {
       thisGrowth = (allCount - lastTotalCount) / lastTotalCount
     }
     let today = new Date()
+    let date = today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate() + ' '
+    let time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds()
     return (
       <div>
         {alertMsg.length > 0 &&
@@ -401,7 +403,7 @@ export default class Catchlog extends React.Component {
                 <span className="title is-4">鼠蟲防治記錄表</span>
                 <span className="title is-5" style={{ marginLeft: '10px' }}>{pointInfo.device_name}</span>
                 <span className="title is-6" style={{ marginLeft: '10px' }}>
-                  日期：{today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate()}
+                  日期：{/*today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate()*/} {date + time}
                 </span>
               </td>
             </tr>

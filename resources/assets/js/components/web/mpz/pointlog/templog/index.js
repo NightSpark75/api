@@ -23,9 +23,6 @@ const keyLabel = ['溫度 ℃', '相對溼度 %R.H']
 const err = ['_ed', '_eth', '_devia', '_hde']
 const errLabel = ['儀器異常', '溫溼度異常', '開立偏差', '已開立偏差']
 
-let today = new Date()
-let hours = today.getHours() * 100
-
 export default class Templog extends React.Component {
   constructor(props) {
     super(props)
@@ -129,6 +126,8 @@ export default class Templog extends React.Component {
   }
 
   checkFillTime() {
+    let today = new Date()
+    let hours = today.getHours() * 100
     const { rule, mo_rmk } = this.state
     let isOverdue = true
     if (this.checkTime() !== '') {
@@ -257,6 +256,8 @@ export default class Templog extends React.Component {
   }
 
   checkTime() {
+    let today = new Date()
+    let hours = today.getHours() * 100
     const { rule } = this.state
     if (rule !== undefined) {
       if (operatorHandle(hours, rule.MO_START.cond, Number(rule.MO_START.val)) &&
@@ -300,7 +301,9 @@ export default class Templog extends React.Component {
     } = this.state
     const { mo, af, ev } = this.state
     const isComplete = !(this.state.log_data === null)
-    //10A1THA105001
+    let today = new Date()
+    let date = today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate() + ' '
+    let time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds()
     return (
       <div>
         {alertMsg.length > 0 &&
@@ -323,7 +326,7 @@ export default class Templog extends React.Component {
               <td colSpan={4}>
                 <span className="title is-4">溫溼度記錄表</span>
                 <span className="title is-6" style={{marginLeft: '10px'}}>
-                  日期：{today.getFullYear()+ "/" + (today.getMonth()+1) + "/" + today.getDate()}
+                  日期：{/*today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate()*/} {date + time}
                 </span>
               </td>  
             </tr>
