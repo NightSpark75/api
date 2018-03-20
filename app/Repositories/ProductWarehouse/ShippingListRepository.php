@@ -83,7 +83,7 @@ class ShippingListRepository extends Repository
     public function startShipping($stop, $date, $user) 
     {
         $pdo = DB::getPdo();
-        $stmt = $pdo->prepare("begin proc_upd_f594921_pick_s(:stop, :date, :user); end;");;
+        $stmt = $pdo->prepare("begin proc_upd_f594921_pick_s(:stop, :date, :user); end;");
         $stmt->bindParam(':stop', $stop);
         $stmt->bindParam(':date', $date);
         $stmt->bindParam(':user', $user);
@@ -100,7 +100,7 @@ class ShippingListRepository extends Repository
     public function endShipping($stop, $date, $user) 
     {
         $pdo = DB::getPdo();
-        $stmt = $pdo->prepare("begin proc_upd_f594921_pick_e(:stop, :date, :user); end;");;
+        $stmt = $pdo->prepare("begin proc_upd_f594921_pick_e(:stop, :date, :user); end;");
         $stmt->bindParam(':stop', $stop);
         $stmt->bindParam(':date', $date);
         $stmt->bindParam(':user', $user);
@@ -117,7 +117,7 @@ class ShippingListRepository extends Repository
     public function startShiping($stop, $date, $user) 
     {
         $pdo = DB::getPdo();
-        $stmt = $pdo->prepare("begin proc_upd_f594921_ship_s(:stop, :date, :user); end;");;
+        $stmt = $pdo->prepare("begin proc_upd_f594921_ship_s(:stop, :date, :user); end;");
         $stmt->bindParam(':stop', $stop);
         $stmt->bindParam(':date', $date);
         $stmt->bindParam(':user', $user);

@@ -2,10 +2,11 @@
 /**
  * picking service
  *
- * @version 1.0.0
+ * @version 1.0.2
  * @author spark Lin.yupin@standart.com.tw
- * @date 18/01/25
+ * @date 18/03/20
  * @since 1.0.0 spark: handle picking business logic
+ * @since 1.0.2 spark: completed unit test and optimized code
  * 
  */
 namespace App\Services\ProductWarehouse;
@@ -13,7 +14,6 @@ namespace App\Services\ProductWarehouse;
 use App\Repositories\ProductWarehouse\PickingListRepository;
 use App\Repositories\ProductWarehouse\PickingItemsRepository;
 use Exception;
-use DB;
 
 /**
  * Class PickingService

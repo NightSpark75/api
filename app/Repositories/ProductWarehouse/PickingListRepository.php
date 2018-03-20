@@ -2,15 +2,17 @@
 /**
  * picking repository
  *
- * @version 1.0.0
+ * @version 1.0.2
  * @author spark Lin.yupin@standart.com.tw
- * @date 18/01/22
+ * @date 18/03/20
  * @since 1.0.0 spark: build database I/O function 
- * @since 1.0.1 spark: file name
+ * @since 1.0.1 spark: modify file name
+ * @since 1.0.2 spark: completed unit test and optimized code
  * 
  */
 namespace App\Repositories\ProductWarehouse;
 
+use DB;
 use App\Repositories\Repository;
 
 /**
@@ -41,8 +43,6 @@ class PickingListRepository extends Repository
         $list = $this->model
             ->where('staddj', $date)
             ->where('stky6', null)
-            //->where('stky2', null)
-            //->where('stky5', null)
             ->select('sticu', 'ststop', 'staddj', 'stky2')
             ->orderBy('ststop')
             ->get();

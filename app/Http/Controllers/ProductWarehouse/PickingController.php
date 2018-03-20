@@ -2,10 +2,11 @@
 /**
  * picking controller
  *
- * @version 1.0.0
+ * @version 1.0.2
  * @author spark Lin.yupin@standart.com.tw
- * @date 18/01/22
+ * @date 18/03/20
  * @since 1.0.0 spark: build basic function
+ * @since 1.0.2 spark: completed unit test and optimized code
  * 
  */
 namespace App\Http\Controllers\ProductWarehouse;
@@ -39,7 +40,7 @@ class PickingController extends Controller
     }
 
     /**
-     * get today picking list
+     * get picking list by date
      *
      * @throws Exception
      * @return mixed
@@ -55,7 +56,7 @@ class PickingController extends Controller
     }
 
     /**
-     * get picking items by stop at today
+     * get picking items by stop at date
      *
      * @param string $stop
      * @throws Exception

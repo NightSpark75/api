@@ -2,10 +2,11 @@
 /**
  * PickingListRepository unit test
  *
- * @version 1.0.0
+ * @version 1.0.2
  * @author spark Lin.yupin@standart.com.tw
- * @date 18/01/29
- * @since 1.0.0 spark: complete 2 test
+ * @date 18/03/20
+ * @since 1.0.0 spark: complete 1 test
+ * @since 1.0.2 spark: completed unit test and optimized code
  * 
  */
 namespace Tests\Unit\Repositories;
@@ -43,19 +44,23 @@ class PickingItemsRepositoryTest extends TestCase
         $this->target = $this->app->make(PickingItemsRepository::class);
     }
 
+    /**
+     * test getPickingItems
+     */
     public function test_getPickingItems()
     {
         // arrange
         $first = PickingItems::first();
         $stop = $first->psstop;
         $date = $first->psaddj;
-        $expected = PickingItems::where('psaddj', $date)
-                        ->where('psstop', $stop)
-                        ->select('psicu', 'psaddj', 'psstop', 'pslocn', 'psrmk', 'pslitm', 'pslotn', 'pssoqs', 'pspqoh', 'psuom')
-                        ->orderBy('pslocn')
-                        ->orderBy('psrmk')
-                        ->orderBy('pslitm')
-                        ->get();
+        $expected = 
+            PickingItems::where('psaddj', $date)
+                ->where('psstop', $stop)
+                ->select('psicu', 'psaddj', 'psstop', 'pslocn', 'psrmk', 'pslitm', 'pslotn', 'pssoqs', 'pspqoh', 'psuom')
+                ->orderBy('pslocn')
+                ->orderBy('psrmk')
+                ->orderBy('pslitm')
+                ->get();
         // act
         $actual = $this->target->getPickingItems($stop, $date);
 

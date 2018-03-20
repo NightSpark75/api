@@ -18,9 +18,10 @@
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./app/Repositories/ProductWarehouse</directory>
-            <directory suffix=".php">./app/Services/ProductWarehouse</directory>
-            <directory suffix=".php">./app/Http/Controllers/ProductWarehouse</directory>
+            <directory suffix=".php">./app/Repositories/ProductWarehouse/PickingItemsRepository.php</directory>
+            <directory suffix=".php">./app/Repositories/ProductWarehouse/PickingListRepository.php</directory>
+            <directory suffix=".php">./app/Services/ProductWarehouse/PickingService.php</directory>
+            <directory suffix=".php">./app/Http/Controllers/ProductWarehouse/PickingController.php</directory>
         </whitelist>
         <blacklist>
             <directory suffix=".php">./bootstrap</directory>

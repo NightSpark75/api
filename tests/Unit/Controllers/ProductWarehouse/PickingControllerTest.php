@@ -2,10 +2,11 @@
 /**
  * PickingController unit test
  *
- * @version 1.0.0
+ * @version 1.0.2
  * @author spark Lin.yupin@standart.com.tw
- * @date 18/01/29
+ * @date 18/03/20
  * @since 1.0.0 spark: complete 8 test
+ * @since 1.0.2 spark: completed unit test and optimized code
  * 
  */
 namespace Tests\Unit\Controllers;

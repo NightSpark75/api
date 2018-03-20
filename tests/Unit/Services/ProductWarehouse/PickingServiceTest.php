@@ -2,10 +2,11 @@
 /**
  * PickingService unit test
  *
- * @version 1.0.0
+ * @version 1.0.2
  * @author spark Lin.yupin@standart.com.tw
- * @date 18/01/29
+ * @date 18/03/20
  * @since 1.0.0 spark: complete 6 test
+ * @since 1.0.2 spark: completed unit test and optimized code
  * 
  */
 namespace Tests\Unit\Services\ProductWarehouse;
@@ -208,13 +209,14 @@ class PickingServiceTest extends TestCase
         $stop = $items->psstop;
         $date = $items->psaddj;
 
-        $expected = PickingItems::where('psstop', $stop)
-                        ->where('psaddj', $date)
-                        ->select('psicu', 'psaddj', 'psstop', 'pslocn', 'psrmk', 'pslitm', 'pslotn', 'pssoqs', 'pspqoh', 'psuom')
-                        ->orderBy('pslocn')
-                        ->orderBy('psrmk')
-                        ->orderBy('pslitm')
-                        ->get();
+        $expected = 
+            PickingItems::where('psstop', $stop)
+                ->where('psaddj', $date)
+                ->select('psicu', 'psaddj', 'psstop', 'pslocn', 'psrmk', 'pslitm', 'pslotn', 'pssoqs', 'pspqoh', 'psuom')
+                ->orderBy('pslocn')
+                ->orderBy('psrmk')
+                ->orderBy('pslitm')
+                ->get();
 
         // act
         $this->mock->shouldReceive('getPickingItems')

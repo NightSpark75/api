@@ -2,18 +2,16 @@
 /**
  * picking items repository
  *
- * @version 1.0.0
+ * @version 1.0.2
  * @author spark Lin.yupin@standart.com.tw
- * @date 18/01/22
+ * @date 18/03/20
  * @since 1.0.0 spark: build database I/O function 
+ * @since 1.0.2 spark: completed unit test and optimized code
  * 
  */
 namespace App\Repositories\ProductWarehouse;
 
 use DB;
-use Exception;
-use App\Traits\Sqlexecute;
-use App\Traits\Oracle;
 use App\Repositories\Repository;
 
 /**
@@ -22,10 +20,7 @@ use App\Repositories\Repository;
  * @package App\Repositories
  */
 class PickingItemsRepository extends Repository
-{   
-    use Sqlexecute;
-    use Oracle;
-    
+{       
     /**
      * Specify Model class name
      *
