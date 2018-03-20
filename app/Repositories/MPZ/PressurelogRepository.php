@@ -79,7 +79,7 @@ class PressurelogRepository
         $dev = DB::selectOne("
             select p.mach_no, f.stadjj, f.stadlj
                 from mpz_point p, jdv_f594343@JDBPRD.STANDARD.COM.TW f
-                where p.mach_no = trim(f.stapid) and p.point_no = '$point_no'
+                where p.mach_no = trim(f.stapid(+)) and p.point_no = '$point_no'
         ");
         return $dev;
     }
