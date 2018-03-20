@@ -355,7 +355,7 @@ export default class Wetestlog extends React.Component {
             </tr>
             <tr>
               <td>儀器編號</td><td>{mach_no}</td>
-              <td width="120">儀器校期</td><td>{ch_date}</td>
+              <td width="120">儀器效期</td><td>{ch_date}</td>
             </tr>
             <tr>
               <td>合格範圍</td>
