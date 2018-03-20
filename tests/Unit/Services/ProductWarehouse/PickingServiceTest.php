@@ -19,7 +19,9 @@ use DB;
 use Exception;
 use App\Services\ProductWarehouse\PickingService;
 use App\Repositories\ProductWarehouse\PickingListRepository;
+use App\Repositories\ProductWarehouse\PickingItemsRepository;
 use App\Models\ProductWarehouse\PickingList;
+use App\Models\ProductWarehouse\PickingItems;
 
 /**
  * Class PickingServiceTest
@@ -64,18 +66,18 @@ class PickingServiceTest extends TestCase
     /**
      * test getTodayPickingList()
      */
-    public function _test_getTodayPickingList()
+    public function test_getTodayPickingList()
     {
         // arrange
-        $today = PickingList::first()->staddj;
-        $expected = PickingList::where('staddj', $today)->where('stky6', null)->get();
+        $expected = PickingList::where('stky6', null)->first();
+        $date = $expected->staddj;
 
         // act
         $this->mock->shouldReceive('getPickingList')
             ->once()
-            ->with($today)
+            ->with($date)
             ->andReturn($expected);
-        $actual = $this->target->getTodayPickingList($today);
+        $actual = $this->target->getTodayPickingList($date);
 
         // assert
         $this->assertEquals($expected, $actual);
@@ -100,26 +102,20 @@ class PickingServiceTest extends TestCase
             ->with($stop, $datetime)
             ->andReturn($data);
         
-        
         $this->mock->shouldReceive('startPicking')
             ->once()
             ->with($stop, $staddj, $empno);
         
         $actual = $this->target->startPicking($stop, $empno, $datetime);
-        $updated = PickingList::where('ststop', $stop)
-                    ->where('staddj', $datetime)
-                    ->first();   
-        dd($updated);
+
         // assert
         $this->assertTrue($actual);
-        $this->assertEquals($empno, trim($updated->stky2));
-        //$this->assertEquals($ky3, trim($updated->stky3));
     }
 
     /**
      * test startPicking(), throw no data found Exception 
      */
-    public function _test_startPicking_exception()
+    public function test_startPicking_exception()
     {
         // arrange
         $stop = 'test';
@@ -147,35 +143,36 @@ class PickingServiceTest extends TestCase
      * test endPicking() 
      * call procedure proc_upd_f594921 and check the data is updated
      */
-    public function _test_endPicking()
+    public function test_endPicking()
     {
         // arrange
-        $data = PickingList::first();
+        $data = PickingList::where('stky6', null)->first();   
         $stop = $data->ststop;
-        $empno = $data->empno;
+        $empno = 'test user';
         $datetime = $data->staddj;
-        $ky6 = 'T';
-        $ky7 = '88:88:88';
+        $staddj = date_format(date_create($datetime), 'Y/m/d');
 
         // act
         $this->mock->shouldReceive('getPicking')
             ->once()
             ->with($stop, $datetime)
             ->andReturn($data);
-        $actual = $this->target->endPicking($stop, $empno, $datetime, $ky6, $ky7);
-        $updated = PickingList::first();
         
+        $this->mock->shouldReceive('endPicking')
+            ->once()
+            ->with($stop, $staddj, $empno);
+        
+        $actual = $this->target->endPicking($stop, $empno, $datetime);
+
         // assert
         $this->assertTrue($actual);
-        $this->assertEquals($ky6, trim($updated->stky6));
-        $this->assertEquals($ky7, trim($updated->stky7));
     }
 
 
     /**
      * tes endPicking(), throw no data found Exception 
      */
-    public function _test_endPicking_exception()
+    public function test_endPicking_exception()
     {
         // arrange
         $stop = 'test';
@@ -202,16 +199,31 @@ class PickingServiceTest extends TestCase
     /**
      * test getPickingItems() 
      */
-    public function _test_getPickingItems()
+    public function test_getPickingItems()
     {
         // arrange
-        $stop = '';
-        $expected = true;
+        $this->mock = $this->initMock(PickingItemsRepository::class);
+        $this->target = $this->app->make(PickingService::class);
+        $items = PickingItems::first();
+        $stop = $items->psstop;
+        $date = $items->psaddj;
+
+        $expected = PickingItems::where('psstop', $stop)
+                        ->where('psaddj', $date)
+                        ->select('psicu', 'psaddj', 'psstop', 'pslocn', 'psrmk', 'pslitm', 'pslotn', 'pssoqs', 'pspqoh', 'psuom')
+                        ->orderBy('pslocn')
+                        ->orderBy('psrmk')
+                        ->orderBy('pslitm')
+                        ->get();
 
         // act
-        $actual = $this->target->getPickingItems($stop);
+        $this->mock->shouldReceive('getPickingItems')
+            ->times(1)
+            ->with(trim($stop), $date)
+            ->andReturn($expected);
+        $actual = $this->target->getPickingItems(trim($stop), $date);
 
         // assert
-        $this->assertTrue($actual);
+        $this->assertEquals($expected, $actual);
     }
 }
