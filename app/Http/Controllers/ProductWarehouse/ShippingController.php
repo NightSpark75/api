@@ -1,6 +1,6 @@
 <?php
 /**
- * shiping controller
+ * shipping controller
  *
  * @version 1.0.0
  * @author spark Lin.yupin@standart.com.tw
@@ -11,43 +11,43 @@
 namespace App\Http\Controllers\ProductWarehouse;
 
 use App\Http\Controllers\Controller;
-use App\Services\ProductWarehouse\shipingService;
+use App\Services\ProductWarehouse\shippingService;
 use Exception;
 use App\Traits\Common;
 
 /**
- * Class ShipingController
+ * Class ShippingController
  *
  * @package App\Http\Controllers\ProductWarehouse
  */
-class ShipingController extends Controller
+class ShippingController extends Controller
 {
     use Common;
 
     /**
-     * @var ShipinggService
+     * @var ShippinggService
      */
-    private $ShipingService;
+    private $ShippingService;
 
     /**
-     * @param ShipingService $shipingService
+     * @param ShippingService $shippingService
      * @throws Exception
      */
-    public function __construct(ShipingService $shipingService) 
+    public function __construct(ShippingService $shippingService) 
     {
-        $this->shipingService = $shipingService;
+        $this->shippingService = $shippingService;
     }
 
     /**
-     * get today shiping list
+     * get today shipping list
      *
      * @throws Exception
      * @return mixed
      */
-    public function getshipingList()
+    public function getshippingList()
     {
         try {
-            $list = $this->shipingService->getTodayshipingList();
+            $list = $this->shippingService->getTodayshippingList();
             return response()->json($list, 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
@@ -55,16 +55,16 @@ class ShipingController extends Controller
     }
 
     /**
-     * get shiping items by stop at today
+     * get shipping items by stop at today
      *
      * @param string $stop
      * @throws Exception
      * @return mixed
      */
-    public function getShipingItems($stop)
+    public function getShippingItems($stop)
     {
         try {
-            $items = $this->shipingService->getShipingItems($stop);
+            $items = $this->shippingService->getShippingItems($stop);
             return response()->json($items, 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
@@ -72,18 +72,18 @@ class ShipingController extends Controller
     }
 
     /**
-     * start shiping
+     * start shipping
      *
      * @throws Exception
      * @return mixed
      */
-    public function startShiping()
+    public function startShipping()
     {
         try {
             $user = session('user');
             $id = $user->id;
             $stop = request()->input('stop');
-            $result = $this->shipingService->startShiping($stop, $id);
+            $result = $this->shippingService->startShipping($stop, $id);
             return response()->json($result, 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
@@ -91,18 +91,18 @@ class ShipingController extends Controller
     }
 
     /**
-     * end shiping
+     * end shipping
      *
      * @throws Exception
      * @return mixed
      */
-    public function endshiping()
+    public function endshipping()
     {
         try {
             $user = session('user');
             $id = $user->id;
             $stop = request()->input('stop');
-            $result = $this->shipingService->endShiping($stop, $id);
+            $result = $this->shippingService->endShipping($stop, $id);
             return response()->json($result, 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);

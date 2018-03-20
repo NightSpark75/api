@@ -1,11 +1,11 @@
 <?php
 /**
- * shiping service
+ * shipping service
  *
  * @version 1.0.0
  * @author spark Lin.yupin@standart.com.tw
  * @date 18/03/07
- * @since 1.0.0 spark: handle shiping business logic
+ * @since 1.0.0 spark: handle shipping business logic
  * 
  */
 namespace App\Services\ProductWarehouse;
@@ -16,11 +16,11 @@ use Exception;
 use DB;
 
 /**
- * Class ShipingService
+ * Class ShippingService
  *
  * @package App\Services
  */
-class ShipingService {
+class ShippingService {
 
     /**
      * @var PickingListRepository
@@ -45,7 +45,7 @@ class ShipingService {
     }
 
     /**
-     * get today shiping items
+     * get today shipping items
      *
      * @param string $stop
      * @return mixed
@@ -59,7 +59,7 @@ class ShipingService {
     }
 
     /**
-     * get today shiping list
+     * get today shipping list
      *
      * @return mixed
      */
@@ -72,19 +72,19 @@ class ShipingService {
     }
 
     /**
-     * post start shiping update start time
+     * post start shipping update start time
      *
      * @param string $stop
      * @param string $empno
      */
-    public function startShiping($stop, $user, $today = null)
+    public function startShipping($stop, $user, $today = null)
     {
         $date = $today? $today: date('Y-m-d').' 00:00:00';
-        $picking = $this->pickingListRepository->getShiping($stop, $date);
+        $picking = $this->pickingListRepository->getShipping($stop, $date);
         
         if ($picking) {
             $staddj = date_format(date_create($date), 'Y/m/d');
-            $this->pickingListRepository->startShiping($stop, $staddj, $user);
+            $this->pickingListRepository->startShipping($stop, $staddj, $user);
             return true;
         }
         throw new Exception("ststop='$stop' and staddj='$date', data not found!");
@@ -96,13 +96,13 @@ class ShipingService {
      * @param string $stop
      * @param string $empno
      */
-    public function endShiping($stop, $user, $today = null)
+    public function endShipping($stop, $user, $today = null)
     {
         $date = $today? $today: date('Y-m-d').' 00:00:00';
-        $picking = $this->pickingListRepository->getshiping($stop, $date);
+        $picking = $this->pickingListRepository->getshipping($stop, $date);
         if ($picking) {
             $staddj = date_format(date_create($date), 'Y/m/d');
-            $this->pickingListRepository->endshiping($stop, $staddj, $user);
+            $this->pickingListRepository->endshipping($stop, $staddj, $user);
             return true;
         }
         throw new Exception("ststop='$stop' and staddj='$date', data not found!");

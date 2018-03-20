@@ -59,9 +59,13 @@ class PickingListRepositoryTest extends TestCase
     public function test_getPickingList()
     {
         // arrange
-        $first = PickingList::where('staddj', '2015-12-09 00:00:00')->where('stky2', null)->first();
+        $first = PickingList::first();
         $date = $first->staddj;
-        $expected = PickingList::where('staddj', $date)->where('stky2', null)->get();
+        $expected = PickingList::where('staddj', $date)
+                        ->where('stky6', null)
+                        ->select('sticu', 'ststop', 'staddj', 'stky2')
+                        ->orderBy('ststop')
+                        ->get();
         
         // act
         $actual = $this->target->getPickingList($date);
@@ -88,5 +92,39 @@ class PickingListRepositoryTest extends TestCase
 
         // assert
         $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * test startPicking()
+     */
+    public function test_startPicking()
+    {
+        // arrange
+        $stop = 'A1';
+        $date = '13-MAR-18';
+        $user = '106013';
+
+        // act
+        $actual = $this->target->startPicking($stop, $date, $user);
+
+        // assert
+        $this->assertTrue($actual);
+    }
+
+    /**
+     * test endPicking()
+     */
+    public function test_endPicking()
+    {
+        // arrange
+        $stop = 'A1';
+        $date = '13-MAR-18';
+        $user = '106013';
+
+        // act
+        $actual = $this->target->endPicking($stop, $date, $user);
+
+        // assert
+        $this->assertTrue($actual);
     }
 }

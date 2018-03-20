@@ -16,7 +16,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 use Exception;
-use App\Models\ProductWarehouse\PickingList;
+use App\Models\ProductWarehouse\PickingItems;
 use App\Repositories\ProductWarehouse\PickingItemsRepository;
 
 /**
@@ -46,28 +46,20 @@ class PickingItemsRepositoryTest extends TestCase
     public function test_getPickingItems()
     {
         // arrange
-        $stop = '';
-        $date = '';
-        $expected = true;
-
+        $first = PickingItems::first();
+        $stop = $first->psstop;
+        $date = $first->psaddj;
+        $expected = PickingItems::where('psaddj', $date)
+                        ->where('psstop', $stop)
+                        ->select('psicu', 'psaddj', 'psstop', 'pslocn', 'psrmk', 'pslitm', 'pslotn', 'pssoqs', 'pspqoh', 'psuom')
+                        ->orderBy('pslocn')
+                        ->orderBy('psrmk')
+                        ->orderBy('pslitm')
+                        ->get();
         // act
         $actual = $this->target->getPickingItems($stop, $date);
 
         // assert
-        $this->assertTrue($actual);
-    }
-
-    public function test_getPicking()
-    {
-        // arrange
-        $stop = '';
-        $date = '';
-        $expected = true;
-
-        // act
-        $actual = $this->target->getPicking($stop, $date);
-
-        // assert
-        $this->assertTrue($actual);
+        $this->assertEquals($expected, $actual);
     }
 }

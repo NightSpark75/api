@@ -60,10 +60,10 @@ Route::group(['prefix' => 'productWarehouse', 'namespace' => 'ProductWarehouse',
         Route::post('start', 'PickingController@startPicking');
         Route::post('end', 'PickingController@endPicking');
     });
-    // shiping
-    Route::group(['prefix' => 'shiping'], function () {
-        Route::post('start', 'ShipingController@startShiping');
-        Route::post('end', 'ShipingController@endShiping');
+    // shipping
+    Route::group(['prefix' => 'shipping'], function () {
+        Route::post('start', 'ShippingController@startShipping');
+        Route::post('end', 'ShippingController@endShipping');
     });
 });
 

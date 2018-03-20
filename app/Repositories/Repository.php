@@ -10,6 +10,8 @@ use App\Interfaces\RepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Container\Container as App;
 use Exception;
+use DB;
+
  /**
  * Class Repository
  * @package Bosnadev\Repositories\Eloquent
@@ -131,12 +133,29 @@ abstract class Repository implements RepositoryInterface {
      * @return Model
      * @throws Exception
      */
-    public function makeModel() {
+    public function makeModel() 
+    {
         $model = $this->app->make($this->model());
 
         if (!$model instanceof Model)
             throw new Exception("Class {$this->model()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
 
             return $this->model = $model;
+    }
+
+    public function procedure($name, $parameters) 
+    {
+        try {
+            $pdo = DB::getPdo();
+            list($keys, $values) = array_divide($parameters);
+            $inject = implode(',', $keys);
+            $stmt = $pdo->prepare("begin $name($inject); end;");
+            for ($i = 0; $i < count($values); $i++) {
+                $stmt->bindParam($keys[$i], $values[$i]);
+            }
+            $stmt->execute();
+        } catch (Exception $e) {
+            throw new Exception('procedure exception: '.$e->getMessage());
+        }
    }
 }

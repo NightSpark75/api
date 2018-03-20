@@ -146,7 +146,10 @@ export default class Pressurelog extends React.Component {
     if (this.checkTime() !== '') {
       isOverdue = false
       if (operatorHandle(hours, rule.MO_OTHER.cond, Number(rule.MO_OTHER.val)) &&
-        operatorHandle(hours, '>=', Number(rule.MO_START.val))) {
+        operatorHandle(hours, '>=', Number(rule.MO_START.val))
+      ) {
+        isOverdue = false
+      } else {
         if (mo_rmk === '') {
           isOverdue = true
         } else {
@@ -344,8 +347,8 @@ export default class Pressurelog extends React.Component {
             </tr>
             <tr>
               <td>合格範圍pa</td>
-              <td>{(pa_low === 0 || pa_low === '-200' ? '' : '>= ' + pa_low)} {/* + " ~ " + (pa_high !== 0 ? pa_high : '')*/}</td>
-              <td>合格範圍mmAq</td><td>{(aq_low === 0 || aq_low === '-200' ? '' : '>= ' + aq_low)} {/* + " ~ " + (aq_high !== 0 ? aq_high : '')*/}</td>
+              <td>{(pa_low === 0 || pa_low === '-200' ? '' : '> ' + pa_low)} {/* + " ~ " + (pa_high !== 0 ? pa_high : '')*/}</td>
+              <td>合格範圍mmAq</td><td>{(aq_low === 0 || aq_low === '-200' ? '' : '> ' + aq_low)} {/* + " ~ " + (aq_high !== 0 ? aq_high : '')*/}</td>
             </tr>
             {this.checkTime() === 'mo' &&
               this.layoutInput('上午記錄')

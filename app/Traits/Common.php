@@ -12,7 +12,7 @@ namespace App\Traits;
 
 trait Common {
 
-    private function getException($e)
+    public function getException($e)
     {
         $message = $e->getMessage();
         $code = $e->getCode();

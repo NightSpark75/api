@@ -30,7 +30,7 @@ trait Sqlexecute
      * @return void
      * @throws Exception
      */
-    private function query($bindings, $query) 
+    public function query($bindings, $query) 
     {
         try {
             /** @noinspection PhpUndefinedMethodInspection */
@@ -50,7 +50,7 @@ trait Sqlexecute
      * @param string $query query string
      * @return \stdClass
      */
-    private function select($query)
+    public function select($query)
     {
         /** @noinspection PhpUndefinedMethodInspection */
         return DB::selectOne($query);
@@ -63,7 +63,7 @@ trait Sqlexecute
      * @param $pars
      * @return array
      */
-    private function procedure($name, $pars)
+    public function procedure($name, $pars)
     {
         /** @noinspection PhpUndefinedMethodInspection */
         $pdo = DB::getPdo();
@@ -94,7 +94,7 @@ trait Sqlexecute
      * @param array $result
      * @return array
      */
-    private function exception($exception, $result = [])
+    public function exception($exception, $result = [])
     {
         $result['result'] = false;
         /** @noinspection PhpUndefinedMethodInspection */
@@ -108,7 +108,7 @@ trait Sqlexecute
      * @param string $message error message
      * @return View
      */
-    private function errorPage($message)
+    public function errorPage($message)
     {
         return view('error')->with('message', $message);
     }
@@ -119,7 +119,7 @@ trait Sqlexecute
      * @param array $info
      * @return array
      */
-    private function success($info = [])
+    public function success($info = [])
     {
         $info['result'] = true;
         return $info;

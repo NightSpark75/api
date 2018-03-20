@@ -67,11 +67,12 @@ class PickingControllersTest extends TestCase
     {
         // arrange
         $expected = response()->json([], 200);
+        $date = null;
 
         // act
         $this->mock->shouldReceive('getTodayPickingList')
             ->once()
-            ->withNoArgs()
+            ->with($date)
             ->andReturn($expected);
         $actual = $this->target->getPickingList();
 
@@ -86,11 +87,12 @@ class PickingControllersTest extends TestCase
     {
         // arrange
         $expected = response()->json([], 400);
+        $date = null;
 
         // act
         $this->mock->shouldReceive('getTodayPickingList')
             ->once()
-            ->withNoArgs()
+            ->with($date)
             ->andThrow(new Exception());
         $actual = $this->target->getPickingList();
 
@@ -105,12 +107,13 @@ class PickingControllersTest extends TestCase
     {
         // arrange
         $stop = request()->input('stop');
+        $date = null;
         $expected = response()->json([], 200);
 
         // act
         $this->mock->shouldReceive('getPickingItems')
             ->once()
-            ->with($stop)
+            ->with($stop, $date)
             ->andReturn($expected);
         $actual = $this->target->getPickingItems($stop);
 
@@ -125,12 +128,13 @@ class PickingControllersTest extends TestCase
     {
         // arrange
         $stop = request()->input('stop');
+        $date = null;
         $expected = response()->json([], 400);
 
         // act
         $this->mock->shouldReceive('getPickingItems')
             ->once()
-            ->with($stop)
+            ->with($stop, $date)
             ->andThrow(new Exception());
         $actual = $this->target->getPickingItems($stop);
 
@@ -148,12 +152,13 @@ class PickingControllersTest extends TestCase
         $this->session(['user' => $user]);
         $stop = request()->input('stop');
         $id = $user->id;
+        $date = null;
         $expected = response()->json([], 200);
 
         // act
         $this->mock->shouldReceive('startPicking')
             ->once()
-            ->with($stop, $id)
+            ->with($stop, $id, $date)
             ->andReturn($expected);
         $actual = $this->target->startPicking();
         // assert
@@ -171,12 +176,13 @@ class PickingControllersTest extends TestCase
         $this->session(['user' => $user]);
         $stop = request()->input('stop');
         $id = $user->id;
+        $date = null;
         $expected = response()->json([], 400);
 
         // act
         $this->mock->shouldReceive('startPicking')
             ->once()
-            ->with($stop, $id)
+            ->with($stop, $id, $date)
             ->andThrow(new Exception());
         $actual = $this->target->startPicking($stop);
 
@@ -195,12 +201,13 @@ class PickingControllersTest extends TestCase
         $this->session(['user' => $user]);
         $stop = request()->input('stop');
         $id = $user->id;
+        $date = null;
         $expected = response()->json([], 200);
 
         // act
         $this->mock->shouldReceive('endPicking')
             ->once()
-            ->with($stop, $id)
+            ->with($stop, $id, $date)
             ->andReturn($expected);
         $actual = $this->target->endPicking();
         // assert
@@ -218,12 +225,13 @@ class PickingControllersTest extends TestCase
         $this->session(['user' => $user]);
         $stop = request()->input('stop');
         $id = $user->id;
+        $date = null;
         $expected = response()->json([], 400);
 
         // act
         $this->mock->shouldReceive('endPicking')
             ->once()
-            ->with($stop, $id)
+            ->with($stop, $id, $date)
             ->andThrow(new Exception());
         $actual = $this->target->endPicking($stop);
 

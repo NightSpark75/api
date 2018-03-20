@@ -22,7 +22,7 @@ trait Uuid
      *
      * @return String
      */
-    function getUuid() 
+    public function getUuid() 
     {
         $char_id = strtoupper(md5(uniqid(mt_rand(), true)));
         $hyphen = chr(45);  // "-"

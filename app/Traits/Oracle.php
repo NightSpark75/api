@@ -22,7 +22,7 @@ trait Oracle
      *
      * @return String
      */
-    function unixToDate($unix) 
+    public function unixToDate($unix) 
     {
         $date = date('d-M-y', $unix);
 
@@ -34,7 +34,7 @@ trait Oracle
      *
      * @return String
      */
-    function toDate($date) 
+    public function toDate($date) 
     {
         $formatDate = date('Y-m-d', $date);
 
