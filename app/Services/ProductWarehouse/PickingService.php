@@ -50,9 +50,9 @@ class PickingService {
      * @param string $stop
      * @return mixed
      */
-    public function getPickingItems($stop, $today = null)
+    public function getPickingItems($stop, $date = null)
     {
-        $date = $today? $today: date('Y-m-d') . ' 00:00:00';
+        $date = $date? $date: date('Y-m-d') . ' 00:00:00';
         $list = $this->pickingItemsRepository->getPickingItems($stop, $date);
         return $list;
     }
@@ -62,9 +62,9 @@ class PickingService {
      *
      * @return mixed
      */
-    public function getTodayPickingList($today = null)
+    public function getTodayPickingList($date = null)
     {
-        $date = $today? $today: date('Y-m-d') . ' 00:00:00';
+        $date = $date? $date: date('Y-m-d') . ' 00:00:00';
         $list = $this->pickingListRepository->getPickingList($date);
         return $list;
     }
@@ -75,9 +75,9 @@ class PickingService {
      * @param string $stop
      * @param string $empno
      */
-    public function startPicking($stop, $user, $today = null)
+    public function startPicking($stop, $user, $date = null)
     {
-        $date = $today? $today: date('Y-m-d') . ' 00:00:00';
+        $date = $date? $date: date('Y-m-d') . ' 00:00:00';
         $picking = $this->pickingListRepository->getPicking($stop, $date);
         
         if ($picking) {
@@ -94,9 +94,9 @@ class PickingService {
      * @param string $stop
      * @param string $empno
      */
-    public function endPicking($stop, $user, $today = null)
+    public function endPicking($stop, $user, $date = null)
     {
-        $date = $today? $today: date('Y-m-d') . ' 00:00:00';
+        $date = $date? $date: date('Y-m-d') . ' 00:00:00';
         $picking = $this->pickingListRepository->getPicking($stop, $date);
         if ($picking) {
             $staddj = date_format(date_create($date), 'Y/m/d');
