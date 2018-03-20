@@ -343,7 +343,7 @@ export default class Pressurelog extends React.Component {
             </tr>
             <tr>
               <td>儀器編號</td><td>{mach_no}</td>
-              <td width="160">儀器效期</td><td>{ch_date}</td>
+              <td width="160">儀器效期</td><td>{ch_date.substr(0, 10)}</td>
             </tr>
             <tr>
               <td>合格範圍pa</td>
