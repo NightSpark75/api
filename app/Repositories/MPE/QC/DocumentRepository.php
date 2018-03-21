@@ -31,22 +31,23 @@ class DocumentRepository
     {
         try {
             $info = DB::select("
-                select m.partno, hm.batch, m.ename, pk_mpe.fu_storn(hm.whouse, hm.stor) storn, hm.qty||m.unit qty, m.sfty||m.unit sfty, hm.coa_no, m.sds_no, 
-                        m.pname, m.molef, m.molew, m.casno, m.lev, m.conc, m.scrap, m.sfty, m.toxicizer, m.hazard, m.reagent, m.pioneer, m.store_type
-                    from mpe_house_m hm, mpe_house_e he, mpe_mate m
-                    where (hm.partno like '%$search%' 
-                            or hm.batch like '%$search%' 
-                            or UPPER(m.ename) like UPPER('%$search%')
-                            or UPPER(m.pname) like UPPER('%$search%')
-                            or UPPER(m.reagent) like UPPER('%$search%')
-                            or m.casno like '%$search%'
-                            or m.molef like '%$search%'
-                            or he.barcode = '$search')
-                        and m.code = '01' and hm.code = '01' and he.code = '01'
-                        and hm.partno = he.partno and hm.batch = he.batch and hm.whouse = he.whouse and hm.stor = he.stor and hm.grid = he.grid
-                        and hm.partno = m.partno
-                group by m.partno, hm.batch, m.ename, hm.whouse, hm.stor, hm.qty, m.sfty, hm.coa_no, m.sds_no, m.unit, 
+            select e.partno, e.batch, m.ename, pk_mpe.fu_storn(e.whouse, e.stor) storn, 
+                    pk_mpe.fu_get_count_qty2(e.code, e.partno, e.batch, e.whouse, e.stor, e.grid)||m.unit qty, 
+                    m.sfty||m.unit sfty, pk_mpe.fu_get_qc_coa(e.partno, e.batch) coa_no, m.sds_no, 
                     m.pname, m.molef, m.molew, m.casno, m.lev, m.conc, m.scrap, m.sfty, m.toxicizer, m.hazard, m.reagent, m.pioneer, m.store_type
+                from mpe_house_e e, mpe_mate m
+                where e.code = '01' and e.code = m.code and e.partno = m.partno
+                    and (e.partno like '%$search%' 
+                        or e.batch like '%$search%' 
+                        or UPPER(m.ename) like UPPER('%$search%')
+                        or UPPER(m.pname) like UPPER('%$search%')
+                        or UPPER(m.reagent) like UPPER('%$search%')
+                        or m.casno like '%$search%'
+                        or m.molef like '%$search%'
+                        or e.barcode = '$search')
+                group by e.code, e.partno, e.batch, m.ename, m.unit, m.sfty, e.whouse, e.stor, e.grid,
+                    m.sds_no, m.pname, m.molef, m.molew, m.casno, m.lev, 
+                    m.conc, m.scrap, m.sfty, m.toxicizer, m.hazard, m.reagent, m.pioneer, m.store_type
                 union
                     select m.partno, null batch, m.ename, '' storn, '0' qty, m.sfty||m.unit sfty, null coa_no, m.sds_no, 
                             m.pname, m.molef, m.molew, m.casno, m.lev, m.conc, m.scrap, m.sfty, m.toxicizer, m.hazard, m.reagent, m.pioneer, m.store_type
