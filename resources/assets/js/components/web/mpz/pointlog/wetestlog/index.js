@@ -132,16 +132,11 @@ export default class Wetestlog extends React.Component {
     let isOverdue = true
     if (this.checkTime() !== '') {
       isOverdue = false
-      if (operatorHandle(hours, rule.MO_OTHER.cond, Number(rule.MO_OTHER.val)) &&
-        operatorHandle(hours, '>=', Number(rule.MO_START.val))&& mo_rmk === ''
-      ) {
-        isOverdue = false
-      } else {
-        if (mo_rmk === '') {
+      let start = operatorHandle(hours, rule.MO_OTHER.cond, Number(rule.MO_OTHER.val))
+      let end = operatorHandle(hours, '>=', Number(rule.MO_END.val))
+      let rmk = mo_rmk === ''
+      if (start && end && rmk) {
           isOverdue = true
-        } else {
-          isOverdue = false
-        }
       }
     }
     this.setState({ isOverdue: isOverdue })
@@ -340,7 +335,7 @@ export default class Wetestlog extends React.Component {
           <tbody>
             <tr>
               <td colSpan={4}>
-                <span className="title is-4">最溼點溼度記錄表</span>
+                <span className="title is-4">最濕點溼度記錄表</span>
                 <span className="title is-6" style={{ marginLeft: '10px' }}>
                   日期：{/*today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate()*/} {date + time}
                 </span>
@@ -361,9 +356,9 @@ export default class Wetestlog extends React.Component {
               <td>合格範圍</td>
               <td colSpan={3}>
                 {
-                  (humi_low === '0' || humi_low === '-200' ? '': humi_low) 
-                  + " ~ " + 
-                  (humi_high === '0' || humi_high === '200' ? '': humi_high) + ' R.H(%)'
+                  /*(humi_low === '0' || humi_low === '-200' ? '': humi_low) */
+                  " <= " + 
+                  (humi_high === '0' || humi_high === '200' ? '': humi_high) + ' %'
                 }
               </td>
             </tr>

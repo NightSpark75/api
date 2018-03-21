@@ -131,16 +131,11 @@ export default class Refrilog extends React.Component {
     let isOverdue = true
     if (this.checkTime() !== '') {
       isOverdue = false
-      if (operatorHandle(hours, rule.MO_OTHER.cond, Number(rule.MO_OTHER.val)) &&
-        operatorHandle(hours, '>=', Number(rule.MO_START.val))&& mo_rmk === ''
-      ) {
-        isOverdue = false
-      } else {
-        if (mo_rmk === '') {
+      let start = operatorHandle(hours, rule.MO_OTHER.cond, Number(rule.MO_OTHER.val))
+      let end = operatorHandle(hours, '>=', Number(rule.MO_END.val))
+      let rmk = mo_rmk === ''
+      if (start && end && rmk) {
           isOverdue = true
-        } else {
-          isOverdue = false
-        }
       }
     }
     this.setState({ isOverdue: isOverdue })
