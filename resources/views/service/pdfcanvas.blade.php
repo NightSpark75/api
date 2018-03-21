@@ -31,7 +31,7 @@
                 pdf.getPage(pageNum).then(function(page) {
                 // you can now use *page* here
                 
-                    var viewport = page.getViewport(1);
+                    var viewport = page.getViewport(1.7);
 
                     var canvas = document.createElement('canvas');
                     var context = canvas.getContext('2d');

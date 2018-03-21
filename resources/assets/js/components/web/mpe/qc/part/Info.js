@@ -24,6 +24,10 @@ export default class Info extends React.Component {
   getInfo() {
     let self = this;
     const search = this.state.search;
+    if (search === '') {
+      alert('請輸入搜尋條件')
+      return
+    }
     this.setState({ searching: true });
     axios.get('/api/web/mpe/qc/doc/info/' + search)
       .then(function (response) {
@@ -122,7 +126,7 @@ export default class Info extends React.Component {
                         target="_blank"
                       >
                         下載
-                                            </a>
+                      </a>
                       :
                       <a className="button" title="Disabled button" disabled>下載</a>
                     }
@@ -132,10 +136,10 @@ export default class Info extends React.Component {
                       <a className="button"
                         href={"/api/web/mpe/qc/doc/read/coa/" + item.partno + "/" + item.batch + "/" + item.coa_no}
                         target="_blank"
-                        disabled={item.coa_no ? "false" : "true"}
+                        disabled={item.coa_no ? false : true}
                       >
                         下載
-                                            </a>
+                      </a>
                       :
                       <a className="button" title="Disabled button" disabled>下載</a>
                     }
