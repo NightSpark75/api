@@ -48,8 +48,8 @@ class ShippingController extends Controller
     public function getShippingInfo($spno, $date)
     {
         try {
-            $items = $this->shippingService->getShippingInfo($spno, $date);
-            return response()->json($items, 200);
+            $info = $this->shippingService->getShippingInfo($spno, $date);
+            return response()->json($info, 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
         }
