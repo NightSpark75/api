@@ -39,71 +39,17 @@ class ShippingController extends Controller
     }
 
     /**
-     * get today shipping list
-     *
-     * @throws Exception
-     * @return mixed
-     */
-    public function getshippingList()
-    {
-        try {
-            $list = $this->shippingService->getTodayshippingList();
-            return response()->json($list, 200);
-        } catch (Exception $e) {
-            return response()->json($this->getException($e), 400);
-        }
-    }
-
-    /**
      * get shipping items by stop at today
      *
      * @param string $stop
      * @throws Exception
      * @return mixed
      */
-    public function getShippingItems($spno)
+    public function getShippingInfo($spno, $date)
     {
         try {
-            $items = $this->shippingService->getShippingItems($spno);
+            $items = $this->shippingService->getShippingInfo($spno, $date);
             return response()->json($items, 200);
-        } catch (Exception $e) {
-            return response()->json($this->getException($e), 400);
-        }
-    }
-
-    /**
-     * start shipping
-     *
-     * @throws Exception
-     * @return mixed
-     */
-    public function startShipping()
-    {
-        try {
-            $user = session('user');
-            $id = $user->id;
-            $spno = request()->input('spno');
-            $result = $this->shippingService->startShipping($spno, $id);
-            return response()->json($result, 200);
-        } catch (Exception $e) {
-            return response()->json($this->getException($e), 400);
-        }
-    }
-
-    /**
-     * end shipping
-     *
-     * @throws Exception
-     * @return mixed
-     */
-    public function endshipping()
-    {
-        try {
-            $user = session('user');
-            $id = $user->id;
-            $spno = request()->input('spno');
-            $result = $this->shippingService->endShipping($spno, $id);
-            return response()->json($result, 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
         }

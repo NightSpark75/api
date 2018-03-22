@@ -31,56 +31,18 @@ class ShippingListRepository extends Repository
     }
 
     /**
-     * get shipping list by date
+     * get shipping info by spno and date
      * 
      * @param string $date => 'Y-m-d 00:00:00'
      * @return mixed
      */
-    public function getShippingList($date)
+    public function getShippingInfo($spno, $date)
     {
         $list = $this->model
+            ->where('tmy59spno', $spno)
             ->where('tmtrdj', $date)
-            ->select('tmurab', 'tmaddj', 'tmy59spno', 'tmcars', 'tman8')
-            ->orderBy('tmy59spno')
-            ->get();
+            ->select('tmtrdj', 'tmaddj', 'tmy59spno', 'tmcars', 'tm1in1', 'tmy59dltm')
+            ->first();
         return $list;
-    }
-
-    /**
-     * call procedure proc_upd_f594921_ship_s
-     * 
-     * @param string $stop
-     * @param string $date // ex: 2018/01/05
-     * @param string $user
-     */
-    public function startShiping($spno, $date, $user) 
-    {
-        /*
-        $pdo = DB::getPdo();
-        $stmt = $pdo->prepare("begin proc_upd_f594921_ship_s(:stop, :date, :user); end;");
-        $stmt->bindParam(':stop', $stop);
-        $stmt->bindParam(':date', $date);
-        $stmt->bindParam(':user', $user);
-        $stmt->execute();
-        */
-    }
-
-    /**
-     * call procedure proc_upd_f594921_ship_e
-     * 
-     * @param string $stop
-     * @param string $date // ex: 2018/01/05
-     * @param string $user
-     */
-    public function endShiping($spno, $date, $user) 
-    {
-        /*
-        $pdo = DB::getPdo();
-        $stmt = $pdo->prepare("begin proc_upd_f594921_ship_e(:stop, :date, :user); end;");;
-        $stmt->bindParam(':stop', $stop);
-        $stmt->bindParam(':date', $date);
-        $stmt->bindParam(':user', $user);
-        $stmt->execute();
-        */
     }
 }
