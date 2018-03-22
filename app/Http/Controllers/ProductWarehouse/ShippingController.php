@@ -11,7 +11,7 @@
 namespace App\Http\Controllers\ProductWarehouse;
 
 use App\Http\Controllers\Controller;
-use App\Services\ProductWarehouse\shippingService;
+use App\Services\ProductWarehouse\ShippingService;
 use Exception;
 use App\Traits\Common;
 
@@ -27,7 +27,7 @@ class ShippingController extends Controller
     /**
      * @var ShippinggService
      */
-    private $ShippingService;
+    private $shippingService;
 
     /**
      * @param ShippingService $shippingService
