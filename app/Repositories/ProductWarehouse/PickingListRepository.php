@@ -12,7 +12,6 @@
  */
 namespace App\Repositories\ProductWarehouse;
 
-use DB;
 use App\Repositories\Repository;
 
 /**

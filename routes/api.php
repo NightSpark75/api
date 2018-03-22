@@ -62,6 +62,8 @@ Route::group(['prefix' => 'productWarehouse', 'namespace' => 'ProductWarehouse',
     });
     // shipping
     Route::group(['prefix' => 'shipping'], function () {
+        Route::get('list/{date?}', 'ShippingController@getShippingList');
+        Route::get('items/{spno}/{date?}', 'ShippingController@getShippingItems');
         Route::post('start', 'ShippingController@startShipping');
         Route::post('end', 'ShippingController@endShipping');
     });

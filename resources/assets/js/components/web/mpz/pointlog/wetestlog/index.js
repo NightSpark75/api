@@ -61,7 +61,6 @@ export default class Wetestlog extends React.Component {
             humi_low: response.data.humi_low,
             humi_high: response.data.humi_high,
           }, () => {
-            self.formCheck()
             self.setValue()
           })
           console.log(response.data)
@@ -87,7 +86,9 @@ export default class Wetestlog extends React.Component {
         ev_hum: data.mo_hum, ev_max: data.ev_max, ev_min: data.ev_min, ev_urmk: data.ev_urmk, ev_hde: data.ev_hde,
         ev_ed: data.ev_ed, ev_eh: data.ev_eh, ev_devia: data.ev_devia,
         zero: data.zero,
-      })
+      }, () => this.formCheck())
+    } else {
+      this.formCheck()
     }
   }
 
@@ -180,6 +181,20 @@ export default class Wetestlog extends React.Component {
       } else {
         this.removeAlert('最小值超過下限，請註記異常')
       }
+    }
+    let type = key.substr(0, 3)
+    let hum = this.state[type + 'hum']
+    let min = this.state[type + 'min']
+    let max = this.state[type + 'max']
+    if (hum < min) {
+      this.pushAlert('顯示值低於最小值，請註記異常')
+    } else {
+      this.removeAlert('顯示值低於最小值，請註記異常')
+    }
+    if (hum > max) {
+      this.pushAlert('顯示值超過最大值，請註記異常')
+    } else {
+      this.removeAlert('顯示值超過最大值，請註記異常')
     }
   }
 

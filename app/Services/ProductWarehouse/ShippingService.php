@@ -10,8 +10,8 @@
  */
 namespace App\Services\ProductWarehouse;
 
-use App\Repositories\ProductWarehouse\PickingListRepository;
-use App\Repositories\ProductWarehouse\PickingItemsRepository;
+use App\Repositories\ProductWarehouse\ShippingListRepository;
+use App\Repositories\ProductWarehouse\ShippingItemsRepository;
 use Exception;
 use DB;
 
@@ -23,38 +23,38 @@ use DB;
 class ShippingService {
 
     /**
-     * @var PickingListRepository
+     * @var ShippingListRepository
      */
-    private $pickingListRepository;
+    private $shippingListRepository;
     
     /**
-     * @var PickingItemsRepository
+     * @var ShippingItemsRepository
      */
-    private $pickingItemsRepository;
+    private $shippingItemsRepository;
 
     /**
-     * @param PickingListRepository $pickingListRepository
-     * @param PickingItemsRepository $pickingItemsRepository
+     * @param ShippingListRepository $shippingListRepository
+     * @param ShippingItemsRepository $shippingItemsRepository
      */
     public function __construct(
-        PickingListRepository $pickingListRepository,
-        PickingItemsRepository $pickingItemsRepository
+        ShippingListRepository $shippingListRepository,
+        ShippingItemsRepository $shippingItemsRepository
     ) {
-        $this->pickingListRepository = $pickingListRepository;
-        $this->pickingItemsRepository = $pickingItemsRepository;
+        $this->shippingListRepository = $shippingListRepository;
+        $this->shippingItemsRepository = $shippingItemsRepository;
     }
 
     /**
      * get today shipping items
      *
-     * @param string $stop
+     * @param string $spno
      * @return mixed
      */
-    public function getPickingItems($stop)
+    public function getShippingItems($spno, $date)
     {
         //$date = $today? $today: date('Y-m-d').' 00:00:00';
-        $date = date('Ymd', strtotime("20180305")).' 00:00:00';
-        $list = $this->pickingItemsRepository->getPickingItems($stop, $date);
+        $date = $date? $date: date('Ymd', strtotime("20180321")).' 00:00:00';
+        $list = $this->shippingItemsRepository->getShippingItems($spno, $date);
         return $list;
     }
 
@@ -63,48 +63,48 @@ class ShippingService {
      *
      * @return mixed
      */
-    public function getTodayPickingList($today = null)
+    public function getTodayShippingList($date = null)
     {
         //$date = $today? $today: date('Y-m-d').' 00:00:00';
-        $date = date('Ymd', strtotime("20180306")).' 00:00:00';
-        $list = $this->pickingListRepository->getPickingList($date);
+        $date = $date? $date: date('Ymd', strtotime("20180321")).' 00:00:00';
+        $list = $this->shippingListRepository->getShippingList($date);
         return $list;
     }
 
     /**
      * post start shipping update start time
      *
-     * @param string $stop
+     * @param string $spno
      * @param string $empno
      */
-    public function startShipping($stop, $user, $today = null)
+    public function startShipping($spno, $user, $date = null)
     {
-        $date = $today? $today: date('Y-m-d').' 00:00:00';
-        $picking = $this->pickingListRepository->getShipping($stop, $date);
+        $date = $date? $date: date('Y-m-d').' 00:00:00';
+        $shipping = $this->shippingListRepository->getShipping($spno, $date);
         
-        if ($picking) {
-            $staddj = date_format(date_create($date), 'Y/m/d');
-            $this->pickingListRepository->startShipping($stop, $staddj, $user);
+        if ($shipping) {
+            $addj = date_format(date_create($date), 'Y/m/d');
+            $this->shippingListRepository->startShipping($spno, $addj, $user);
             return true;
         }
-        throw new Exception("ststop='$stop' and staddj='$date', data not found!");
+        throw new Exception("spno='$spno' and addj='$date', data not found!");
     }
 
     /**
-     * post end picking and update end time and status
+     * post end shipping and update end time and status
      *
-     * @param string $stop
+     * @param string $spno
      * @param string $empno
      */
-    public function endShipping($stop, $user, $today = null)
+    public function endShipping($spno, $user, $date = null)
     {
-        $date = $today? $today: date('Y-m-d').' 00:00:00';
-        $picking = $this->pickingListRepository->getshipping($stop, $date);
-        if ($picking) {
-            $staddj = date_format(date_create($date), 'Y/m/d');
-            $this->pickingListRepository->endshipping($stop, $staddj, $user);
+        $date = $date? $date: date('Y-m-d').' 00:00:00';
+        $shipping = $this->shippingListRepository->getshipping($spno, $date);
+        if ($shipping) {
+            $addj = date_format(date_create($date), 'Y/m/d');
+            $this->shippingListRepository->endshipping($spno, $addj, $user);
             return true;
         }
-        throw new Exception("ststop='$stop' and staddj='$date', data not found!");
+        throw new Exception("spno='$spno' and addj='$date', data not found!");
     }
 }

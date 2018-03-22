@@ -63,7 +63,6 @@ export default class Refrilog extends React.Component {
             temp_low: response.data.temp_low,
             temp_high: response.data.temp_high,
           }, () => {
-            self.formCheck()
             self.setValue()
           })
           console.log(response.data)
@@ -86,7 +85,9 @@ export default class Refrilog extends React.Component {
         mo_rmk: data.mo_rmk, mo_dis: data.mo_dis, mo_ed: data.mo_ed, mo_et: data.mo_et, mo_devia: data.mo_devia, mo_hde: data.mo_hde,
         af_temp: data.af_temp, af_urmk: data.af_urmk,
         af_ed: data.af_ed, af_et: data.af_et, af_devia: data.af_devia, af_hde: data.af_hde
-      })
+      }, () => this.formCheck())
+    } else {
+      this.formCheck()
     }
   }
 

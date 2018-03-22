@@ -63,7 +63,6 @@ export default class Templog extends React.Component {
             humi_low: response.data.humi_low,
           }, () => { 
             self.setValue()
-            self.formCheck() 
           })
           console.log(response.data)
           
@@ -87,7 +86,9 @@ export default class Templog extends React.Component {
         af_ed: data.af_ed, af_eth: data.af_eth, af_devia: data.af_devia, 
         ev_temp: data.ev_temp, ev_hum: data.ev_hum, ev_urmk: data.ev_urmk, ev_hde: data.ev_hde,
         ev_ed: data.ev_ed, ev_eth: data.ev_eth, ev_devia: data.ev_devia, 
-      })
+      }, () => this.formCheck())
+    } else {
+      this.formCheck()
     }
   }
 

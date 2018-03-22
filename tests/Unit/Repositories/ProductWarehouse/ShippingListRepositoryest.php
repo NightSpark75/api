@@ -1,6 +1,6 @@
 <?php
 /**
- * PickingListRepository unit test
+ * ShippingListRepository unit test
  *
  * @version 1.0.2
  * @author spark Lin.yupin@standart.com.tw
@@ -17,21 +17,21 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 use Exception;
-use App\Models\ProductWarehouse\PickingList;
-use App\Repositories\ProductWarehouse\PickingListRepository;
+use App\Models\ProductWarehouse\ShippingList;
+use App\Repositories\ProductWarehouse\ShippingListRepository;
 
 /**
- * Class PickingListRepositoryTest
+ * Class ShippingListRepositoryTest
  *
  * @package Tests\Unit\Repositories
  */
-class PickingListRepositoryTest extends TestCase
+class ShippingListRepositoryTest extends TestCase
 {
     use DatabaseTransactions;
     use WithoutMiddleware;
     
     /**
-     * @var PickingListRepository
+     * @var ShippingListRepository
      */
     private $target;
 
@@ -41,7 +41,7 @@ class PickingListRepositoryTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->target = $this->app->make(PickingListRepository::class);
+        $this->target = $this->app->make(ShippingListRepository::class);
     }
 
     /**
@@ -55,52 +55,52 @@ class PickingListRepositoryTest extends TestCase
     }
     
     /**
-     * test getPickingList()
+     * test getShippingList()
      */
-    public function test_getPickingList()
+    public function test_getShippingList()
     {
         // arrange
-        $first = PickingList::first();
+        $first = ShippingList::first();
         $date = $first->staddj;
         $expected = 
-            PickingList::where('staddj', $date)
+            ShippingList::where('staddj', $date)
                 ->where('stky6', null)
                 ->select('sticu', 'ststop', 'staddj', 'stky2')
                 ->orderBy('ststop')
                 ->get();
         
         // act
-        $actual = $this->target->getPickingList($date);
+        $actual = $this->target->getShippingList($date);
 
         // assert
         $this->assertEquals($expected, $actual);
     }
 
     /**
-     * test getPicking()
+     * test getShipping()
      */
-    public function test_getPicking()
+    public function test_getShipping()
     {
         // arrange
-        $first = PickingList::first();
+        $first = ShippingList::first();
         $stop = $first->ststop;
         $staddj = $first->staddj;
         $expected = 
-            PickingList::where('ststop', $stop)
+            ShippingList::where('ststop', $stop)
                 ->where('staddj', $staddj)
                 ->first();
         
         // act
-        $actual = $this->target->getPicking($stop, $staddj);
+        $actual = $this->target->getShipping($stop, $staddj);
 
         // assert
         $this->assertEquals($expected, $actual);
     }
 
     /**
-     * test startPicking()
+     * test startShipping()
      */
-    public function test_startPicking()
+    public function test_startShipping()
     {
         // arrange
         $stop = 'A1';
@@ -108,16 +108,16 @@ class PickingListRepositoryTest extends TestCase
         $user = '106013';
 
         // act
-        $actual = $this->target->startPicking($stop, $date, $user);
+        $actual = $this->target->startShipping($stop, $date, $user);
 
         // assert
         $this->assertTrue($actual);
     }
 
     /**
-     * test endPicking()
+     * test endShipping()
      */
-    public function test_endPicking()
+    public function test_endShipping()
     {
         // arrange
         $stop = 'A1';
@@ -125,7 +125,7 @@ class PickingListRepositoryTest extends TestCase
         $user = '106013';
 
         // act
-        $actual = $this->target->endPicking($stop, $date, $user);
+        $actual = $this->target->endShipping($stop, $date, $user);
 
         // assert
         $this->assertTrue($actual);

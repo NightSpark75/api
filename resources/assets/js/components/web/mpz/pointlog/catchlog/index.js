@@ -263,6 +263,7 @@ export default class Catchlog extends React.Component {
     const thisGrowth = (allCount - lastTotalCount) / lastTotalCount
     let r = {}
     let n = 0
+    
     if (rule.TWO_MONTH_GROWTH) {
       r = rule.TWO_MONTH_GROWTH
       let c1 = operatorHandle(thisGrowth, r.cond, r.val)
@@ -289,19 +290,15 @@ export default class Catchlog extends React.Component {
     }
 
     if (rule.MONTH_TOTAL_MAT || rule.MONTH_TOTAL_OFF) {
-      r = rule.MONTH_TOTAL_MAT ? rule.MONTH_TOTAL_MAT : rule.MONTH_TOTAL_OFF
-      if (!operatorHandle(thisTotalCount, r.cond, r.val)) {
-        let c2 = operatorHandle(allCount, r.cond, r.val)
-        n = this.setAlert(r, c2, n)
-      }
+      r = (pointInfo.point_des === '辦公室' || pointInfo.point_des === '收貨區') ? rule.MONTH_TOTAL_OFF : rule.MONTH_TOTAL_MAT
+      let c2 = operatorHandle(allCount, r.cond, r.val)
+      n = this.setAlert(r, c2, n)
     }
 
     if (rule.TWO_MONTH_ALL_MAT || rule.TWO_MONTH_ALL_OFF) {
-      r = rule.TWO_MONTH_ALL_MAT ? rule.TWO_MONTH_ALL_MAT : rule.TWO_MONTH_ALL_OFF
-      if (!operatorHandle(lastTotalCount + thisTotalCount, r.cond, r.val)) {
-        let c = operatorHandle(lastTotalCount + allCount, r.cond, r.val)
-        n = this.setAlert(r, c, n)
-      }
+      r = (pointInfo.point_des === '辦公室' || pointInfo.point_des === '收貨區') ? rule.TWO_MONTH_ALL_OFF : rule.TWO_MONTH_ALL_MAT
+      let c3 = operatorHandle(lastTotalCount, r.cond, r.val) && operatorHandle(allCount, r.cond, r.val)
+      n = this.setAlert(r, c3, n)
     }
 
     this.setState({ isDeviation: n > 0 })

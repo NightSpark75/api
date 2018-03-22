@@ -61,10 +61,10 @@ class ShippingController extends Controller
      * @throws Exception
      * @return mixed
      */
-    public function getShippingItems($stop)
+    public function getShippingItems($spno)
     {
         try {
-            $items = $this->shippingService->getShippingItems($stop);
+            $items = $this->shippingService->getShippingItems($spno);
             return response()->json($items, 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
@@ -82,8 +82,8 @@ class ShippingController extends Controller
         try {
             $user = session('user');
             $id = $user->id;
-            $stop = request()->input('stop');
-            $result = $this->shippingService->startShipping($stop, $id);
+            $spno = request()->input('spno');
+            $result = $this->shippingService->startShipping($spno, $id);
             return response()->json($result, 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
@@ -101,8 +101,8 @@ class ShippingController extends Controller
         try {
             $user = session('user');
             $id = $user->id;
-            $stop = request()->input('stop');
-            $result = $this->shippingService->endShipping($stop, $id);
+            $spno = request()->input('spno');
+            $result = $this->shippingService->endShipping($spno, $id);
             return response()->json($result, 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);

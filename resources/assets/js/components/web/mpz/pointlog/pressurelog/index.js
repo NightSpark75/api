@@ -62,7 +62,6 @@ export default class Pressurelog extends React.Component {
             aq_low: response.data.aq_low,
             aq_high: response.data.aq_high,
           }, () => {
-            self.formCheck()
             self.setValue()
           })
           console.log(response.data)
@@ -88,7 +87,9 @@ export default class Pressurelog extends React.Component {
         af_ed: data.af_ed, af_ep: data.af_ep, af_devia: data.af_devia, af_hde: data.af_hde,
         ev_pa: data.ev_pa, ev_aq: data.ev_aq, ev_urmk: ev_urmk,
         ev_ed: data.ev_ed, ev_ep: data.ev_ep, ev_devia: data.ev_devia, ev_hde: data.ev_hde,
-      })
+      }, this.formCheck())
+    } else {
+      this.formCheck()
     }
   }
 

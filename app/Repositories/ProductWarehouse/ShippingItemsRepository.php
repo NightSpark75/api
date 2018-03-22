@@ -10,10 +10,6 @@
  */
 namespace App\Repositories\ProductWarehouse;
 
-use DB;
-use Exception;
-use App\Traits\Sqlexecute;
-use App\Traits\Oracle;
 use App\Repositories\Repository;
 
 /**
@@ -22,10 +18,7 @@ use App\Repositories\Repository;
  * @package App\Repositories
  */
 class ShippingItemsRepository extends Repository
-{   
-    use Sqlexecute;
-    use Oracle;
-    
+{      
     /**
      * Specify Model class name
      *
@@ -43,16 +36,14 @@ class ShippingItemsRepository extends Repository
      * @param string $date => 'Y-m-d 00:00:00'
      * @return mixed
      */
-    public function getShippingItems($stop, $date)
+    public function getShippingItems($spno, $date)
     {   
-        $stop = str_pad($stop, 3, " ", STR_PAD_RIGHT);
         $list = $this->model
-            ->where('psaddj', $date)
-            ->where('psstop', $stop)
-            ->select('psicu', 'psaddj', 'psstop', 'pslocn', 'psrmk', 'pslitm', 'pslotn', 'pssoqs', 'pspqoh', 'psuom')
-            ->orderBy('pslocn')
-            ->orderBy('psrmk')
-            ->orderBy('pslitm')
+            ->where('sdtrdj', $date)
+            ->where('sdy59spno', $stop)
+            ->select('sdy59spno', 'sdtrdj', 'sdlitm', 'sdlotn', 'sduorg')
+            ->orderBy('sdlitm')
+            ->orderBy('sdlotn')
             ->get();
         return $list;
     }
