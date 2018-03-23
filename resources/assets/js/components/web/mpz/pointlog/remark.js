@@ -4,7 +4,7 @@ export default class Remark extends React.Component {
     return (
       <tr>
         <td>特別註記</td>
-        <td>
+        <td colSpan={3}>
           <div className="field is-horizontal">
             <div className="field-body">
               <div className="field">

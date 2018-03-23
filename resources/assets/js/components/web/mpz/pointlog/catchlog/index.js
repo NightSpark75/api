@@ -273,13 +273,7 @@ export default class Catchlog extends React.Component {
 
     if (rule.GROWTH_MORE_LAST) {
       r = rule.GROWTH_MORE_LAST
-      let v
-      if (lastGrowth === 0) {
-        v = thisGrowth
-      } else {
-        v = (thisGrowth - lastGrowth) / lastGrowth
-      }
-      let c = operatorHandle(v, r.cond, r.val)
+      let c = operatorHandle(thisGrowth, r.cond, r.val)
       n = this.setAlert(r, c, n)
     }
 

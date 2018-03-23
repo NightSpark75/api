@@ -83,7 +83,7 @@ export default class Wetestlog extends React.Component {
         mo_rmk: data.mo_rmk, mo_dis: data.mo_dis, mo_ed: data.mo_ed, mo_eh: data.mo_eh, mo_devia: data.mo_devia,
         af_hum: data.af_hum, af_max: data.af_max, af_min: data.af_min, af_urmk: data.af_urmk, af_hde: data.af_hde,
         af_ed: data.af_ed, af_eh: data.af_eh, af_devia: data.af_devia,
-        ev_hum: data.mo_hum, ev_max: data.ev_max, ev_min: data.ev_min, ev_urmk: data.ev_urmk, ev_hde: data.ev_hde,
+        ev_hum: data.ev_hum, ev_max: data.ev_max, ev_min: data.ev_min, ev_urmk: data.ev_urmk, ev_hde: data.ev_hde,
         ev_ed: data.ev_ed, ev_eh: data.ev_eh, ev_devia: data.ev_devia,
         zero: data.zero,
       }, () => this.formCheck())
@@ -117,7 +117,7 @@ export default class Wetestlog extends React.Component {
   }
 
   inputChange(key, e) {
-    let value = e.target.value
+    let value = Number(e.target.value) * 1
     this.setState({ [key]: value }, () => { this.inputCheck(key) })
   }
 
@@ -127,7 +127,7 @@ export default class Wetestlog extends React.Component {
   }
 
   checkFillTime() {
-    let today = new Date()
+    let today = new Date(2018,3,23,17,5,25)
     let hours = today.getHours() * 100
     const { rule, mo_rmk } = this.state
     let isOverdue = true
@@ -281,7 +281,7 @@ export default class Wetestlog extends React.Component {
   }
 
   checkTime() {
-    let today = new Date()
+    let today = new Date(2018,3,23,17,5,25)
     let hours = today.getHours() * 100
     const { rule } = this.state
     if (rule !== undefined) {
@@ -326,7 +326,7 @@ export default class Wetestlog extends React.Component {
     } = this.state
     const { mo, af, ev } = this.state
     const isComplete = !(this.state.log_data === null)
-    let today = new Date()
+    let today = new Date(2018,3,23,17,5,25)
     let date = today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate() + ' '
     let time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds()
     let showHumi
@@ -394,6 +394,28 @@ export default class Wetestlog extends React.Component {
             }
             {this.checkTime() === 'ev' &&
               this.layoutCheck('ev')
+            }
+            {this.checkTime() === 'ev' &&
+              <tr>
+                <td>檢查</td>
+                <td colSpan={3}>
+                  <div className="field is-horizontal" onChange={() => this.setState({ zero: this.state.zero === 'Y'? 'N': 'Y'})}>
+                    <div className="field-body">
+                      <div className="field has-addons">
+                        <div className="control">
+                          <label className="checkbox">
+                            <input type="checkbox"
+                              value={this.state.zero}
+                              checked={this.state.zero === 'Y'}
+                            />
+                            <span style={{fontSize: '16px', fontWeight: 'bolder'}}>歸零確認</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
             }
             {this.checkTime() === 'mo' &&
               <tr>
