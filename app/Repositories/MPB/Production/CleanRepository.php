@@ -182,11 +182,8 @@ class CleanRepository
         $waiting = DB::select("
             select v.*
                 from stdadm.v_hra_emp_dept v
-                where v.deptno = '$deptno' and not exists
-                    (select * 
-                        from mpb_order_tw t 
-                        where t.sno = '$sno' and psno = $psno and t.empno = v.empno and rmk = '2'
-                    )
+                where v.deptno = '$deptno' 
+                    and v.empno not in (select empno from mpb_order_tw)
         ");
         return $waiting;
     }

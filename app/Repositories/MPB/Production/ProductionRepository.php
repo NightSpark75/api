@@ -203,9 +203,11 @@ class ProductionRepository
             select unique empno from (
                 select empno from mpb_order_f 
                     where sno = :sno and psno = :psno 
+                        and empno not in (select empno from mpb_order_tw)
                 union
                 select mno empno from mpb_order_g 
                     where sno = :sno and psno = :psno
+                        and mno not in (select empno from mpb_order_tw)
                 )
         ", [
             'sno' => $sno,

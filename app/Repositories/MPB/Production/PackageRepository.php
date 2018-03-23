@@ -197,10 +197,12 @@ class PackageRepository
             select empno
                 from v_pgdialy_d 
                 where sno = :sno and psno = :psno and pgno = :pgno
-                    and duty = :duty
+                    and duty = :duty 
+                    and empno not in (select empno from mpb_order_tw)
             union
             select mno empno from mpb_order_g 
-                where sno = :sno and psno = :psno
+                where sno = :sno and psno = :psno 
+                        and mno not in (select empno from mpb_order_tw)
         ", [
             'sno' => $sno,
             'psno' => $psno,
