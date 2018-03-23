@@ -46,7 +46,7 @@ class ShippingService {
         $date = $date? $date: date('Ymd', strtotime("20180321")).' 00:00:00';
         $list = $this->shippingListRepository->getShippingInfo($spno, $date);
         if (!isset($list)) {
-            throw new Exception("spno = $spno, date = $date, data not found");
+            throw new Exception("查貨號 = $spno, 日期 = $date, 查詢不到資料");
         }
         return $list;
     }
