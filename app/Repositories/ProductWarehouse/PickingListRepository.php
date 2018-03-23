@@ -13,7 +13,6 @@
 namespace App\Repositories\ProductWarehouse;
 
 use App\Repositories\Repository;
-use DB;
 
 /**
  * Class PickingListRepository
