@@ -115,7 +115,7 @@ class PressurelogRepository
                     DB::update("
                         update mpz_pressurelog
                             set $upd
-                            where point_no = $point_no and ldate = $ldate
+                            where point_no = '$point_no' and ldate = $ldate
                     ");
                 } else {
                     $params['state'] = 'Y';
@@ -141,19 +141,10 @@ class PressurelogRepository
 
     private function setInsertParams($user, $params)
     {
-        if (isset($params['mo_pa'])) {
-            $this->type = 'mo';
+        $this->type = $this->getCurrent($params['point_no']);
+        if ($this->type !== '') {
             return $this->setParams($user, $params);
         }
-        if (isset($params['af_pa'])) {
-            $this->type = 'af';
-            return $this->setParams($user, $params);
-        }
-        if (isset($params['ev_pa'])) {
-            $this->type = 'ev';
-            return $this->setParams($user, $params);
-        }
-        return $params;
     }
 
     private function setParams($user, $params)
@@ -167,17 +158,24 @@ class PressurelogRepository
     private function setUpdateSQL($user, $params, $data)
     {
         $time = date('Hi');
-        if (isset($params['mo_pa']) && isset($data->mo_time)) {
-            $this->type = 'mo';
+        $this->type = $this->getCurrent($params['point_no']);
+        if ($this->type !== '') {
             return $this->getUpdateString($user, $params);
         }
-        if (isset($params['af_pa']) && isset($data->af_time)) {
-            $this->type = 'af';
-            return $this->getUpdateString($user, $params);
+    }
+
+    private function getCurrent($point_no)
+    {
+        $time = date('Hi');
+        $rule = $this->getPointRule($point_no);
+        if ((int)$rule['MO_START']['val'] <= (int)$time && (int)$rule['MO_OTHER']['val'] >= (int)$time) {
+            return 'mo';
         }
-        if (isset($params['ev_pa']) && isset($data->ev_time)) {
-            $this->type = 'ev';
-            return $this->getUpdateString($user, $params);
+        if ((int)$rule['AF_START']['val'] <= (int)$time && (int)$rule['AF_END']['val'] >= (int)$time) {
+            return 'af';
+        }
+        if ((int)$rule['EV_START']['val'] <= (int)$time && (int)$rule['EV_END']['val'] >= (int)$time) {
+            return 'ev';
         }
         return '';
     }
@@ -192,16 +190,16 @@ class PressurelogRepository
         $k_devia = $this->type.'_devia';
         $k_time = $this->type.'_time';
         $k_user = $this->type.'_user';
-        $pa = $params[$k_pa];
-        $aq = $params[$k_aq];
+        $pa = (int)$params[$k_pa];
+        $aq = (int)$params[$k_aq];
         $ed = $params[$k_ed];
         $ep = $params[$k_ep];
         $devia = $params[$k_devia];
         $str = "
             duser = '$user', ddate = sysdate,
             $k_pa = $pa, $k_aq = $aq, 
-            $k_ed = '$ed', $k_ep = '$ep', $k_devia = '$devia'
-            $k_time = $time, $k_user = $user
+            $k_ed = '$ed', $k_ep = '$ep', $k_devia = '$devia',
+            $k_time = $time, $k_user = '$user'
         ";
         if ($this->type === 'mo') {
             $rmk = $params['mo_rmk'];

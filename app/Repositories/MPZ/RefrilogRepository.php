@@ -138,15 +138,10 @@ class RefrilogRepository
 
     private function setInsertParams($user, $params)
     {
-        if (isset($params['mo_pa'])) {
-            $this->type = 'mo';
+        $this->type = $this->getCurrent($params['point_no']);
+        if ($this->type !== '') {
             return $this->setParams($user, $params);
         }
-        if (isset($params['af_pa'])) {
-            $this->type = 'af';
-            return $this->setParams($user, $params);
-        }
-        return $params;
     }
 
     private function setParams($user, $params)
@@ -160,13 +155,21 @@ class RefrilogRepository
     private function setUpdateSQL($user, $params, $data)
     {
         $time = date('Hi');
-        if (isset($params['mo_temp']) && isset($data->mo_time)) {
-            $this->type = 'mo';
+        $this->type = $this->getCurrent($params['point_no']);
+        if ($this->type !== '') {
             return $this->getUpdateString($user, $params);
         }
-        if (isset($params['af_temp']) && isset($data->af_time)) {
-            $this->type = 'af';
-            return $this->getUpdateString($user, $params);
+    }
+
+    private function getCurrent($point_no)
+    {
+        $time = date('Hi');
+        $rule = $this->getPointRule($point_no);
+        if ((int)$rule['MO_START']['val'] <= (int)$time && (int)$rule['MO_OTHER']['val'] >= (int)$time) {
+            return 'mo';
+        }
+        if ((int)$rule['AF_START']['val'] <= (int)$time && (int)$rule['AF_END']['val'] >= (int)$time) {
+            return 'af';
         }
         return '';
     }

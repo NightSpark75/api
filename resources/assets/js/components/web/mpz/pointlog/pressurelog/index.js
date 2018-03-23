@@ -87,7 +87,7 @@ export default class Pressurelog extends React.Component {
         af_ed: data.af_ed, af_ep: data.af_ep, af_devia: data.af_devia, af_hde: data.af_hde,
         ev_pa: data.ev_pa, ev_aq: data.ev_aq, ev_urmk: data.ev_urmk,
         ev_ed: data.ev_ed, ev_ep: data.ev_ep, ev_devia: data.ev_devia, ev_hde: data.ev_hde,
-      }, this.formCheck())
+      }, () => this.formCheck())
     } else {
       this.formCheck()
     }
@@ -95,6 +95,7 @@ export default class Pressurelog extends React.Component {
 
   onSave(e) {
     let self = this
+    const { pointInfo } = this.props
     this.setState({ isLoading: true })
     let form_data = new FormData()
     keyList.map((item) => {
@@ -103,7 +104,7 @@ export default class Pressurelog extends React.Component {
     axios.post('/api/web/mpz/pointlog/pressure/save', form_data)
       .then(function (response) {
         if (response.data.result) {
-          self.sendMsg(self.state.point_no + '檢查點記錄成功!')
+          self.sendMsg(pointInfo.point_name + '檢查點記錄成功!')
           self.setState({ isLoading: false })
           self.onCancel()
         } else {
@@ -213,7 +214,7 @@ export default class Pressurelog extends React.Component {
     let state, value
     state = this.state[key]
     value = state === 'Y' ? 'N' : 'Y'
-    this.setState({ [key]: value }, () => (this.exceptionCheck()))
+    this.setState({ [key]: value }, () => this.exceptionCheck())
   }
 
   layoutInput(col) {

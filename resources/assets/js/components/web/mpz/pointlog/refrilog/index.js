@@ -93,6 +93,7 @@ export default class Refrilog extends React.Component {
 
   onSave(e) {
     let self = this
+    const { pointInfo } = this.props
     this.setState({ isLoading: true })
     let form_data = new FormData()
     keyList.map((item) => {
@@ -101,7 +102,7 @@ export default class Refrilog extends React.Component {
     axios.post('/api/web/mpz/pointlog/refri/save', form_data)
       .then(function (response) {
         if (response.data.result) {
-          self.sendMsg(self.state.point_no + '檢查點記錄成功!')
+          self.sendMsg(pointInfo.point_name + '檢查點記錄成功!')
           self.setState({ isLoading: false })
           self.onCancel()
         } else {

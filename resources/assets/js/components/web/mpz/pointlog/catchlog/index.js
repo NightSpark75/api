@@ -176,9 +176,9 @@ export default class Catchlog extends React.Component {
   }
 
   onSave() {
-    this.setState({ confirmShow: false })
     let self = this
-    this.setState({ isLoading: true })
+    const { pointInfo } = this.props
+    this.setState({ confirmShow: false, isLoading: true })
     let form_data = new FormData()
     keyList.map((item) => {
       form_data.append(item, this.state[item])
@@ -187,7 +187,7 @@ export default class Catchlog extends React.Component {
     axios.post('/api/web/mpz/pointlog/catch/save', form_data)
       .then(function (response) {
         if (response.data.result) {
-          self.sendMsg(self.state.point_no + '檢查點記錄成功!')
+          self.sendMsg(pointInfo.point_name + '檢查點記錄成功!')
           self.setState({ isLoading: false })
           self.initState()
           self.onCancel()
