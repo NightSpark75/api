@@ -179,18 +179,18 @@ class RefrilogRepository
         $time = date('Hi');
         $k_temp = $this->type.'_temp';
         $k_ed = $this->type.'_ed';
-        $k_ep = $this->type.'_ep';
+        $k_et = $this->type.'_et';
         $k_devia = $this->type.'_devia';
         $k_time = $this->type.'_time';
         $k_user = $this->type.'_user';
         $temp = $params[$k_temp];
         $ed = $params[$k_ed];
-        $ep = $params[$k_ep];
+        $et = $params[$k_et];
         $devia = $params[$k_devia];
         $str = "
             duser = '$user', ddate = sysdate,
             $k_temp = $temp,  
-            $k_ed = '$ed', $k_ep = '$ep', $k_devia = '$devia'
+            $k_ed = '$ed', $k_et = '$et', $k_devia = '$devia'
             $k_time = $time, $k_user = $user
         ";
         if ($this->type === 'mo') {
