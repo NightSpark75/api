@@ -15,7 +15,7 @@ import Remark from '../remark'
 const keyList = [
   'point_no',
   'mo_temp', 'mo_putt', 'mo_bell', 'mo_light', 'mo_urmk', 'mo_hde',
-  'mo_ed', 'mo_et', 'mo_devia', 'mo_rmk', 'mo_dis', 
+  'mo_ed', 'mo_et', 'mo_devia', 'mo_rmk', 'mo_dis',
   'af_temp', 'af_ed', 'af_et', 'af_devia', 'af_urmk', 'af_hde',
 ]
 
@@ -128,7 +128,7 @@ export default class Refrilog extends React.Component {
 
   checkFillTime() {
     let today = new Date()
-    let hours = today.getHours() * 100
+    let hours = (today.getHours() * 100) + today.getMinutes()
     const { rule, mo_rmk } = this.state
     let isOverdue = true
     if (this.checkTime() !== '') {
@@ -137,7 +137,7 @@ export default class Refrilog extends React.Component {
       let end = operatorHandle(hours, '>=', Number(rule.MO_END.val))
       let rmk = mo_rmk === ''
       if (start && end && rmk) {
-          isOverdue = true
+        isOverdue = true
       }
     }
     this.setState({ isOverdue: isOverdue })
@@ -174,10 +174,10 @@ export default class Refrilog extends React.Component {
     let type = this.checkTime()
     let { alertMsg } = this.state
     let isChecked = false
-    if (this.state[type + err[0]] === 'Y' || 
-        this.state[type + err[1]] === 'Y' || 
-        this.state[type + err[2]] === 'Y' ||
-        this.state[type + err[3]] === 'Y') {
+    if (this.state[type + err[0]] === 'Y' ||
+      this.state[type + err[1]] === 'Y' ||
+      this.state[type + err[2]] === 'Y' ||
+      this.state[type + err[3]] === 'Y') {
       isChecked = true
       alertMsg = []
       this.setState({ isChecked: isChecked, alertMsg: alertMsg })
@@ -281,7 +281,7 @@ export default class Refrilog extends React.Component {
 
   checkTime() {
     let today = new Date()
-    let hours = today.getHours() * 100
+    let hours = (today.getHours() * 100) + today.getMinutes()
     const { rule } = this.state
     if (rule !== undefined) {
       if (operatorHandle(hours, rule.MO_START.cond, Number(rule.MO_START.val)) &&
@@ -316,7 +316,7 @@ export default class Refrilog extends React.Component {
     const { pointInfo } = this.props
     const {
       alertMsg,
-      mach_no, ch_date, temp_high, temp_low, 
+      mach_no, ch_date, temp_high, temp_low,
       isLoading, isChecked, isDeviation, isOverdue,
     } = this.state
     const { mo, af, ev } = this.state
@@ -365,7 +365,7 @@ export default class Refrilog extends React.Component {
               <td >合格範圍</td>
               <td colSpan={3}>
                 {
-                  '溫度： ' + (temp_low === 0 || temp_low === '-200' ? '' : temp_low) 
+                  '溫度： ' + (temp_low === 0 || temp_low === '-200' ? '' : temp_low)
                   + " ~ " + (temp_high === 0 || temp_low === '200' ? '' : temp_high) + ' ℃'
                 }
               </td>
@@ -401,15 +401,15 @@ export default class Refrilog extends React.Component {
                 </td>
               </tr>
             }
-            {this.checkTime() === 'mo' && 
+            {this.checkTime() === 'mo' &&
               <Remark value={this.state.mo_urmk} onChange={(e) => {
-                this.setState({ mo_urmk: e.target.value})
-              }}/>
+                this.setState({ mo_urmk: e.target.value })
+              }} />
             }
-            {this.checkTime() === 'af' && 
+            {this.checkTime() === 'af' &&
               <Remark value={this.state.af_urmk} onChange={(e) => {
-                this.setState({ af_urmk: e.target.value})
-              }}/>
+                this.setState({ af_urmk: e.target.value })
+              }} />
             }
           </tbody>
         </table>

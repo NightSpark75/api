@@ -80,7 +80,7 @@ export default class Pressurelog extends React.Component {
     let data = this.state.log_data
     if (data !== null) {
       this.setState({
-        mo_pa: data.mo_pa, mo_aq: data.mo_aq, 
+        mo_pa: data.mo_pa, mo_aq: data.mo_aq,
         mo_rmk: data.mo_rmk, mo_dis: data.mo_dis, mo_urmk: data.mo_urmk,
         mo_ed: data.mo_ed, mo_ep: data.mo_ep, mo_devia: data.mo_devia, mo_hde: data.mo_hde,
         af_pa: data.af_pa, af_aq: data.af_aq, af_urmk: data.af_urmk,
@@ -142,7 +142,7 @@ export default class Pressurelog extends React.Component {
 
   checkFillTime() {
     let today = new Date()
-    let hours = today.getHours() * 100
+    let hours = (today.getHours() * 100) + today.getMinutes()
     const { rule, mo_rmk } = this.state
     let isOverdue = true
     if (this.checkTime() !== '') {
@@ -151,7 +151,7 @@ export default class Pressurelog extends React.Component {
       let end = operatorHandle(hours, '>=', Number(rule.MO_END.val))
       let rmk = mo_rmk === ''
       if (start && end && rmk) {
-          isOverdue = true
+        isOverdue = true
       }
     }
     this.setState({ isOverdue: isOverdue })
@@ -179,9 +179,9 @@ export default class Pressurelog extends React.Component {
     let { alertMsg } = this.state
     let isChecked = false
     if (this.state[type + err[0]] === 'Y' ||
-        this.state[type + err[1]] === 'Y' || 
-        this.state[type + err[2]] === 'Y' ||
-        this.state[type + err[3]] === 'Y') {
+      this.state[type + err[1]] === 'Y' ||
+      this.state[type + err[2]] === 'Y' ||
+      this.state[type + err[3]] === 'Y') {
       isChecked = true
       alertMsg = []
       this.setState({ isChecked: isChecked, alertMsg: alertMsg })
@@ -258,7 +258,7 @@ export default class Pressurelog extends React.Component {
 
   checkTime() {
     let today = new Date()
-    let hours = today.getHours() * 100
+    let hours = (today.getHours() * 100) + today.getMinutes()
     const { rule } = this.state
     if (rule !== undefined) {
       if (operatorHandle(hours, rule.MO_START.cond, Number(rule.MO_START.val)) &&
@@ -381,20 +381,20 @@ export default class Pressurelog extends React.Component {
                 </td>
               </tr>
             }
-            {this.checkTime() === 'mo' && 
+            {this.checkTime() === 'mo' &&
               <Remark value={this.state.mo_urmk} onChange={(e) => {
-                this.setState({ mo_urmk: e.target.value})
-              }}/>
+                this.setState({ mo_urmk: e.target.value })
+              }} />
             }
-            {this.checkTime() === 'af' && 
+            {this.checkTime() === 'af' &&
               <Remark value={this.state.af_urmk} onChange={(e) => {
-                this.setState({ af_urmk: e.target.value})
-              }}/>
+                this.setState({ af_urmk: e.target.value })
+              }} />
             }
-            {this.checkTime() === 'ev' && 
+            {this.checkTime() === 'ev' &&
               <Remark value={this.state.ev_urmk} onChange={(e) => {
-                this.setState({ ev_urmk: e.target.value})
-              }}/>
+                this.setState({ ev_urmk: e.target.value })
+              }} />
             }
           </tbody>
         </table>

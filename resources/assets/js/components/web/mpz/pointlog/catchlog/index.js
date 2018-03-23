@@ -91,9 +91,9 @@ export default class Catchlog extends React.Component {
             lastGrowth: response.data.lastGrowth,
             changeDate: response.data.changeDate,
             init: false,
-          }, () => { 
+          }, () => {
             self.setValue()
-            self.formCheck() 
+            self.formCheck()
           })
         } else {
           self.props.sendMsg(response.data.msg)
@@ -108,8 +108,8 @@ export default class Catchlog extends React.Component {
   setLayout() {
     let device = this.props.pointInfo.device_type
     deviceSet[device].map((item) => {
-      this.setState({ [item]: true }, () => { 
-        this.checkAllRequire() 
+      this.setState({ [item]: true }, () => {
+        this.checkAllRequire()
         this.lampCheck()
       })
     })
@@ -163,7 +163,7 @@ export default class Catchlog extends React.Component {
   }
 
   lampChange(type) {
-    this.setState({ check_lamp: type }, () => { this.lampCheck() }) 
+    this.setState({ check_lamp: type }, () => { this.lampCheck() })
   }
 
   lampCheck() {
@@ -172,7 +172,7 @@ export default class Catchlog extends React.Component {
       this.pushAlert('驅蚊燈異常')
     } else {
       this.removeAlert('驅蚊燈異常')
-    } 
+    }
   }
 
   onSave() {
@@ -230,8 +230,8 @@ export default class Catchlog extends React.Component {
   }
 
   checkFillTime() {
-    let date = new Date()
-    let hours = date.getHours() * 100
+    let today = new Date()
+    let hours = (today.getHours() * 100) + today.getMinutes()
     //let hours = 800
     let { rmk, rule } = this.state
     let isOverdue = true
@@ -263,7 +263,7 @@ export default class Catchlog extends React.Component {
     const thisGrowth = (allCount - lastTotalCount) / lastTotalCount
     let r = {}
     let n = 0
-    
+
     if (rule.TWO_MONTH_GROWTH) {
       r = rule.TWO_MONTH_GROWTH
       let c1 = operatorHandle(thisGrowth, r.cond, r.val)
@@ -342,15 +342,15 @@ export default class Catchlog extends React.Component {
   }
 
   deviationChange() {
-    let deviation = this.state.deviation === 'Y'? 'N': 'Y'
+    let deviation = this.state.deviation === 'Y' ? 'N' : 'Y'
     let isChecked = this.state.hde === 'Y' || deviation === 'Y'
-    this.setState({deviation, isChecked}, () => this.checkAllCatchAmount())
+    this.setState({ deviation, isChecked }, () => this.checkAllCatchAmount())
   }
 
   hdeChange() {
-    let hde = this.state.hde === 'Y'? 'N': 'Y'
+    let hde = this.state.hde === 'Y' ? 'N' : 'Y'
     let isChecked = hde === 'Y' || this.state.deviation === 'Y'
-    this.setState({hde, isChecked}, () => this.checkAllCatchAmount())
+    this.setState({ hde, isChecked }, () => this.checkAllCatchAmount())
   }
 
   render() {
@@ -547,8 +547,8 @@ export default class Catchlog extends React.Component {
               </td>
             </tr>
             <Remark value={this.state.urmk} onChange={(e) => {
-              this.setState({ urmk: e.target.value})
-            }}/>
+              this.setState({ urmk: e.target.value })
+            }} />
           </tbody>
         </table>
         <Deviation

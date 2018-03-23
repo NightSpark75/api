@@ -12,7 +12,7 @@ import Deviation from '../deviation'
 import Remark from '../remark'
 
 const keyList = [
-  'point_no', 'ldate', 
+  'point_no', 'ldate',
   'mo_temp', 'mo_hum', 'mo_ed', 'mo_eth', 'mo_devia', 'mo_rmk', 'mo_dis', 'mo_urmk', 'mo_hde',
   'af_temp', 'af_hum', 'af_ed', 'af_eth', 'af_devia', 'af_urmk', 'af_hde',
   'ev_temp', 'ev_hum', 'ev_ed', 'ev_eth', 'ev_devia', 'ev_urmk', 'ev_hde',
@@ -61,11 +61,11 @@ export default class Templog extends React.Component {
             temp_low: response.data.temp_low,
             humi_high: response.data.humi_high,
             humi_low: response.data.humi_low,
-          }, () => { 
+          }, () => {
             self.setValue()
           })
           console.log(response.data)
-          
+
         } else {
           self.props.sendMsg(response.data.msg)
           self.onCancel()
@@ -81,11 +81,11 @@ export default class Templog extends React.Component {
     if (data !== null) {
       this.setState({
         mo_temp: data.mo_temp, mo_hum: data.mo_hum, mo_urmk: data.mo_urmk, mo_hde: data.mo_hde,
-        mo_rmk: data.mo_rmk, mo_dis: data.mo_dis, mo_ed: data.mo_ed, mo_eth: data.mo_eth, mo_devia: data.mo_devia, 
+        mo_rmk: data.mo_rmk, mo_dis: data.mo_dis, mo_ed: data.mo_ed, mo_eth: data.mo_eth, mo_devia: data.mo_devia,
         af_temp: data.af_temp, af_hum: data.af_hum, af_urmk: data.af_urmk, af_hde: data.af_hde,
-        af_ed: data.af_ed, af_eth: data.af_eth, af_devia: data.af_devia, 
+        af_ed: data.af_ed, af_eth: data.af_eth, af_devia: data.af_devia,
         ev_temp: data.ev_temp, ev_hum: data.ev_hum, ev_urmk: data.ev_urmk, ev_hde: data.ev_hde,
-        ev_ed: data.ev_ed, ev_eth: data.ev_eth, ev_devia: data.ev_devia, 
+        ev_ed: data.ev_ed, ev_eth: data.ev_eth, ev_devia: data.ev_devia,
       }, () => this.formCheck())
     } else {
       this.formCheck()
@@ -119,7 +119,7 @@ export default class Templog extends React.Component {
 
   inputChange(key, e) {
     let value = e.target.value
-    this.setState({ [key]: value}, () => (this.inputCheck(key)))
+    this.setState({ [key]: value }, () => (this.inputCheck(key)))
   }
 
   formCheck() {
@@ -129,7 +129,7 @@ export default class Templog extends React.Component {
 
   checkFillTime() {
     let today = new Date()
-    let hours = today.getHours() * 100
+    let hours = (today.getHours() * 100) + today.getMinutes()
     const { rule, mo_rmk } = this.state
     let isOverdue = true
     if (this.checkTime() !== '') {
@@ -138,10 +138,10 @@ export default class Templog extends React.Component {
       let end = operatorHandle(hours, '>=', Number(rule.MO_END.val))
       let rmk = mo_rmk === ''
       if (start && end && rmk) {
-          isOverdue = true
+        isOverdue = true
       }
     }
-    this.setState({isOverdue: isOverdue})
+    this.setState({ isOverdue: isOverdue })
   }
 
   inputCheck(key) {
@@ -177,15 +177,15 @@ export default class Templog extends React.Component {
     let type = this.checkTime()
     let { alertMsg } = this.state
     let isChecked = false
-    if (this.state[type + err[0]] === 'Y' || 
-        this.state[type + err[1]] === 'Y' || 
-        this.state[type + err[2]] === 'Y' || 
-        this.state[type + err[3]] === 'Y') {
+    if (this.state[type + err[0]] === 'Y' ||
+      this.state[type + err[1]] === 'Y' ||
+      this.state[type + err[2]] === 'Y' ||
+      this.state[type + err[3]] === 'Y') {
       isChecked = true
       alertMsg = []
-      this.setState({isChecked: isChecked, alertMsg: alertMsg})
+      this.setState({ isChecked: isChecked, alertMsg: alertMsg })
     } else {
-      this.setState({isChecked: isChecked}, () => {
+      this.setState({ isChecked: isChecked }, () => {
         key.map((item) => {
           this.inputCheck(type + item)
         })
@@ -198,7 +198,7 @@ export default class Templog extends React.Component {
     if (alertMsg.indexOf(msg) < 0) {
       alertMsg.push(msg)
     }
-    this.setState({alertMsg: alertMsg})
+    this.setState({ alertMsg: alertMsg })
   }
 
   removeAlert(msg) {
@@ -206,14 +206,14 @@ export default class Templog extends React.Component {
     if (alertMsg.indexOf(msg) >= 0) {
       alertMsg.splice(alertMsg.indexOf(msg), 1)
     }
-    this.setState({alertMsg: alertMsg})
+    this.setState({ alertMsg: alertMsg })
   }
 
   checkboxChange(key, e) {
     let state, value
     state = this.state[key]
     value = state === 'Y' ? 'N' : 'Y'
-    this.setState({[key]: value}, () => (this.exceptionCheck()))
+    this.setState({ [key]: value }, () => (this.exceptionCheck()))
   }
 
   layoutInput(col) {
@@ -223,7 +223,7 @@ export default class Templog extends React.Component {
         <td>{col}</td>
         <td colSpan={3}>
           {key.map((item, index) => (
-            <Record 
+            <Record
               key={index}
               label={keyLabel[index]}
               value={this.state[type + item]}
@@ -242,7 +242,7 @@ export default class Templog extends React.Component {
         <td>異常選項</td>
         <td colSpan={3}>
           {err.map((item, index) => (
-            <Exception 
+            <Exception
               key={index}
               label={errLabel[index]}
               value={this.state[type + item]}
@@ -257,7 +257,7 @@ export default class Templog extends React.Component {
 
   checkTime() {
     let today = new Date()
-    let hours = today.getHours() * 100
+    let hours = (today.getHours() * 100) + today.getMinutes()
     const { rule } = this.state
     if (rule !== undefined) {
       if (operatorHandle(hours, rule.MO_START.cond, Number(rule.MO_START.val)) &&
@@ -294,7 +294,7 @@ export default class Templog extends React.Component {
 
   render() {
     const { pointInfo } = this.props
-    const { 
+    const {
       alertMsg,
       mach_no, ch_date, temp_high, temp_low, humi_high, humi_low,
       isLoading, isChecked, isDeviation, isOverdue,
@@ -307,7 +307,7 @@ export default class Templog extends React.Component {
     return (
       <div>
         {alertMsg.length > 0 &&
-          <article className="message is-warning" style={{marginBottom: '10px'}}>
+          <article className="message is-warning" style={{ marginBottom: '10px' }}>
             <div className="message-header">
               <p>請排除下列異常</p>
             </div>
@@ -325,16 +325,16 @@ export default class Templog extends React.Component {
             <tr>
               <td colSpan={4}>
                 <span className="title is-4">溫溼度記錄表</span>
-                <span className="title is-6" style={{marginLeft: '10px'}}>
+                <span className="title is-6" style={{ marginLeft: '10px' }}>
                   日期：{/*today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate()*/} {date + time}
                 </span>
-              </td>  
+              </td>
             </tr>
             <tr>
               <td width="120">位置</td>
               <td colSpan={3}>
                 <span>{pointInfo.point_name}</span>
-                <span style={{marginLeft: '10px'}}>{pointInfo.point_des}</span>
+                <span style={{ marginLeft: '10px' }}>{pointInfo.point_des}</span>
               </td>
             </tr>
             <tr>
@@ -346,18 +346,18 @@ export default class Templog extends React.Component {
               <td>
                 {
                   (temp_low === 0 || temp_low === '-200' ? '' : temp_low)
-                  + " ~ " + 
+                  + " ~ " +
                   (temp_high === 0 || temp_high === '200' ? '' : temp_high)
                 }
               </td>
               <td>溼度範圍</td>
               <td>
-              {
-                (humi_low === 0 || humi_low === '-200' ? '' : humi_low) 
-                + " ~ " + 
-                (humi_high === 0 || humi_high === '200'? '' : humi_high)
-              }
-            </td>
+                {
+                  (humi_low === 0 || humi_low === '-200' ? '' : humi_low)
+                  + " ~ " +
+                  (humi_high === 0 || humi_high === '200' ? '' : humi_high)
+                }
+              </td>
             </tr>
             {this.checkTime() === 'mo' &&
               this.layoutInput('上午記錄')
@@ -393,24 +393,24 @@ export default class Templog extends React.Component {
                 </td>
               </tr>
             }
-            {this.checkTime() === 'mo' && 
+            {this.checkTime() === 'mo' &&
               <Remark value={this.state.mo_urmk} onChange={(e) => {
-                this.setState({ mo_urmk: e.target.value})
-              }}/>
+                this.setState({ mo_urmk: e.target.value })
+              }} />
             }
-            {this.checkTime() === 'af' && 
+            {this.checkTime() === 'af' &&
               <Remark value={this.state.af_urmk} onChange={(e) => {
-                this.setState({ af_urmk: e.target.value})
-              }}/>
+                this.setState({ af_urmk: e.target.value })
+              }} />
             }
-            {this.checkTime() === 'ev' && 
+            {this.checkTime() === 'ev' &&
               <Remark value={this.state.ev_urmk} onChange={(e) => {
-                this.setState({ ev_urmk: e.target.value})
-              }}/>
+                this.setState({ ev_urmk: e.target.value })
+              }} />
             }
           </tbody>
         </table>
-        <Deviation 
+        <Deviation
           isLoading={isLoading}
           isComplete={isComplete}
           isDeviation={isDeviation}
@@ -421,14 +421,14 @@ export default class Templog extends React.Component {
           onCancel={this.onCancel.bind(this)}
         />
         {this.state.confirmShow &&
-          <Confirm 
+          <Confirm
             show={this.state.confirmShow}
             title="送出表單確認"
             content="您是否確定要送出表單？"
             onConfirm={this.onSave.bind(this)}
             onCancel={this.hideConfirm.bind(this)}
             btnConfirm="確定"
-            btnCancel="取消" 
+            btnCancel="取消"
           />
         }
       </div>

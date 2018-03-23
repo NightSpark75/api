@@ -128,8 +128,8 @@ export default class Wetestlog extends React.Component {
   }
 
   checkFillTime() {
-    let today = new Date(2018,3,23,17,5,25)
-    let hours = today.getHours() * 100
+    let today = new Date()
+    let hours = (today.getHours() * 100) + today.getMinutes()
     const { rule, mo_rmk } = this.state
     let isOverdue = true
     if (this.checkTime() !== '') {
@@ -138,7 +138,7 @@ export default class Wetestlog extends React.Component {
       let end = operatorHandle(hours, '>=', Number(rule.MO_END.val))
       let rmk = mo_rmk === ''
       if (start && end && rmk) {
-          isOverdue = true
+        isOverdue = true
       }
     }
     this.setState({ isOverdue: isOverdue })
@@ -203,10 +203,10 @@ export default class Wetestlog extends React.Component {
     let type = this.checkTime()
     let { alertMsg } = this.state
     let isChecked = false
-    if (this.state[type + err[0]] === 'Y' || 
-        this.state[type + err[1]] === 'Y' || 
-        this.state[type + err[2]] === 'Y' || 
-        this.state[type + err[3]] === 'Y') {
+    if (this.state[type + err[0]] === 'Y' ||
+      this.state[type + err[1]] === 'Y' ||
+      this.state[type + err[2]] === 'Y' ||
+      this.state[type + err[3]] === 'Y') {
       isChecked = true
       alertMsg = []
       this.setState({ isChecked: isChecked, alertMsg: alertMsg })
@@ -282,8 +282,8 @@ export default class Wetestlog extends React.Component {
   }
 
   checkTime() {
-    let today = new Date(2018,3,23,17,5,25)
-    let hours = today.getHours() * 100
+    let today = new Date()
+    let hours = (today.getHours() * 100) + today.getMinutes()
     const { rule } = this.state
     if (rule !== undefined) {
       if (operatorHandle(hours, rule.MO_START.cond, Number(rule.MO_START.val)) &&
@@ -327,7 +327,7 @@ export default class Wetestlog extends React.Component {
     } = this.state
     const { mo, af, ev } = this.state
     const isComplete = !(this.state.log_data === null)
-    let today = new Date(2018,3,23,17,5,25)
+    let today = new Date(2018, 3, 23, 17, 5, 25)
     let date = today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate() + ' '
     let time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds()
     let showHumi
@@ -373,8 +373,8 @@ export default class Wetestlog extends React.Component {
               <td colSpan={3}>
                 {
                   /*(humi_low === '0' || humi_low === '-200' ? '': humi_low) */
-                  " <= " + 
-                  (humi_high === '0' || humi_high === '200' ? '': humi_high) + ' %'
+                  " <= " +
+                  (humi_high === '0' || humi_high === '200' ? '' : humi_high) + ' %'
                 }
               </td>
             </tr>
@@ -400,7 +400,7 @@ export default class Wetestlog extends React.Component {
               <tr>
                 <td>檢查</td>
                 <td colSpan={3}>
-                  <div className="field is-horizontal" onChange={() => this.setState({ zero: this.state.zero === 'Y'? 'N': 'Y'})}>
+                  <div className="field is-horizontal" onChange={() => this.setState({ zero: this.state.zero === 'Y' ? 'N' : 'Y' })}>
                     <div className="field-body">
                       <div className="field has-addons">
                         <div className="control">
@@ -409,7 +409,7 @@ export default class Wetestlog extends React.Component {
                               value={this.state.zero}
                               checked={this.state.zero === 'Y'}
                             />
-                            <span style={{fontSize: '16px', fontWeight: 'bolder'}}>歸零確認</span>
+                            <span style={{ fontSize: '16px', fontWeight: 'bolder' }}>歸零確認</span>
                           </label>
                         </div>
                       </div>
@@ -434,20 +434,20 @@ export default class Wetestlog extends React.Component {
                 </td>
               </tr>
             }
-            {this.checkTime() === 'mo' && 
+            {this.checkTime() === 'mo' &&
               <Remark value={this.state.mo_urmk} onChange={(e) => {
-                this.setState({ mo_urmk: e.target.value})
-              }}/>
+                this.setState({ mo_urmk: e.target.value })
+              }} />
             }
-            {this.checkTime() === 'af' && 
+            {this.checkTime() === 'af' &&
               <Remark value={this.state.af_urmk} onChange={(e) => {
-                this.setState({ af_urmk: e.target.value})
-              }}/>
+                this.setState({ af_urmk: e.target.value })
+              }} />
             }
-            {this.checkTime() === 'ev' && 
+            {this.checkTime() === 'ev' &&
               <Remark value={this.state.ev_urmk} onChange={(e) => {
-                this.setState({ ev_urmk: e.target.value})
-              }}/>
+                this.setState({ ev_urmk: e.target.value })
+              }} />
             }
           </tbody>
         </table>
