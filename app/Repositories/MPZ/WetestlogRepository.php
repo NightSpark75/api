@@ -195,8 +195,8 @@ class WetestlogRepository
         $devia = $params[$k_devia];
         $str = "
             duser = '$user', ddate = sysdate,
-            $k_hum = $hum, $k_max = $max, $k_min = $min
-            $k_ed = '$ed', $k_eh = '$eh', $k_devia = '$devia'
+            $k_hum = $hum, $k_max = $max, $k_min = $min,
+            $k_ed = '$ed', $k_eh = '$eh', $k_devia = '$devia',
             $k_time = $time, $k_user = $user
         ";
         if ($this->type === 'mo') {

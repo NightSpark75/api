@@ -190,7 +190,7 @@ class RefrilogRepository
         $str = "
             duser = '$user', ddate = sysdate,
             $k_temp = $temp,  
-            $k_ed = '$ed', $k_et = '$et', $k_devia = '$devia'
+            $k_ed = '$ed', $k_et = '$et', $k_devia = '$devia',
             $k_time = $time, $k_user = $user
         ";
         if ($this->type === 'mo') {

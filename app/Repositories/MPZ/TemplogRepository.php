@@ -196,7 +196,7 @@ class TemplogRepository
         $str = "
             duser = '$user', ddate = sysdate,
             $k_temp = $temp, $k_hum = $hum,
-            $k_ed = '$mo_ed', $k_eth = '$eth', $k_devia = '$devia'
+            $k_ed = '$mo_ed', $k_eth = '$eth', $k_devia = '$devia',
             $k_time = $time, $k_user = $user
         ";
         if ($this->type === 'mo') {
