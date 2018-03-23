@@ -61,73 +61,17 @@ class ShippingListRepositoryTest extends TestCase
     {
         // arrange
         $first = ShippingList::first();
+        $spno = $first->tmy59spno;
         $date = $first->staddj;
         $expected = 
-            ShippingList::where('staddj', $date)
-                ->where('stky6', null)
-                ->select('sticu', 'ststop', 'staddj', 'stky2')
-                ->orderBy('ststop')
-                ->get();
-        
-        // act
-        $actual = $this->target->getShippingList($date);
-
-        // assert
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * test getShipping()
-     */
-    public function test_getShipping()
-    {
-        // arrange
-        $first = ShippingList::first();
-        $stop = $first->ststop;
-        $staddj = $first->staddj;
-        $expected = 
-            ShippingList::where('ststop', $stop)
-                ->where('staddj', $staddj)
+            ShippingList::where('tmy59spno', $spno)
+                ->where('tmtrdj', $date)
+                ->select('tmtrdj', 'tmaddj', 'tmy59spno', 'tmcars', 'cars_na', 'tman8', 'tmalph', 'tm1in1', 'dltm_na', 'tmalph1')
                 ->first();
-        
         // act
-        $actual = $this->target->getShipping($stop, $staddj);
+        $actual = $this->target->getShippingInfo($spno, $date);
 
         // assert
         $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * test startShipping()
-     */
-    public function test_startShipping()
-    {
-        // arrange
-        $stop = 'A1';
-        $date = '13-MAR-18';
-        $user = '106013';
-
-        // act
-        $actual = $this->target->startShipping($stop, $date, $user);
-
-        // assert
-        $this->assertTrue($actual);
-    }
-
-    /**
-     * test endShipping()
-     */
-    public function test_endShipping()
-    {
-        // arrange
-        $stop = 'A1';
-        $date = '13-MAR-18';
-        $user = '106013';
-
-        // act
-        $actual = $this->target->endShipping($stop, $date, $user);
-
-        // assert
-        $this->assertTrue($actual);
     }
 }

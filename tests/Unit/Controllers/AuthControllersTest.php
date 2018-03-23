@@ -83,7 +83,8 @@ class AuthControllersTest extends TestCase
         $this->app->instance(AuthController::class, $this->mock);
         $this->mock->shouldReceive('logout')
             ->once()
-            ->withAnyArgs();
+            ->withAnyArgs()
+            ->andReturn($expected);
         $actual = $this->target->logout();
 
         /** assert */

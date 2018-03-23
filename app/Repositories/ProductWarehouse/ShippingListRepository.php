@@ -38,11 +38,11 @@ class ShippingListRepository extends Repository
      */
     public function getShippingInfo($spno, $date)
     {
-        $list = $this->model
+        $info = $this->model
             ->where('tmy59spno', $spno)
             ->where('tmtrdj', $date)
             ->select('tmtrdj', 'tmaddj', 'tmy59spno', 'tmcars', 'cars_na', 'tman8', 'tmalph', 'tm1in1', 'dltm_na', 'tmalph1')
             ->first();
-        return $list;
+        return $info;
     }
 }
