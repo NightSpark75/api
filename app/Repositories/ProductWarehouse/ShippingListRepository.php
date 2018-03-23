@@ -41,7 +41,7 @@ class ShippingListRepository extends Repository
         $list = $this->model
             ->where('tmy59spno', $spno)
             ->where('tmtrdj', $date)
-            ->select('tmtrdj', 'tmaddj', 'tmy59spno', 'tmcars', 'cars_na', 'tman8', 'tmalph', 'tm1in1', 'tmy59dltm', 'tmalph1')
+            ->select('tmtrdj', 'tmaddj', 'tmy59spno', 'tmcars', 'cars_na', 'tman8', 'tmalph', 'tm1in1', 'dltm_na', 'tmalph1')
             ->first();
         return $list;
     }
