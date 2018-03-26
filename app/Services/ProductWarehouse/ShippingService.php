@@ -52,7 +52,13 @@ class ShippingService {
     }
 
     /**
+     * save shippping pieces, and check shipping info
      * 
+     * @param string $spno
+     * @param string $date
+     * @param string $user 
+     * @param string $pieces
+     * @return mixed
      */
     public function savePieces($spno, $date, $user, $pieces)
     {

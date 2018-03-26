@@ -47,10 +47,13 @@ class ShippingListRepository extends Repository
     }
 
     /**
-     * get shipping info by spno and date
+     * call xxx procedure
      * 
-     * @param string $date => 'Y-m-d 00:00:00'
-     * @return mixed
+     * @param string $spno
+     * @param string $date
+     * @param string $user 
+     * @param string $pieces
+     * @return bool
      */
     public function savePieces($spno, $date, $user, $pieces)
     {
