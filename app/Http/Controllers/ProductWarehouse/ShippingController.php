@@ -67,7 +67,7 @@ class ShippingController extends Controller
         try {
             $user = session('user');
             $id = $user->id;
-            $spno = request()->input('tmy59spno');
+            $spno = request()->input('spno');
             $date = request()->input('date');
             $pieces = request()->input('pieces');
             //$this->shippingService->savePieces($spno, $date, $pieces);

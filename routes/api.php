@@ -61,7 +61,7 @@ Route::group(['prefix' => 'productWarehouse', 'namespace' => 'ProductWarehouse']
         Route::post('end', 'PickingController@endPicking');
     });
     // shipping
-    Route::group(['prefix' => 'shipping'], function () {
+    Route::group(['prefix' => 'shipping', 'middleware' => 'jwt'], function () {
         Route::get('info/{spno}/{date?}', 'ShippingController@getShippingInfo');
         Route::post('pieces', 'ShippingController@savePieces');
     });
