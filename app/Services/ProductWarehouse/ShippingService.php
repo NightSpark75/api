@@ -50,4 +50,20 @@ class ShippingService {
         }
         return $list;
     }
+
+    /**
+     * 
+     */
+    public function savePieces($spno, $date, $user, $pieces)
+    {
+        $date = $date? $date: date('Y-m-d') . ' 00:00:00';
+        $shipping = $this->shippingListRepository->getShippingInfo($spno, $date);
+        
+        if ($shipping) {
+            $addj = date_format(date_create($date), 'Y/m/d');
+            $this->shippingListRepository->savePieces($spno, $addj, $user, $pieces);
+            return true;
+        }
+        throw new Exception("spno='$spno' and addj='$date', data not found!");
+    }
 }
