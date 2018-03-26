@@ -54,4 +54,26 @@ class ShippingController extends Controller
             return response()->json($this->getException($e), 400);
         }
     }
+
+    /**
+     * get shipping items by stop at today
+     *
+     * @param string $stop
+     * @throws Exception
+     * @return mixed
+     */
+    public function savePieces()
+    {
+        try {
+            $user = session('user');
+            $id = $user->id;
+            $spno = request()->input('tmy59spno');
+            $date = request()->input('date');
+            $pieces = request()->input('pieces');
+            //$this->shippingService->savePieces($spno, $date, $pieces);
+            return response()->json(['result' => true], 200);
+        } catch (Exception $e) {
+            return response()->json($this->getException($e), 400);
+        }
+    }
 }
