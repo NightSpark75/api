@@ -205,7 +205,8 @@ class CatchlogRepository
         $sender = 'mpz.system@standard.com.tw';
         $recipient = 'Lin.Guanwei@standard.com.tw';
         //$recipient = 'Lin.Yupin@standard.com.tw';
-        $content = '位置編號['.$point_no.']開立偏差';
+        $point_name = DB::selectOne("select point_name from mpz_point where point_no = '$point_no'")->point_name;
+        $content = '位置['.$point_name.']開立偏差';
         $this->sendMail($subject, $sender, $recipient, $content);
     }
 

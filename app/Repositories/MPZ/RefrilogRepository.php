@@ -211,12 +211,13 @@ class RefrilogRepository
         $sender = 'mpz.system@standard.com.tw';
         //$recipient = 'Lin.Yupin@standard.com.tw';
         $recipient = 'Lin.Guanwei@standard.com.tw';
+        $point_name = DB::selectOne("select point_name from mpz_point where point_no = '$point_no'")->point_name;
         if ($this->type === 'mo' && $params['mo_devia'] === 'Y') {
-            $content = '位置編號['.$point_no.']上午開立偏差';
+            $content = '位置['.$point_name.']上午開立偏差';
             $this->sendMail($subject, $sender, $recipient, $content);
         }
         if ($this->type === 'af' && $params['af_devia'] === 'Y') {
-            $content = '位置編號['.$point_no.']下午開立偏差';
+            $content = '位置['.$point_name.']下午開立偏差';
             $this->sendMail($subject, $sender, $recipient, $content);
         }
     }
