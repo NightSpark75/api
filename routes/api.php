@@ -63,6 +63,7 @@ Route::group(['prefix' => 'productWarehouse', 'namespace' => 'ProductWarehouse']
     // shipping
     Route::group(['prefix' => 'shipping'], function () {
         Route::get('info/{spno}/{date?}', 'ShippingController@getShippingInfo');
+        Route::post('pieces', 'ShippingController@savePieces');
     });
 });
 
