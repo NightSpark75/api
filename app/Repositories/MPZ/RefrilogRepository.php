@@ -112,7 +112,7 @@ class RefrilogRepository
                     DB::update("
                         update mpz_refrilog
                             set $upd
-                            where point_no = $point_no and ldate = $ldate
+                            where point_no = '$point_no' and ldate = $ldate
                     ");
                 } else {
                     $params['state'] = 'Y';
@@ -191,7 +191,7 @@ class RefrilogRepository
             duser = '$user', ddate = sysdate,
             $k_temp = $temp,  
             $k_ed = '$ed', $k_et = '$et', $k_devia = '$devia',
-            $k_time = $time, $k_user = $user
+            $k_time = $time, $k_user = '$user'
         ";
         if ($this->type === 'mo') {
             $putt = $params['mo_putt'];

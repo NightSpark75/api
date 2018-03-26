@@ -113,7 +113,7 @@ class TemplogRepository
                     DB::update("
                         update mpz_templog
                             set $upd
-                            where point_no = $point_no and ldate = $ldate
+                            where point_no = '$point_no' and ldate = $ldate
                     ");
                 } else {
                     $params['state'] = 'Y';
@@ -196,8 +196,8 @@ class TemplogRepository
         $str = "
             duser = '$user', ddate = sysdate,
             $k_temp = $temp, $k_hum = $hum,
-            $k_ed = '$mo_ed', $k_eth = '$eth', $k_devia = '$devia',
-            $k_time = $time, $k_user = $user
+            $k_ed = '$ed', $k_eth = '$eth', $k_devia = '$devia',
+            $k_time = $time, $k_user = '$user'
         ";
         if ($this->type === 'mo') {
             $rmk = $params['mo_rmk'];

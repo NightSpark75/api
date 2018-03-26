@@ -111,7 +111,7 @@ class WetestlogRepository
                     DB::update("
                         update mpz_wetestlog
                             set $upd
-                            where point_no = $point_no and ldate = $ldate
+                            where point_no = '$point_no' and ldate = $ldate
                     ");
                 } else {
                     $params['state'] = 'Y';
@@ -197,7 +197,7 @@ class WetestlogRepository
             duser = '$user', ddate = sysdate,
             $k_hum = $hum, $k_max = $max, $k_min = $min,
             $k_ed = '$ed', $k_eh = '$eh', $k_devia = '$devia',
-            $k_time = $time, $k_user = $user
+            $k_time = $time, $k_user = '$user'
         ";
         if ($this->type === 'mo') {
             $rmk = $params['mo_rmk'];
