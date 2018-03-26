@@ -1,10 +1,11 @@
 import React from "react"
 export default class Record extends React.Component {
   render() {
+    const labelWidth = this.props.width? this.props.width: '120px'
     return (
       <div className="field is-horizontal">
         <div className="field-label is-normal" style={{flexGrow: '0', paddingTop: '1.5px'}}>
-          <label className="label" style={{width: '120px'}}>{this.props.label}</label>
+          <label className="label" style={{width: labelWidth}}>{this.props.label}</label>
         </div>
         <div className="field-body">
           <div className="field has-addons">

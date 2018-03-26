@@ -197,6 +197,15 @@ export default class Wetestlog extends React.Component {
     } else {
       this.removeAlert('顯示值超過最大值，請註記異常')
     }
+    this.zeroCheck()
+  }
+
+  zeroCheck() {
+    if (this.state.zero === 'N') {
+      this.pushAlert('請將儀器歸零')
+    } else if (this.state.zero === 'Y') {
+      this.removeAlert('請將儀器歸零')
+    }
   }
 
   exceptionCheck() {
@@ -251,6 +260,7 @@ export default class Wetestlog extends React.Component {
           {key.map((item, index) => (
             <Record
               key={index}
+              width={'55px'}
               label={keyLabel[index]}
               value={this.state[type + item]}
               onChange={this.inputChange.bind(this, type + item)}
@@ -300,6 +310,10 @@ export default class Wetestlog extends React.Component {
       }
     }
     return ''
+  }
+
+  zeroChange() {
+    this.setState({ zero: this.state.zero === 'Y' ? 'N' : 'Y' }, () => this.zeroCheck())
   }
 
   rmkChange(e) {
@@ -400,7 +414,7 @@ export default class Wetestlog extends React.Component {
               <tr>
                 <td>檢查</td>
                 <td colSpan={3}>
-                  <div className="field is-horizontal" onChange={() => this.setState({ zero: this.state.zero === 'Y' ? 'N' : 'Y' })}>
+                  <div className="field is-horizontal" onChange={this.zeroChange.bind(this)}>
                     <div className="field-body">
                       <div className="field has-addons">
                         <div className="control">
