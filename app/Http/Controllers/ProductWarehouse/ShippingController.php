@@ -56,9 +56,8 @@ class ShippingController extends Controller
     }
 
     /**
-     * get shipping items by stop at today
+     * save shipping pieces
      *
-     * @param string $stop
      * @throws Exception
      * @return mixed
      */
