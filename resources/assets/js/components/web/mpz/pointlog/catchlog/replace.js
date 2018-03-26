@@ -4,7 +4,7 @@ export default class Replace extends React.Component {
   render() {
     const { changeDate, value, checked, onChange, label, type, rule } = this.props
     return (
-      <div className="field is-horizontal" onChange={onChange}>
+      <div className="field is-horizontal">
         <div className="field-body">
           <div className="field has-addons">
             <div className="control">
@@ -12,6 +12,7 @@ export default class Replace extends React.Component {
                 <input type="checkbox"
                   value={value}
                   checked={checked === 'Y'}
+                  onChange={onChange}
                 />
                 <span style={{fontSize: '16px', fontWeight: 'bolder'}}>{label}</span>
                 <span style={{marginLeft: '20px'}}>{getChangeDate(changeDate, type, rule)}</span>

@@ -167,8 +167,8 @@ export default class Catchlog extends React.Component {
   }
 
   lampCheck() {
-    const { vl, check_lamp, isChecked } = this.state
-    if (vl && check_lamp === 'N' && !isChecked) {
+    const { vlp, check_lamp, isChecked } = this.state
+    if (vlp && check_lamp === 'N' && !isChecked) {
       this.pushAlert('驅蚊燈異常')
     } else {
       this.removeAlert('驅蚊燈異常')
@@ -227,6 +227,7 @@ export default class Catchlog extends React.Component {
     this.checkAllCatchAmount(isChecked)
     //檢查必填項目
     this.checkAllRequire()
+    this.lampCheck()
   }
 
   checkFillTime() {
@@ -266,8 +267,8 @@ export default class Catchlog extends React.Component {
 
     if (rule.TWO_MONTH_GROWTH) {
       r = rule.TWO_MONTH_GROWTH
-      let c1 = operatorHandle(thisGrowth, r.cond, r.val)
-      let c2 = operatorHandle(lastGrowth, r.cond, r.val)
+      let c1 = operatorHandle(thisGrowth, r.cond, Number(r.val) / 100)
+      let c2 = operatorHandle(lastGrowth, r.cond, Number(r.val) / 100)
       n = this.setAlert(r, c1 && c2, n)
     }
 
