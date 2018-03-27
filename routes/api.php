@@ -32,6 +32,7 @@ Route::group(['prefix' => 'jwt', 'namespace' => 'Web'], function () {
 // login
 Route::group(['prefix' => 'web', 'namespace' => 'Web'], function () {
     Route::post('login', 'AuthController@login');
+    Route::post('password', 'AuthController@password');
     Route::post('nativeLogin', 'AuthController@nativeLogin');
     Route::get('logout', 'AuthController@logout');
     Route::get('commonMenu/{class}', 'AuthController@commonMenu');

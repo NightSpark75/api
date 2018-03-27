@@ -8,6 +8,7 @@ import SinglePage from "./components/sys/layout/SinglePage"
 import NavPage from "./components/sys/layout/NavPage"
 import Upload from "./components/web/service/Upload"
 import Login from "./components/sys/layout/Login"
+import Password from "./components/sys/layout/password"
 import Error from "./components/sys/layout/Error"
 import Menu from "./components/sys/layout/Menu"
 import User from "./components/web/user/User"
@@ -63,6 +64,7 @@ ReactDOM.render(
     </Route>
     <Route path="web" component={SinglePage}>
       <Route path="login/:system" component={Login}></Route>
+      <Route path="password" component={Password}></Route>
     </Route>
     <Route path="auth">
       <Route path="web" component={NavPage}>

@@ -126,6 +126,17 @@ export default class Login extends React.Component {
               :
               <button type="submit" className="button is-primary is-medium is-fullwidth">登入</button>
             }
+            <div className="level" style={{marginTop: '10px'}}>
+              <div className="level-left">
+                <div className="level-item">
+                  <a href="/web/password" style={{fontSize: '18px'}}>變更密碼</a>
+                </div>
+              </div>
+              <div className="level-right">
+                <div className="level-item">
+                </div>
+              </div>
+            </div>
           </form>
           {this.state.msg !== '' &&
             <div className="notification is-warning" style={{ marginTop: '10px' }}>

@@ -51,6 +51,44 @@ class AuthRepository
         }
     }
 
+    public function password($params)
+    {
+        try {
+            $account = $params['account'];
+            $old = $params['old'];
+            $changed = $params['changed'];
+            $confirm = $params['confirm'];
+            $auth = $this->user
+                ->where('id', $account)
+                ->where('pwd', $old)
+                ->where('state', 'Y')
+                ->first();
+            if (!$auth) {
+                throw new Exception('帳號或密碼錯誤!');
+            }
+            if ($changed !== $confirm) {
+                throw new Exception('新密碼與確認密碼不同!');
+            }
+            if ($changed === '') {
+                throw new Exception('新密碼不能空白!');
+            }
+            if ($changed === $old) {
+                throw new Exception('新密碼不能與舊密碼相同!');
+            }
+            DB::transaction(function () use($changed, $account) {
+                DB::update("
+                    update sma_user_m
+                        set user_pw = '$changed'
+                        where user_id = '$account' and state='Y'
+                ");
+            });
+            DB::commit();
+            return $this->success();
+        } catch (Exception $e) {
+            return $this->exception($e);
+        }
+    }
+
     /**
      * @param $account
      * @param $password

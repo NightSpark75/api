@@ -220,7 +220,7 @@ export default class Working extends React.Component {
             </div>
             <div className="level-right is-hidden-touch">
               <div className="level-item">
-                <button className="button is-primary is-large" onClick={this.workingComplete.bind(this)} disabled={lock}>途程完工</button>
+                <button className="button is-primary is-large" onClick={this.workingComplete.bind(this)} disabled={lock}>結束且完工</button>
               </div>
             </div>
           </div>
