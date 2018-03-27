@@ -197,7 +197,9 @@ export default class Wetestlog extends React.Component {
     } else {
       this.removeAlert('顯示值超過最大值，請註記異常')
     }
-    this.zeroCheck()
+    if (type === 'ev_') {
+      this.zeroCheck()
+    }
   }
 
   zeroCheck() {

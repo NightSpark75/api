@@ -20,7 +20,7 @@
     "jest": "21.2.1",
     "jquery": "^3.1.1",
     "lodash": "^4.17.5",
-    "react-test-renderer": "^16.0.0",
+    "react-test-renderer": "^15.5.4",
     "vue": "^2.3.4"
   },
   "dependencies": {
@@ -29,8 +29,11 @@
     "bootstrap": "^3.3.7",
     "bootstrap-fileinput": "^4.4.2",
     "bulma": "^0.5.3",
+    "enzyme": "^3.3.0",
+    "enzyme-to-json": "^3.3.3",
     "es6-promise": "^4.1.1",
     "gulp-cli": "^1.4.0",
+    "jest-junit-reporter": "^1.1.0",
     "laravel-mix": "^2.1.11",
     "path": "^0.12.7",
     "react": "^15.6.1",
