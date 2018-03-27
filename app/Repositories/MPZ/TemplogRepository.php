@@ -186,6 +186,7 @@ class TemplogRepository
         $k_ed = $this->type.'_ed';
         $k_eth = $this->type.'_eth';
         $k_devia = $this->type.'_devia';
+        $k_hde = $this->type.'_hde';
         $k_time = $this->type.'_time';
         $k_user = $this->type.'_user';
         $temp = $params[$k_temp];
@@ -193,10 +194,11 @@ class TemplogRepository
         $ed = $params[$k_ed];
         $eth = $params[$k_eth];
         $devia = $params[$k_devia];
+        $hde = $params[$k_hde];
         $str = "
             duser = '$user', ddate = sysdate,
             $k_temp = $temp, $k_hum = $hum,
-            $k_ed = '$ed', $k_eth = '$eth', $k_devia = '$devia',
+            $k_ed = '$ed', $k_eth = '$eth', $k_devia = '$devia', $k_hde = '$hde',
             $k_time = $time, $k_user = '$user'
         ";
         if ($this->type === 'mo') {
@@ -210,23 +212,42 @@ class TemplogRepository
     private function mailhandler($params)
     {
         $point_no = $params['point_no'];
-        $subject = '溫溼度開立偏差通知!';
+        $subject = '溫溼度監控異常通知!';
         $sender = 'mpz.system@standard.com.tw';
-        //$recipient = 'Lin.Yupin@standard.com.tw';
         $recipient = 'Lin.Guanwei@standard.com.tw';
         $point_name = DB::selectOne("select point_name from mpz_point where point_no = '$point_no'")->point_name;
-        if ($this->type === 'mo' && $params['mo_devia'] === 'Y') {
-            $content = '位置['.$point_name.']上午開立偏差';
+        if ($this->type === 'mo') {
+            $content = '位置['.$point_name.']上午發生異常';
+        }
+        if ($this->type === 'af') {
+            $content = '位置['.$point_name.']下午1發生異常';
+        }
+        if ($this->type === 'ev') {
+            $content = '位置['.$point_name.']下午2發生異常';
+        }
+        $option = $this->setOption($this->type, $params);
+        if (strlen($option) > 0) {
+            $content = $content.$option;
             $this->sendMail($subject, $sender, $recipient, $content);
         }
-        if ($this->type === 'af' && $params['af_devia'] === 'Y') {
-            $content = '位置['.$point_name.']下午1開立偏差';
-            $this->sendMail($subject, $sender, $recipient, $content);
+    }
+
+    private function setOption($type, $params)
+    {
+        $option = '';
+        if ($params[$type.'_devia'] === 'Y') {
+            $option = $option.'[開立偏差]';
         }
-        if ($this->type === 'ev' && $params['ev_devia'] === 'Y') {
-            $content = '位置['.$point_name.']下午2開立偏差';
-            $this->sendMail($subject, $sender, $recipient, $content);
+        if ($params[$type.'_ed'] === 'Y') {
+            $option = $option.'[儀器異常]';
         }
+        if ($params[$type.'_eth'] === 'Y') {
+            $option = $option.'[溫溼度異常]';
+        }
+        if ($params[$type.'_hde'] === 'Y') {
+            $option = $option.'[已開立偏差]';
+        }
+        return $option;
     }
 
     private function sendMail($subject, $sender, $recipient, $content)

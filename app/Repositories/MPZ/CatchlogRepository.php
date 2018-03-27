@@ -183,9 +183,8 @@ class CatchlogRepository
                     DB::table('mpz_catchlog')->insert($params);
                     DB::commit();
                 }
-               
-                if ($params['deviation'] === 'Y') {
-                    $this->mailhandler($params['point_no']);
+                if ($params['deviation'] === 'Y' || $params['hde']) {
+                    $this->mailhandler($params);
                 }
             });
             $result = [
@@ -199,14 +198,20 @@ class CatchlogRepository
         }
     }
 
-    private function mailhandler($point_no)
+    private function mailhandler($params)
     {
-        $subject = '鼠蟲防治開立偏差通知!';
+        $point_no = $params['point_no'];
+        $subject = '鼠蟲防治異常通知!';
         $sender = 'mpz.system@standard.com.tw';
         $recipient = 'Lin.Guanwei@standard.com.tw';
-        //$recipient = 'Lin.Yupin@standard.com.tw';
         $point_name = DB::selectOne("select point_name from mpz_point where point_no = '$point_no'")->point_name;
-        $content = '位置['.$point_name.']開立偏差';
+        $content = '位置['.$point_name.']發生異常';
+        if ($params['deviation'] === 'Y') {
+            $content = $content.'[開立偏差]';
+        }
+        if ($params['hde'] === 'Y') {
+            $content = $content.'[已開立偏差]';
+        }
         $this->sendMail($subject, $sender, $recipient, $content);
     }
 
