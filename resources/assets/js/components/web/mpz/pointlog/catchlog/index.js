@@ -52,7 +52,7 @@ export default class Catchlog extends React.Component {
       alertMsg: [],
       rule: {},
       catch_num1: 0, catch_num2: 0, catch_num3: 0, catch_num4: 0, catch_num5: 0, catch_num6: 0,
-      change1: 'N', change2: 'N', change3: 'N', change4: 'N', change5: 'N', change6: 'N', check_lamp: 'Y',
+      change1: 'N', change2: 'N', change3: 'N', change4: 'N', change5: 'N', change6: 'N', check_lamp: 'N',
       rmk: '', discription: '', deviation: 'N', urmk: '', hde: 'N',
       changeDate: [],
       vn1: false, vn2: false, vn3: false, vn4: false, vn5: false, vn6: false,
@@ -110,7 +110,6 @@ export default class Catchlog extends React.Component {
     deviceSet[device].map((item) => {
       this.setState({ [item]: true }, () => {
         this.checkAllRequire()
-        this.lampCheck()
       })
     })
   }
@@ -133,7 +132,7 @@ export default class Catchlog extends React.Component {
   initState() {
     this.setState({
       catch_num1: 0, catch_num2: 0, catch_num3: 0, catch_num4: 0, catch_num5: 0, catch_num6: 0,
-      change1: 'N', change2: 'N', change3: 'N', change4: 'N', change5: 'N', change6: 'N', check_lamp: 'Y',
+      change1: 'N', change2: 'N', change3: 'N', change4: 'N', change5: 'N', change6: 'N', check_lamp: 'N',
       rmk: '', discription: '', deviation: 'N', urmk: '', hde: 'N',
       changeDate: [],
       vn1: false, vn2: false, vn3: false, vn4: false, vn5: false, vn6: false,
@@ -159,7 +158,10 @@ export default class Catchlog extends React.Component {
     let state, value
     state = this.state[item.key]
     value = state === 'Y' ? 'N' : 'Y'
-    this.setState({ [item.key]: value }, () => { this.checkRequire(item, this.state[item.show], value) })
+    this.setState({ [item.key]: value }, () => { 
+      this.checkRequire(item, this.state[item.show], value) 
+      this.lampCheck()
+    })
   }
 
   lampChange(type) {
@@ -167,8 +169,8 @@ export default class Catchlog extends React.Component {
   }
 
   lampCheck() {
-    const { vlp, check_lamp, isChecked } = this.state
-    if (vlp && check_lamp === 'N' && !isChecked) {
+    const { vlp, check_lamp, isChecked, change4 } = this.state
+    if (vlp && check_lamp === 'N' && !isChecked && change4 === 'N') {
       this.pushAlert('驅蚊燈異常')
     } else {
       this.removeAlert('驅蚊燈異常')
@@ -225,7 +227,7 @@ export default class Catchlog extends React.Component {
     this.checkFillTime()
     //檢查補獲數
     this.checkAllCatchAmount(isChecked)
-    //檢查必填項目
+    //檢查更換項目
     this.checkAllRequire()
     this.lampCheck()
   }
@@ -303,13 +305,14 @@ export default class Catchlog extends React.Component {
     const { rule, changeDate } = this.state
     replaceList.map((item) => {
       this.checkRequire(item, this.state[item.show], this.state[item.key])
+      this.lampCheck()
     })
   }
 
   checkRequire(item, show, value) {
-    const { rule, changeDate } = this.state
+    const { rule, changeDate, isChecked } = this.state
     if (operatorHandle(Number(changeDate[item.key]['dday']), rule.CHANGE_REQUEST.cond, rule.CHANGE_REQUEST.val)
-      && show && value === 'N') {
+      && show && value === 'N' && !isChecked) {
       this.pushAlert(item.label + '必須更換')
     } else {
       this.removeAlert(item.label + '必須更換')
@@ -345,13 +348,19 @@ export default class Catchlog extends React.Component {
   deviationChange() {
     let deviation = this.state.deviation === 'Y' ? 'N' : 'Y'
     let isChecked = this.state.hde === 'Y' || deviation === 'Y'
-    this.setState({ deviation, isChecked }, () => this.checkAllCatchAmount())
+    this.setState({ deviation, isChecked }, () => {
+      this.checkAllCatchAmount()
+      this.lampCheck()
+    })
   }
 
   hdeChange() {
     let hde = this.state.hde === 'Y' ? 'N' : 'Y'
     let isChecked = hde === 'Y' || this.state.deviation === 'Y'
-    this.setState({ hde, isChecked }, () => this.checkAllCatchAmount())
+    this.setState({ hde, isChecked }, () => {
+      this.checkAllCatchAmount()
+      this.lampCheck()
+    })
   }
 
   render() {

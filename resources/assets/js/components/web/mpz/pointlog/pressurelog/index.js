@@ -29,9 +29,9 @@ export default class Pressurelog extends React.Component {
     this.state = {
       alertMsg: [],
       point_no: '', mach_no: '', ch_date: '', pa_high: '', pa_low: '', aq_high: '', aq_low: '',
-      mo_pa: '', mo_aq: '', mo_rmk: '', mo_dis: '', mo_ed: 'N', mo_ep: 'N', mo_devia: 'N', mo_urmk: '', mo_hde: 'N',
-      af_pa: '', af_aq: '', af_ed: 'N', af_ep: 'N', af_devia: 'N', af_urmk: '', af_hde: 'N',
-      ev_pa: '', ev_aq: '', ev_ed: 'N', ev_ep: 'N', ev_devia: 'N', ev_urmk: '', ev_hde: 'N',
+      mo_pa: -1, mo_aq: '', mo_rmk: '', mo_dis: '', mo_ed: 'N', mo_ep: 'N', mo_devia: 'N', mo_urmk: '', mo_hde: 'N',
+      af_pa: -1, af_aq: '', af_ed: 'N', af_ep: 'N', af_devia: 'N', af_urmk: '', af_hde: 'N',
+      ev_pa: -1, ev_aq: '', ev_ed: 'N', ev_ep: 'N', ev_devia: 'N', ev_urmk: '', ev_hde: 'N',
       log_data: {},
       isLoading: false,
       confirmShow: false,

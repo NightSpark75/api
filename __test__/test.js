@@ -1,19 +1,20 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
 
-import Menu from '../resources/assets/js/components/includes/v_menu'
+import Error from '../resources/assets/js/components/sys/layout/Error'
+import Hello from '../resources/assets/js/components/sys/layout/Hello'
  
-describe('About Test', () => {
+describe('component/layout/sys', () => {
+  it('error', () => {
+    let params = {msg: 'test'}
+    const app = renderer.create(<Error params={params} />)
+    const json = app.toJSON()
+    expect(json).toMatchSnapshot()
+  })
 
-  
- 
-  it('is test', function() {
-    // Render into document
-    /*
-    let about = TestUtils.renderIntoDocument(<About />);
-    expect(TestUtils.isCompositeComponent(about)).toBeTruthy();*/
-    const app = renderer.create(<Menu />)
-    const json = app.toJSON();
-    expect(json).toMatchSnapshot();
-  });
-});
+  it('hello', () => {
+    const app = renderer.create(<Hello />)
+    const json = app.toJSON()
+    expect(json).toMatchSnapshot()
+  })
+})

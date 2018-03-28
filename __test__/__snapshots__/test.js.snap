@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`component/layout/sys error 1`] = `
+<article
+  class="message is-danger"
+>
+  <div
+    class="message-body"
+  >
+    test
+  </div>
+</article>
+`;
+
+exports[`component/layout/sys hello 1`] = `
+<div>
+  <section
+    class="hero is-medium is-primary is-bold"
+  >
+    <div
+      class="hero-body"
+    >
+      <div
+        class="container"
+      >
+        <h1
+          class="title"
+        >
+          Primary bold title
+        </h1>
+        <h2
+          class="subtitle"
+        >
+          Primary bold subtitle
+        </h2>
+      </div>
+    </div>
+  </section>
+</div>
+`;

@@ -29,9 +29,9 @@ export default class Wetestlog extends React.Component {
     this.state = {
       alertMsg: [],
       point_no: '', mach_no: '', ch_date: '', humi_high: '', humi_low: '',
-      mo_hum: '', mo_max: '', mo_min: '', mo_rmk: '', mo_dis: '', mo_ed: 'N', mo_eh: 'N', mo_devia: 'N', mo_urmk: '', mo_hde: 'N',
-      af_hum: '', af_max: '', af_min: '', af_ed: 'N', af_eh: 'N', af_devia: 'N', af_urmk: '', af_hde: 'N',
-      ev_hum: '', ev_max: '', ev_min: '', ev_ed: 'N', ev_eh: 'N', ev_devia: 'N', ev_urmk: '', ev_hde: 'N',
+      mo_hum: -1, mo_max: 0, mo_min: 0, mo_rmk: '', mo_dis: '', mo_ed: 'N', mo_eh: 'N', mo_devia: 'N', mo_urmk: '', mo_hde: 'N',
+      af_hum: -1, af_max: 0, af_min: 0, af_ed: 'N', af_eh: 'N', af_devia: 'N', af_urmk: '', af_hde: 'N',
+      ev_hum: -1, ev_max: 0, ev_min: 0, ev_ed: 'N', ev_eh: 'N', ev_devia: 'N', ev_urmk: '', ev_hde: 'N',
       zero: 'N',
       log_data: {},
       isLoading: false,

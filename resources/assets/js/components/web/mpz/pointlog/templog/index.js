@@ -29,9 +29,9 @@ export default class Templog extends React.Component {
     this.state = {
       alertMsg: [],
       point_no: '', mach_no: '', ch_date: '', temp_high: '', temp_low: '', humi_high: '', humi_low: '',
-      mo_temp: '', mo_hum: '', mo_rmk: '', mo_dis: '', mo_ed: 'N', mo_eth: 'N', mo_devia: 'N', mo_urmk: '', mo_hde: 'N',
-      af_temp: '', af_hum: '', af_ed: 'N', af_eth: 'N', af_devia: 'N', af_urmk: '', af_hde: 'N',
-      ev_temp: '', ev_hum: '', ev_ed: 'N', ev_eth: 'N', ev_devia: 'N', ev_urmk: '', ev_hde: 'N',
+      mo_temp: 0, mo_hum: 0, mo_rmk: '', mo_dis: '', mo_ed: 'N', mo_eth: 'N', mo_devia: 'N', mo_urmk: '', mo_hde: 'N',
+      af_temp: 0, af_hum: 0, af_ed: 'N', af_eth: 'N', af_devia: 'N', af_urmk: '', af_hde: 'N',
+      ev_temp: 0, ev_hum: 0, ev_ed: 'N', ev_eth: 'N', ev_devia: 'N', ev_urmk: '', ev_hde: 'N',
       log_data: {},
       isLoading: false,
       confirmShow: false,

@@ -32,9 +32,9 @@ export default class Refrilog extends React.Component {
     this.state = {
       alertMsg: [],
       point_no: '', mach_no: '', ch_date: '', temp_high: '', temp_low: '',
-      mo_temp: '', mo_putt: 'N', mo_bell: 'N', mo_light: 'N', mo_rmk: '', mo_urmk: '', mo_hde: 'N',
+      mo_temp: -50, mo_putt: 'N', mo_bell: 'N', mo_light: 'N', mo_rmk: '', mo_urmk: '', mo_hde: 'N',
       mo_dis: '', mo_ed: 'N', mo_et: 'N', mo_devia: 'N',
-      af_temp: '', af_ed: 'N', af_et: 'N', af_devia: 'N', af_urmk: '', af_hde: 'N',
+      af_temp: -50, af_ed: 'N', af_et: 'N', af_devia: 'N', af_urmk: '', af_hde: 'N',
       log_data: {},
       isLoading: false,
       confirmShow: false,
