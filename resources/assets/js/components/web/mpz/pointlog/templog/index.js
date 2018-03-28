@@ -37,6 +37,7 @@ export default class Templog extends React.Component {
       confirmShow: false,
       isChecked: false,
       isOverdue: false,
+      isEmpty: true,
     }
     this.sendMsg = this.props.sendMsg.bind(this)
   }
@@ -119,12 +120,27 @@ export default class Templog extends React.Component {
 
   inputChange(key, e) {
     let value = e.target.value
-    this.setState({ [key]: value }, () => (this.inputCheck(key)))
+    this.setState({ [key]: value }, () => {
+      this.inputCheck(key)
+      this.emptyCheck()
+    })
   }
 
   formCheck() {
     this.checkFillTime()
     this.exceptionCheck()
+    this.emptyCheck()
+  }
+
+  emptyCheck() {
+    let type = this.checkTime()
+    let empty = false
+    key.map((item, index) => {
+      if (this.state[type + item] === null) {
+        empty = true
+      }
+    })
+    this.setState({ isEmpty: empty })
   }
 
   checkFillTime() {
@@ -297,7 +313,7 @@ export default class Templog extends React.Component {
     const {
       alertMsg,
       mach_no, ch_date, temp_high, temp_low, humi_high, humi_low,
-      isLoading, isChecked, isDeviation, isOverdue,
+      isLoading, isChecked, isDeviation, isOverdue, isEmpty,
     } = this.state
     const { mo, af, ev } = this.state
     const isComplete = !(this.state.log_data === null)
@@ -416,6 +432,7 @@ export default class Templog extends React.Component {
           isDeviation={isDeviation}
           isChecked={isChecked}
           isOverdue={isOverdue}
+          isEmpty={isEmpty}
           alert={alertMsg}
           onSave={this.openConfirm.bind(this)}
           onCancel={this.onCancel.bind(this)}

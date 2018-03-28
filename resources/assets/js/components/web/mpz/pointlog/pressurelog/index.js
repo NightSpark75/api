@@ -29,14 +29,15 @@ export default class Pressurelog extends React.Component {
     this.state = {
       alertMsg: [],
       point_no: '', mach_no: '', ch_date: '', pa_high: '', pa_low: '', aq_high: '', aq_low: '',
-      mo_pa: -1, mo_aq: '', mo_rmk: '', mo_dis: '', mo_ed: 'N', mo_ep: 'N', mo_devia: 'N', mo_urmk: '', mo_hde: 'N',
-      af_pa: -1, af_aq: '', af_ed: 'N', af_ep: 'N', af_devia: 'N', af_urmk: '', af_hde: 'N',
-      ev_pa: -1, ev_aq: '', ev_ed: 'N', ev_ep: 'N', ev_devia: 'N', ev_urmk: '', ev_hde: 'N',
+      mo_pa: '', mo_aq: '', mo_rmk: '', mo_dis: '', mo_ed: 'N', mo_ep: 'N', mo_devia: 'N', mo_urmk: '', mo_hde: 'N',
+      af_pa: '', af_aq: '', af_ed: 'N', af_ep: 'N', af_devia: 'N', af_urmk: '', af_hde: 'N',
+      ev_pa: '', ev_aq: '', ev_ed: 'N', ev_ep: 'N', ev_devia: 'N', ev_urmk: '', ev_hde: 'N',
       log_data: {},
       isLoading: false,
       confirmShow: false,
       isChecked: false,
       isOverdue: false,
+      isEmpty: true,
     }
     this.sendMsg = this.props.sendMsg.bind(this)
   }
@@ -125,19 +126,33 @@ export default class Pressurelog extends React.Component {
       this.setState({
         [key]: value,
         [aq]: '',
-      }, () => { this.inputCheck(key) })
+      }, () => { 
+        this.inputCheck(key) 
+        this.emptyCheck()
+      })
     } else {
       let pa = key.substr(0, 3) + 'pa'
       this.setState({
         [pa]: value * 9.8,
         [key]: value,
-      }, () => { this.inputCheck(pa) })
+      }, () => { 
+        this.inputCheck(pa) 
+        this.emptyCheck()
+      })
     }
   }
 
   formCheck() {
     this.checkFillTime()
     this.exceptionCheck()
+    this.emptyCheck()
+  }
+
+  emptyCheck() {
+    let type = this.checkTime()
+    if (this.state[type + '_pa'] !== null) {
+      this.setState({ isEmpty: false })
+    }
   }
 
   checkFillTime() {
@@ -161,12 +176,12 @@ export default class Pressurelog extends React.Component {
     const { pa_high, pa_low, aq_low, aq_high, isChecked } = this.state
     const value = Number(this.state[key])
     if (key.substr(3, 2) === 'pa' && !isChecked) {
-      if (Number(pa_high) < value) {
+      if (Number(pa_high) <= value) {
         this.pushAlert('壓差(Pa)超過上限，請註記異常')
       } else {
         this.removeAlert('壓差(Pa)超過上限，請註記異常')
       }
-      if (Number(pa_low) > value) {
+      if (Number(pa_low) >= value) {
         this.pushAlert('壓差(Pa)超過下限，請註記異常')
       } else {
         this.removeAlert('壓差(Pa)超過下限，請註記異常')
@@ -298,7 +313,7 @@ export default class Pressurelog extends React.Component {
     const {
       alertMsg,
       mach_no, ch_date, pa_high, pa_low, aq_high, aq_low,
-      isLoading, isChecked, isDeviation, isOverdue,
+      isLoading, isChecked, isDeviation, isOverdue, isEmpty,
     } = this.state
     const { mo, af, ev } = this.state
     const isComplete = !(this.state.log_data === null)
@@ -404,6 +419,7 @@ export default class Pressurelog extends React.Component {
           isDeviation={isDeviation}
           isChecked={isChecked}
           isOverdue={isOverdue}
+          isEmpty={isEmpty}
           alert={alertMsg}
           onSave={this.openConfirm.bind(this)}
           onCancel={this.onCancel.bind(this)}

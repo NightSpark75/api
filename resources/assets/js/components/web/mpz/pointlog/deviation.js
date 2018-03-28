@@ -1,7 +1,7 @@
 import React from "react"
 export default class Deviation extends React.Component {
   render() {
-    const { isLoading, isDeviation, isChecked, onCancel, onSave, isComplete, isOverdue, alert } = this.props 
+    const { isLoading, isDeviation, isChecked, onCancel, onSave, isComplete, isOverdue, isEmpty, alert } = this.props 
     let btnSubmit = null
     let btnCancel = (<button className="button" onClick={onCancel}>取消</button>)
     if (isDeviation && isChecked) {
@@ -16,12 +16,14 @@ export default class Deviation extends React.Component {
     if (isLoading) {
       btnSubmit = (<button className="button is-loading is-primary" style={{width: '58px'}}></button>)
     }
-    
     if (isOverdue) {
       btnSubmit = (<button className="button is-warning">目前已逾時</button>)
     }
     if (alert.length > 0) {
       btnSubmit = (<button className="button is-warning">請排除異常</button>)
+    }
+    if (isEmpty) {
+      btnSubmit = null
     }
     return (
       <div className="buttons space">
