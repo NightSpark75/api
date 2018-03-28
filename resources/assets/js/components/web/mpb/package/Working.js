@@ -18,6 +18,7 @@ export default class Working extends React.Component {
       working_list: [],
       updated: false,
       lock: false,
+      prod: {bno: '', pname: ''},
     }
   }
 
@@ -40,6 +41,7 @@ export default class Working extends React.Component {
             self.setState({
               waiting_list: response.data.waiting,
               working_list: response.data.working,
+              prod: response.data.prod
             })
           } else {
             self.setState({
@@ -207,7 +209,7 @@ export default class Working extends React.Component {
   }
 
   render() {
-    const { job_list, lock, sno, psno } = this.state
+    const { job_list, lock, sno, psno, prod } = this.state
     let par = sno + '/' + psno
     return (
       <div>
@@ -228,6 +230,7 @@ export default class Working extends React.Component {
         <div className="column is-hidden-desktop">
           <label className="is-size-4">請將畫面轉橫</label>
         </div>
+        <span className="tag is-info is-large" style={{marginBottom: '10px'}}>{'[' + prod.bno + '][' + prod.pname + '] 分包裝報工'}</span>
         <div className="columns is-hidden-touch">
           <div className="column">
             <article className="message is-success">
