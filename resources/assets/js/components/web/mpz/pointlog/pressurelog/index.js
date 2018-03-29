@@ -81,12 +81,12 @@ export default class Pressurelog extends React.Component {
     let data = this.state.log_data
     if (data !== null) {
       this.setState({
-        mo_pa: data.mo_pa, mo_aq: data.mo_aq,
+        mo_pa: data.mo_pa || '', mo_aq: data.mo_aq || '',
         mo_rmk: data.mo_rmk, mo_dis: data.mo_dis, mo_urmk: data.mo_urmk,
         mo_ed: data.mo_ed, mo_ep: data.mo_ep, mo_devia: data.mo_devia, mo_hde: data.mo_hde,
-        af_pa: data.af_pa, af_aq: data.af_aq, af_urmk: data.af_urmk,
+        af_pa: data.af_pa || '', af_aq: data.af_aq || '', af_urmk: data.af_urmk,
         af_ed: data.af_ed, af_ep: data.af_ep, af_devia: data.af_devia, af_hde: data.af_hde,
-        ev_pa: data.ev_pa, ev_aq: data.ev_aq, ev_urmk: data.ev_urmk,
+        ev_pa: data.ev_pa || '', ev_aq: data.ev_aq || '', ev_urmk: data.ev_urmk,
         ev_ed: data.ev_ed, ev_ep: data.ev_ep, ev_devia: data.ev_devia, ev_hde: data.ev_hde,
       }, () => this.formCheck())
     } else {
@@ -150,7 +150,7 @@ export default class Pressurelog extends React.Component {
 
   emptyCheck() {
     let type = this.checkTime()
-    if (this.state[type + '_pa'] !== null) {
+    if (this.state[type + '_pa'] !== '') {
       this.setState({ isEmpty: false })
     }
   }

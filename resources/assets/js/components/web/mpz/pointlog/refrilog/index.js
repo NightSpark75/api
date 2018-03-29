@@ -32,9 +32,9 @@ export default class Refrilog extends React.Component {
     this.state = {
       alertMsg: [],
       point_no: '', mach_no: '', ch_date: '', temp_high: '', temp_low: '',
-      mo_temp: -50, mo_putt: 'N', mo_bell: 'N', mo_light: 'N', mo_rmk: '', mo_urmk: '', mo_hde: 'N',
+      mo_temp: '', mo_putt: 'N', mo_bell: 'N', mo_light: 'N', mo_rmk: '', mo_urmk: '', mo_hde: 'N',
       mo_dis: '', mo_ed: 'N', mo_et: 'N', mo_devia: 'N',
-      af_temp: -50, af_ed: 'N', af_et: 'N', af_devia: 'N', af_urmk: '', af_hde: 'N',
+      af_temp: '', af_ed: 'N', af_et: 'N', af_devia: 'N', af_urmk: '', af_hde: 'N',
       log_data: {},
       isLoading: false,
       confirmShow: false,
@@ -82,9 +82,9 @@ export default class Refrilog extends React.Component {
     let data = this.state.log_data
     if (data !== null) {
       this.setState({
-        mo_temp: data.mo_temp, mo_putt: data.mo_putt, mo_bell: data.mo_bell, mo_light: data.mo_light, mo_umrk: data.mo_urmk,
+        mo_temp: data.mo_temp || '', mo_putt: data.mo_putt, mo_bell: data.mo_bell, mo_light: data.mo_light, mo_umrk: data.mo_urmk,
         mo_rmk: data.mo_rmk, mo_dis: data.mo_dis, mo_ed: data.mo_ed, mo_et: data.mo_et, mo_devia: data.mo_devia, mo_hde: data.mo_hde,
-        af_temp: data.af_temp, af_urmk: data.af_urmk,
+        af_temp: data.af_temp || '', af_urmk: data.af_urmk,
         af_ed: data.af_ed, af_et: data.af_et, af_devia: data.af_devia, af_hde: data.af_hde
       }, () => this.formCheck())
     } else {
@@ -135,7 +135,7 @@ export default class Refrilog extends React.Component {
     let type = this.checkTime()
     let empty = false
     key.map((item, index) => {
-      if (this.state[type + item] === null) {
+      if (this.state[type + item] === '') {
         empty = true
       }
     })
@@ -260,7 +260,7 @@ export default class Refrilog extends React.Component {
   layoutChecking() {
     return (
       <tr>
-        <td>撿查</td>
+        <td>檢查</td>
         <td colSpan={3}>
           {checking.map((item, index) => (
             <Checking

@@ -29,9 +29,9 @@ export default class Wetestlog extends React.Component {
     this.state = {
       alertMsg: [],
       point_no: '', mach_no: '', ch_date: '', humi_high: '', humi_low: '',
-      mo_hum: -1, mo_max: 0, mo_min: 0, mo_rmk: '', mo_dis: '', mo_ed: 'N', mo_eh: 'N', mo_devia: 'N', mo_urmk: '', mo_hde: 'N',
-      af_hum: -1, af_max: 0, af_min: 0, af_ed: 'N', af_eh: 'N', af_devia: 'N', af_urmk: '', af_hde: 'N',
-      ev_hum: -1, ev_max: 0, ev_min: 0, ev_ed: 'N', ev_eh: 'N', ev_devia: 'N', ev_urmk: '', ev_hde: 'N',
+      mo_hum: '', mo_max: '', mo_min: '', mo_rmk: '', mo_dis: '', mo_ed: 'N', mo_eh: 'N', mo_devia: 'N', mo_urmk: '', mo_hde: 'N',
+      af_hum: '', af_max: '', af_min: '', af_ed: 'N', af_eh: 'N', af_devia: 'N', af_urmk: '', af_hde: 'N',
+      ev_hum: '', ev_max: '', ev_min: '', ev_ed: 'N', ev_eh: 'N', ev_devia: 'N', ev_urmk: '', ev_hde: 'N',
       zero: 'N',
       log_data: {},
       isLoading: false,
@@ -80,11 +80,11 @@ export default class Wetestlog extends React.Component {
     let data = this.state.log_data
     if (data !== null) {
       this.setState({
-        mo_hum: data.mo_hum, mo_max: data.mo_max, mo_min: data.mo_min, mo_urmk: data.mo_urmk, mo_hde: data.mo_hde,
+        mo_hum: data.mo_hum || '', mo_max: data.mo_max || '', mo_min: data.mo_min || '', mo_urmk: data.mo_urmk, mo_hde: data.mo_hde,
         mo_rmk: data.mo_rmk, mo_dis: data.mo_dis, mo_ed: data.mo_ed, mo_eh: data.mo_eh, mo_devia: data.mo_devia,
-        af_hum: data.af_hum, af_max: data.af_max, af_min: data.af_min, af_urmk: data.af_urmk, af_hde: data.af_hde,
+        af_hum: data.af_hum || '', af_max: data.af_max || '', af_min: data.af_min || '', af_urmk: data.af_urmk, af_hde: data.af_hde,
         af_ed: data.af_ed, af_eh: data.af_eh, af_devia: data.af_devia,
-        ev_hum: data.ev_hum, ev_max: data.ev_max, ev_min: data.ev_min, ev_urmk: data.ev_urmk, ev_hde: data.ev_hde,
+        ev_hum: data.ev_hum || '', ev_max: data.ev_max || '', ev_min: data.ev_min || '', ev_urmk: data.ev_urmk, ev_hde: data.ev_hde,
         ev_ed: data.ev_ed, ev_eh: data.ev_eh, ev_devia: data.ev_devia,
         zero: data.zero,
       }, () => this.formCheck())
@@ -136,7 +136,7 @@ export default class Wetestlog extends React.Component {
     let type = this.checkTime()
     let empty = false
     key.map((item, index) => {
-      if (this.state[type + item] === null) {
+      if (this.state[type + item] === '') {
         empty = true
       }
     })

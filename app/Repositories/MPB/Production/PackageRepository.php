@@ -372,11 +372,12 @@ class PackageRepository
                             from v_pgdialy_d d
                             where d.sno = :sno
                                 and d.psno = :psno and pgno = :pgno and d.duty = :duty
-                                and t.empno = d.empno) or exists (
+                                and t.empno = d.empno) 
+                        or exists (
                             select * 
                                 from mpb_order_g g
-                                where t.sno = g.sno and t.psno = g.psno and t.empno = g.mno
-                    ))
+                                where t.sno = g.sno and t.psno = g.psno and t.empno = g.mno)
+                    )
         ", [
             'sno' => $sno,
             'psno' => $psno,

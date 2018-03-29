@@ -29,9 +29,9 @@ export default class Templog extends React.Component {
     this.state = {
       alertMsg: [],
       point_no: '', mach_no: '', ch_date: '', temp_high: '', temp_low: '', humi_high: '', humi_low: '',
-      mo_temp: 0, mo_hum: 0, mo_rmk: '', mo_dis: '', mo_ed: 'N', mo_eth: 'N', mo_devia: 'N', mo_urmk: '', mo_hde: 'N',
-      af_temp: 0, af_hum: 0, af_ed: 'N', af_eth: 'N', af_devia: 'N', af_urmk: '', af_hde: 'N',
-      ev_temp: 0, ev_hum: 0, ev_ed: 'N', ev_eth: 'N', ev_devia: 'N', ev_urmk: '', ev_hde: 'N',
+      mo_temp: '', mo_hum: '', mo_rmk: '', mo_dis: '', mo_ed: 'N', mo_eth: 'N', mo_devia: 'N', mo_urmk: '', mo_hde: 'N',
+      af_temp: '', af_hum: '', af_ed: 'N', af_eth: 'N', af_devia: 'N', af_urmk: '', af_hde: 'N',
+      ev_temp: '', ev_hum: '', ev_ed: 'N', ev_eth: 'N', ev_devia: 'N', ev_urmk: '', ev_hde: 'N',
       log_data: {},
       isLoading: false,
       confirmShow: false,
@@ -81,11 +81,11 @@ export default class Templog extends React.Component {
     let data = this.state.log_data
     if (data !== null) {
       this.setState({
-        mo_temp: data.mo_temp, mo_hum: data.mo_hum, mo_urmk: data.mo_urmk, mo_hde: data.mo_hde,
+        mo_temp: data.mo_temp || '', mo_hum: data.mo_hum || '', mo_urmk: data.mo_urmk, mo_hde: data.mo_hde,
         mo_rmk: data.mo_rmk, mo_dis: data.mo_dis, mo_ed: data.mo_ed, mo_eth: data.mo_eth, mo_devia: data.mo_devia,
-        af_temp: data.af_temp, af_hum: data.af_hum, af_urmk: data.af_urmk, af_hde: data.af_hde,
+        af_temp: data.af_temp || '', af_hum: data.af_hum || '', af_urmk: data.af_urmk, af_hde: data.af_hde,
         af_ed: data.af_ed, af_eth: data.af_eth, af_devia: data.af_devia,
-        ev_temp: data.ev_temp, ev_hum: data.ev_hum, ev_urmk: data.ev_urmk, ev_hde: data.ev_hde,
+        ev_temp: data.ev_temp || '', ev_hum: data.ev_hum || '', ev_urmk: data.ev_urmk, ev_hde: data.ev_hde,
         ev_ed: data.ev_ed, ev_eth: data.ev_eth, ev_devia: data.ev_devia,
       }, () => this.formCheck())
     } else {
@@ -136,7 +136,7 @@ export default class Templog extends React.Component {
     let type = this.checkTime()
     let empty = false
     key.map((item, index) => {
-      if (this.state[type + item] === null) {
+      if (this.state[type + item] === '') {
         empty = true
       }
     })
