@@ -119,7 +119,7 @@ export default class Wetestlog extends React.Component {
   }
 
   inputChange(key, e) {
-    let value = Number(e.target.value) * 1
+    let value = e.target.value
     this.setState({ [key]: value }, () => { 
       this.inputCheck(key) 
       this.emptyCheck()

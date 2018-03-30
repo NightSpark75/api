@@ -152,6 +152,8 @@ export default class Pressurelog extends React.Component {
     let type = this.checkTime()
     if (this.state[type + '_pa'] !== '') {
       this.setState({ isEmpty: false })
+    } else {
+      this.setState({ isEmpty: true })
     }
   }
 
