@@ -133,13 +133,13 @@ export default class Refrilog extends React.Component {
 
   emptyCheck() {
     let type = this.checkTime()
-    let empty = false
+    let empty = 0
     key.map((item, index) => {
       if (this.state[type + item] === '') {
-        empty = true
+        empty++
       }
     })
-    this.setState({ isEmpty: empty })
+    this.setState({ isEmpty: empty !== 0 })
   }
 
   checkFillTime() {

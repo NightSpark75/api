@@ -23,6 +23,7 @@ export default class Record extends React.Component {
             <p className="control">
               <input className="input is-small" type="text" style={{width: '100px'}}
                 value={this.props.value}
+                disabled={this.props.disabled || false}
                 onChange={this.numberCheck.bind(this)}
               />
             </p>

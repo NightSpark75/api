@@ -133,7 +133,7 @@ export default class Pressurelog extends React.Component {
     } else {
       let pa = key.substr(0, 3) + 'pa'
       this.setState({
-        [pa]: value * 9.8,
+        [pa]: value !== ''? value * 9.8: '',
         [key]: value,
       }, () => { 
         this.inputCheck(pa) 
@@ -236,18 +236,29 @@ export default class Pressurelog extends React.Component {
 
   layoutInput(col) {
     let type = this.checkTime()
+    const { pa_high, pa_low, aq_high, aq_low } = this.state
     return (
       <tr>
         <td>{col}</td>
         <td colSpan={3}>
-          {key.map((item, index) => (
-            <Record
-              key={index}
-              label={keyLabel[index]}
-              value={this.state[type + item]}
-              onChange={this.inputChange.bind(this, type + item)}
-            />
-          ))}
+          {key.map((item, index) => {
+            let disabled = false
+            if (item === '_pa' && (pa_low === '-200' && pa_high === '200')) {
+              disabled = true
+            }
+            if (item === '_aq' && (aq_low === '-200' && aq_high === '200')) {
+              disabled = true
+            }
+            return(
+              <Record
+                key={index}
+                label={keyLabel[index]}
+                disabled={disabled}
+                value={this.state[type + item]}
+                onChange={this.inputChange.bind(this, type + item)}
+              />
+            )}
+          )}
         </td>
       </tr>
     )

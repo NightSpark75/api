@@ -65,6 +65,7 @@ export default class Catchlog extends React.Component {
       isDeviation: false,
       isChecked: false,
       isOverdue: false,
+      isEmpty: true,
     }
     this.sendMsg = this.props.sendMsg.bind(this)
   }
@@ -147,7 +148,25 @@ export default class Catchlog extends React.Component {
   catchChange(item, e) {
     const { isChecked } = this.state
     let val = e.target.value
-    this.setState({ [item]: val }, () => { this.checkAllCatchAmount(isChecked) })
+    if (val === '') {
+      val = ''
+    } else {
+      val = Number(val)
+    }
+    this.setState({ [item]: val }, () => { 
+      this.checkAllCatchAmount(isChecked) 
+      this.emptyCheck()
+    })
+  }
+
+  emptyCheck() {
+    let empty = 0
+    catchList.map((item, index) => {
+      if (this.state[item['key']] === '' && this.state[item['show']]) {
+        empty++
+      }
+    })
+    this.setState({ isEmpty: empty !== 0 })
   }
 
   rmkChange(e) {
@@ -262,8 +281,9 @@ export default class Catchlog extends React.Component {
       catch_num1, catch_num2, catch_num3,
       catch_num4, catch_num5, catch_num6,
     } = this.state
-    const allCount = thisTotalCount + catch_num1 + catch_num2 + catch_num3 + catch_num4 + catch_num5 + catch_num6
-    const thisGrowth = (allCount - lastTotalCount) / lastTotalCount
+    const allCount = Number(thisTotalCount) + Number(catch_num1) + Number(catch_num2) + 
+      Number(catch_num3) + Number(catch_num4) + Number(catch_num5) + Number(catch_num6)
+    const thisGrowth = (Number(allCount) - Number(lastTotalCount)) / Number(lastTotalCount)
     let r = {}
     let n = 0
 
@@ -367,16 +387,17 @@ export default class Catchlog extends React.Component {
     const { pointInfo } = this.props
     const {
       alertMsg, getInfo,
-      init, isLoading, isChecked, isDeviation, isOverdue,
+      init, isLoading, isChecked, isDeviation, isOverdue, isEmpty,
       thisTotalCount, lastTotalCount, lastGrowth,
       catch_num1, catch_num2, catch_num3,
       catch_num4, catch_num5, catch_num6,
     } = this.state
     const isComplete = !(this.state.log_data === null)
-    const allCount = thisTotalCount + catch_num1 + catch_num2 + catch_num3 + catch_num4 + catch_num5 + catch_num6
+    const allCount = Number(thisTotalCount) + Number(catch_num1) + Number(catch_num2) + 
+      Number(catch_num3) + Number(catch_num4) + Number(catch_num5) + Number(catch_num6)
     let thisGrowth = 0
     if (lastTotalCount > 0) {
-      thisGrowth = (allCount - lastTotalCount) / lastTotalCount
+      thisGrowth = (Number(allCount) - Number(lastTotalCount)) / Number(lastTotalCount)
     }
     let today = new Date()
     let date = today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate() + ' '
@@ -567,6 +588,7 @@ export default class Catchlog extends React.Component {
           isDeviation={isDeviation}
           isChecked={isChecked}
           isOverdue={isOverdue}
+          isEmpty={isEmpty}
           alert={alertMsg}
           onSave={this.openConfirm.bind(this)}
           onCancel={this.onCancel.bind(this)}
