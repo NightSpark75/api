@@ -3,7 +3,7 @@ let preValue
 export default class Record extends React.Component {
   numberCheck(e) {
     let value = e.target.value
-    if (isNaN(value)) {
+    if (isNaN(value) && value !== '-') {
       alert('請輸入數字')
       e.target.value = this.props.value
       this.props.onChange(e)
