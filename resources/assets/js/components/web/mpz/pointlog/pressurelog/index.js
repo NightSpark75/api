@@ -136,7 +136,7 @@ export default class Pressurelog extends React.Component {
         [pa]: value !== ''? value * 9.8: '',
         [key]: value,
       }, () => { 
-        this.inputCheck(pa) 
+        this.inputCheck(key) 
         this.emptyCheck()
       })
     }
@@ -187,6 +187,17 @@ export default class Pressurelog extends React.Component {
         this.pushAlert('壓差(Pa)超過下限，請註記異常')
       } else {
         this.removeAlert('壓差(Pa)超過下限，請註記異常')
+      }
+    } else {
+      if (Number(aq_high) <= value) {
+        this.pushAlert('壓差(mmAq)超過上限，請註記異常')
+      } else {
+        this.removeAlert('壓差(mmAq)超過上限，請註記異常')
+      }
+      if (Number(aq_low) >= value) {
+        this.pushAlert('壓差(mmAq)超過下限，請註記異常')
+      } else {
+        this.removeAlert('壓差(mmAq)超過下限，請註記異常')
       }
     }
   }
