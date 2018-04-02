@@ -69,7 +69,7 @@ class ShippingController extends Controller
             $spno = request()->input('spno');
             $date = request()->input('date');
             $pieces = request()->input('pieces');
-            $this->shippingService->savePieces($spno, $date, $user, $pieces);
+            $this->shippingService->savePieces($spno, $date, $id, $pieces);
             return response()->json(['result' => true], 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);

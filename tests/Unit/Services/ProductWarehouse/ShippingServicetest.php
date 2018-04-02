@@ -70,15 +70,14 @@ class ShippingServiceTest extends TestCase
     {
         // arrange
         $expected = ShippingList::select('tmtrdj', 'tmaddj', 'tmy59spno', 'tmcars', 'cars_na', 'tman8', 'tmalph', 'tm1in1', 'dltm_na', 'tmalph1')->first();
-        $date = $expected->tmaddj;
         $spno = $expected->tmy59spno;
 
         // act
         $this->mock->shouldReceive('getShippingInfo')
             ->once()
-            ->with($spno, $date)
+            ->with($spno)
             ->andReturn($expected);
-        $actual = $this->target->getShippingInfo($spno, $date);
+        $actual = $this->target->getShippingInfo($spno);
 
         // assert
         $this->assertEquals($expected, $actual);
@@ -90,20 +89,23 @@ class ShippingServiceTest extends TestCase
     public function test_getShippingInfo_exception()
     {
         // arrange
+        $data = ShippingList::
+            where('tmy59spno', 'test')
+            ->where('tmaddj', null)
+            ->select('tmtrdj', 'tmaddj', 'tmy59spno', 'tmcars', 'cars_na', 'tman8', 'tmalph', 'tm1in1', 'dltm_na', 'tmalph1')
+            ->first();
         $spno = '1234';
-        $date = '20180321';
-        $expected = "查貨號 = $spno, 日期 = $date, 查詢不到資料";
+        $expected = "查貨號 = $spno, 查詢不到資料";
 
         // act
         $this->mock->shouldReceive('getShippingInfo')
             ->once()
-            ->with($spno, $date)
-            ->andReturn($expected);
-
+            ->with($spno)
+            ->andReturn($data);
         try {
-            $actual = $this->target->getShippingInfo($spno, $date);
+            $actual = $this->target->getShippingInfo($spno);
         } catch (Exception $e) {
-            $exception = $e->getMessage();
+            $actual = $e->getMessage();
         }
 
         // assert
@@ -117,20 +119,65 @@ class ShippingServiceTest extends TestCase
     {
         //arrange
         $data = ShippingList::
+            //where('tmaddj', null)
             select('tmtrdj', 'tmaddj', 'tmy59spno', 'tmcars', 'cars_na', 'tman8', 'tmalph', 'tm1in1', 'dltm_na', 'tmalph1')
             ->first();
         $spno = $data->tmy59spno;
-        $date = $data->tmaddj;
+        $date = date_format(date_create($data->tmtrdj), 'Y/m/d') . ' 00:00:00';
         $user = '50001';
         $pieces = '20';
 
         //act
-        $this->mock->shouldReceive('getShippingInfo')
+        $this->mock->shouldReceive('checkShippingInfo')
             ->once()
-            ->with($spno, $date . ' 00:00:00')
-            ->andReturn($data);
+            ->with($spno, $date)
+            ->andReturn(1);
+
+        $this->mock->shouldReceive('savePieces')
+            ->once()
+            ->with($spno, $date, $user, $pieces);
+
+        $actual = $this->target->savePieces($spno, $date, $user, $pieces);
 
         //assert
+        $this->assertTrue($actual);
+    }
 
+    /**
+     * test savePirces exception
+     */
+    public function test_savePieces_exception()
+    {
+        //arrange
+        $data = ShippingList::
+            where('tmy59spno', 'test')
+            ->where('tmaddj', null)
+            ->select('tmtrdj', 'tmaddj', 'tmy59spno', 'tmcars', 'cars_na', 'tman8', 'tmalph', 'tm1in1', 'dltm_na', 'tmalph1')
+            ->first();
+
+        $spno = 'test';
+        $date = '1911-01-01 00:00:00';
+        $user = '50001';
+        $pieces = '20';
+        $expected = "spno='$spno', data not found!";
+
+        //act
+        $this->mock->shouldReceive('checkShippingInfo')
+            ->once()
+            ->with($spno, $date)
+            ->andReturn(0);
+        
+        $this->mock->shouldReceive('savePieces')
+            ->times(0)
+            ->with($spno, $date, $user, $pieces);
+
+        try {
+            $actual = $this->target->savePieces($spno, $date, $user, $pieces);
+        } catch (Exception $e) {
+            $actual = $e->getMessage();
+        }
+
+        //assert
+        $this->assertEquals($expected, $actual);
     }
 }

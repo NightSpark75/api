@@ -74,4 +74,57 @@ class ShippingListRepositoryTest extends TestCase
         // assert
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * test savePieces
+     */
+    public function test_savePieces()
+    {
+        //arrange
+        $spno = 'test';
+        $date = '';
+        $user = '';
+        $pieces = '';
+
+        //act
+        $actual = $this->target->savePieces($spno, $date, $user, $pieces);
+
+        //assert
+        $this->assertTrue($actual);
+    }
+
+    /**
+     * test checkShippingInfo success
+     */
+    public function test_checkShippingInfo_success()
+    {
+        //arrange
+        $data = ShippingList::first();
+        $spno = $data->tmy59spno;
+        $tmtrdj = $data->tmtrdj;
+        $expected = 1;
+
+        //act
+        $actual = $this->target->checkShippingInfo($spno, $tmtrdj);
+
+        //assert
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * test checkShippingInfo fail
+     */
+    public function test_checkShippingInfo_fail()
+    {
+        //arrange
+        $spno = '';
+        $tmtrdj = '';
+        $expected = 0;
+
+        //act
+        $actual = $this->target->checkShippingInfo($spno, $tmtrdj);
+
+        //assert
+        $this->assertEquals($expected, $actual);
+    }
 }

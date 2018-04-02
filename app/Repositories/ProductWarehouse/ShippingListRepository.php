@@ -47,6 +47,20 @@ class ShippingListRepository extends Repository
     }
 
     /**
+     * check shipping info by spno and tmtrdj
+     */
+
+    public function checkShippingInfo($spno, $tmtrdj)
+    {
+        $info = $this->model
+            ->where('tmy59spno', $spno)
+            ->where('tmtrdj', $tmtrdj)
+            //->where('tmaddj', null)
+            ->get();
+        return count($info) > 0;
+    }
+
+    /**
      * call xxx procedure
      * 
      * @param string $spno
@@ -57,6 +71,7 @@ class ShippingListRepository extends Repository
      */
     public function savePieces($spno, $date, $user, $pieces)
     {
+        /*
         $procedure = 'proc_upd';
         $parameters = [
             ':spno' => $spno,
@@ -65,6 +80,7 @@ class ShippingListRepository extends Repository
             ':pieces' => $pieces,
         ];
         $this->procedure($procedure, $parameters);
+        */
         return true;
     }
 }

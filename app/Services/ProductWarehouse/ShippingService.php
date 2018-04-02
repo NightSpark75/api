@@ -41,14 +41,13 @@ class ShippingService {
      * @param string $spno
      * @return mixed
      */
-    public function getShippingInfo($spno, $date)
+    public function getShippingInfo($spno)
     {
-        $date = $date? $date: date('Ymd', strtotime("20180321")).' 00:00:00';
-        $list = $this->shippingListRepository->getShippingInfo($spno, $date);
-        if (!isset($list)) {
-            throw new Exception("查貨號 = $spno, 日期 = $date, 查詢不到資料");
+        $list = $this->shippingListRepository->getShippingInfo($spno);
+        if (isset($list)) {
+            return $list;
         }
-        return $list;
+        throw new Exception("查貨號 = $spno, 查詢不到資料");
     }
 
     /**
@@ -60,15 +59,15 @@ class ShippingService {
      * @param string $pieces
      * @return mixed
      */
-    public function savePieces($spno, $user, $pieces)
+    public function savePieces($spno, $date, $user, $pieces)
     {
-        $shipping = $this->shippingListRepository->getShippingInfo($spno);
+        $shipping = $this->shippingListRepository->checkShippingInfo($spno, $date);
         
-        if ($shipping) {
-            $tmtrdj = $shipping->tmtrdj;
-            $this->shippingListRepository->savePieces($spno, $tmtrdj, $user, $pieces);
+        if ($shipping === 1) {
+            //$tmtrdj = date_format(date_create($shipping->tmtrdj), 'Y/m/d') . ' 00:00:00';
+            $this->shippingListRepository->savePieces($spno, $date, $user, $pieces);
             return true;
         }
-        throw new Exception("spno='$spno' and tmtrdj='$tmtrdj', data not found!");
+        throw new Exception("spno='$spno', data not found!");
     }
 }

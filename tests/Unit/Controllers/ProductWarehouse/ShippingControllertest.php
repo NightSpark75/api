@@ -81,4 +81,75 @@ class ShippingControllersTest extends TestCase
         // assert
         $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
     }
+
+    /**
+     * test getShippingInfo exception
+     */
+    public function test_getShippingInfo_exception()
+    {
+        //arrange
+        $expected = response()->json([], 400);
+        $date = null;
+        $spno = 'test';
+
+        //act
+        $this->mock->shouldReceive('getShippingInfo')
+            ->once()
+            ->with($spno, $date)
+            ->andThrow(new Exception());
+
+        $actual = $this->target->getShippingInfo($spno, $date);
+        //assert
+        $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
+    }
+
+    /**
+     * test savePieces
+     */
+    public function test_savePieces()
+    {   
+        //arrange
+        $user = User::first();
+        $this->session(['user' => $user]);
+        $spno = '';
+        $date = '';
+        $pieces = '';
+        $expected = response()->json(['result' => true], 200);
+
+        //act
+        $this->mock->shouldReceive('savePieces')
+            ->once()
+            ->with($spno, $date, $user->id, $pieces);
+        $actual = $this->target->savePieces();
+        //assert
+        $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
+    }
+
+    /**
+     * test savePieces exception
+     */
+    public function test_savePieces_exception()
+    {
+        //arrange
+        $user = User::first();
+        $this->session(['user' => $user]);
+        $spno = '';
+        $date = '';
+        $pieces = '';
+        $expected = response()->json([], 400);
+
+        //act
+        $this->mock->shouldReceive('savePieces')
+            ->once()
+            ->with($spno, $date, $user->id, $pieces)
+            ->andThrow(New Exception('test'));
+        try {
+            $actual = $this->target->savePieces();
+        } catch (Exception $e) {
+            $actual = $this->target->savePieces();
+        }
+
+        //assert
+        $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
+    }
 }
