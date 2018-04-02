@@ -111,4 +111,67 @@ class PickingController extends Controller
             return response()->json($this->getException($e), 400);
         }
     }
+
+    /**
+     * pause picking
+     *
+     * @throws Exception
+     * @return mixed
+     */
+    public function pausePicking()
+    {
+        try {
+            $user = session('user');
+            $id = $user->id;
+            $stop = request()->input('stop');
+            $date = request()->input('date');
+            $result = $this->pickingService->pausePicking($stop, $date, $id);
+            return response()->json($result, 200);
+        } catch (Exception $e) {
+            return response()->json($this->getException($e), 400);
+        }
+    }
+
+    /**
+     * restart picking
+     *
+     * @throws Exception
+     * @return mixed
+     */
+    public function restartPicking()
+    {
+        try {
+            $user = session('user');
+            $id = $user->id;
+            $stop = request()->input('stop');
+            $date = request()->input('date');
+            $result = $this->pickingService->restartPicking($stop, $date, $id);
+            return response()->json($result, 200);
+        } catch (Exception $e) {
+            return response()->json($this->getException($e), 400);
+        }
+    }
+
+    /**
+     * pickup
+     *
+     * @throws Exception
+     * @return mixed
+     */
+    public function pickup()
+    {
+        try {
+            $user = session('user');
+            $id = $user->id;
+            $stop = request()->input('stop');
+            $date = request()->input('date');
+            $rmk = request()->input('rmk');
+            $litm = request()->input('litm');
+            $lotn = request()->input('lotn');
+            $result = $this->pickingService->pickup($stop, $date, $rmk, $litm, $lotn, $id);
+            return response()->json($result, 200);
+        } catch (Exception $e) {
+            return response()->json($this->getException($e), 400);
+        }
+    }
 }

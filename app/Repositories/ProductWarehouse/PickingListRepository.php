@@ -103,4 +103,28 @@ class PickingListRepository extends Repository
         $this->procedure($procedure, $parameters);
         return true;
     }
+
+    /**
+     * call procedure
+     * 
+     * @param string $stop
+     * @param string $date
+     * @param string $user
+     */
+    public function pausePicking($stop, $date, $user)
+    {
+        return true;
+    }
+
+    /**
+     * call procedure
+     * 
+     * @param string $stop
+     * @param string $date
+     * @param string $user
+     */
+    public function restartPicking($stop, $date, $user)
+    {
+        return true;
+    }
 }

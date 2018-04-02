@@ -48,6 +48,7 @@ class PickingService {
      * get today picking items
      *
      * @param string $stop
+     * @param string $date
      * @return mixed
      */
     public function getPickingItems($stop, $date = null)
@@ -60,6 +61,7 @@ class PickingService {
     /**
      * get today picking list
      *
+     * @param string $date
      * @return mixed
      */
     public function getTodayPickingList($date = null)
@@ -74,6 +76,8 @@ class PickingService {
      *
      * @param string $stop
      * @param string $empno
+     * @param string $date
+     * @return mixed
      */
     public function startPicking($stop, $user, $date = null)
     {
@@ -93,6 +97,8 @@ class PickingService {
      *
      * @param string $stop
      * @param string $empno
+     * @param string $date
+     * @return mixed
      */
     public function endPicking($stop, $user, $date = null)
     {
@@ -104,5 +110,47 @@ class PickingService {
             return true;
         }
         throw new Exception("ststop='$stop' and staddj='$date', data not found!");
+    }
+
+    /**
+     * pause picking
+     * 
+     * @param string $stop
+     * @param string $date
+     * @param string $user
+     * @return mixed
+     */
+    public function pausePicking($stop, $date, $user)
+    {   
+
+    }
+
+    /**
+     * restart picking
+     * 
+     * @param string $stop
+     * @param string $date
+     * @param string $user
+     * @return mixed
+     */
+    public function restartPicking($stop, $date, $user)
+    {
+
+    }
+
+    /**
+     * pickup
+     * 
+     * @param string $stop
+     * @param string $date
+     * @param string $rmk
+     * @param string $litm
+     * @param string $lotn
+     * @param string $user
+     * @return mixed
+     */
+    public function pickup($stop, $date, $rmk, $litm, $lotn, $user)
+    {
+
     }
 }

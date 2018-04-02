@@ -50,4 +50,20 @@ class PickingItemsRepository extends Repository
             ->get();
         return $list;
     }
+
+    /**
+     * pickup items
+     * 
+     * @param string $stop
+     * @param string $date
+     * @param string $rmk
+     * @param string $litm
+     * @param string $lotn
+     * @param string $user
+     * @return void
+     */
+    public function pickup($stop, $date, $rmk, $litm, $lotn, $user)
+    {
+        return true;
+    }
 }

@@ -228,4 +228,52 @@ class PickingServiceTest extends TestCase
         // assert
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * test pausePicking
+     */
+    public function pausePicking()
+    {
+        
+    }
+
+    /**
+     * test pausePicking exception
+     */
+    public function pausePicking_exception()
+    {
+
+    }
+
+    /**
+     * test restartPicking
+     */
+    public function restartPicking()
+    {
+
+    }
+
+    /**
+     * test restartPicking exception
+     */
+    public function restartPicking_exception()
+    {
+
+    }
+
+    /**
+     * test pickup
+     */
+    public function pickup()
+    {
+
+    }
+
+    /**
+     * test pickup exception
+     */
+    public function pickup_exception()
+    {
+
+    }
 }

@@ -67,4 +67,24 @@ class PickingItemsRepositoryTest extends TestCase
         // assert
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * test pickup
+     */
+    public function test_pickup()
+    {
+        // arrange
+        $stop = '';
+        $date = '';
+        $user = '';
+        $rmk = '';
+        $litm = '';
+        $lotn = '';
+        
+        // act
+        $actual = $this->target->pickup($stop, $date, $rmk, $litm, $lotn, $user);
+        
+        // assert
+        $this->assertTrue($actual);
+    }
 }

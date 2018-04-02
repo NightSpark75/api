@@ -130,4 +130,65 @@ class PickingListRepositoryTest extends TestCase
         // assert
         $this->assertTrue($actual);
     }
+
+    /**
+     * test pausePicking
+     */
+    public function test_pausePicking()
+    {
+        // arrange
+        $stop = 'A1';
+        $date = '13-MAR-18';
+        $user = '106013';
+
+        // act
+        $actual = $this->target->pausePicking($stop, $date, $user);
+
+        // assert
+        $this->assertTrue($actual);
+    }
+
+    /**
+     * test restartPicking
+     */
+    public function test_restartPicking()
+    {
+        // arrange
+        $stop = 'A1';
+        $date = '13-MAR-18';
+        $user = '106013';
+
+        // act
+        $actual = $this->target->restartPicking($stop, $date, $user);
+
+        // assert
+        $this->assertTrue($actual);
+    }
+
+    /**
+     * test checkPauseState success
+     */
+    public function checkPauseState_success()
+    {
+        // arrange
+        $stop = '';
+        $date = '';
+
+        // act
+        
+
+
+        //assert
+
+    }
+
+    /**
+     * test checkPauseState fail
+     */
+    public function checkPauseState()
+    {
+        // arrange
+        $stop = '';
+        $date = '';
+    }
 }

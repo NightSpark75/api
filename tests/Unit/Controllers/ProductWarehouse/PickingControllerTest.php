@@ -82,7 +82,7 @@ class PickingControllersTest extends TestCase
     }
 
     /**
-     * tes getPickingList() return exception 
+     * test getPickingList() return exception 
      */
     public function test_getPickingList_exception()
     {
@@ -123,7 +123,7 @@ class PickingControllersTest extends TestCase
     }
 
     /**
-     * tes getPickingList() return exception 
+     * test getPickingList() return exception 
      */
     public function test_getPickingItems_exception()
     {
@@ -160,7 +160,7 @@ class PickingControllersTest extends TestCase
         $this->mock->shouldReceive('startPicking')
             ->once()
             ->with($stop, $id, $date)
-            ->andReturn($expected);
+            ->andReturn([]);
         $actual = $this->target->startPicking();
         // assert
         $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
@@ -168,7 +168,7 @@ class PickingControllersTest extends TestCase
     }
 
     /**
-     * tes startPicking() return exception 
+     * test startPicking() return exception 
      */
     public function test_startPicking_exception()
     {
@@ -209,7 +209,7 @@ class PickingControllersTest extends TestCase
         $this->mock->shouldReceive('endPicking')
             ->once()
             ->with($stop, $id, $date)
-            ->andReturn($expected);
+            ->andReturn([]);
         $actual = $this->target->endPicking();
         // assert
         $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
@@ -217,7 +217,7 @@ class PickingControllersTest extends TestCase
     }
 
     /**
-     * tes endPicking() return exception 
+     * test endPicking() return exception 
      */
     public function test_endPicking_exception()
     {
@@ -239,5 +239,155 @@ class PickingControllersTest extends TestCase
         // assert
         $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
         $this->flushSession();
+    }
+
+    /**
+     * test pausePicking
+     */
+    public function test_pausePicking()
+    {
+        //arrange
+        $user = User::first();
+        $this->session(['user' => $user]);
+        $stop = '';
+        $date = '';
+        $id = $user->id;
+        $expected = response()->json([], 200);
+
+        //act
+        $this->mock->shouldReceive('pausePicking')
+            ->once()
+            ->with($stop, $date, $id)
+            ->andReturn([]);
+        $actual = $this->target->pausePicking();
+
+        //assert
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * test pausePicking exception
+     */
+    public function test_pausePicking_exception()
+    {
+        //arrange
+        $user = User::first();
+        $this->session(['user' => $user]);
+        $stop = '';
+        $date = '';
+        $id = $user->id;
+        $expected = response()->json([], 400);
+
+        //act
+        $this->mock->shouldReceive('pausePicking')
+            ->once()
+            ->with($stop, $date, $id)
+            ->andThrow(new Exception());
+        $actual = $this->target->pausePicking();
+        
+        //assert
+        $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
+    }
+
+    /**
+     * test restartPicking 
+     */
+    public function test_restartPicking()
+    {
+        //arrange
+        $user = User::first();
+        $this->session(['user' => $user]);
+        $stop = '';
+        $date = '';
+        $id = $user->id;
+        $expected = response()->json([], 200);
+
+        //act
+        $this->mock->shouldReceive('restartPicking')
+            ->once()
+            ->with($stop, $date, $id)
+            ->andReturn([]);
+        $actual = $this->target->restartPicking();
+
+        //assert
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * test restartPicking exception
+     */
+    public function test_restartPicking_exception()
+    {
+        //arrange
+        $user = User::first();
+        $this->session(['user' => $user]);
+        $stop = '';
+        $date = '';
+        $id = $user->id;
+        $expected = response()->json([], 400);
+
+        //act
+        $this->mock->shouldReceive('restartPicking')
+            ->once()
+            ->with($stop, $date, $id)
+            ->andThrow(new Exception());
+        $actual = $this->target->restartPicking();
+        
+        //assert
+        $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
+    }
+
+    /**
+     * test pickup
+     */
+    public function test_pickup()
+    {
+        //arrange
+        $user = User::first();
+        $this->session(['user' => $user]);
+        $stop = '';
+        $date = '';
+        $rmk = '';
+        $litm = '';
+        $lotn = '';
+        $id = $user->id;
+        $expected = response()->json([], 200);
+
+        //act
+        $this->mock->shouldReceive('pickup')
+            ->once()
+            ->with($stop, $rmk, $litm, $lotn, $date, $id)
+            ->andReturn([]);
+        $actual = $this->target->pickup();
+
+        //assert
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * test pickup exception
+     */
+    public function test_pickup_exception()
+    {
+        //arrange
+        $user = User::first();
+        $this->session(['user' => $user]);
+        $stop = '';
+        $date = '';
+        $rmk = '';
+        $litm = '';
+        $lotn = '';
+        $id = $user->id;
+        $expected = response()->json([], 400);
+
+        //act
+        $this->mock->shouldReceive('pickup')
+            ->once()
+            ->with($stop, $rmk, $litm, $lotn, $date, $id)
+            ->andThrow(new Exception());
+        $actual = $this->target->pickup();
+        
+        //assert
+        $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
     }
 }
