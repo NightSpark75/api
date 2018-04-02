@@ -60,16 +60,15 @@ class ShippingService {
      * @param string $pieces
      * @return mixed
      */
-    public function savePieces($spno, $date, $user, $pieces)
+    public function savePieces($spno, $user, $pieces)
     {
-        $date = $date? $date: date('Y-m-d') . ' 00:00:00';
-        $shipping = $this->shippingListRepository->getShippingInfo($spno, $date);
+        $shipping = $this->shippingListRepository->getShippingInfo($spno);
         
         if ($shipping) {
-            $addj = date_format(date_create($date), 'Y/m/d');
-            $this->shippingListRepository->savePieces($spno, $addj, $user, $pieces);
+            $tmtrdj = $shipping->tmtrdj;
+            $this->shippingListRepository->savePieces($spno, $tmtrdj, $user, $pieces);
             return true;
         }
-        throw new Exception("spno='$spno' and addj='$date', data not found!");
+        throw new Exception("spno='$spno' and tmtrdj='$tmtrdj', data not found!");
     }
 }

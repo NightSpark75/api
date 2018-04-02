@@ -66,7 +66,7 @@ class PickingListRepositoryTest extends TestCase
             PickingList::where('staddj', $date)
                 //->where('stky6', null)
                 ->select('sticu', 'ststop', 'staddj', 'stky2')
-                ->orderBy('ststop')
+                ->orderBy('stky1')
                 ->get();
         
         // act

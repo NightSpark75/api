@@ -183,7 +183,7 @@ class CatchlogRepository
                     DB::table('mpz_catchlog')->insert($params);
                     DB::commit();
                 }
-                if ($params['deviation'] === 'Y' || $params['hde']) {
+                if ($params['deviation'] === 'Y' || $params['hde'] === 'Y') {
                     $this->mailhandler($params);
                 }
             });

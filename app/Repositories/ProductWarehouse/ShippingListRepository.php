@@ -36,11 +36,11 @@ class ShippingListRepository extends Repository
      * @param string $date => 'Y-m-d 00:00:00'
      * @return mixed
      */
-    public function getShippingInfo($spno, $date)
+    public function getShippingInfo($spno)
     {
         $info = $this->model
             ->where('tmy59spno', $spno)
-            ->where('tmtrdj', $date)
+            ->where('tmaddj', null)
             ->select('tmtrdj', 'tmaddj', 'tmy59spno', 'tmcars', 'cars_na', 'tman8', 'tmalph', 'tm1in1', 'dltm_na', 'tmalph1')
             ->first();
         return $info;
@@ -57,7 +57,6 @@ class ShippingListRepository extends Repository
      */
     public function savePieces($spno, $date, $user, $pieces)
     {
-        return true;
         $procedure = 'proc_upd';
         $parameters = [
             ':spno' => $spno,

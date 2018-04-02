@@ -67,7 +67,7 @@ class ShippingControllersTest extends TestCase
     public function test_getShippingInfo()
     {
         // arrange
-        $expected = [];
+        $expected = response()->json([], 200);
         $date = null;
         $spno = '123456';
 

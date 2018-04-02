@@ -22,7 +22,6 @@ use App\Services\ProductWarehouse\ShippingService;
 use App\Repositories\ProductWarehouse\ShippingListRepository;
 use App\Repositories\ProductWarehouse\ShippingItemsRepository;
 use App\Models\ProductWarehouse\ShippingList;
-use App\Models\ProductWarehouse\ShippingItems;
 
 /**
  * Class ShippingServiceTest
@@ -70,16 +69,16 @@ class ShippingServiceTest extends TestCase
     public function test_getShippingInfo()
     {
         // arrange
-        $expected = ShippingList::where('stky6', null)->first();
-        $date = $expected->staddj;
-        $spno = '';
+        $expected = ShippingList::select('tmtrdj', 'tmaddj', 'tmy59spno', 'tmcars', 'cars_na', 'tman8', 'tmalph', 'tm1in1', 'dltm_na', 'tmalph1')->first();
+        $date = $expected->tmaddj;
+        $spno = $expected->tmy59spno;
 
         // act
         $this->mock->shouldReceive('getShippingInfo')
             ->once()
             ->with($spno, $date)
             ->andReturn($expected);
-        $actual = $this->target->getTodayShippingList($spno, $date);
+        $actual = $this->target->getShippingInfo($spno, $date);
 
         // assert
         $this->assertEquals($expected, $actual);
@@ -91,15 +90,15 @@ class ShippingServiceTest extends TestCase
     public function test_getShippingInfo_exception()
     {
         // arrange
-        $stop = '1234';
-        $$date = '20180321';
+        $spno = '1234';
+        $date = '20180321';
         $expected = "查貨號 = $spno, 日期 = $date, 查詢不到資料";
 
         // act
         $this->mock->shouldReceive('getShippingInfo')
             ->once()
-            ->with($stop, $date)
-            ->andReturn([]);
+            ->with($spno, $date)
+            ->andReturn($expected);
 
         try {
             $actual = $this->target->getShippingInfo($spno, $date);
@@ -108,6 +107,30 @@ class ShippingServiceTest extends TestCase
         }
 
         // assert
-        $this->assertEquals($expected, $exception);
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * test savePieces
+     */
+    public function test_savePieces()
+    {
+        //arrange
+        $data = ShippingList::
+            select('tmtrdj', 'tmaddj', 'tmy59spno', 'tmcars', 'cars_na', 'tman8', 'tmalph', 'tm1in1', 'dltm_na', 'tmalph1')
+            ->first();
+        $spno = $data->tmy59spno;
+        $date = $data->tmaddj;
+        $user = '50001';
+        $pieces = '20';
+
+        //act
+        $this->mock->shouldReceive('getShippingInfo')
+            ->once()
+            ->with($spno, $date . ' 00:00:00')
+            ->andReturn($data);
+
+        //assert
+
     }
 }
