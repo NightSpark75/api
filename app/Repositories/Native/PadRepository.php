@@ -137,16 +137,25 @@ class PadRepository
                     )
                     where rownum = 1     
             ");
-            $version =  (int)substr($version_info->version_number, 3, 3) . '.' .
+            if (isset($version_info)) {
+                $version =  (int)substr($version_info->version_number, 3, 3) . '.' .
                         (int)substr($version_info->version_number, 6, 2) . '.' .
                         (int)substr($version_info->version_number, 8, 2);
-            $app = substr($version_info->version_number, 0, 3);
+                $app = substr($version_info->version_number, 0, 3);
+                return [
+                    'result' => true,
+                    'app' => $app,
+                    'version' => $version,
+                    'version_number' => $version_info->version_number,
+                    'size' => $version_info->file_size
+                ];
+            }
             return [
                 'result' => true,
                 'app' => $app,
-                'version' => $version,
-                'version_number' => $version_info->version_number,
-                'size' => $version_info->file_size
+                'version' => '0.0.0',
+                'version_number' => 0,
+                'size' => 0,
             ];
         } catch (Exception $e) {
             return $this->exception($e);
