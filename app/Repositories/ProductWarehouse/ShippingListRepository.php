@@ -40,7 +40,7 @@ class ShippingListRepository extends Repository
     {
         $info = $this->model
             ->where('tmy59spno', $spno)
-            ->where('tmaddj', null)
+            //->where('tmaddj', null)
             ->select('tmtrdj', 'tmaddj', 'tmy59spno', 'tmcars', 'cars_na', 'tman8', 'tmalph', 'tm1in1', 'dltm_na', 'tmalph1')
             ->first();
         return $info;
@@ -61,7 +61,7 @@ class ShippingListRepository extends Repository
     }
 
     /**
-     * call xxx procedure
+     * call proc_upd_f594901_1in1 procedure
      * 
      * @param string $spno
      * @param string $date
@@ -71,16 +71,14 @@ class ShippingListRepository extends Repository
      */
     public function savePieces($spno, $date, $user, $pieces)
     {
-        /*
-        $procedure = 'proc_upd';
+        
+        $procedure = 'proc_upd_f594901_1in1';
         $parameters = [
             ':spno' => $spno,
             ':date' => $date,
-            ':user' => $user,
             ':pieces' => $pieces,
         ];
         $this->procedure($procedure, $parameters);
-        */
         return true;
     }
 }
