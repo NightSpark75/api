@@ -91,7 +91,7 @@ class ShippingServiceTest extends TestCase
         // arrange
         $data = ShippingList::
             where('tmy59spno', 'test')
-            ->where('tmaddj', null)
+            //->where('tmaddj', null)
             ->select('tmtrdj', 'tmaddj', 'tmy59spno', 'tmcars', 'cars_na', 'tman8', 'tmalph', 'tm1in1', 'dltm_na', 'tmalph1')
             ->first();
         $spno = '1234';
@@ -123,19 +123,19 @@ class ShippingServiceTest extends TestCase
             select('tmtrdj', 'tmaddj', 'tmy59spno', 'tmcars', 'cars_na', 'tman8', 'tmalph', 'tm1in1', 'dltm_na', 'tmalph1')
             ->first();
         $spno = $data->tmy59spno;
-        $date = date_format(date_create($data->tmtrdj), 'Y/m/d') . ' 00:00:00';
+        $date = $data->tmtrdj;
         $user = '50001';
         $pieces = '20';
 
         //act
         $this->mock->shouldReceive('checkShippingInfo')
             ->once()
-            ->with($spno, $date)
+            ->with($spno, date_format(date_create($date), 'Y/m/d'))
             ->andReturn(1);
 
         $this->mock->shouldReceive('savePieces')
             ->once()
-            ->with($spno, $date, $user, $pieces);
+            ->with($spno, date_format(date_create($date), 'Y/m/d'), $user, $pieces);
 
         $actual = $this->target->savePieces($spno, $date, $user, $pieces);
 
@@ -151,7 +151,7 @@ class ShippingServiceTest extends TestCase
         //arrange
         $data = ShippingList::
             where('tmy59spno', 'test')
-            ->where('tmaddj', null)
+            //->where('tmaddj', null)
             ->select('tmtrdj', 'tmaddj', 'tmy59spno', 'tmcars', 'cars_na', 'tman8', 'tmalph', 'tm1in1', 'dltm_na', 'tmalph1')
             ->first();
 
@@ -164,12 +164,12 @@ class ShippingServiceTest extends TestCase
         //act
         $this->mock->shouldReceive('checkShippingInfo')
             ->once()
-            ->with($spno, $date)
-            ->andReturn(0);
+            ->with($spno, date_format(date_create($date), 'Y/m/d'))
+            ->andReturn(false);
         
         $this->mock->shouldReceive('savePieces')
             ->times(0)
-            ->with($spno, $date, $user, $pieces);
+            ->with($spno, date_format(date_create($date), 'Y/m/d'), $user, $pieces);
 
         try {
             $actual = $this->target->savePieces($spno, $date, $user, $pieces);

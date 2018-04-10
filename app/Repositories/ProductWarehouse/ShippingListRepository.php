@@ -40,7 +40,7 @@ class ShippingListRepository extends Repository
     {
         $info = $this->model
             ->where('tmy59spno', $spno)
-            //->where('tmaddj', null)
+            ->where('tmaddj', '1899-12-31 00:00:00')
             ->select('tmtrdj', 'tmaddj', 'tmy59spno', 'tmcars', 'cars_na', 'tman8', 'tmalph', 'tm1in1', 'dltm_na', 'tmalph1')
             ->first();
         return $info;

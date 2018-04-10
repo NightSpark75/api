@@ -60,16 +60,16 @@ class ShippingListRepositoryTest extends TestCase
     public function test_getShippingList()
     {
         // arrange
-        $first = ShippingList::first();
+        $first = ShippingList::where('tmaddj', '1899-12-31 00:00:00')->first();
         $spno = $first->tmy59spno;
-        $date = $first->staddj;
+        $date = $first->tmtrdj;
         $expected = 
             ShippingList::where('tmy59spno', $spno)
                 ->where('tmtrdj', $date)
                 ->select('tmtrdj', 'tmaddj', 'tmy59spno', 'tmcars', 'cars_na', 'tman8', 'tmalph', 'tm1in1', 'dltm_na', 'tmalph1')
                 ->first();
         // act
-        $actual = $this->target->getShippingInfo($spno, $date);
+        $actual = $this->target->getShippingInfo($spno);
 
         // assert
         $this->assertEquals($expected, $actual);
