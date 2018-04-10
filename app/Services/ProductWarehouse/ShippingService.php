@@ -64,7 +64,7 @@ class ShippingService {
         $date = date_format(date_create($date), 'Y/m/d');
         $shipping = $this->shippingListRepository->checkShippingInfo($spno, $date);
         
-        if ($shipping === 1) {
+        if ($shipping) {
             //$tmtrdj = date_format(date_create($shipping->tmtrdj), 'Y/m/d') . ' 00:00:00';
             $this->shippingListRepository->savePieces($spno, $date, $user, $pieces);
             return true;
