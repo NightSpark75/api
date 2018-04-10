@@ -61,6 +61,7 @@ class ShippingService {
      */
     public function savePieces($spno, $date, $user, $pieces)
     {
+        $date = date_format(date_create($date), 'Y/m/d');
         $shipping = $this->shippingListRepository->checkShippingInfo($spno, $date);
         
         if ($shipping === 1) {
