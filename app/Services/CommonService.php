@@ -40,20 +40,23 @@ class CommonService
      * 
      * @param string $subject
      * @param string $sender
-     * @param string $recipient
+     * @param string $t1
+     * @param string $t2
+     * @param string $t3
      * @param string $content
      * @return void
      */
-    public function sendMail($subject, $sender, $recipient, $content)
+    public function sendMail($subject, $sender, $t1, $t2, $t3, $content)
     {
         $nu = null;
         $pdo = DB::getPdo();
+        $c1 = 'Lin.Yupin@standard.com.tw';
         $stmt = $pdo->prepare("begin pk_mail.proc_mail_02(:f, :t1, :t2, :t3, :c1, :c2, :c3, :s, :m); end;");
         $stmt->bindParam(':f', $sender);
-        $stmt->bindParam(':t1', $recipient);
-        $stmt->bindParam(':t2', $nu);
-        $stmt->bindParam(':t3', $nu);
-        $stmt->bindParam(':c1', $nu);
+        $stmt->bindParam(':t1', $t1);
+        $stmt->bindParam(':t2', $t2);
+        $stmt->bindParam(':t3', $t3);
+        $stmt->bindParam(':c1', $c1);
         $stmt->bindParam(':c2', $nu);
         $stmt->bindParam(':c3', $nu);
         $stmt->bindParam(':s', $subject);

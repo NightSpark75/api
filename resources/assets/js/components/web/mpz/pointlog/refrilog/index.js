@@ -80,6 +80,12 @@ export default class Refrilog extends React.Component {
 
   setValue() {
     let data = this.state.log_data
+    if (this.state.point_no === '10A1RCM100082') {
+      this.setState({
+        mo_putt: '',
+        mo_bell: '',
+      })
+    }
     if (data !== null) {
       this.setState({
         mo_temp: data.mo_temp || '', mo_putt: data.mo_putt, mo_bell: data.mo_bell, mo_light: data.mo_light, mo_umrk: data.mo_urmk,
@@ -262,15 +268,21 @@ export default class Refrilog extends React.Component {
       <tr>
         <td>檢查</td>
         <td colSpan={3}>
-          {checking.map((item, index) => (
-            <Checking
-              name={item}
-              key={index}
-              label={checkingLabel[index]}
-              value={this.state['mo' + item]}
-              onChange={this.checkingChange.bind(this, 'mo' + item)}
-            />
-          ))}
+          {checking.map((item, index) => {
+            if (this.state.point_no === '10A1RCM100082' && (item === '_putt' || item === '_bell')) {
+              return null
+            } else {
+              return (
+                <Checking
+                  name={item}
+                  key={index}
+                  label={checkingLabel[index]}
+                  value={this.state['mo' + item]}
+                  onChange={this.checkingChange.bind(this, 'mo' + item)}
+                />
+              )
+            }
+          })}
         </td>
       </tr>
     )

@@ -49,9 +49,9 @@ class OverdueService {
         $date = date('Ymd');
         $workDate = $this->common->getWorkDate($date, 1);
         if ($date === $workDate) {
-            $this->noRecordDetail($date);
+            return $this->noRecordDetail($date);
         }
-        return '';
+        return $date.' 非工作日';
     }
 
     /**
@@ -67,7 +67,7 @@ class OverdueService {
         $refri = $this->refriDetailHandler($date);
         $pressure = $this->pressureDetailHandler($date);
         $list = array_collapse([$catch, $temp, $wetest, $refri, $pressure]);
-        $this->sendNoRecordDetail($list);
+        return $this->sendNoRecordDetail($list);
     }
 
     private function catchDetailHandler($date)
@@ -134,14 +134,16 @@ class OverdueService {
         $count = count($list);
         $subject = $date.'未記錄詳細清單!';
         $sender = 'mpz.system@standard.com.tw';
-        //$recipient = 'Lin.Guanwei@standard.com.tw';
-        $recipient = 'Lin.Yupin@standard.com.tw';
+        $t1 = 'Lin.Guanwei@standard.com.tw';
+        $t2 = 'Chen.lan@standard.com.tw';
+        $t3 = 'Kuo.Hung@standard.com.tw';
         try {
-            $this->common->sendMail($subject, $sender, $recipient, $content);
+            $this->common->sendMail($subject, $sender, $t1, $t2, $t3, $content);
         } catch (Exception $e) {
             $content = "因筆數太多( $count 筆)，暫不顯示清單";
-            $this->common->sendMail($subject, $sender, $recipient, $content);
+            $this->common->sendMail($subject, $sender, $t1, $t2, $t3, $content);
         }
+        return $subject.', count='.$count;
     }
 
     /**
@@ -152,9 +154,9 @@ class OverdueService {
         $date = date('Ymd');
         $workDate = $this->common->getWorkDate($date, 1);
         if ($date === $workDate) {
-            $this->noRecord0830($date);
+            return $this->noRecord0830($date);
         }
-        return '';
+        return $date.' 非工作日';
     }
 
     /**
@@ -168,9 +170,11 @@ class OverdueService {
         $content = $this->setMailContent($list);
         $subject = $date.' 0830未記錄清單!';
         $sender = 'mpz.system@standard.com.tw';
-        //$recipient = 'Lin.Guanwei@standard.com.tw';
-        $recipient = 'Lin.Yupin@standard.com.tw';
-        $this->common->sendMail($subject, $sender, $recipient, $content);
+        $t1 = 'Lin.Guanwei@standard.com.tw';
+        $t2 = 'Chen.lan@standard.com.tw';
+        $t3 = 'Kuo.Hung@standard.com.tw';
+        $this->common->sendMail($subject, $sender, $t1, $t2, $t3, $content);
+        return $subject;
     }
 
     /**
@@ -181,8 +185,9 @@ class OverdueService {
         $date = date('Ymd');
         $workDate = $this->common->getWorkDate($date, 1);
         if ($date === $workDate) {
-            $this->noRecord1330($date);
+            return $this->noRecord1330($date);
         }
+        return $date.' 非工作日';
     }
 
     /**
@@ -199,9 +204,11 @@ class OverdueService {
         $content = $this->setMailContent($list);
         $subject = $date.' 1330未記錄清單!';
         $sender = 'mpz.system@standard.com.tw';
-        //$recipient = 'Lin.Guanwei@standard.com.tw';
-        $recipient = 'Lin.Yupin@standard.com.tw';
-        $this->common->sendMail($subject, $sender, $recipient, $content);
+        $t1 = 'Lin.Guanwei@standard.com.tw';
+        $t2 = 'Chen.lan@standard.com.tw';
+        $t3 = 'Kuo.Hung@standard.com.tw';
+        $this->common->sendMail($subject, $sender, $t1, $t2, $t3, $content);
+        return $subject;
     }
 
     /**
@@ -212,8 +219,9 @@ class OverdueService {
         $date = date('Ymd');
         $workDate = $this->common->getWorkDate($date, 1);
         if ($date === $workDate) {
-            $this->noRecord1700($date);
+            return $this->noRecord1700($date);
         }
+        return $date.' 非工作日';
     }
 
     /**
@@ -231,9 +239,11 @@ class OverdueService {
         $content = $this->setMailContent($list);
         $subject = $date.' 1700未記錄清單!';
         $sender = 'mpz.system@standard.com.tw';
-        //$recipient = 'Lin.Guanwei@standard.com.tw';
-        $recipient = 'Lin.Yupin@standard.com.tw';
-        $this->common->sendMail($subject, $sender, $recipient, $content);
+        $t1 = 'Lin.Guanwei@standard.com.tw';
+        $t2 = 'Chen.lan@standard.com.tw';
+        $t3 = 'Kuo.Hung@standard.com.tw';
+        $this->common->sendMail($subject, $sender, $t1, $t2, $t3, $content);
+        return $subject;
     }
 
     /**
