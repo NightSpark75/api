@@ -6,12 +6,12 @@ use Illuminate\Console\Command;
 use File;
 use App\Services\MPZ\OverdueService;
 
-class QAOverdue extends Command
+class MPZOverdue2200 extends Command
 {
     private $service;
 
     // 命令名稱
-    protected $signature = 'Web:MPZ:Overdue2200';
+    protected $signature = 'Web:MPZ.Overdue2200';
 
     // 說明文字
     protected $description = '[通知] 倉管監控點未記錄通知';
