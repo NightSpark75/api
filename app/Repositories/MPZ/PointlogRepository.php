@@ -56,15 +56,30 @@ class PointlogRepository
         return $list;
     }
 
-    public function noRecord() {
-        
-    }
-
-    public function noRecordByType() {
-
+    public function noRecordByType($table, $type, $period, $date) {
+        $where = $peroid . '_user is null';
+        $list = DB::select("
+            select p.point_no, p.point_name, p.point_des, c.ldate
+                from mpz_point p, (
+                    select *
+                        from $table
+                        where ldate = $date and $where
+                ) c
+                where p.point_no = c.point_no and p.point_type = '$type' and p.state = 'Y'
+        ");
+        return $list;
     }
 
     public function noRecordDetail($table, $date, $type, $mo, $af, $ev) {
-
+        $list = DB::select("
+            select p.point_no, p.point_name, p.point_des, c.ldate, $mo, $af, $ev
+                from mpz_point p, (
+                    select *
+                        from $table
+                        where ldate = $date
+                ) c
+                where p.point_no = c.point_no(+) and p.point_type = '$type' and p.state = 'Y'
+        ");
+        return $list;
     }
 }
