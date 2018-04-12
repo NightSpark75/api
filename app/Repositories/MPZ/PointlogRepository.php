@@ -56,6 +56,26 @@ class PointlogRepository
         return $list;
     }
 
+    public function noRecord($date) {
+        $list = DB::select("
+            select p.point_no, p.point_name, p.point_des, c.ldate, p.point_type
+                from mpz_point p, (
+                    select point_no, ldate from mpz_catchlog where ldate = $date
+                    union
+                    select point_no, ldate from mpz_wetestlog where ldate = $date
+                    union
+                    select point_no, ldate from mpz_templog where ldate = $date
+                    union
+                    select point_no, ldate from mpz_pressurelog where ldate = $date
+                    union
+                    select point_no, ldate from mpz_refrilog where ldate = $date
+                ) c
+                where p.point_no = c.point_no(+) and p.state = 'Y' and c.ldate is null
+                order by point_type, point_no
+        ");
+        return $list;
+    }
+
     public function noRecordByType($table, $type, $period, $date) {
         $where = $peroid . '_user is null';
         $list = DB::select("
@@ -66,6 +86,7 @@ class PointlogRepository
                         where ldate = $date and $where
                 ) c
                 where p.point_no = c.point_no and p.point_type = '$type' and p.state = 'Y'
+                order by point_no
         ");
         return $list;
     }
@@ -79,6 +100,7 @@ class PointlogRepository
                         where ldate = $date
                 ) c
                 where p.point_no = c.point_no(+) and p.point_type = '$type' and p.state = 'Y'
+                order by point_no
         ");
         return $list;
     }
