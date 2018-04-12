@@ -80,7 +80,7 @@ export default class Refrilog extends React.Component {
 
   setValue() {
     let data = this.state.log_data
-    if (this.state.point_no === '10A1RCM100082') {
+    if (this.state.point_no === '10A1RCM103031') {
       this.setState({
         mo_putt: '',
         mo_bell: '',
@@ -269,7 +269,7 @@ export default class Refrilog extends React.Component {
         <td>檢查</td>
         <td colSpan={3}>
           {checking.map((item, index) => {
-            if (this.state.point_no === '10A1RCM100082' && (item === '_putt' || item === '_bell')) {
+            if (this.state.point_no === '10A1RCM103031' && (item === '_putt' || item === '_bell')) {
               return null
             } else {
               return (
