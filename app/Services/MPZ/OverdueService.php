@@ -81,7 +81,7 @@ class OverdueService {
 
     private function getDetail($table, $date, $type, $mo, $af, $ev) {
         $arr = [];
-        $list = $this->pointlogRepository->noRecordDetail('mpz_templog', $date, $type, $mo, $af, $ev);
+        $list = $this->pointlogRepository->noRecordDetail($table, $date, $type, $mo, $af, $ev);
         for ($i = 0; $i < count($list); $i++) {
             if ($list[$i]->mo === 'X' || $list[$i]->af === 'X'|| $list[$i]->ev === 'X') {
                 array_push($arr, $list[$i]);
@@ -135,7 +135,7 @@ class OverdueService {
         $subject = $date.'未記錄詳細清單!';
         $sender = 'mpz.system@standard.com.tw';
         $t1 = 'Lin.Guanwei@standard.com.tw';
-        $t2 = 'Chen.lan@standard.com.tw';
+        $t2 = 'Chen.Ian@standard.com.tw';
         $t3 = 'Kuo.Hung@standard.com.tw';
         try {
             $this->common->sendMail($subject, $sender, $t1, $t2, $t3, $content);
@@ -171,7 +171,7 @@ class OverdueService {
         $subject = $date.' 0830未記錄清單!';
         $sender = 'mpz.system@standard.com.tw';
         $t1 = 'Lin.Guanwei@standard.com.tw';
-        $t2 = 'Chen.lan@standard.com.tw';
+        $t2 = 'Chen.Ian@standard.com.tw';
         $t3 = 'Kuo.Hung@standard.com.tw';
         $this->common->sendMail($subject, $sender, $t1, $t2, $t3, $content);
         return $subject;
@@ -205,7 +205,7 @@ class OverdueService {
         $subject = $date.' 1330未記錄清單!';
         $sender = 'mpz.system@standard.com.tw';
         $t1 = 'Lin.Guanwei@standard.com.tw';
-        $t2 = 'Chen.lan@standard.com.tw';
+        $t2 = 'Chen.Ian@standard.com.tw';
         $t3 = 'Kuo.Hung@standard.com.tw';
         $this->common->sendMail($subject, $sender, $t1, $t2, $t3, $content);
         return $subject;
@@ -240,7 +240,7 @@ class OverdueService {
         $subject = $date.' 1700未記錄清單!';
         $sender = 'mpz.system@standard.com.tw';
         $t1 = 'Lin.Guanwei@standard.com.tw';
-        $t2 = 'Chen.lan@standard.com.tw';
+        $t2 = 'Chen.Ian@standard.com.tw';
         $t3 = 'Kuo.Hung@standard.com.tw';
         $this->common->sendMail($subject, $sender, $t1, $t2, $t3, $content);
         return $subject;

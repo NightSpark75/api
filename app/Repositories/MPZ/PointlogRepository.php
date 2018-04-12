@@ -55,4 +55,16 @@ class PointlogRepository
         }
         return $list;
     }
+
+    public function noRecord() {
+        
+    }
+
+    public function noRecordByType() {
+
+    }
+
+    public function noRecordDetail($table, $date, $type, $mo, $af, $ev) {
+
+    }
 }

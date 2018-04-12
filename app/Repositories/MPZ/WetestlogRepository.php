@@ -253,7 +253,7 @@ class WetestlogRepository
     private function sendMail($subject, $sender, $recipient, $content)
     {
         $nu = null;
-        $t2 = 'Chen.lan@standard.com.tw';
+        $t2 = 'Chen.Ian@standard.com.tw';
         $t3 = 'Kuo.Hung@standard.com.tw';
         $c1 = 'Lin.Yupin@standard.com.tw';
         $pdo = DB::getPdo();
