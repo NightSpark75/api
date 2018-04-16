@@ -86,7 +86,13 @@ class PointlogRepository
                         where ldate = $date and $where
                 ) c
                 where p.point_no = c.point_no and p.point_type = '$type' and p.state = 'Y'
-                order by point_no
+            union
+            select p.point_no, p.point_name, p.point_des, c.ldate
+                from mpz_point p, (
+                    select point_no, ldate from $table where ldate = $date
+                ) c
+                where p.point_no = c.point_no(+) and p.state = 'Y' and c.ldate is null and p.point_type = '$type'
+            order by point_no
         ");
         return $list;
     }
