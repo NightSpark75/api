@@ -34,8 +34,8 @@ class Kernel extends ConsoleKernel
         // 每分鐘執行 Artisan 命令 test:Log
         $schedule->command('test:Log')->everyMinute();
         $schedule->command('Web:QA:Overdue')->dailyAt('07:00');
-        $schedule->command('Web:QA:Overdue')->dailyAt('09:15');
-        $schedule->command('Web:MPZ:Overdue0830')->dailyAt('09:15');
+        $schedule->command('Web:QA:Overdue')->dailyAt('09:50');
+        $schedule->command('Web:MPZ:Overdue0830')->dailyAt('09:50');
         //$schedule->command('Web:MPZ:expired')->dailyAt('07:00');
         $schedule->command('Web:MPZ:Overdue0830')->dailyAt('08:30');
         $schedule->command('Web:MPZ:Overdue0830')->dailyAt('09:55');
