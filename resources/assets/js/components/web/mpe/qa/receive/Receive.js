@@ -179,7 +179,7 @@ export default class Receive extends React.Component {
       }
     }
 
-    if (receive_qty >= apply_qty) {
+    if (receive_qty >= apply_qty && receive_qty !== 0) {
       this.setState({
         msgType: 'warning',
         msg: '批號[' + item_d[index_d].bno + ']已領足數量!',
@@ -317,7 +317,7 @@ export default class Receive extends React.Component {
                         onClick={this.goReceiveList.bind(this)}
                       >
                         返回領料申請清單
-                                        </button>
+                      </button>
                       :
                       <Link className="button" to="/auth/web/menu">&larr;; 功能選單</Link>
                     }
