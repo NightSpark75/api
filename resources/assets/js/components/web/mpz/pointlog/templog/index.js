@@ -33,6 +33,9 @@ export default class Templog extends React.Component {
       mo_temp: '', mo_hum: '', mo_rmk: '', mo_dis: '', mo_ed: 'N', mo_eth: 'N', mo_devia: 'N', mo_urmk: '', mo_hde: 'N',
       af_temp: '', af_hum: '', af_ed: 'N', af_eth: 'N', af_devia: 'N', af_urmk: '', af_hde: 'N',
       ev_temp: '', ev_hum: '', ev_ed: 'N', ev_eth: 'N', ev_devia: 'N', ev_urmk: '', ev_hde: 'N',
+      em_mo_temp: false, em_mo_hum: false,
+      em_af_temp: false, em_af_hum: false,
+      em_ev_temp: false, em_ev_hum: false,
       log_data: {},
       isLoading: false,
       confirmShow: false,
@@ -41,6 +44,7 @@ export default class Templog extends React.Component {
       isEmpty: true,
     }
     this.sendMsg = this.props.sendMsg.bind(this)
+    this.setEmpty = this.setEmpty.bind(this)
   }
 
   componentDidMount() {
@@ -137,7 +141,7 @@ export default class Templog extends React.Component {
     let type = this.checkTime()
     let empty = 0
     key.map((item, index) => {
-      if (this.state[type + item] === '') {
+      if (this.state[type + item] === '' && !this.state['em_' + type + item]) {
         empty++
       }
     })
@@ -233,6 +237,14 @@ export default class Templog extends React.Component {
     this.setState({ [key]: value }, () => (this.exceptionCheck()))
   }
 
+  setEmpty(key, nullValue) {
+    const value = nullValue ? '': this.state[key]
+    this.setState({
+      ['em_' + key]: nullValue,
+      [key]: value,
+    }, () => this.emptyCheck())
+  }
+
   layoutInput(col) {
     let type = this.checkTime()
     return (
@@ -245,6 +257,7 @@ export default class Templog extends React.Component {
               label={keyLabel[index]}
               value={this.state[type + item]}
               onChange={this.inputChange.bind(this, type + item)}
+              setEmpty={(nullValue) => this.setEmpty(type + item, nullValue)}
             />
           ))}
         </td>

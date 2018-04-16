@@ -34,6 +34,9 @@ export default class Wetestlog extends React.Component {
       af_hum: '', af_max: '', af_min: '', af_ed: 'N', af_eh: 'N', af_devia: 'N', af_urmk: '', af_hde: 'N',
       ev_hum: '', ev_max: '', ev_min: '', ev_ed: 'N', ev_eh: 'N', ev_devia: 'N', ev_urmk: '', ev_hde: 'N',
       zero: 'N',
+      em_mo_temp: false, em_mo_max: false, em_ev_min: false,
+      em_af_temp: false, em_af_max: false, em_ev_min: false,
+      em_ev_temp: false, em_ev_max: false, em_ev_min: false,
       log_data: {},
       isLoading: false,
       confirmShow: false,
@@ -42,6 +45,7 @@ export default class Wetestlog extends React.Component {
       isEmpty: true,
     }
     this.sendMsg = this.props.sendMsg.bind(this)
+    this.setEmpty = this.setEmpty.bind(this)
   }
 
   componentDidMount() {
@@ -137,7 +141,7 @@ export default class Wetestlog extends React.Component {
     let type = this.checkTime()
     let empty = 0
     key.map((item, index) => {
-      if (this.state[type + item] === '') {
+      if (this.state[type + item] === '' && !this.state['em_' + type + item]) {
         empty++
       }
     })
@@ -269,6 +273,14 @@ export default class Wetestlog extends React.Component {
     value = state === 'Y' ? 'N' : 'Y'
     this.setState({ [key]: value }, () => (this.exceptionCheck()))
   }
+  
+  setEmpty(key, nullValue) {
+    const value = nullValue ? '': this.state[key]
+    this.setState({
+      ['em_' + key]: nullValue,
+      [key]: value,
+    }, () => this.emptyCheck())
+  }
 
   layoutInput(col) {
     let type = this.checkTime()
@@ -283,6 +295,7 @@ export default class Wetestlog extends React.Component {
               label={keyLabel[index]}
               value={this.state[type + item]}
               onChange={this.inputChange.bind(this, type + item)}
+              setEmpty={(nullValue) => this.setEmpty(type + item, nullValue)}
             />
           ))}
         </td>

@@ -37,6 +37,8 @@ export default class Refrilog extends React.Component {
       mo_dis: '', mo_ed: 'N', mo_et: 'N', mo_devia: 'N',
       af_temp: '', af_ed: 'N', af_et: 'N', af_devia: 'N', af_urmk: '', af_hde: 'N',
       log_data: {},
+      em_mo_temp: false,
+      em_af_temp: false,
       isLoading: false,
       confirmShow: false,
       isChecked: false,
@@ -44,6 +46,7 @@ export default class Refrilog extends React.Component {
       isEmpty: true,
     }
     this.sendMsg = this.props.sendMsg.bind(this)
+    this.setEmpty = this.setEmpty.bind(this)
   }
 
   componentDidMount() {
@@ -142,7 +145,7 @@ export default class Refrilog extends React.Component {
     let type = this.checkTime()
     let empty = 0
     key.map((item, index) => {
-      if (this.state[type + item] === '') {
+      if (this.state[type + item] === '' && !this.state['em_' + type + item]) {
         empty++
       }
     })
@@ -245,6 +248,14 @@ export default class Refrilog extends React.Component {
     this.setState({ [key]: value }, () => (this.exceptionCheck()))
   }
 
+  setEmpty(key, nullValue) {
+    const value = nullValue ? '': this.state[key]
+    this.setState({
+      ['em_' + key]: nullValue,
+      [key]: value,
+    }, () => this.emptyCheck())
+  }
+
   layoutInput(col) {
     let type = this.checkTime()
     return (
@@ -257,6 +268,7 @@ export default class Refrilog extends React.Component {
               label={keyLabel[index]}
               value={this.state[type + item]}
               onChange={this.inputChange.bind(this, type + item)}
+              setEmpty={(nullValue) => this.setEmpty(type + item, nullValue)}
             />
           ))}
         </td>

@@ -34,6 +34,9 @@ export default class Pressurelog extends React.Component {
       af_pa: '', af_aq: '', af_ed: 'N', af_ep: 'N', af_devia: 'N', af_urmk: '', af_hde: 'N',
       ev_pa: '', ev_aq: '', ev_ed: 'N', ev_ep: 'N', ev_devia: 'N', ev_urmk: '', ev_hde: 'N',
       log_data: {},
+      em_mo_pa: false, em_mo_aq: false,
+      em_af_pa: false, em_af_aq: false,
+      em_ev_pa: false, em_ev_aq: false,
       isLoading: false,
       confirmShow: false,
       isChecked: false,
@@ -41,6 +44,7 @@ export default class Pressurelog extends React.Component {
       isEmpty: true,
     }
     this.sendMsg = this.props.sendMsg.bind(this)
+    this.setEmpty = this.setEmpty.bind(this)
   }
 
   componentDidMount() {
@@ -151,7 +155,7 @@ export default class Pressurelog extends React.Component {
 
   emptyCheck() {
     let type = this.checkTime()
-    if (this.state[type + '_pa'] !== '') {
+    if (this.state[type + '_pa'] !== '' || this.state['em_' + type + '_pa']) {
       this.setState({ isEmpty: false })
     } else {
       this.setState({ isEmpty: true })
@@ -246,6 +250,14 @@ export default class Pressurelog extends React.Component {
     this.setState({ [key]: value }, () => this.exceptionCheck())
   }
 
+  setEmpty(key, nullValue) {
+    const value = nullValue ? '': this.state[key]
+    this.setState({
+      ['em_' + key]: nullValue,
+      [key]: value,
+    }, () => this.emptyCheck())
+  }
+
   layoutInput(col) {
     let type = this.checkTime()
     const { pa_high, pa_low, aq_high, aq_low } = this.state
@@ -268,6 +280,8 @@ export default class Pressurelog extends React.Component {
                 disabled={disabled}
                 value={this.state[type + item]}
                 onChange={this.inputChange.bind(this, type + item)}
+                setEmpty={(nullValue) => this.setEmpty(type + item, nullValue)}
+                noEmpty={item === '_aq'}
               />
             )}
           )}
