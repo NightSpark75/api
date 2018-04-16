@@ -11,7 +11,7 @@ class QAOverdue extends Command
     private $service;
 
     // 命令名稱
-    protected $signature = 'Web:QA.Overdue';
+    protected $signature = 'Web:QA:Overdue';
 
     // 說明文字
     protected $description = '[通知] 留樣品領用逾期未歸還通知';
