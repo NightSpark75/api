@@ -28,6 +28,7 @@ export default class Wetestlog extends React.Component {
     super(props)
     this.state = {
       alertMsg: [],
+      rule: null,
       point_no: '', mach_no: '', ch_date: '', humi_high: '', humi_low: '',
       mo_hum: '', mo_max: '', mo_min: '', mo_rmk: '', mo_dis: '', mo_ed: 'N', mo_eh: 'N', mo_devia: 'N', mo_urmk: '', mo_hde: 'N',
       af_hum: '', af_max: '', af_min: '', af_ed: 'N', af_eh: 'N', af_devia: 'N', af_urmk: '', af_hde: 'N',
@@ -313,7 +314,7 @@ export default class Wetestlog extends React.Component {
     let today = new Date()
     let hours = (today.getHours() * 100) + today.getMinutes()
     const { rule } = this.state
-    if (rule !== undefined) {
+    if (rule !== null) {
       if (operatorHandle(hours, rule.MO_START.cond, Number(rule.MO_START.val)) &&
         operatorHandle(hours, rule.MO_OTHER.cond, Number(rule.MO_OTHER.val))) {
         return 'mo'
@@ -353,7 +354,7 @@ export default class Wetestlog extends React.Component {
   render() {
     const { pointInfo } = this.props
     const {
-      alertMsg,
+      alertMsg, rule,
       mach_no, ch_date, humi_high, humi_low,
       isLoading, isChecked, isDeviation, isOverdue, isEmpty,
     } = this.state
@@ -386,7 +387,20 @@ export default class Wetestlog extends React.Component {
                 <span className="title is-4">最濕點溼度記錄表</span>
                 <span className="title is-6" style={{ marginLeft: '10px' }}>
                   日期：{/*today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate()*/} {date + time}
-                </span>
+                </span><br/>
+                {rule !== null &&
+                  <div>
+                    <span className="tag is-info">
+                      {'[上午] ' + rule.MO_START.val + ' ~ ' + rule.MO_END.val}
+                    </span>
+                    <span className="tag is-info" style={{ marginLeft: '10px' }}>
+                      {'[下午1] ' + rule.AF_START.val + ' ~ ' + rule.AF_END.val}
+                    </span>
+                    <span className="tag is-info" style={{ marginLeft: '10px' }}>
+                      {'[下午2] ' + rule.EV_START.val + ' ~ ' + rule.EV_END.val}
+                    </span>
+                  </div>
+                }
               </td>
             </tr>
             <tr>

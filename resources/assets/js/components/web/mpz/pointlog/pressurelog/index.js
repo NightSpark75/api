@@ -28,6 +28,7 @@ export default class Pressurelog extends React.Component {
     super(props)
     this.state = {
       alertMsg: [],
+      rule:　null,
       point_no: '', mach_no: '', ch_date: '', pa_high: '', pa_low: '', aq_high: '', aq_low: '',
       mo_pa: '', mo_aq: '', mo_rmk: '', mo_dis: '', mo_ed: 'N', mo_ep: 'N', mo_devia: 'N', mo_urmk: '', mo_hde: 'N',
       af_pa: '', af_aq: '', af_ed: 'N', af_ep: 'N', af_devia: 'N', af_urmk: '', af_hde: 'N',
@@ -299,7 +300,7 @@ export default class Pressurelog extends React.Component {
     let today = new Date()
     let hours = (today.getHours() * 100) + today.getMinutes()
     const { rule } = this.state
-    if (rule !== undefined) {
+    if (rule !== null) {
       if (operatorHandle(hours, rule.MO_START.cond, Number(rule.MO_START.val)) &&
         operatorHandle(hours, rule.MO_OTHER.cond, Number(rule.MO_OTHER.val))) {
         return 'mo'
@@ -335,7 +336,7 @@ export default class Pressurelog extends React.Component {
   render() {
     const { pointInfo } = this.props
     const {
-      alertMsg,
+      alertMsg, rule,
       mach_no, ch_date, pa_high, pa_low, aq_high, aq_low,
       isLoading, isChecked, isDeviation, isOverdue, isEmpty,
     } = this.state
@@ -368,6 +369,19 @@ export default class Pressurelog extends React.Component {
                 <span className="title is-6" style={{ marginLeft: '10px' }}>
                   日期：{/*today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate()*/} {date + time}
                 </span>
+                {rule !== null &&
+                  <div>
+                    <span className="tag is-info">
+                      {'[上午] ' + rule.MO_START.val + ' ~ ' + rule.MO_END.val}
+                    </span>
+                    <span className="tag is-info" style={{ marginLeft: '10px' }}>
+                      {'[下午1] ' + rule.AF_START.val + ' ~ ' + rule.AF_END.val}
+                    </span>
+                    <span className="tag is-info" style={{ marginLeft: '10px' }}>
+                      {'[下午2] ' + rule.EV_START.val + ' ~ ' + rule.EV_END.val}
+                    </span>
+                  </div>
+                }
               </td>
             </tr>
             <tr>

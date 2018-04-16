@@ -50,7 +50,7 @@ export default class Catchlog extends React.Component {
       point_no: '',
       log_data: [],
       alertMsg: [],
-      rule: {},
+      rule: null,
       catch_num1: '', catch_num2: '', catch_num3: '', catch_num4: '', catch_num5: '', catch_num6: '',
       change1: 'N', change2: 'N', change3: 'N', change4: 'N', change5: 'N', change6: 'N', check_lamp: 'N',
       rmk: '', discription: '', deviation: 'N', urmk: '', hde: 'N',
@@ -386,7 +386,7 @@ export default class Catchlog extends React.Component {
   render() {
     const { pointInfo } = this.props
     const {
-      alertMsg, getInfo,
+      alertMsg, getInfo, rule,
       init, isLoading, isChecked, isDeviation, isOverdue, isEmpty,
       thisTotalCount, lastTotalCount, lastGrowth,
       catch_num1, catch_num2, catch_num3,
@@ -402,6 +402,7 @@ export default class Catchlog extends React.Component {
     let today = new Date()
     let date = today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate() + ' '
     let time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds()
+    console.log(rule)
     return (
       <div>
         {alertMsg.length > 0 &&
@@ -426,7 +427,12 @@ export default class Catchlog extends React.Component {
                 <span className="title is-5" style={{ marginLeft: '10px' }}>{pointInfo.device_name}</span>
                 <span className="title is-6" style={{ marginLeft: '10px' }}>
                   日期：{/*today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate()*/} {date + time}
-                </span>
+                </span><br/>
+                {rule !== null &&
+                  <span className="tag is-info">
+                    {'[上午] ' + rule.START_TIME.val + ' ~ ' + rule.END_TIME.val}
+                  </span>
+                }
               </td>
             </tr>
             <tr>
