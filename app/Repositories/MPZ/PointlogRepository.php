@@ -77,7 +77,7 @@ class PointlogRepository
     }
 
     public function noRecordByType($table, $type, $period, $date) {
-        $where = $peroid . '_user is null';
+        $where = $period . '_user is null';
         $list = DB::select("
             select p.point_no, p.point_name, p.point_des, c.ldate
                 from mpz_point p, (
