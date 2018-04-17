@@ -256,12 +256,11 @@ class OverdueService {
         $tr = '';
         if (count($data) > 0) {
             for ($i = 0; $i < count($data); $i++) {
-                $td1 = $this->setTd($data[$i]->point_no);
                 $td2 = $this->setTd($data[$i]->point_name);
                 $td3 = $this->setTd($data[$i]->point_des);
-                $tr = $tr."<tr>$td1$td2$td3</tr>";
+                $tr = $tr."<tr>$td2$td3</tr>";
             }
-            $thead = "<thead><tr><td>編號</td><td>名稱</td><td>區域</td></tr></thead>";
+            $thead = "<thead><tr><td>名稱</td><td>區域</td></tr></thead>";
             $tbody = "<tbody>$tr<tbody>";
             $table = "<table style=\"border: 1px solid black; border-collapse: collapse\">$thead$tbody</table>";
         } else {
@@ -290,15 +289,14 @@ class OverdueService {
         $tr = '';
         if (count($data) > 0) {
             for ($i = 0; $i < count($data); $i++) {
-                $td1 = $this->setTd($data[$i]->point_no);
                 $td2 = $this->setTd($data[$i]->point_name);
                 $td3 = $this->setTd($data[$i]->point_des);
                 $td4 = $this->setTd($data[$i]->mo);
                 $td5 = $this->setTd($data[$i]->af);
                 $td6 = $this->setTd($data[$i]->ev);
-                $tr = $tr."<tr>$td1$td2$td3$td4$td5$td6</tr>";
+                $tr = $tr."<tr>$td2$td3$td4$td5$td6</tr>";
             }
-            $thead = "<thead><tr><td>編號</td><td>名稱</td><td>區域</td><td>早上</td><td>下午1</td><td>下午2</td></tr></thead>";
+            $thead = "<thead><tr><td>名稱</td><td>區域</td><td>早上</td><td>下午1</td><td>下午2</td></tr></thead>";
             $tbody = "<tbody>$tr<tbody>";
             $table = "<table style=\"border: 1px solid black; border-collapse: collapse\">$thead$tbody</table>";
         } else {
