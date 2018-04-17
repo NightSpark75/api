@@ -41,7 +41,7 @@ class PickingListRepository extends Repository
     {
         $list = $this->model
             ->where('staddj', $date)
-            //->where('stky6', null)
+            ->where('stky6', null)
             ->select('sticu', 'ststop', 'staddj', 'stky2')
             ->orderBy('stky1')
             ->get();
