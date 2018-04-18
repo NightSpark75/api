@@ -134,14 +134,15 @@ class OverdueService {
         $count = count($list);
         $subject = $date.'未記錄詳細清單!';
         $sender = 'mpz.system@standard.com.tw';
-        $t1 = 'Lin.Guanwei@standard.com.tw';
-        $t2 = 'Chen.Ian@standard.com.tw';
-        $t3 = 'Kuo.Hung@standard.com.tw';
-        try {
-            $this->common->sendMail($subject, $sender, $t1, $t2, $t3, $content);
-        } catch (Exception $e) {
-            $content = "因筆數太多( $count 筆)，暫不顯示清單";
-            $this->common->sendMail($subject, $sender, $t1, $t2, $t3, $content);
+        $recipient = $this->common->getMailRecipient('MPZ_OVERDUE');
+        for($i = 0; $i < count($recipient); $i++) {
+            $t1 = $recipient[$i];
+            try {
+                $this->common->sendMail($subject, $sender, $t1, $content);
+            } catch (Exception $e) {
+                $content = "因筆數太多( $count 筆)，暫不顯示清單";
+                $this->common->sendMail($subject, $sender, $t1, $content);
+            }
         }
         return $subject.', count='.$count;
     }
@@ -170,10 +171,10 @@ class OverdueService {
         $content = $this->setMailContent($list);
         $subject = $date.' 0830未記錄清單!';
         $sender = 'mpz.system@standard.com.tw';
-        $t1 = 'Lin.Guanwei@standard.com.tw';
-        $t2 = 'Chen.Ian@standard.com.tw';
-        $t3 = 'Kuo.Hung@standard.com.tw';
-        $this->common->sendMail($subject, $sender, $t1, $t2, $t3, $content);
+        $recipient = $this->common->getMailRecipient('MPZ_OVERDUE');
+        for($i = 0; $i < count($recipient); $i++) {
+            $this->common->sendMail($subject, $sender, $t1, $t2, $t3, $content);
+        }
         return $subject;
     }
 
@@ -204,10 +205,10 @@ class OverdueService {
         $content = $this->setMailContent($list);
         $subject = $date.' 1330未記錄清單!';
         $sender = 'mpz.system@standard.com.tw';
-        $t1 = 'Lin.Guanwei@standard.com.tw';
-        $t2 = 'Chen.Ian@standard.com.tw';
-        $t3 = 'Kuo.Hung@standard.com.tw';
-        $this->common->sendMail($subject, $sender, $t1, $t2, $t3, $content);
+        $recipient = $this->common->getMailRecipient('MPZ_OVERDUE');
+        for($i = 0; $i < count($recipient); $i++) {
+            $this->common->sendMail($subject, $sender, $t1, $t2, $t3, $content);
+        }
         return $subject;
     }
 
@@ -239,10 +240,10 @@ class OverdueService {
         $content = $this->setMailContent($list);
         $subject = $date.' 1700未記錄清單!';
         $sender = 'mpz.system@standard.com.tw';
-        $t1 = 'Lin.Guanwei@standard.com.tw';
-        $t2 = 'Chen.Ian@standard.com.tw';
-        $t3 = 'Kuo.Hung@standard.com.tw';
-        $this->common->sendMail($subject, $sender, $t1, $t2, $t3, $content);
+        $recipient = $this->common->getMailRecipient('MPZ_OVERDUE');
+        for($i = 0; $i < count($recipient); $i++) {
+            $this->common->sendMail($subject, $sender, $t1, $t2, $t3, $content);
+        }
         return $subject;
     }
 
