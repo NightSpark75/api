@@ -43,7 +43,10 @@ class JwtController extends Controller
         try {
             $id = request()->input('id');
             $password = request()->input('password');
-            $token = $this->jwtService->login($id, $password);
+            $prg = request()->input('prg');
+            $prd = request()->input('prd');
+            $p = $prg ? $prg : $prd;
+            $token = $this->jwtService->login($id, $password, $p);
             return response()->json(compact('token'), 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
