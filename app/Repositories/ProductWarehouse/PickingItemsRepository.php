@@ -44,6 +44,7 @@ class PickingItemsRepository extends Repository
             ->where('psaddj', $date)
             ->where('psstop', $stop)
             ->select('psicu', 'psaddj', 'psstop', 'pslocn', 'psrmk', 'pslitm', 'pslotn', 'pssoqs', 'pspqoh', 'psuom')
+            ->orderBy('psseq')
             ->orderBy('pslocn')
             ->orderBy('psrmk')
             ->orderBy('pslitm')
