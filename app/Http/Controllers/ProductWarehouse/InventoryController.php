@@ -30,12 +30,12 @@ class InventoryController extends Controller
     private $inventoryService;
 
     /**
-     * @param InventoryService $shippingService
+     * @param InventoryService $inventoryService
      * @throws Exception
      */
-    public function __construct(InventoryService $shippingService) 
+    public function __construct(InventoryService $inventoryService) 
     {
-        $this->shippingService = $shippingService;
+        $this->inventoryService = $inventoryService;
     }
 
     /**
@@ -45,11 +45,11 @@ class InventoryController extends Controller
      * @throws Exception
      * @return mixed
      */
-    public function getInventoryList($date)
+    public function getInventoryList($date = null)
     {
         try {
-            $info = $this->shippingService->getInventoryInfo($spno, $date);
-            return response()->json($info, 200);
+            $list = $this->inventoryService->getInventoryList($date);
+            return response()->json($list, 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
         }
@@ -66,8 +66,8 @@ class InventoryController extends Controller
     public function getInventoryItem($cyno, $date)
     {
         try {
-            $info = $this->shippingService->getInventoryInfo($spno, $date);
-            return response()->json($info, 200);
+            $item = $this->inventoryService->getInventoryItem($cyno, $date);
+            return response()->json($item, 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
         }
@@ -84,10 +84,12 @@ class InventoryController extends Controller
         try {
             $user = session('user');
             $id = $user->id;
-            $spno = request()->input('spno');
-            $date = request()->input('date');
-            $pieces = request()->input('pieces');
-            $this->shippingService->savePieces($spno, $date, $id, $pieces);
+            $cyno = request()->input('cyno');
+            $locn = request()->input('locn');
+            $litm = request()->input('litm');
+            $lotn = request()->input('lotn');
+            $amount = request()->input('amount');
+            $this->inventoryService->saveInventory($id, $cyno, $locn, $litm, $lotn, $amount);
             return response()->json(['result' => true], 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);

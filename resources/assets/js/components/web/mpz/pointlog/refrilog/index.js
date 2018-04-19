@@ -397,7 +397,7 @@ export default class Refrilog extends React.Component {
                 }
                 {rule !== null &&
                   <span className="tag is-info" style={{ marginLeft: 10 }}>
-                    {'[下午1] ' + rule.AF_START.val + ' ~ ' + rule.AF_END.val}
+                    {'[下午2] ' + rule.AF_START.val + ' ~ ' + rule.AF_END.val}
                   </span>
                 }
               </td>

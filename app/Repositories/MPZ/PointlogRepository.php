@@ -102,8 +102,8 @@ class PointlogRepository
     private function refriDetailHandler($date)
     {
         $mo = "case when mo_user is null then 'X' else '' end mo";
-        $af = "case when af_user is null then 'X' else '' end af";
-        $ev = "''ev";
+        $af = "'' af";
+        $ev = "case when af_user is null then 'X' else '' end ev";
         $refri = $this->getDetail('mpz_refrilog', $date, 'R', $mo, $af, $ev);
         return $refri;
     }

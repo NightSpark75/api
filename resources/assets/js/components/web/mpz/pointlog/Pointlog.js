@@ -161,9 +161,9 @@ export default class Pointlog extends React.Component {
                 </tr>  
                 <tr>
                   <td>點位名稱</td>
-                  <td>上午</td>
-                  <td>下午1</td>
-                  <td>下午2</td>
+                  <td>上午[0600 ~ 0900]</td>
+                  <td>下午1[1200 ~ 1400]</td>
+                  <td>下午2[1630 ~ 1730]</td>
                 </tr>
               </thead>
               <tbody>

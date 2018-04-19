@@ -100,6 +100,7 @@ class OverdueService {
         $sender = 'mpz.system@standard.com.tw';
         $recipient = $this->common->getMailRecipient('MPZ_OVERDUE');
         for($i = 0; $i < count($recipient); $i++) {
+            $t1 = $recipient[$i];
             $this->common->sendMail($subject, $sender, $t1, $content);
         }
         return $subject;
@@ -134,6 +135,7 @@ class OverdueService {
         $sender = 'mpz.system@standard.com.tw';
         $recipient = $this->common->getMailRecipient('MPZ_OVERDUE');
         for($i = 0; $i < count($recipient); $i++) {
+            $t1 = $recipient[$i];
             $this->common->sendMail($subject, $sender, $t1, $content);
         }
         return $subject;
@@ -169,6 +171,7 @@ class OverdueService {
         $sender = 'mpz.system@standard.com.tw';
         $recipient = $this->common->getMailRecipient('MPZ_OVERDUE');
         for($i = 0; $i < count($recipient); $i++) {
+            $t1 = $recipient[$i];
             $this->common->sendMail($subject, $sender, $t1, $content);
         }
         return $subject;
