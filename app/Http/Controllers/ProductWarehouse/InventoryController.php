@@ -63,10 +63,10 @@ class InventoryController extends Controller
      * @throws Exception
      * @return mixed
      */
-    public function getInventoryItem($cyno, $date)
+    public function getInventoryItem($cyno)
     {
         try {
-            $item = $this->inventoryService->getInventoryItem($cyno, $date);
+            $item = $this->inventoryService->getInventoryItem($cyno);
             return response()->json($item, 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
@@ -89,8 +89,8 @@ class InventoryController extends Controller
             $litm = request()->input('litm');
             $lotn = request()->input('lotn');
             $amount = request()->input('amount');
-            $this->inventoryService->saveInventory($id, $cyno, $locn, $litm, $lotn, $amount);
-            return response()->json(['result' => true], 200);
+            $nextItem = $this->inventoryService->saveInventory($id, $cyno, $locn, $litm, $lotn, $amount);
+            return response()->json(['item' => $nextItem], 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
         }

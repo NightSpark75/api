@@ -22,18 +22,42 @@ use DB;
 class InventoryService {
 
     /**
-     * @var InventoryListRepository
+     * @var InventoryRepository
      */
     private $inventoryRepository;
 
     /**
-     * @param InventoryListRepository $inventoryRepository
+     * @param InventoryRepository $inventoryRepository
      */
     public function __construct(
-        InventoryListRepository $inventoryRepository
+        InventoryRepository $inventoryRepository
     ) {
         $this->inventoryRepository = $inventoryRepository;
     }
 
-    
+    public function getInventoryList($date)
+    {
+        $list = $this->inventoryRepository->getInventoryList($date);
+        return $list;
+    }
+
+    public function getInventoryItem($cyno)
+    {
+        $item = $this->inventoryRepository->getInventoryItem($cyno);
+        return $item;
+    }
+
+    public function saveInventory($id, $cyno, $locn, $litm, $lotn, $amount)
+    {
+        $item = $this->inventoryRepository->getInventoryItem($cyno);
+        if (
+            $item->locn === $locn &&
+            $item->litm === $litm &&
+            $item->lotn === $lotn
+        ) {
+            $this->inventoryRepository->saveInventory($id, $cyno, $locn, $litm, $lotn, $amount);
+        }
+        $nextItem = $this->inventoryRepository->getInventoryItem($cyno);
+        return $nextItem;
+    }
 }
