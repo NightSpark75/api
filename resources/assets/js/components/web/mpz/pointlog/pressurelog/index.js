@@ -380,21 +380,23 @@ export default class Pressurelog extends React.Component {
             <tr>
               <td colSpan={4}>
                 <span className="title is-4">工作室壓差記錄表</span>
-                <span className="title is-6" style={{ marginLeft: '10px' }}>
+                <span className="title is-6" style={{ marginLeft: 10 }}>
                   日期：{/*today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate()*/} {date + time}
                 </span>
                 {rule !== null &&
-                  <div>
-                    <span className="tag is-info">
-                      {'[上午] ' + rule.MO_START.val + ' ~ ' + rule.MO_END.val}
-                    </span>
-                    <span className="tag is-info" style={{ marginLeft: '10px' }}>
-                      {'[下午1] ' + rule.AF_START.val + ' ~ ' + rule.AF_END.val}
-                    </span>
-                    <span className="tag is-info" style={{ marginLeft: '10px' }}>
-                      {'[下午2] ' + rule.EV_START.val + ' ~ ' + rule.EV_END.val}
-                    </span>
-                  </div>
+                  <span className="tag is-info" style={{ marginLeft: 10 }}>
+                    {'[上午] ' + rule.MO_START.val + ' ~ ' + rule.MO_END.val}
+                  </span>
+                }
+                {rule !== null &&
+                  <span className="tag is-info" style={{ marginLeft: 10 }}>
+                    {'[下午1] ' + rule.AF_START.val + ' ~ ' + rule.AF_END.val}
+                  </span>
+                }
+                {rule !== null &&
+                  <span className="tag is-info" style={{ marginLeft: 10 }}>
+                    {'[下午2] ' + rule.EV_START.val + ' ~ ' + rule.EV_END.val}
+                  </span>
                 }
               </td>
             </tr>

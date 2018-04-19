@@ -424,12 +424,12 @@ export default class Catchlog extends React.Component {
             <tr>
               <td colSpan={2}>
                 <span className="title is-4">鼠蟲防治記錄表</span>
-                <span className="title is-5" style={{ marginLeft: '10px' }}>{pointInfo.device_name}</span>
-                <span className="title is-6" style={{ marginLeft: '10px' }}>
+                <span className="title is-5" style={{ marginLeft: 10 }}>{pointInfo.device_name}</span>
+                <span className="title is-6" style={{ marginLeft: 10 }}>
                   日期：{/*today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate()*/} {date + time}
-                </span><br/>
+                </span>
                 {rule !== null &&
-                  <span className="tag is-info">
+                  <span className="tag is-info" style={{marginLeft: 10}}>
                     {'[上午] ' + rule.START_TIME.val + ' ~ ' + rule.END_TIME.val}
                   </span>
                 }

@@ -57,6 +57,7 @@ class PickingItemsRepositoryTest extends TestCase
             PickingItems::where('psaddj', $date)
                 ->where('psstop', $stop)
                 ->select('psicu', 'psaddj', 'psstop', 'pslocn', 'psrmk', 'pslitm', 'pslotn', 'pssoqs', 'pspqoh', 'psuom')
+                ->orderBy('psseq')
                 ->orderBy('pslocn')
                 ->orderBy('psrmk')
                 ->orderBy('pslitm')
