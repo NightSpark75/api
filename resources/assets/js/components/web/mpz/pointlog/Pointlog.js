@@ -140,6 +140,11 @@ export default class Pointlog extends React.Component {
           </div>
         }
         {unrecorded.length > 0 && 
+          !this.state.catchlog_show &&
+          !this.state.refrilog_show &&
+          !this.state.templog_show &&
+          !this.state.wetestlog_show &&
+          !this.state.pressurelog_show &&
           <div>
             {mcuList.map((item) => (
               getMcuButton(item, mcu, () => this.setState({mcu: item}))
