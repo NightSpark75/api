@@ -88,7 +88,7 @@ class CommonService
     {
         $recipient = DB::select("
             select *
-                from api_mial_recipeient
+                from api_mail_recipient
                 where state = 'Y' and mail_type = '$type'
         ");
         return $recipient;

@@ -49,87 +49,14 @@ class OverdueService {
         $date = date('Ymd');
         $workDate = $this->common->getWorkDate($date, 1);
         if ($date === $workDate) {
-            return $this->noRecordDetail($date);
+            return $this->sendNoRecordDetail($date);
         }
         return $date.' 非工作日';
     }
 
-    /**
-     * send today no record list
-     * 
-     * @param int $date
-     */
-    private function noRecordDetail($date)
+    private function sendNoRecordDetail($date)
     {
-        $catch = $this->catchDetailHandler($date);
-        $temp = $this->tempDetailHandler($date);
-        $wetest = $this->wetestDetailHandler($date);
-        $refri = $this->refriDetailHandler($date);
-        $pressure = $this->pressureDetailHandler($date);
-        $list = array_collapse([$catch, $temp, $wetest, $refri, $pressure]);
-        return $this->sendNoRecordDetail($list);
-    }
-
-    private function catchDetailHandler($date)
-    {   
-        $mo = "case when ldate is null then 'X' else '' end mo";
-        $af = "'' af";
-        $ev = "'' ev";
-        $catch = $this->getDetail('mpz_catchlog', $date, 'C', $mo, $af, $ev);
-        return $catch;
-    }
-
-    private function getDetail($table, $date, $type, $mo, $af, $ev) {
-        $arr = [];
-        $list = $this->pointlogRepository->noRecordDetail($table, $date, $type, $mo, $af, $ev);
-        for ($i = 0; $i < count($list); $i++) {
-            if ($list[$i]->mo === 'X' || $list[$i]->af === 'X'|| $list[$i]->ev === 'X') {
-                array_push($arr, $list[$i]);
-            }
-        }
-        return $arr;
-    }
-
-    private function tempDetailHandler($date)
-    {
-        $mo = "case when mo_user is null then 'X' else '' end mo";
-        $af = "case when af_user is null then 'X' else '' end af";
-        $ev = "case when ev_user is null then 'X' else '' end ev";
-        $temp = $this->getDetail('mpz_templog', $date, 'T', $mo, $af, $ev);
-        return $temp;
-    }
-
-    private function wetestDetailHandler($date)
-    {
-        $mo = "case when mo_user is null then 'X' else '' end mo";
-        $af = "case when af_user is null then 'X' else '' end af";
-        $ev = "case when ev_user is null then 'X' else '' end ev";
-        $wetest = $this->getDetail('mpz_wetestlog', $date, 'W', $mo, $af, $ev);
-        return $wetest;
-    }
-
-    private function refriDetailHandler($date)
-    {
-        $mo = "case when mo_user is null then 'X' else '' end mo";
-        $af = "case when af_user is null then 'X' else '' end af";
-        $ev = "''ev";
-        $refri = $this->getDetail('mpz_refrilog', $date, 'R', $mo, $af, $ev);
-        return $refri;
-    }
-
-    private function pressureDetailHandler($date)
-    {;
-        $mo = "case when mo_user is null then 'X' else '' end mo";
-        $af = "case when af_user is null then 'X' else '' end af";
-        $ev = "case when ev_user is null then 'X' else '' end ev";
-        $pressure = $this->getDetail('mpz_pressurelog', $date, 'P', $mo, $af, $ev);
-        return $pressure;
-    }
-
-
-    private function sendNoRecordDetail($list)
-    {
-        $date = date('Ymd');
+        $list = $this->pointlogRepository->getUnrecordedList($date);
         $content = $this->setDetailMailContent($list);
         $count = count($list);
         $subject = $date.'未記錄詳細清單!';

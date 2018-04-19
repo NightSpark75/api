@@ -18,6 +18,9 @@ const pointType = {
   T: 'templog_show',
 }
 
+const mcuList = ['10A1', '10A2', '10A3']
+const floorList = ['1F', '2F', '3F', '4F']
+
 export default class Pointlog extends React.Component {
   constructor(props) {
     super(props)
@@ -26,6 +29,7 @@ export default class Pointlog extends React.Component {
       point: [],
       point_no: '',
       point_info: {},
+      unrecorded: [],
       scan: false,
       scan_message: '',
       catchlog_show: false,
@@ -34,6 +38,8 @@ export default class Pointlog extends React.Component {
       refrilog_show: false,
       prerilog_show: false,
       pressurelog_show: false,
+      mcu: '10A1',
+      floor: '1F',
     }
   }
 
@@ -46,6 +52,7 @@ export default class Pointlog extends React.Component {
         self.setState({
           point: response.data.point,
           scan: true,
+          unrecorded: response.data.unrecorded,
         })
         console.log(response.data)
       } else {
@@ -102,7 +109,7 @@ export default class Pointlog extends React.Component {
 
   render() {
     let today = new Date()
-    const { point_info, scan } = this.state
+    const { point_info, scan, unrecorded, mcu, floor } = this.state
     return (
       <div>
         <div className="box" style={{ marginTop: '10px', marginBottom: '10px' }}>
@@ -130,6 +137,36 @@ export default class Pointlog extends React.Component {
                 </div>
               </div>
             </div>
+          </div>
+        }
+        {unrecorded.length > 0 && 
+          <div>
+            {mcuList.map((item) => (
+              getMcuButton(item, mcu, () => this.setState({mcu: item}))
+            ))}
+            {floorList.map((item) => (
+              getFloorButton(item, floor, () => this.setState({floor: item}))
+            ))}
+            <table className="table is-bordered table is-fullwidth" style={{marginTop: 10}}>
+              <thead>
+                <tr>
+                  <td colSpan="4">
+                    未記錄點位
+                  </td>
+                </tr>  
+                <tr>
+                  <td>點位名稱</td>
+                  <td>上午</td>
+                  <td>下午1</td>
+                  <td>下午2</td>
+                </tr>
+              </thead>
+              <tbody>
+                {unrecorded.map((item) => (
+                  getUnrecorded(item, mcu, floor)
+                ))}
+              </tbody>
+            </table>
           </div>
         }
         {this.state.catchlog_show &&
@@ -177,3 +214,43 @@ export default class Pointlog extends React.Component {
   }
 }
 
+function getUnrecorded(item, mcu, floor) {
+  if (item.mcu === mcu && item.floor === floor) {
+    return (
+      <tr key={item.point_no}>
+        <td>{item.point_name}</td>
+        <td>{item.mo}</td>
+        <td>{item.af}</td>
+        <td>{item.ev}</td>
+      </tr>
+    )
+  }
+}
+
+function getMcuButton(item, mcu, click) {
+  const cla = item === mcu ? 'button is-primary': 'button'
+  return (
+    <button 
+      key={item}
+      className={cla}
+      style={{marginRight: 10}}
+      onClick={click}
+    >
+      {item}
+    </button>
+  )
+}
+
+function getFloorButton(item, floor, click) {
+  const cla = item === floor ? 'button is-info': 'button'
+  return (
+    <span 
+      key={item}
+      className={cla}
+      style={{marginRight: 10}}
+      onClick={click}
+    >
+      {item}
+    </span>
+  )
+}
