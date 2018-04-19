@@ -235,8 +235,8 @@ export default class Wetestlog extends React.Component {
     let type = this.checkTime()
     let { alertMsg } = this.state
     let isChecked = false
-    if (this.state[type + err[0]] === 'Y' ||
-      this.state[type + err[1]] === 'Y' ||
+    if (/*this.state[type + err[0]] === 'Y' ||*/
+      /*this.state[type + err[1]] === 'Y' ||*/
       this.state[type + err[2]] === 'Y' ||
       this.state[type + err[3]] === 'Y') {
       isChecked = true
