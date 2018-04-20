@@ -79,4 +79,45 @@ class InventoryRepository extends Repository
         ]);
         return true;
     }
+
+    public function checkInventoryUser($id, $cyno)
+    {
+        $check = DB::select("
+            select *
+                from mpm_inventory
+                where cyno = '$cyno' and duser = '$id'
+        ");
+        return $check > 0;
+    }
+
+    public function inventoried($cyno) 
+    {
+        $inventoried = DB::select("
+            select *
+                from mpm_inventory
+                where cyno = '$cyno'
+        ");
+        return $inventoried;
+    }
+
+    public function export($cyno)
+    {
+        // $header = [[
+        //     mb_convert_encoding('盤點數量', "utf-8", "big5"), 
+        //     mb_convert_encoding('儲位', "utf-8", "big5"), 
+        //     mb_convert_encoding('料號', "utf-8", "big5"), 
+        //     mb_convert_encoding('批號', "utf-8", "big5"),
+        // ]];
+        $header = [['盤點數量', '儲位', '料號', '批號']];
+        $inventory = $this->model
+            ->where('cyno', $cyno)
+            ->select('amount', 'locn', 'litm', 'lotn')
+            ->orderBy('locn')
+            ->orderBy('litm')
+            ->orderBy('lotn')
+            ->get()
+            ->toArray();
+        $inventory = array_collapse([$header, $inventory]);
+        return $inventory;
+    }
 }

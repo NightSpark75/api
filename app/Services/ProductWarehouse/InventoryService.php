@@ -34,6 +34,7 @@ class InventoryService {
 
     /**
      * @param InventoryRepository $inventoryRepository
+     * @param ExcelService $excel
      */
     public function __construct(
         InventoryRepository $inventoryRepository,
@@ -68,9 +69,21 @@ class InventoryService {
         $nextItem = $this->inventoryRepository->getInventoryItem($cyno);
         return $nextItem;
     }
-    
-    public function test()
+
+    public function getInventoried($id, $cyno)
     {
-        return $this->excel->test();
+        $check = $this->inventoryRepository->checkInventoryUser($id, $cyno);
+        if (!$check) throw new Exception('您沒有此盤點單號的權限!');
+        $inventoried = $this->inventoryRepository->inventoried($cyno);
+        return $inventoried;
+    }
+    
+    public function export($id, $cyno)
+    {
+        $inventory = [];
+        $check = $this->inventoryRepository->checkInventoryUser($id, $cyno);
+        if ($check) $inventory = $this->inventoryRepository->export($cyno);
+        return $this->excel->download($inventory, $cyno.'盤點資料.xlsx', true);
     }
 }
+

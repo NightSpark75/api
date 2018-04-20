@@ -88,6 +88,7 @@ export default class Pointlog extends React.Component {
   }
 
   onCancel() {
+    this.init()
     this.setState({
       catchlog_show: false,
       templog_show: false,
@@ -95,7 +96,6 @@ export default class Pointlog extends React.Component {
       refrilog_show: false,
       pressurelog_show: false,
       point_no: '',
-      scan: true,
     })
   }
 

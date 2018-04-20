@@ -35,6 +35,7 @@ import Package_Working from "./components/web/mpb/package/Working"
 import Package_Material from "./components/web/mpb/package/Material"
 import Package_Duty from "./components/web/mpb/package/Duty"
 import QCPartInfo from "./components/web/mpe/qc/part/Info"
+import Inventory from "./components/web/mpm/inventory"
 
 import Menu1 from "./components/test/menu1"
 import page1 from "./components/test/page1"
@@ -113,6 +114,9 @@ ReactDOM.render(
           <Route path="qc">
             <Route path="receive" component={QCReceive}></Route>
           </Route>
+        </Route>
+        <Route path="mpm">
+          <Route path="inventory" component={Inventory}></Route>
         </Route>
       </Route>
     </Route>

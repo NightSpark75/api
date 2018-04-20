@@ -15,6 +15,7 @@ use App\Services\ProductWarehouse\InventoryService;
 use Exception;
 use App\Traits\Common;
 use Excel;
+use Illuminate\Support\Collection;
 use App\Http\Controllers\ProductWarehouse\InvExport;
 
 /**
@@ -103,13 +104,17 @@ class InventoryController extends Controller
      * @param string $cyno
      * @return mixed
      */
-    public function all($cyno) 
+    public function inventoried($cyno) 
     {
         try {
-            $user = session('user');
+            $user = auth()->user();
+            //$user = session('user');
             $id = $user->id;
-            $inventory = $this->inventoryService->saveInventory($id, $cyno);
-            return response()->json(['inventory' => $inventory], 200);
+            $inventoried = $this->inventoryService->getInventoried($id, $cyno);
+            if (count($inventoried) === 0) {
+                return response()->json(['msg' => '無盤點資料!'], 401);
+            }
+            return response()->json(['inventoried' => $inventoried], 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
         }
@@ -120,20 +125,10 @@ class InventoryController extends Controller
      * 
      * @return response
      */
-    public function export(Excel $excel, InvExport $export)
+    public function export($cyno)
     {
-        $cyno = request()->input('cyno');
-        $cellData = [
-            ['学号','姓名','成绩'],
-            ['10001','AAAAA','99'],
-            ['10002','BBBBB','92'],
-            ['10003','CCCCC','95'],
-            ['10004','DDDDD','89'],
-            ['10005','EEEEE','96'],
-        ];
-        //return Excel::download($cellData, 'invoices.xlsx');
-        //return $this->excel->export(new Export);
-        //return Excel::download($cellData, 'invoices.xlsx');
-        return Excel::download($export, 'invoices.xlsx');
+        $id = auth()->user()->id;
+        $export = $this->inventoryService->export($id, $cyno);
+        return $export;
     }
 }
