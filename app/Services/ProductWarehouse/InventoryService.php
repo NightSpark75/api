@@ -56,6 +56,12 @@ class InventoryService {
         return $item;
     }
 
+    public function checkFinished($cyno)
+    {
+        $finished = $this->inventoryRepository->checkFinished($cyno);
+        return $finished;
+    }
+
     public function saveInventory($id, $cyno, $locn, $litm, $lotn, $amount)
     {
         $item = $this->inventoryRepository->getInventoryItem($cyno);
@@ -66,7 +72,12 @@ class InventoryService {
         ) {
             $this->inventoryRepository->saveInventory($id, $cyno, $locn, $litm, $lotn, $amount);
         }
-        $nextItem = $this->inventoryRepository->getInventoryItem($cyno);
+        $finished = $this->inventoryRepository->checkFinished($cyno);
+        if ($finished) {    
+            $nextItem = $this->inventoryRepository->getInventoryItem($cyno);
+        } else {
+            $nextItem = null;
+        }
         return $nextItem;
     }
 

@@ -34,9 +34,12 @@ class InventoryRepository extends Repository
     public function getInventoryList($date)
     {
         $list = DB::select("
-            select unique a.pjcyno cyno
-                from proddta.jt4141A@JDBPRD.STANDARD.COM.TW a
+            select unique a.pjcyno cyno, locn, litm, lotn
+                from proddta.jt4141A@JDBPRD.STANDARD.COM.TW a, mpm_inventory b
                 where to_char(to_date(substr(a.pjcsdj,2,5),'YYDDD'),'YYYYMMDD') = '$date'
+                    and trim(a.pjcyno) = b.cyno(+) and trim(a.pjlocn) = b.locn(+) 
+                    and trim(a.pjlitm) = b.litm(+) and trim(a.pjlotn) = b.lotn(+)
+                order by pjlocn
         ");
         return $list;
     }
@@ -50,7 +53,8 @@ class InventoryRepository extends Repository
                 trim(a.pjlitm) litm, --料號
                 trim(a.pjlotn) lotn, --批號
                 a.pjtqoh tqoh, --庫存量
-                a.pjuom1 uom1  --庫存單位
+                a.pjuom1 uom1,  --庫存單位
+                a.pjtqoh amount
             from proddta.jt4141A@JDBPRD.STANDARD.COM.TW a
             where pjcyno = '$cyno' 
                 and not exists (
@@ -62,6 +66,18 @@ class InventoryRepository extends Repository
             order by pjlocn, pjlitm, pjlotn
         ");
         return $item;
+    }
+
+    public function checkFinished($cyno)
+    {
+        $items = DB::selectOne("
+            select sum(case when locn is null then 1 else 0 end) items 
+                from proddta.jt4141A@JDBPRD.STANDARD.COM.TW a, mpm_inventory b
+                where to_char(to_date(substr(a.pjcsdj,2,5),'YYDDD'),'YYYYMMDD') = '20180416'
+                    and trim(a.pjcyno) = b.cyno(+) and trim(a.pjlocn) = b.locn(+) 
+                    and trim(a.pjlitm) = b.litm(+) and trim(a.pjlotn) = b.lotn(+)
+        ")->items;
+        return $items === 0;
     }
 
     public function saveInventory($id, $cyno, $locn, $litm, $lotn, $amount)

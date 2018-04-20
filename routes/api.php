@@ -70,6 +70,7 @@ Route::group(['prefix' => 'productWarehouse', 'namespace' => 'ProductWarehouse']
 Route::group(['prefix' => 'inventory', 'middleware' => 'jwt'], function () {
         Route::get('list/{date?}', 'InventoryController@getInventoryList');
         Route::get('item/{cyno}', 'InventoryController@getInventoryItem');
+        Route::get('finished/{cyno}', 'InventoryController@checkFinished');
         Route::post('save', 'InventoryController@saveInventory');
         
     });

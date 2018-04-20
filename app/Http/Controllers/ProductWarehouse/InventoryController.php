@@ -59,6 +59,23 @@ class InventoryController extends Controller
     }
 
     /**
+     * get inventory list
+     *
+     * @param string $date
+     * @throws Exception
+     * @return mixed
+     */
+    public function checkFinished($cyno)
+    {
+        try {
+            $finished = $this->inventoryService->checkFinished($cyno);
+            return response()->json($finished, 200);
+        } catch (Exception $e) {
+            return response()->json($this->getException($e), 400);
+        }
+    }
+
+    /**
      * get inventory item
      *
      * @param string $cyno
