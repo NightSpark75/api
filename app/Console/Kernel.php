@@ -39,7 +39,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('Web:MPZ:Overdue1330')->dailyAt('13:30');
         $schedule->command('Web:MPZ:Overdue1700')->dailyAt('17:00');
         $schedule->command('Web:MPZ:Overdue2200')->dailyAt('22:00');
-        $schedule->command('Web:MPZ:Overdue2200')->dailyAt('0836');
+        $schedule->command('Web:MPZ:Overdue2200')->dailyAt('08:55');
     }
 
     /**
