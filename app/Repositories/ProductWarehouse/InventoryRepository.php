@@ -93,7 +93,9 @@ class InventoryRepository extends Repository
     public function inventoried($cyno) 
     {
         $inventoried = DB::select("
-            select *
+            select amount, locn, litm, lotn
+                    , stdadm.pk_hra.fu_emp_name(duser) duser
+                    , to_char(ddate, 'YYYYMMDD HH24:MI:SS') ddate
                 from mpm_inventory
                 where cyno = '$cyno'
         ");
@@ -102,16 +104,10 @@ class InventoryRepository extends Repository
 
     public function export($cyno)
     {
-        // $header = [[
-        //     mb_convert_encoding('盤點數量', "utf-8", "big5"), 
-        //     mb_convert_encoding('儲位', "utf-8", "big5"), 
-        //     mb_convert_encoding('料號', "utf-8", "big5"), 
-        //     mb_convert_encoding('批號', "utf-8", "big5"),
-        // ]];
-        $header = [['盤點數量', '儲位', '料號', '批號']];
+        $header = [['盤點數量', '儲位', '料號', '批號', '盤點人員', '時間']];
         $inventory = $this->model
             ->where('cyno', $cyno)
-            ->select('amount', 'locn', 'litm', 'lotn')
+            ->selectRaw('amount, locn, litm, lotn, stdadm.pk_hra.fu_emp_name(duser) duser, to_char(ddate, \'YYYYMMDD HH24:MI:SS\') ddate')
             ->orderBy('locn')
             ->orderBy('litm')
             ->orderBy('lotn')

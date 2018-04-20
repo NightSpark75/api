@@ -106,6 +106,8 @@ export default class Inventory extends React.Component {
                 <td>料號</td>
                 <td>批號</td>
                 <td>盤點數量</td>
+                <td>盤點人員</td>
+                <td>時間</td>
               </tr>
             </thead>
             {inventoried.map((item, index) => (
@@ -115,6 +117,8 @@ export default class Inventory extends React.Component {
                   <td>{item.litm}</td>
                   <td>{item.lotn}</td>
                   <td>{item.amount}</td>
+                  <td>{item.duser}</td>
+                  <td>{item.ddate}</td>
                 </tr>
               </tbody>
             ))}
