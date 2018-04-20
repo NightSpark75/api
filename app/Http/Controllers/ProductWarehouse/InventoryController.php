@@ -14,6 +14,8 @@ use App\Http\Controllers\Controller;
 use App\Services\ProductWarehouse\InventoryService;
 use Exception;
 use App\Traits\Common;
+use Excel;
+use App\Http\Controllers\ProductWarehouse\InvExport;
 
 /**
  * Class InventoryController
@@ -59,7 +61,6 @@ class InventoryController extends Controller
      * get inventory item
      *
      * @param string $cyno
-     * @param string $date
      * @throws Exception
      * @return mixed
      */
@@ -94,5 +95,45 @@ class InventoryController extends Controller
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
         }
+    }
+
+    /**
+     * get all inventory data
+     * 
+     * @param string $cyno
+     * @return mixed
+     */
+    public function all($cyno) 
+    {
+        try {
+            $user = session('user');
+            $id = $user->id;
+            $inventory = $this->inventoryService->saveInventory($id, $cyno);
+            return response()->json(['inventory' => $inventory], 200);
+        } catch (Exception $e) {
+            return response()->json($this->getException($e), 400);
+        }
+    }
+
+    /**
+     * export inventory data to excel
+     * 
+     * @return response
+     */
+    public function export(Excel $excel, InvExport $export)
+    {
+        $cyno = request()->input('cyno');
+        $cellData = [
+            ['学号','姓名','成绩'],
+            ['10001','AAAAA','99'],
+            ['10002','BBBBB','92'],
+            ['10003','CCCCC','95'],
+            ['10004','DDDDD','89'],
+            ['10005','EEEEE','96'],
+        ];
+        //return Excel::download($cellData, 'invoices.xlsx');
+        //return $this->excel->export(new Export);
+        //return Excel::download($cellData, 'invoices.xlsx');
+        return Excel::download($export, 'invoices.xlsx');
     }
 }

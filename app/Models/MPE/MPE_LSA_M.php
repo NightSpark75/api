@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models\MPZ;
+namespace App\Models\MPE;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MPZ_CATCHLOG extends Model
+class MPE_LSA_M extends Model
 {
     //
     protected $connection = 'oracle';

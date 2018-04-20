@@ -67,10 +67,12 @@ Route::group(['prefix' => 'productWarehouse', 'namespace' => 'ProductWarehouse']
         Route::post('pieces', 'ShippingController@savePieces');
     });
     // inventory
-Route::group(['prefix' => 'inventory', 'middleware' => 'jwt'], function () {
+Route::group(['prefix' => 'inventory'/*, 'middleware' => 'jwt'*/], function () {
         Route::get('list/{date?}', 'InventoryController@getInventoryList');
         Route::get('item/{cyno}', 'InventoryController@getInventoryItem');
         Route::post('item', 'InventoryController@saveInventory');
+        Route::get('all/{cyno}', 'InventoryController@all');
+        Route::get('export', 'InventoryController@export');
     });
 });
 

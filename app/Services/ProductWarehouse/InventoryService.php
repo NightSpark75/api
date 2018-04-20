@@ -11,6 +11,7 @@
 namespace App\Services\ProductWarehouse;
 
 use App\Repositories\ProductWarehouse\InventoryRepository;
+use App\Services\Web\ExcelService;
 use Exception;
 use DB;
 
@@ -27,12 +28,19 @@ class InventoryService {
     private $inventoryRepository;
 
     /**
+     * @var ExcelService
+     */
+    private $excel;
+
+    /**
      * @param InventoryRepository $inventoryRepository
      */
     public function __construct(
-        InventoryRepository $inventoryRepository
+        InventoryRepository $inventoryRepository,
+        ExcelService $excel
     ) {
         $this->inventoryRepository = $inventoryRepository;
+        $this->excel = $excel;
     }
 
     public function getInventoryList($date)
@@ -59,5 +67,10 @@ class InventoryService {
         }
         $nextItem = $this->inventoryRepository->getInventoryItem($cyno);
         return $nextItem;
+    }
+    
+    public function test()
+    {
+        return $this->excel->test();
     }
 }
