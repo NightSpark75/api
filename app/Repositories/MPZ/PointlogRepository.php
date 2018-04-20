@@ -50,7 +50,7 @@ class PointlogRepository
      * 
      * @param int $date
      */
-    private function getUnrecordedList($date)
+    public function getUnrecordedList($date)
     {
         $catch = $this->catchDetailHandler($date);
         $temp = $this->tempDetailHandler($date);
