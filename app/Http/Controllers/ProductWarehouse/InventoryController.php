@@ -92,7 +92,7 @@ class InventoryController extends Controller
             $lotn = request()->input('lotn');
             $amount = request()->input('amount');
             $nextItem = $this->inventoryService->saveInventory($id, $cyno, $locn, $litm, $lotn, $amount);
-            return response()->json(['item' => $nextItem], 200);
+            return response()->json($nextItem, 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
         }
