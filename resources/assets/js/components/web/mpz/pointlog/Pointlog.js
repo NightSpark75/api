@@ -82,9 +82,16 @@ export default class Pointlog extends React.Component {
           point_info: item,
           [pointType[item.point_type]]: true,
           scan: false,
+          scan_message: '',
         })
+        return 
       }
     })
+    if (point_no.length > 10) {
+      this.componentMsg('記錄點位不存在')
+    } else {
+      this.componentMsg('')
+    }
   }
 
   onCancel() {
@@ -96,6 +103,7 @@ export default class Pointlog extends React.Component {
       refrilog_show: false,
       pressurelog_show: false,
       point_no: '',
+      scan_message: '',
     })
   }
 
