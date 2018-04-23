@@ -66,7 +66,6 @@ class InventoryService {
     public function saveInventory($id, $cyno, $locn, $litm, $lotn, $amount)
     {
         $item = $this->inventoryRepository->getInventoryItem($cyno);
-        if (!$item) return false;
         if (
             $item->locn === $locn &&
             $item->litm === $litm &&
@@ -78,7 +77,7 @@ class InventoryService {
         if (!$finished) {    
             $nextItem = $this->inventoryRepository->getInventoryItem($cyno);
         } else {
-            $nextItem = false;
+            $nextItem = null;
         }
         return $nextItem;
     }

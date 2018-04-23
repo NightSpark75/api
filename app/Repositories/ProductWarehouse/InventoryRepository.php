@@ -76,7 +76,7 @@ class InventoryRepository extends Repository
                     and trim(a.pjcyno) = b.cyno(+) and trim(a.pjlocn) = b.locn(+) 
                     and trim(a.pjlitm) = b.litm(+) and trim(a.pjlotn) = b.lotn(+)
         ")->items;
-        return $items === 0;
+        return $items !== 0;
     }
 
     public function saveInventory($id, $cyno, $locn, $litm, $lotn, $amount)
