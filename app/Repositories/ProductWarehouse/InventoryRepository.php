@@ -72,7 +72,7 @@ class InventoryRepository extends Repository
         $items = DB::selectOne("
             select sum(case when locn is null then 1 else 0 end) items 
                 from proddta.jt4141A@JDBPRD.STANDARD.COM.TW a, mpm_inventory b
-                where to_char(to_date(substr(a.pjcsdj,2,5),'YYDDD'),'YYYYMMDD') = '20180416'
+                where a.pjcyno = '$cyno'
                     and trim(a.pjcyno) = b.cyno(+) and trim(a.pjlocn) = b.locn(+) 
                     and trim(a.pjlitm) = b.litm(+) and trim(a.pjlotn) = b.lotn(+)
         ")->items;
