@@ -102,11 +102,11 @@ class InventoryRepository extends Repository
     public function checkInventoryUser($id, $cyno)
     {
         $check = DB::select("
-            select *
+            select 0
                 from mpm_inventory
                 where cyno = '$cyno' and duser = '$id'
         ");
-        return $check > 0;
+        return count($check) > 0;
     }
 
     public function inventoried($cyno) 

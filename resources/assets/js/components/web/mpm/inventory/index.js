@@ -39,7 +39,7 @@ export default class Inventory extends React.Component {
     }).catch((error) => {
       self.setState({
         inventoried: [],
-        msg: error.response.data.msg,
+        msg: error.response.data.message,
       })
       console.log(error);
     });
