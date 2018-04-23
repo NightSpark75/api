@@ -64,7 +64,7 @@ class DocumentRepository
                                 from mpe_house_m hh
                                 where hh.partno = m.partno
                             )
-                order by 1
+                order by 1, 2 desc
             ");
             if (count($info) === 0) {
                 $info = DB::select("
