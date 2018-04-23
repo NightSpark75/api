@@ -39,6 +39,16 @@ class InventoryRepository extends Repository
                 where to_char(to_date(substr(a.pjcsdj,2,5),'YYDDD'),'YYYYMMDD') = '$date'
                     and trim(a.pjcyno) = b.cyno(+) and trim(a.pjlocn) = b.locn(+) 
                     and trim(a.pjlitm) = b.litm(+) and trim(a.pjlotn) = b.lotn(+)
+
+            select a.pjcyno cyno
+                from proddta.jt4141A@JDBPRD.STANDARD.COM.TW a 
+                where to_char(to_date(substr(a.pjcsdj,2,5),'YYDDD'),'YYYYMMDD') = '$date'
+                group by pjcyno
+                    having count(pjcyno) <> (
+                      select count(cyno)
+                        from mpm_inventory b
+                        where a.pjcyno = b.cyno
+                    )
         ");
         return $list;
     }
