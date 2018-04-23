@@ -47,7 +47,6 @@ class InventoryService {
     public function getInventoryList($date)
     {
         $list = $this->inventoryRepository->getInventoryList($date);
-        if (!$list) return false;
         return $list;
     }
 
