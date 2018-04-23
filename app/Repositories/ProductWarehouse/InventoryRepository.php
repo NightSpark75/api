@@ -34,12 +34,6 @@ class InventoryRepository extends Repository
     public function getInventoryList($date)
     {
         $list = DB::select("
-            select unique a.pjcyno cyno
-                from proddta.jt4141A@JDBPRD.STANDARD.COM.TW a, mpm_inventory b
-                where to_char(to_date(substr(a.pjcsdj,2,5),'YYDDD'),'YYYYMMDD') = '$date'
-                    and trim(a.pjcyno) = b.cyno(+) and trim(a.pjlocn) = b.locn(+) 
-                    and trim(a.pjlitm) = b.litm(+) and trim(a.pjlotn) = b.lotn(+)
-
             select a.pjcyno cyno
                 from proddta.jt4141A@JDBPRD.STANDARD.COM.TW a 
                 where to_char(to_date(substr(a.pjcsdj,2,5),'YYDDD'),'YYYYMMDD') = '$date'
