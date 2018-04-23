@@ -73,10 +73,10 @@ class InventoryService {
             $this->inventoryRepository->saveInventory($id, $cyno, $locn, $litm, $lotn, $amount);
         }
         $finished = $this->inventoryRepository->checkFinished($cyno);
-        if ($finished) {    
+        if (!$finished) {    
             $nextItem = $this->inventoryRepository->getInventoryItem($cyno);
         } else {
-            $nextItem = null;
+            $nextItem = false;
         }
         return $nextItem;
     }
