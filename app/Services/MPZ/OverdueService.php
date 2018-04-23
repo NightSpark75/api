@@ -167,7 +167,7 @@ class OverdueService {
         $pressure = $this->pointlogRepository->noRecordByType('mpz_pressurelog', 'P', 'ev', $date);
         $list = array_collapse([$temp, $wetest, $refri, $pressure]);
         $content = $this->setMailContent($list);
-        $subject = $date.' 1700未記錄清單!';
+        $subject = $date.' 1650未記錄清單!';
         $sender = 'mpz.system@standard.com.tw';
         $recipient = $this->common->getMailRecipient('MPZ_OVERDUE');
         for($i = 0; $i < count($recipient); $i++) {
