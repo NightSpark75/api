@@ -8,7 +8,7 @@ export default class Image extends React.Component {
       <div className="modal is-active">
         <div className="modal-background" onClick={hide}></div>
         <div className="modal-content">
-          <p className="image is-4by3">
+          <p className="image">
             <img src={url} alt=""/>
           </p>
         </div>
