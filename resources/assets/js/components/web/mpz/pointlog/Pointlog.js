@@ -202,7 +202,7 @@ export default class Pointlog extends React.Component {
                   <td>上午[0600 ~ 0900]</td>
                   <td>下午1[1200 ~ 1400]</td>
                   <td>下午2[1630 ~ 1730]</td>
-                  <td style={{width: 40}}></td>
+                  <td>位置圖</td>
                 </tr>
               </thead>
               <tbody>
