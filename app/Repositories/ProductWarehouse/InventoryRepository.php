@@ -159,32 +159,33 @@ class InventoryRepository extends Repository
                     , to_char(ddate, 'YYYYMMDD HH24:MI:SS') ddate
                 from mpm_inventory
                 where cyno = '$cyno'
+                order by locn, litm, lotn
         ");
         return $inventoried;
     }
 
     /**
-     * export inventoried data to excel
+     * inventoried export data
      * 
      * @param string $cyno
      * @return array
      */
-    public function export($cyno)
+    public function exportData($cyno)
     {
         $header = [['盤點數量', '儲位', '料號', '批號', '盤點人員', '時間']];
-        $inventory = $this->model
-            ->where('cyno', $cyno)
-            ->selectRaw("
-                amount, locn, litm, lotn, 
-                stdadm.pk_hra.fu_emp_name(duser) duser, 
-                to_char(ddate, 'YYYYMMDD HH24:MI:SS') ddate
-            ")
-            ->orderBy('locn')
-            ->orderBy('litm')
-            ->orderBy('lotn')
-            ->get()
-            ->toArray();
-        $inventory = array_collapse([$header, $inventory]);
-        return $inventory;
+        $content = [];
+        $list = $this->inventoried($cyno);
+        for ($i = 0; $i < count($list); $i++) {
+            array_push($content, [
+                $list[$i]->amount,
+                '\''.(string) $list[$i]->locn,
+                '\''.(string) $list[$i]->litm,
+                '\''.(string) $list[$i]->lotn,
+                '\''.(string) $list[$i]->duser,
+                '\''.(string) $list[$i]->ddate,
+            ]);
+        }
+        $inventoried = array_collapse([$header, $content]);
+        return $inventoried;
     }
 }

@@ -435,7 +435,7 @@ export default class Wetestlog extends React.Component {
                 {
                   /*(humi_low === '0' || humi_low === '-200' ? '': humi_low) */
                   " <= " +
-                  (humi_high === '0' || humi_high === '200' ? '' : humi_high) + ' %'
+                  (humi_high === '0' || humi_high === '101' ? '' : humi_high) + ' %'
                 }
               </td>
             </tr>

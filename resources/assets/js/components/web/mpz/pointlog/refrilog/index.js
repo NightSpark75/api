@@ -417,8 +417,8 @@ export default class Refrilog extends React.Component {
               <td >合格範圍</td>
               <td colSpan={3}>
                 {
-                  '溫度： ' + (temp_low === 0 || temp_low === '-200' ? '' : temp_low)
-                  + " ~ " + (temp_high === 0 || temp_low === '200' ? '' : temp_high) + ' ℃'
+                  '溫度： ' + (temp_low === 0 || temp_low === '-101' ? '' : temp_low)
+                  + " ~ " + (temp_high === 0 || temp_low === '101' ? '' : temp_high) + ' ℃'
                 }
               </td>
             </tr>

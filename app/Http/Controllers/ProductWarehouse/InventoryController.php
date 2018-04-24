@@ -14,9 +14,7 @@ use App\Http\Controllers\Controller;
 use App\Services\ProductWarehouse\InventoryService;
 use Exception;
 use App\Traits\Common;
-use Excel;
-use Illuminate\Support\Collection;
-use App\Http\Controllers\ProductWarehouse\InvExport;
+use App\Services\Web\ExcelService;
 
 /**
  * Class InventoryController
@@ -33,12 +31,20 @@ class InventoryController extends Controller
     private $inventoryService;
 
     /**
-     * @param InventoryService $inventoryService
-     * @throws Exception
+     * @var ExcelService
      */
-    public function __construct(InventoryService $inventoryService) 
-    {
+    private $excel;
+
+    /**
+     * @param InventoryService $inventoryService
+     * @param ExcelService $excel
+     */
+    public function __construct(
+        InventoryService $inventoryService,
+        ExcelService $excel
+    ) {
         $this->inventoryService = $inventoryService;
+        $this->excel = $excel;
     }
 
     /**
@@ -59,9 +65,9 @@ class InventoryController extends Controller
     }
 
     /**
-     * get inventory list
+     * check inventory is finished or not
      *
-     * @param string $date
+     * @param string $cyno
      * @throws Exception
      * @return mixed
      */
@@ -125,7 +131,6 @@ class InventoryController extends Controller
     {
         try {
             $user = auth()->user();
-            //$user = session('user');
             $id = $user->id;
             $inventoried = $this->inventoryService->getInventoried($id, $cyno);
             if (count($inventoried) === 0) {
@@ -145,7 +150,8 @@ class InventoryController extends Controller
     public function export($cyno)
     {
         $id = auth()->user()->id;
-        $export = $this->inventoryService->export($id, $cyno);
+        $inventoried = $this->inventoryService->getExportData($id, $cyno);
+        $export = $this->excel->download($inventoried, $cyno.'盤點資料.xlsx', true);
         return $export;
     }
 }

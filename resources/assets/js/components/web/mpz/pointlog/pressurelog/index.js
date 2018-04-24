@@ -267,10 +267,10 @@ export default class Pressurelog extends React.Component {
         <td colSpan={3}>
           {key.map((item, index) => {
             let disabled = false
-            if (item === '_pa' && (pa_low === '-200' && pa_high === '200')) {
+            if (item === '_pa' && (pa_low === '-101' && pa_high === '101')) {
               disabled = true
             }
-            if (item === '_aq' && (aq_low === '-200' && aq_high === '200')) {
+            if (item === '_aq' && (aq_low === '-101' && aq_high === '101')) {
               disabled = true
             }
             return(
@@ -413,8 +413,8 @@ export default class Pressurelog extends React.Component {
             </tr>
             <tr>
               <td>合格範圍pa</td>
-              <td>{(pa_low === 0 || pa_low === '-200' ? '' : '> ' + pa_low)} {/* + " ~ " + (pa_high !== 0 ? pa_high : '')*/}</td>
-              <td>合格範圍mmAq</td><td>{(aq_low === 0 || aq_low === '-200' ? '' : '> ' + aq_low)} {/* + " ~ " + (aq_high !== 0 ? aq_high : '')*/}</td>
+              <td>{(pa_low === 0 || pa_low === '-101' ? '' : '> ' + pa_low)} {/* + " ~ " + (pa_high !== 0 ? pa_high : '')*/}</td>
+              <td>合格範圍mmAq</td><td>{(aq_low === 0 || aq_low === '-101' ? '' : '> ' + aq_low)} {/* + " ~ " + (aq_high !== 0 ? aq_high : '')*/}</td>
             </tr>
             {this.checkTime() === 'mo' &&
               this.layoutInput('上午記錄')

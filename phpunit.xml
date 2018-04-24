@@ -21,10 +21,13 @@
             <directory suffix=".php">./app/Repositories/ProductWarehouse/PickingItemsRepository.php</directory>
             <directory suffix=".php">./app/Repositories/ProductWarehouse/PickingListRepository.php</directory>
             <directory suffix=".php">./app/Repositories/ProductWarehouse/ShippingListRepository.php</directory>
+            <directory suffix=".php">./app/Repositories/ProductWarehouse/InventoryRepository.php</directory>
             <directory suffix=".php">./app/Services/ProductWarehouse/PickingService.php</directory>
             <directory suffix=".php">./app/Services/ProductWarehouse/ShippingService.php</directory>
+            <directory suffix=".php">./app/Services/ProductWarehouse/InventoryService.php</directory>
             <directory suffix=".php">./app/Http/Controllers/ProductWarehouse/PickingController.php</directory>
             <directory suffix=".php">./app/Http/Controllers/ProductWarehouse/ShippingController.php</directory>
+            <directory suffix=".php">./app/Http/Controllers/ProductWarehouse/InventoryController.php</directory>
         </whitelist>
         <blacklist>
             <directory suffix=".php">./bootstrap</directory>

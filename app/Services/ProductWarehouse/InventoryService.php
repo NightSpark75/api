@@ -11,7 +11,6 @@
 namespace App\Services\ProductWarehouse;
 
 use App\Repositories\ProductWarehouse\InventoryRepository;
-use App\Services\Web\ExcelService;
 use Exception;
 use DB;
 
@@ -28,20 +27,11 @@ class InventoryService {
     private $inventoryRepository;
 
     /**
-     * @var ExcelService
-     */
-    private $excel;
-
-    /**
      * @param InventoryRepository $inventoryRepository
-     * @param ExcelService $excel
      */
-    public function __construct(
-        InventoryRepository $inventoryRepository,
-        ExcelService $excel
-    ) {
+    public function __construct(InventoryRepository $inventoryRepository) 
+    {
         $this->inventoryRepository = $inventoryRepository;
-        $this->excel = $excel;
     }
 
     /**
@@ -126,18 +116,18 @@ class InventoryService {
     }
     
     /**
-     * export inventoried data to excel
+     * check user auth and return inventoried data
      * 
      * @param string $id
      * @param string $cyno
      * @return EXcel
      */
-    public function export($id, $cyno)
+    public function getExportData($id, $cyno)
     {
-        $inventory = [];
+        $inventoried = [];
         $check = $this->inventoryRepository->checkInventoryUser($id, $cyno);
-        if ($check) $inventory = $this->inventoryRepository->export($cyno);
-        return $this->excel->download($inventory, $cyno.'盤點資料.xlsx', true);
+        if ($check) $inventoried = $this->inventoryRepository->exportData($cyno);
+        return $inventoried;
     }
 }
 
