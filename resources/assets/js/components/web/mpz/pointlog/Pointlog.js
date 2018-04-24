@@ -9,6 +9,7 @@ import Templog from './Templog'
 import Wetestlog from './Wetestlog'
 import Refrilog from './Refrilog'
 import Pressurelog from './Pressurelog'
+import Image from './image'
 
 const pointType = {
   C: 'catchlog_show',
@@ -41,6 +42,10 @@ export default class Pointlog extends React.Component {
       mcu: '10A1',
       floor: '1F',
     }
+
+    this.refreash = this.refreash.bind(this)
+    this.showImage = this.showImage.bind(this)
+    this.hideImage = this.hideImage.bind(this)
   }
 
   init() {
@@ -62,6 +67,14 @@ export default class Pointlog extends React.Component {
     }).catch(function (error) {
       console.log(error)
     })
+  }
+
+  refreash() {
+    this.setState({
+      scan: false,
+      unrecorded: [],
+    })
+    this.init()
   }
 
   componentDidMount() {
@@ -115,9 +128,17 @@ export default class Pointlog extends React.Component {
     window.location = '/auth/web/menu'
   }
 
+  showImage() {
+    this.setState({showImage: true})
+  }
+
+  hideImage() {
+    this.setState({showImage: false})
+  }
+
   render() {
     let today = new Date()
-    const { point_info, scan, unrecorded, mcu, floor } = this.state
+    const { point_info, scan, unrecorded, mcu, floor, showImage } = this.state
     return (
       <div>
         <div className="box" style={{ marginTop: '10px', marginBottom: '10px' }}>
@@ -160,10 +181,19 @@ export default class Pointlog extends React.Component {
             {floorList.map((item) => (
               getFloorButton(item, floor, () => this.setState({floor: item}))
             ))}
+            <button 
+              className="button" 
+              style={{float: 'right'}}
+              onClick={this.refreash}
+            >
+              <span className="icon">
+                <i className="fas fa-redo-alt"></i>
+              </span>
+            </button>
             <table className="table is-bordered table is-fullwidth" style={{marginTop: 10}}>
               <thead>
                 <tr>
-                  <td colSpan="4">
+                  <td colSpan="5">
                     未記錄點位
                   </td>
                 </tr>  
@@ -172,11 +202,12 @@ export default class Pointlog extends React.Component {
                   <td>上午[0600 ~ 0900]</td>
                   <td>下午1[1200 ~ 1400]</td>
                   <td>下午2[1630 ~ 1730]</td>
+                  <td style={{width: 40}}></td>
                 </tr>
               </thead>
               <tbody>
                 {unrecorded.map((item) => (
-                  getUnrecorded(item, mcu, floor)
+                  getUnrecorded(item, mcu, floor, this.showImage, this.hideImage, item.point_type, showImage)
                 ))}
               </tbody>
             </table>
@@ -227,7 +258,7 @@ export default class Pointlog extends React.Component {
   }
 }
 
-function getUnrecorded(item, mcu, floor) {
+function getUnrecorded(item, mcu, floor, show, hide, type, showImage) {
   if (item.mcu === mcu && item.floor === floor) {
     return (
       <tr key={item.point_no}>
@@ -235,6 +266,7 @@ function getUnrecorded(item, mcu, floor) {
         <td>{item.mo}</td>
         <td>{item.af}</td>
         <td>{item.ev}</td>
+        <td>{imageButton(show, hide, mcu, floor, type, showImage)}</td>
       </tr>
     )
   }
@@ -265,5 +297,28 @@ function getFloorButton(item, floor, click) {
     >
       {item}
     </span>
+  )
+}
+
+function imageButton(show, hide, mcu, floor, type, showImage) {
+  return (
+    <div>
+      <button
+        className="button"
+        onClick={show}
+      >
+        <span className="icon">
+          <i className="fas fa-map-marker-alt"></i>
+        </span>
+      </button>
+      {showImage &&
+        <Image 
+          hide={hide}
+          mcu={mcu}
+          floor={floor}
+          type={type}
+        />
+      }
+    </div>
   )
 }

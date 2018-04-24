@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <title>Standard web</title>
     <link href="{{ url('/css/app.css?x=') . rand() }}" rel="stylesheet">
-    <link href="{{ url('/css/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="{{ url('/css/fontawesome-all.min.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app"></div>

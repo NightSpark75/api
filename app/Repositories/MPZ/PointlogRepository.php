@@ -174,7 +174,7 @@ class PointlogRepository
 
     public function noRecordDetail($table, $date, $type, $mo, $af, $ev) {
         $list = DB::select("
-            select p.point_no, p.point_name, p.point_des, c.ldate, p.mcu, p.floor, $mo, $af, $ev
+            select p.point_no, p.point_name, p.point_des, c.ldate, p.point_type, p.mcu, p.floor, $mo, $af, $ev
                 from mpz_point p, (
                     select *
                         from $table
