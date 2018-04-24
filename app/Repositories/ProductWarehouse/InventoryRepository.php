@@ -31,6 +31,12 @@ class InventoryRepository extends Repository
         return 'App\Models\ProductWarehouse\Inventory';
     }
 
+    /**
+     * get inventory list
+     * 
+     * @param string $date
+     * @return array
+     */
     public function getInventoryList($date)
     {
         $list = DB::select("
@@ -47,30 +53,42 @@ class InventoryRepository extends Repository
         return $list;
     }
 
+    /**
+     * get inventory item
+     * 
+     * @param string $cyno
+     * @return array
+     */
     public function getInventoryItem($cyno)
     {
         $item = DB::selectOne("
-        select  a.pjcyno cyno, --盤點號碼
-                a.pjcsdj csdj, --盤點日期
-                trim(a.pjlocn) locn, --儲位
-                trim(a.pjlitm) litm, --料號
-                trim(a.pjlotn) lotn, --批號
-                a.pjtqoh tqoh, --庫存量
-                a.pjuom1 uom1,  --庫存單位
-                a.pjtqoh amount
-            from proddta.jt4141A@JDBPRD.STANDARD.COM.TW a
-            where pjcyno = '$cyno' 
-                and not exists (
-                    select cyno
-                        from mpm_inventory i
-                        where i.cyno = '$cyno'
-                            and trim(a.pjlocn )= i.locn and trim(a.pjlitm) = i.litm and trim(a.pjlotn) = i.lotn
-                )
-            order by pjlocn, pjlitm, pjlotn
+            select  a.pjcyno cyno, --盤點號碼
+                    a.pjcsdj csdj, --盤點日期
+                    trim(a.pjlocn) locn, --儲位
+                    trim(a.pjlitm) litm, --料號
+                    trim(a.pjlotn) lotn, --批號
+                    a.pjtqoh tqoh, --庫存量
+                    a.pjuom1 uom1,  --庫存單位
+                    a.pjtqoh amount
+                from proddta.jt4141A@JDBPRD.STANDARD.COM.TW a
+                where pjcyno = '$cyno' 
+                    and not exists (
+                        select cyno
+                            from mpm_inventory i
+                            where i.cyno = '$cyno'
+                                and trim(a.pjlocn )= i.locn and trim(a.pjlitm) = i.litm and trim(a.pjlotn) = i.lotn
+                    )
+                order by pjlocn, pjlitm, pjlotn
         ");
         return $item;
     }
 
+    /**
+     * check inventory is finished or not
+     * 
+     * @param string $cyno
+     * @return bool
+     */
     public function checkFinished($cyno)
     {
         $items = DB::selectOne("
@@ -83,6 +101,17 @@ class InventoryRepository extends Repository
         return (int) $items === 0;
     }
 
+    /**
+     * save inventory data
+     * 
+     * @param string $id
+     * @param string $cyno
+     * @param string $locn
+     * @param string @litm
+     * @param string $lotn
+     * @param int $amount
+     * @return bool
+     */
     public function saveInventory($id, $cyno, $locn, $litm, $lotn, $amount)
     {
         DB::insert("
@@ -99,6 +128,13 @@ class InventoryRepository extends Repository
         return true;
     }
 
+    /**
+     * check user's auth
+     * 
+     * @param string $id
+     * @param string $cyno
+     * @return bool
+     */
     public function checkInventoryUser($id, $cyno)
     {
         $check = DB::select("
@@ -109,6 +145,12 @@ class InventoryRepository extends Repository
         return count($check) > 0;
     }
 
+    /**
+     * return inventoried list
+     * 
+     * @param string $cyno
+     * @return array
+     */
     public function inventoried($cyno) 
     {
         $inventoried = DB::select("
@@ -121,12 +163,22 @@ class InventoryRepository extends Repository
         return $inventoried;
     }
 
+    /**
+     * export inventoried data to excel
+     * 
+     * @param string $cyno
+     * @return array
+     */
     public function export($cyno)
     {
         $header = [['盤點數量', '儲位', '料號', '批號', '盤點人員', '時間']];
         $inventory = $this->model
             ->where('cyno', $cyno)
-            ->selectRaw('amount, locn, litm, lotn, stdadm.pk_hra.fu_emp_name(duser) duser, to_char(ddate, \'YYYYMMDD HH24:MI:SS\') ddate')
+            ->selectRaw("
+                amount, locn, litm, lotn, 
+                stdadm.pk_hra.fu_emp_name(duser) duser, 
+                to_char(ddate, 'YYYYMMDD HH24:MI:SS') ddate
+            ")
             ->orderBy('locn')
             ->orderBy('litm')
             ->orderBy('lotn')

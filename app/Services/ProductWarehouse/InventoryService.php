@@ -44,24 +44,53 @@ class InventoryService {
         $this->excel = $excel;
     }
 
+    /**
+     * get inventory list
+     * 
+     * @param string $date
+     * @return array
+     */
     public function getInventoryList($date)
     {
         $list = $this->inventoryRepository->getInventoryList($date);
         return $list;
     }
 
+    /**
+     * get inventory item
+     * 
+     * @param string $cyno
+     * @return array
+     */
     public function getInventoryItem($cyno)
     {
         $item = $this->inventoryRepository->getInventoryItem($cyno);
         return $item;
     }
 
+    /**
+     * check inventory is finished or not
+     * 
+     * @param string $cyno
+     * @return bool
+     */
     public function checkFinished($cyno)
     {
         $finished = $this->inventoryRepository->checkFinished($cyno);
         return $finished;
     }
 
+    /** 
+     * save inventory data, and return next item
+     * 
+     * @param string $id
+     * @param string $cyno
+     * @param string $locn
+     * @param string @litm
+     * @param string $lotn
+     * @param int $amount
+     * @return stdClass
+     */
     public function saveInventory($id, $cyno, $locn, $litm, $lotn, $amount)
     {
         $item = $this->inventoryRepository->getInventoryItem($cyno);
@@ -81,6 +110,13 @@ class InventoryService {
         return $nextItem;
     }
 
+    /**
+     * get is inventoried data 
+     * 
+     * @param string $id
+     * @param string $cyno
+     * @return mixed
+     */
     public function getInventoried($id, $cyno)
     {
         $check = $this->inventoryRepository->checkInventoryUser($id, $cyno);
@@ -89,6 +125,13 @@ class InventoryService {
         return $inventoried;
     }
     
+    /**
+     * export inventoried data to excel
+     * 
+     * @param string $id
+     * @param string $cyno
+     * @return EXcel
+     */
     public function export($id, $cyno)
     {
         $inventory = [];
