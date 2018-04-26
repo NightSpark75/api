@@ -45,9 +45,16 @@ class PickingListRepository extends Repository
                 from jdv_f594921 j, mpm_picking_m m
                 where trim(j.ststop) = m.stop(+) and j.staddj = to_date($date, 'YYYYMMDD')
                     and j.stky6 is null
-                    and to_number(to_char(j.staddj, 'YYYYMMDD')) = m.addj(+)
-                    and (m.state not in ('P', 'E') or m.state is null)
-                    and ((m.duser = '$user' and m.state = 'Y') or m.duser is null)
+                    and (exists (
+                        select * from mpm_picking_m m 
+                            where j.staddj = to_date(m.addj, 'YYYYMMDD')
+                                and trim(ststop) = m.stop
+                                and ((duser = '106013' and state in ('Y', 'P')) or (duser != '106013' and state = 'P'))
+                    ) AND not exists(
+                        select * from mpm_picking_m m
+                            where j.staddj = to_date(m.addj, 'YYYYMMDD')
+                                and state = 'E'
+                    ))
         ");
         return $list;
     }
