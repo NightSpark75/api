@@ -72,7 +72,7 @@ class PickingItemsRepository extends Repository
      */
     public function pickup($stop, $date, $rmk, $litm, $lotn, $user)
     {
-        $procedure = 'proc_pickup';
+        $procedure = 'pk_mpm.proc_pickup';
         $parameters = [
             ':stop' => $stop,
             ':date' => $date,

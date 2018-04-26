@@ -72,7 +72,7 @@ class ShippingListRepository extends Repository
     public function savePieces($spno, $date, $user, $pieces)
     {
         
-        $procedure = 'proc_save_shipping';
+        $procedure = 'pk_mpm.proc_save_shipping';
         $parameters = [
             ':spno' => $spno,
             ':date' => $date,

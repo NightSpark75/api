@@ -61,7 +61,7 @@ class PickingListRepository extends Repository
                     and addj = '$date'
                     and state in ('Y', 'E')
         ")->n;
-        return $check === 0;
+        return (int) $check === 0;
     }
 
     /**
@@ -84,7 +84,7 @@ class PickingListRepository extends Repository
                     and m.duser = '$user'
                     and m.state = 'Y'
         ")->n;
-        return $check > 0;
+        return (int) $check > 0;
     }
 
     /**
@@ -97,7 +97,7 @@ class PickingListRepository extends Repository
      */
     public function startPicking($stop, $date, $user) 
     {
-        $procedure = 'proc_start_picking';
+        $procedure = 'pk_mpm.proc_start_picking';
         $parameters = [
             ':stop' => $stop,
             ':date' => $date,
@@ -116,7 +116,7 @@ class PickingListRepository extends Repository
      */
     public function endPicking($stop, $date, $user) 
     {
-        $procedure = 'proc_end_picking';
+        $procedure = 'pk_mpm.proc_end_picking';
         $parameters = [
             ':stop' => $stop,
             ':date' => $date,
@@ -135,7 +135,7 @@ class PickingListRepository extends Repository
      */
     public function pausePicking($stop, $date, $user)
     {
-        $procedure = 'proc_pause_picking';
+        $procedure = 'pk_mpm.proc_pause_picking';
         $parameters = [
             ':stop' => $stop,
             ':date' => $date,
