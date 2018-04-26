@@ -12,6 +12,7 @@
 namespace App\Repositories\ProductWarehouse;
 
 use App\Repositories\Repository;
+use DB;
 
 /**
  * Class PickingItemsRepository
@@ -37,23 +38,27 @@ class PickingItemsRepository extends Repository
      * @param string $date => 'Y-m-d 00:00:00'
      * @return mixed
      */
-    public function getPickingItems($stop, $date)
+    public function getPickingItem($stop, $date, $user)
     {   
-        $stop = str_pad($stop, 3, " ", STR_PAD_RIGHT);
-        $list = $this->model
-            ->where('psaddj', $date)
-            ->where('psstop', $stop)
-            ->select('psicu', 'psaddj', 'psstop', 'pslocn', 'psrmk', 'pslitm', 'pslotn', 'pssoqs', 'pspqoh', 'psuom')
-            ->orderBy('psseq')
-            ->orderBy('pslocn')
-            ->orderBy('psrmk')
-            ->orderBy('pslitm')
-            ->get();
+        $list = DB::selectOne("
+            select j.psicu, j.psaddj, 
+                    trim(j.psstop), trim(j.pslocn), trim(j.psrmk), trim(j.pslitm), trim(j.pslotn), 
+                    j.pssoqs, j.pspqoh, j.psuom
+                from jdv_f5942520 j, mpm_picking_d d
+                where psstop = '$stop' and psaddj = to_date($date, 'YYYYMMDD')
+                    and (
+                        trim(j.psstop) = d.stop and d.addj = $date
+                        and trim(j.psrmk) <> d.rmk
+                        and trim(j.pslitm) <> d.litm
+                        and trim(j.pslotn) <> d.lotn
+                    )
+                order by j.psseq
+        ");
         return $list;
     }
 
     /**
-     * pickup items
+     * call procedure proc_pickup
      * 
      * @param string $stop
      * @param string $date
@@ -65,6 +70,16 @@ class PickingItemsRepository extends Repository
      */
     public function pickup($stop, $date, $rmk, $litm, $lotn, $user)
     {
+        $procedure = 'proc_pickup';
+        $parameters = [
+            ':stop' => $stop,
+            ':date' => $date,
+            ':rmk'  => $rmk,
+            ':litm' => $litm,
+            ':lotn' => $lotn,
+            ':user' => $user,
+        ];
+        $this->procedure($procedure, $parameters);
         return true;
     }
 }

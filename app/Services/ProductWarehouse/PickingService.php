@@ -51,10 +51,10 @@ class PickingService {
      * @param string $date
      * @return mixed
      */
-    public function getPickingItems($stop, $date = null)
+    public function getPickingItem($stop, $user, $date = null)
     {
-        $date = $date? $date: date('Y-m-d') . ' 00:00:00';
-        $list = $this->pickingItemsRepository->getPickingItems($stop, $date);
+        $date = $date? $date: date('Ymd');
+        $list = $this->pickingItemsRepository->getPickingItem($stop, $date, $user);
         return $list;
     }
 
@@ -64,10 +64,10 @@ class PickingService {
      * @param string $date
      * @return mixed
      */
-    public function getTodayPickingList($date = null)
+    public function getPickingList($user, $date = null)
     {
-        $date = $date? $date: date('Y-m-d') . ' 00:00:00';
-        $list = $this->pickingListRepository->getPickingList($date);
+        $date = $date? $date: date('Ymd');
+        $list = $this->pickingListRepository->getPickingList($user, $date);
         return $list;
     }
 
@@ -81,10 +81,9 @@ class PickingService {
      */
     public function startPicking($stop, $user, $date = null)
     {
-        $date = $date? $date: date('Y-m-d') . ' 00:00:00';
-        $picking = $this->pickingListRepository->getPicking($stop, $date);
-        
-        if ($picking) {
+        $date = $date? $date: date('Ymd');
+        $check = $this->pickingListRepository->checkStartPicking($stop, $date);
+        if ($check) {
             $staddj = date_format(date_create($date), 'Y/m/d');
             $this->pickingListRepository->startPicking($stop, $staddj, $user);
             return true;
@@ -102,9 +101,9 @@ class PickingService {
      */
     public function endPicking($stop, $user, $date = null)
     {
-        $date = $date? $date: date('Y-m-d') . ' 00:00:00';
-        $picking = $this->pickingListRepository->getPicking($stop, $date);
-        if ($picking) {
+        $date = $date? $date: date('Ymd');
+        $check = $this->pickingListRepository->checkPicking($stop, $date, $user);
+        if ($check) {
             $staddj = date_format(date_create($date), 'Y/m/d');
             $this->pickingListRepository->endPicking($stop, $staddj, $user);
             return true;
@@ -122,20 +121,14 @@ class PickingService {
      */
     public function pausePicking($stop, $date, $user)
     {   
-
-    }
-
-    /**
-     * restart picking
-     * 
-     * @param string $stop
-     * @param string $date
-     * @param string $user
-     * @return mixed
-     */
-    public function restartPicking($stop, $date, $user)
-    {
-
+        $date = $date? $date: date('Ymd');
+        $check = $this->pickingListRepository->checkPicking($stop, $date, $user);
+        if ($check) {
+            $staddj = date_format(date_create($date), 'Y/m/d');
+            $this->pickingListRepository->endPicking($stop, $staddj, $user);
+            return true;
+        }
+        throw new Exception("ststop='$stop' and staddj='$date', data not found!");
     }
 
     /**
@@ -151,6 +144,17 @@ class PickingService {
      */
     public function pickup($stop, $date, $rmk, $litm, $lotn, $user)
     {
-
+        $date = $date? $date: date('Ymd');
+        $check = $this->pickingListRepository->checkPicking($stop, $date, $user);
+        if ($check) {
+            $staddj = date_format(date_create($date), 'Y/m/d');
+            $this->pickingItemsRepository->pickup($stop, $staddj, $rmk, $litm, $lotn, $user);
+            return true;
+        }
+        throw new Exception("
+            ststop='$stop' and staddj='$date' 
+            and rmk = '$rmk' and litm = '$litm' and lotn = '$lotn' 
+            , data not found!
+        ");
     }
 }

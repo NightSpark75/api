@@ -57,9 +57,11 @@ Route::group(['prefix' => 'productWarehouse', 'namespace' => 'ProductWarehouse']
     // picking
     Route::group(['prefix' => 'picking', 'middleware' => 'jwt'], function () {
         Route::get('list/{date?}', 'PickingController@getPickingList');
-        Route::get('items/{stop}/{date?}', 'PickingController@getPickingItems');
+        Route::get('item/{stop}/{date?}', 'PickingController@getPickingItem');
         Route::post('start', 'PickingController@startPicking');
         Route::post('end', 'PickingController@endPicking');
+        Route::post('pause', 'PickingController@pausePicking');
+        Route::post('pickup', 'PickingController@pickup');
     });
     // shipping
     Route::group(['prefix' => 'shipping', 'middleware' => 'jwt'], function () {

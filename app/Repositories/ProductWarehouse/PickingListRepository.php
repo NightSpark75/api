@@ -13,6 +13,7 @@
 namespace App\Repositories\ProductWarehouse;
 
 use App\Repositories\Repository;
+use DB;
 
 /**
  * Class PickingListRepository
@@ -37,37 +38,57 @@ class PickingListRepository extends Repository
      * @param string $date => 'Y-m-d 00:00:00'
      * @return mixed
      */
-    public function getPickingList($date)
+    public function getPickingList($user, $date)
     {
-        $list = $this->model
-            ->where('staddj', $date)
-            ->where('stky6', null)
-            ->select('sticu', 'ststop', 'staddj', 'stky2', 'stky1')
-            ->orderBy('stky1')
-            ->orderBy('ststop')
-            ->get();
+        $list = DB::select("
+            select j.ststop, j.staddj, m.duser
+                from jdv_f594921 j, mpm_picking_m m
+                where trim(j.ststop) = m.stop(+) and j.staddj = to_date($date, 'YYYYMMDD')
+                    and j.stky6 is null
+                    and to_number(to_char(j.staddj, 'YYYYMMDD')) = m.addj(+)
+                    and m.state not in ('P', 'E')
+                    and ((m.duser = '$user' and m.state = 'Y') or m.duser is null)
+        ");
         return $list;
     }
 
+    public function checkStartPicking($stop, $date)
+    {
+        $check = DB::selectOne("
+            select count(*) n
+                from mpm_picking_m
+                where stop = '$stop'
+                    and addj = '$date'
+                    and state in ('Y', 'E')
+        ")->n;
+        return $check === 0;
+    }
+
     /**
-     * get picking by stop date
+     * check picking by stop, date and user
      * 
      * @param string $stop
      * @param string $date => 'Y-m-d 00:00:00'
      * @return mixed
      */
-    public function getPicking($stop, $date)
+    public function checkPicking($stop, $date, $user)
     {
-        $stop = str_pad($stop, 3, " ", STR_PAD_RIGHT);
-        $picking = $this->model
-            ->where('ststop', $stop)
-            ->where('staddj', $date)
-            ->first();
-        return $picking;
+        $check = DB::selectOne("
+            select count(j.*) n
+                from jdv_f594921 j, mpm_picking_m m
+                where trim(j.ststop) = m.stop
+                    and j.staddj = to_date(m.addj, 'YYYYMMDD')
+                    and j.stky6 is null
+                    and m.stop = '$stop'
+                    and m.addj = $date
+                    and m.duser = '$user'
+                    and m.state = 'Y'
+        ")->n;
+        return $check > 0;
     }
 
     /**
-     * call procedure proc_upd_f594921_pick_s
+     * call procedure proc_start_picking
      * 
      * @param string $stop
      * @param string $date // ex: 2018/01/05
@@ -76,7 +97,7 @@ class PickingListRepository extends Repository
      */
     public function startPicking($stop, $date, $user) 
     {
-        $procedure = 'proc_upd_f594921_pick_s';
+        $procedure = 'proc_start_picking';
         $parameters = [
             ':stop' => $stop,
             ':date' => $date,
@@ -87,7 +108,7 @@ class PickingListRepository extends Repository
     }
 
     /**
-     * call procedure proc_upd_f594921_pick_e
+     * call procedure proc_end_picking 
      * 
      * @param string $stop
      * @param string $date // ex: 2018/01/05
@@ -95,7 +116,7 @@ class PickingListRepository extends Repository
      */
     public function endPicking($stop, $date, $user) 
     {
-        $procedure = 'proc_upd_f594921_pick_e';
+        $procedure = 'proc_end_picking';
         $parameters = [
             ':stop' => $stop,
             ':date' => $date,
@@ -106,7 +127,7 @@ class PickingListRepository extends Repository
     }
 
     /**
-     * call procedure
+     * call procedure proc_pause_picking
      * 
      * @param string $stop
      * @param string $date
@@ -114,18 +135,13 @@ class PickingListRepository extends Repository
      */
     public function pausePicking($stop, $date, $user)
     {
-        return true;
-    }
-
-    /**
-     * call procedure
-     * 
-     * @param string $stop
-     * @param string $date
-     * @param string $user
-     */
-    public function restartPicking($stop, $date, $user)
-    {
+        $procedure = 'proc_pause_picking';
+        $parameters = [
+            ':stop' => $stop,
+            ':date' => $date,
+            ':user' => $user,
+        ];
+        $this->procedure($procedure, $parameters);
         return true;
     }
 }

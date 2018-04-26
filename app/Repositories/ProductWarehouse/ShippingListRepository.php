@@ -72,10 +72,11 @@ class ShippingListRepository extends Repository
     public function savePieces($spno, $date, $user, $pieces)
     {
         
-        $procedure = 'proc_upd_f594901_1in1';
+        $procedure = 'proc_save_shipping';
         $parameters = [
             ':spno' => $spno,
             ':date' => $date,
+            ':user' => $user,
             ':pieces' => $pieces,
         ];
         $this->procedure($procedure, $parameters);

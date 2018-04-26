@@ -48,7 +48,9 @@ class PickingController extends Controller
     public function getPickingList($date = null)
     {
         try {
-            $list = $this->pickingService->getTodayPickingList($date);
+            $user = session('user');
+            $id = $user->id;
+            $list = $this->pickingService->getPickingList($id, $date);
             return response()->json($list, 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
@@ -62,10 +64,12 @@ class PickingController extends Controller
      * @throws Exception
      * @return mixed
      */
-    public function getPickingItems($stop, $date = null)
+    public function getPickingItem($stop, $date = null)
     {
         try {
-            $items = $this->pickingService->getPickingItems($stop, $date);
+            $user = session('user');
+            $id = $user->id;
+            $items = $this->pickingService->getPickingItem($stop, $id, $date);
             return response()->json($items, 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
