@@ -42,7 +42,7 @@ class PickingItemsRepository extends Repository
     {
         $list = DB::select("
             select j.psicu, j.psaddj, 
-                    trim(j.psstop) psstop, trim(j.pslocn) pslocn, trim(j.psrmk) psrmk, trim(j.pslitm) pslitm, trim(j.pslotn) trim, 
+                    trim(j.psstop) psstop, trim(j.pslocn) pslocn, trim(j.psrmk) psrmk, trim(j.pslitm) pslitm, trim(j.pslotn) pslotn, 
                     j.pssoqs, j.pspqoh, j.psuom, j.psseq
                 from jdv_f5942520 j
                 where j.psstop = '$stop' and j.psaddj = to_date($date, 'YYYYMMDD')
