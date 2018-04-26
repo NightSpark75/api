@@ -133,7 +133,7 @@ class PickingService {
         $check = $this->pickingListRepository->checkPicking($stop, $date, $user);
         if ($check) {
             $staddj = date_format(date_create($date), 'Y/m/d');
-            $this->pickingListRepository->endPicking($stop, $staddj, $user);
+            $this->pickingListRepository->pausePicking($stop, $staddj, $user);
             return true;
         }
         throw new Exception("ststop='$stop' and staddj='$date', data not found!");
