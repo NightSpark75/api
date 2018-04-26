@@ -169,24 +169,24 @@ export default class Templog extends React.Component {
     const { temp_high, temp_low, humi_high, humi_low, isChecked } = this.state
     const value = Number(this.state[key])
     if (key.substr(3, 1) === 't' && !isChecked) {
-      if (Number(temp_high) <= value) {
+      if (Number(temp_high) < value) {
         this.pushAlert('溫度超過上限，請註記異常')
       } else {
         this.removeAlert('溫度超過上限，請註記異常')
       }
-      if (Number(temp_low) >= value) {
+      if (Number(temp_low) > value) {
         this.pushAlert('溫度超過下限，請註記異常')
       } else {
         this.removeAlert('溫度超過下限，請註記異常')
       }
     }
     if (key.substr(3, 1) === 'h' && !isChecked) {
-      if (Number(humi_high) <= value) {
+      if (Number(humi_high) < value) {
         this.pushAlert('溼度超過上限，請註記異常')
       } else {
         this.removeAlert('溼度超過上限，請註記異常')
       }
-      if (Number(humi_low) >= value) {
+      if (Number(humi_low) > value) {
         this.pushAlert('溼度超過下限，請註記異常')
       } else {
         this.removeAlert('溼度超過下限，請註記異常')
@@ -390,17 +390,17 @@ export default class Templog extends React.Component {
               <td>溫度範圍</td>
               <td>
                 {
-                  (temp_low === 0 || temp_low === '-101' ? '' : temp_low)
+                  (temp_low === 0 || temp_low === '-100' ? '' : temp_low)
                   + " ~ " +
-                  (temp_high === 0 || temp_high === '101' ? '' : temp_high)
+                  (temp_high === 0 || temp_high === '100' ? '' : temp_high)
                 }
               </td>
               <td>溼度範圍</td>
               <td>
                 {
-                  (humi_low === 0 || humi_low === '-101' ? '' : humi_low)
+                  (humi_low === 0 || humi_low === '-100' ? '' : humi_low)
                   + " ~ " +
-                  (humi_high === 0 || humi_high === '101' ? '' : humi_high)
+                  (humi_high === 0 || humi_high === '100' ? '' : humi_high)
                 }
               </td>
             </tr>
