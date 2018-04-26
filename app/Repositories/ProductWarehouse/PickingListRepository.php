@@ -46,7 +46,7 @@ class PickingListRepository extends Repository
                 where trim(j.ststop) = m.stop(+) and j.staddj = to_date($date, 'YYYYMMDD')
                     and j.stky6 is null
                     and to_number(to_char(j.staddj, 'YYYYMMDD')) = m.addj(+)
-                    and m.state not in ('P', 'E')
+                    and (m.state not in ('P', 'E') or m.state is null)
                     and ((m.duser = '$user' and m.state = 'Y') or m.duser is null)
         ");
         return $list;
