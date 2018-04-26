@@ -41,7 +41,7 @@ class PickingListRepository extends Repository
     public function getPickingList($user, $date)
     {
         $list = DB::select("
-            select j.ststop, j.staddj, m.duser
+            select j.sticu, j.ststop, j.staddj, m.duser
                 from jdv_f594921 j, mpm_picking_m m
                 where trim(j.ststop) = m.stop(+) and j.staddj = to_date($date, 'YYYYMMDD')
                     and j.stky6 is null
