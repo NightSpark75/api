@@ -54,8 +54,9 @@ class PickingService {
     public function getPickingItem($stop, $user, $date = null)
     {
         $date = $date? $date: date('Ymd');
-        $list = $this->pickingItemsRepository->getPickingItem($stop, $date, $user);
-        return $list;
+        $list = $this->pickingItemsRepository->getPickingItems($stop, $date, $user);
+        $first = $list ? $list[0] : $list;
+        return $first;
     }
 
     public function getPickingItems($stop, $date = null)
