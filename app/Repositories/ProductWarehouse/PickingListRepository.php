@@ -42,7 +42,7 @@ class PickingListRepository extends Repository
     {
         $list = DB::select("
             select j.sticu, trim(j.ststop) ststop, j.staddj, m.duser
-                from jdv_f594921 j, mpm_picking_m m
+                from jdv_f594921 j
                 where trim(j.ststop) = m.stop(+) and j.staddj = to_date($date, 'YYYYMMDD')
                     and j.stky6 is null
                     and (exists (
