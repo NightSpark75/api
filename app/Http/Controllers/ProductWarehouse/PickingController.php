@@ -69,7 +69,17 @@ class PickingController extends Controller
         try {
             $user = session('user');
             $id = $user->id;
-            $items = $this->pickingService->getPickingItem($stop, $id, $date);
+            $item = $this->pickingService->getPickingItem($stop, $id, $date);
+            return response()->json($item, 200);
+        } catch (Exception $e) {
+            return response()->json($this->getException($e), 400);
+        }
+    }
+
+    public function getPickingItems($stop, $date = null)
+    {
+        try {
+            $items = $this->pickingService->getPickingItems($stop, $date);
             return response()->json($items, 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);

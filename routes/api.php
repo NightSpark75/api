@@ -58,6 +58,7 @@ Route::group(['prefix' => 'productWarehouse', 'namespace' => 'ProductWarehouse']
     Route::group(['prefix' => 'picking', 'middleware' => 'jwt'], function () {
         Route::get('list/{date?}', 'PickingController@getPickingList');
         Route::get('item/{stop}/{date?}', 'PickingController@getPickingItem');
+        Route::get('items/{stop}/{date?}', 'PickingController@getPickingItems');
         Route::post('start', 'PickingController@startPicking');
         Route::post('end', 'PickingController@endPicking');
         Route::post('pause', 'PickingController@pausePicking');

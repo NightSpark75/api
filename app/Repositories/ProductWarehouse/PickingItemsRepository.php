@@ -31,6 +31,27 @@ class PickingItemsRepository extends Repository
         return 'App\Models\ProductWarehouse\PickingItems';
     }
 
+    public function getPickingItems($stop, $date)
+    {
+        $list = DB::select("
+            select j.psicu, j.psaddj, 
+                    trim(j.psstop), trim(j.pslocn), trim(j.psrmk), trim(j.pslitm), trim(j.pslotn), 
+                    j.pssoqs, j.pspqoh, j.psuom, j.psseq
+                from jdv_f5942520 j
+                where j.psstop = '$stop' and j.psaddj = to_date($date, 'YYYYMMDD')
+                    and not exists (
+                        select stop
+                            from mpm_picking_d d
+                            where trim(j.psstop) = d.stop and j.psaddj = to_date(d.addj, 'YYYYMMDD')
+                                and trim(j.psrmk) = d.rmk
+                                and trim(j.pslitm) = d.litm
+                                and trim(j.pslotn) = d.lotn
+                    )
+                order by j.psseq
+        ");
+        return $list;
+    }
+
     /**
      * get picking items by date and stop
      * 

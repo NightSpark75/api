@@ -58,6 +58,13 @@ class PickingService {
         return $list;
     }
 
+    public function getPickingItems($stop, $date = null)
+    {
+        $date = $date? $date: date('Ymd');
+        $list = $this->pickingItemsRepository->getPickingItems($stop, $date);
+        return $list;
+    }
+
     /**
      * get today picking list
      *
