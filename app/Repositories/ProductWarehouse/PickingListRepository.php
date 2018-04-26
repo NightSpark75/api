@@ -32,6 +32,17 @@ class PickingListRepository extends Repository
         return 'App\Models\ProductWarehouse\PickingList';
     }
 
+    public function getCurrent($user, $date)
+    {
+        $current = DB::selectOne("
+            select *
+                from mpm_picking_m
+                where duser = '$user' and addj = $date
+                    and state = 'Y'
+        ");
+        return $current;
+    }
+
     /**
      * get picking list by date
      * 

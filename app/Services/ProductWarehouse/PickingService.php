@@ -75,8 +75,12 @@ class PickingService {
     public function getPickingList($user, $date = null)
     {
         $date = $date? $date: date('Ymd');
-        $list = $this->pickingListRepository->getPickingList($user, $date);
-        return $list;
+        $list = [];
+        $current = $this->pickingListRepository->getCurrent($user, $date);
+        if (!$current) {
+            $list = $this->pickingListRepository->getPickingList($user, $date);
+        }
+        return compact('current', 'list');
     }
 
     /**
