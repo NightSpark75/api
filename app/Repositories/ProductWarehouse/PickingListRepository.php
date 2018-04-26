@@ -74,7 +74,7 @@ class PickingListRepository extends Repository
     public function checkPicking($stop, $date, $user)
     {
         $check = DB::selectOne("
-            select count(j.*) n
+            select count(j.ststop) n
                 from jdv_f594921 j, mpm_picking_m m
                 where trim(j.ststop) = m.stop
                     and j.staddj = to_date(m.addj, 'YYYYMMDD')
