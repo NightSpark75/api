@@ -42,15 +42,17 @@ class PickingItemsRepository extends Repository
     {   
         $list = DB::selectOne("
             select j.psicu, j.psaddj, 
-                    trim(j.psstop) psstop, trim(j.pslocn) pslocn, trim(j.psrmk) psrmk, trim(j.pslitm) pslitm, trim(j.pslotn) pslotn, 
-                    j.pssoqs, j.pspqoh, j.psuom
-                from jdv_f5942520 j, mpm_picking_d d
-                where psstop = '$stop' and psaddj = to_date($date, 'YYYYMMDD')
-                    and (
-                        trim(j.psstop) = d.stop and d.addj = $date
-                        and trim(j.psrmk) <> d.rmk
-                        and trim(j.pslitm) <> d.litm
-                        and trim(j.pslotn) <> d.lotn
+                    trim(j.psstop), trim(j.pslocn), trim(j.psrmk), trim(j.pslitm), trim(j.pslotn), 
+                    j.pssoqs, j.pspqoh, j.psuom, j.psseq
+                from jdv_f5942520 j
+                where j.psstop = '$stop' and j.psaddj = to_date($date, 'YYYYMMDD')
+                    and not exists (
+                        select stop
+                            from mpm_picking_d d
+                            where trim(j.psstop) = d.stop and j.psaddj = to_date(d.addj, 'YYYYMMDD')
+                                and trim(j.psrmk) = d.rmk
+                                and trim(j.pslitm) = d.litm
+                                and trim(j.pslotn) = d.lotn
                     )
                 order by j.psseq
         ");
