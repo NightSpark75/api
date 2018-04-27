@@ -60,18 +60,50 @@ class InventoryServiceTest extends TestCase
         parent::tearDown();
     }
     
-    public function test_getInventoryList()
+    public function test_getInventoryList_current()
     {
         // arrange
+        $user = str_random(6);
         $date = '20180420';
-        $expected = [];
+        $list = [];
+        $current = ['1'];
+        $expected = compact('current', 'list');
 
         // act
+        $this->mock->shouldReceive('getCurrent')
+            ->once()
+            ->with($user)
+            ->andReturn($current);
+
+        $this->mock->shouldReceive('getInventoryList')
+            ->times(0)
+            ->with($date);
+        $actual = $this->target->getInventoryList($user, $date);
+
+        // assert
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_getInventoryList_list()
+    {
+        // arrange
+        $user = str_random(6);
+        $date = '20180420';
+        $list = [['a'], ['b']];
+        $current = [];
+        $expected = compact('current', 'list');
+
+        // act
+        $this->mock->shouldReceive('getCurrent')
+            ->once()
+            ->with($user)
+            ->andReturn($current);
+
         $this->mock->shouldReceive('getInventoryList')
             ->once()
             ->with($date)
-            ->andReturn($expected);
-        $actual = $this->target->getInventoryList($date);
+            ->andReturn($list);
+        $actual = $this->target->getInventoryList($user, $date);
 
         // assert
         $this->assertEquals($expected, $actual);
@@ -333,6 +365,156 @@ class InventoryServiceTest extends TestCase
             ->with($cyno);
         $actual = $this->target->getExportData($id, $cyno);
 
+        // assert
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_startInventory()
+    {
+        // arrange
+        $user = str_random(6);
+        $cyno = str_random(8);
+        $check = true;
+        $expected = true;
+
+        // act
+        $this->mock->shouldReceive('checkStartInventory')
+            ->once()
+            ->with($cyno)
+            ->andReturn($check);
+
+        $this->mock->shouldReceive('startInventory')
+            ->once()
+            ->with($cyno, $user)
+            ->andReturn($expected);
+        $actual = $this->target->startInventory($cyno, $user);
+
+        // assert
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_startInventory_exception()
+    {
+        // arrange
+        $user = str_random(6);
+        $cyno = str_random(8);
+        $check = false;
+        $expected = "cyno='$cyno', data not found!";
+
+        // act
+        $this->mock->shouldReceive('checkStartInventory')
+            ->once()
+            ->with($cyno)
+            ->andReturn($check);
+
+        $this->mock->shouldReceive('startInventory')
+            ->times(0)
+            ->with($cyno, $user);
+        try {
+            $actual = $this->target->startInventory($cyno, $user);
+        } catch (Exception $e) {
+            $actual = $e->getMessage();
+        }
+        // assert
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_pauseInventory()
+    {
+        // arrange
+        $user = str_random(6);
+        $cyno = str_random(8);
+        $check = true;
+        $expected = true;
+
+        // act
+        $this->mock->shouldReceive('checkInventory')
+            ->once()
+            ->with($cyno, $user)
+            ->andReturn($check);
+
+        $this->mock->shouldReceive('pauseInventory')
+            ->once()
+            ->with($cyno, $user)
+            ->andReturn($expected);
+        $actual = $this->target->pauseInventory($cyno, $user);
+
+        // assert
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_pauseInventory_exception()
+    {
+        // arrange
+        $user = str_random(6);
+        $cyno = str_random(8);
+        $check = false;
+        $expected = "cyno='$cyno', data not found!";
+
+        // act
+        $this->mock->shouldReceive('checkInventory')
+            ->once()
+            ->with($cyno, $user)
+            ->andReturn($check);
+
+        $this->mock->shouldReceive('pauseInventory')
+            ->times(0)
+            ->with($cyno, $user);
+        try {
+            $actual = $this->target->pauseInventory($cyno, $user);
+        } catch (Exception $e) {
+            $actual = $e->getMessage();
+        }
+        // assert
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_endInventory()
+    {
+        // arrange
+        $user = str_random(6);
+        $cyno = str_random(8);
+        $check = true;
+        $expected = true;
+
+        // act
+        $this->mock->shouldReceive('checkInventory')
+            ->once()
+            ->with($cyno, $user)
+            ->andReturn($check);
+
+        $this->mock->shouldReceive('endInventory')
+            ->once()
+            ->with($cyno, $user)
+            ->andReturn($expected);
+        $actual = $this->target->endInventory($cyno, $user);
+
+        // assert
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_endInventory_exception()
+    {
+        // arrange
+        $user = str_random(6);
+        $cyno = str_random(8);
+        $check = false;
+        $expected = "cyno='$cyno', data not found!";
+
+        // act
+        $this->mock->shouldReceive('checkInventory')
+            ->once()
+            ->with($cyno, $user)
+            ->andReturn($check);
+
+        $this->mock->shouldReceive('endInventory')
+            ->times(0)
+            ->with($cyno, $user);
+        try {
+            $actual = $this->target->endInventory($cyno, $user);
+        } catch (Exception $e) {
+            $actual = $e->getMessage();
+        }
         // assert
         $this->assertEquals($expected, $actual);
     }

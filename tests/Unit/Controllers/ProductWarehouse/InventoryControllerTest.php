@@ -65,15 +65,20 @@ class InventoryControllersTest extends TestCase
     public function test_getInventoryList()
     {
         // arrange
+        $user = User::first();
+        $this->session(['user' => $user]);
+        $id = $user->id;
         $date = '20180423';
+        $current = [];
         $list = [];
-        $expected = response()->json($list, 200);
+        $compact = compact($current, $list);
+        $expected = response()->json($compact, 200);
 
         // act
         $this->mock->shouldReceive('getInventoryList')
             ->once()
-            ->with($date)
-            ->andReturn($list);
+            ->with($id, $date)
+            ->andReturn($compact);
         $actual = $this->target->getInventoryList($date);
 
         // assert
@@ -83,13 +88,16 @@ class InventoryControllersTest extends TestCase
     public function test_getInventoryList_exception()
     {
         // arrange
+        $user = User::first();
+        $this->session(['user' => $user]);
+        $id = $user->id;
         $date = '20180423';
         $expected = response()->json([], 400);
 
         // act
         $this->mock->shouldReceive('getInventoryList')
             ->once()
-            ->with($date)
+            ->with($id, $date)
             ->andThrow(new Exception());
         $actual = $this->target->getInventoryList($date);
 
@@ -136,6 +144,8 @@ class InventoryControllersTest extends TestCase
     public function test_getInventoryItem()
     {
         // arrange
+        $user = User::first();
+        $this->session(['user' => $user]);
         $cyno = '10000748';
         $item = new \StdClass();
         $expected = response()->json($item, 200);
@@ -154,6 +164,8 @@ class InventoryControllersTest extends TestCase
     public function test_getInventoryItem_exception()
     {
         // arrange
+        $user = User::first();
+        $this->session(['user' => $user]);
         $cyno = '10000748';
         $item = new \StdClass();
         $expected = response()->json($item, 400);
@@ -175,11 +187,16 @@ class InventoryControllersTest extends TestCase
         $user = User::first();
         $this->session(['user' => $user]);
         $id = $user->id;
-        $cyno = '';
-        $locn = '';
-        $litm = '';
-        $lotn = '';
+        $cyno = str_random(8);
+        $locn = str_random(8);
+        $litm = str_random(8);
+        $lotn = str_random(8);
         $amount = 0;
+        request()->merge(['cyno' => $cyno]);
+        request()->merge(['locn' => $locn]);
+        request()->merge(['litm' => $litm]);
+        request()->merge(['lotn' => $lotn]);
+        request()->merge(['amount' => $amount]);
         $item = new \StdClass();
         $expected = response()->json($item, 200);
 
@@ -200,11 +217,16 @@ class InventoryControllersTest extends TestCase
         $user = User::first();
         $this->session(['user' => $user]);
         $id = $user->id;
-        $cyno = '';
-        $locn = '';
-        $litm = '';
-        $lotn = '';
+        $cyno = str_random(8);
+        $locn = str_random(8);
+        $litm = str_random(8);
+        $lotn = str_random(8);
         $amount = 0;
+        request()->merge(['cyno' => $cyno]);
+        request()->merge(['locn' => $locn]);
+        request()->merge(['litm' => $litm]);
+        request()->merge(['lotn' => $lotn]);
+        request()->merge(['amount' => $amount]);
         $item = new \StdClass();
         $expected = response()->json($item, 400);
 
@@ -255,7 +277,6 @@ class InventoryControllersTest extends TestCase
             ->andReturn($inventoried);
         $actual = $this->target->inventoried($cyno);
 
-
         // assert
         $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
     }
@@ -304,5 +325,128 @@ class InventoryControllersTest extends TestCase
 
         // assert
         $this->assertEquals($expected, $actual);
+    }
+
+    public function test_startInventory()
+    {
+        // arrange
+        $user = User::first();
+        $this->session(['user' => $user]);
+        $id = $user->id;
+        $cyno = str_random(8);
+        $expected = response()->json([], 200);
+        request()->merge(['cyno' => $cyno]);
+
+        // act
+        $this->mock->shouldReceive('startInventory')
+            ->once()
+            ->with($cyno, $id);
+        $actual = $this->target->startInventory();
+
+        // assert
+        $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
+    }
+
+    public function test_startInventory_exception()
+    {
+        // arrange
+        $user = User::first();
+        $this->session(['user' => $user]);
+        $id = $user->id;
+        $cyno = str_random(8);
+        request()->merge(['cyno' => $cyno]);
+        $expected = response()->json([], 400);
+
+        // act
+        $this->mock->shouldReceive('startInventory')
+            ->once()
+            ->with($cyno, $id)
+            ->andThrow(new Exception());
+        $actual = $this->target->startInventory();
+
+        // assert
+        $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
+    }
+
+    public function test_pauseInventory()
+    {
+        // arrange
+        $user = User::first();
+        $this->session(['user' => $user]);
+        $id = $user->id;
+        $cyno = str_random(8);
+        $expected = response()->json([], 200);
+        request()->merge(['cyno' => $cyno]);
+
+        // act
+        $this->mock->shouldReceive('pauseInventory')
+            ->once()
+            ->with($cyno, $id);
+        $actual = $this->target->pauseInventory();
+
+        // assert
+        $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
+    }
+
+    public function test_pauseInventory_exception()
+    {
+        // arrange
+        $user = User::first();
+        $this->session(['user' => $user]);
+        $id = $user->id;
+        $cyno = str_random(8);
+        request()->merge(['cyno' => $cyno]);
+        $expected = response()->json([], 400);
+
+        // act
+        $this->mock->shouldReceive('pauseInventory')
+            ->once()
+            ->with($cyno, $id)
+            ->andThrow(new Exception());
+        $actual = $this->target->pauseInventory();
+
+        // assert
+        $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
+    }
+
+    public function test_endInventory()
+    {
+        // arrange
+        $user = User::first();
+        $this->session(['user' => $user]);
+        $id = $user->id;
+        $cyno = str_random(8);
+        $expected = response()->json([], 200);
+        request()->merge(['cyno' => $cyno]);
+
+        // act
+        $this->mock->shouldReceive('endInventory')
+            ->once()
+            ->with($cyno, $id);
+        $actual = $this->target->endInventory();
+
+        // assert
+        $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
+    }
+
+    public function test_endInventory_exception()
+    {
+        // arrange
+        $user = User::first();
+        $this->session(['user' => $user]);
+        $id = $user->id;
+        $cyno = str_random(8);
+        request()->merge(['cyno' => $cyno]);
+        $expected = response()->json([], 400);
+
+        // act
+        $this->mock->shouldReceive('endInventory')
+            ->once()
+            ->with($cyno, $id)
+            ->andThrow(new Exception());
+        $actual = $this->target->endInventory();
+
+        // assert
+        $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
     }
 }

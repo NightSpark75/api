@@ -67,15 +67,19 @@ class PickingControllersTest extends TestCase
     public function test_getPickingList()
     {
         // arrange
-        $expected = response()->json([], 200);
-        $date = null;
+        $user = User::first();
+        $this->session(['user' => $user]);
+        $id = $user->id;
+        $date = '20180426';
+        $result = [];
+        $expected = response()->json($result, 200);
 
         // act
-        $this->mock->shouldReceive('getTodayPickingList')
+        $this->mock->shouldReceive('getPickingList')
             ->once()
-            ->with($date)
-            ->andReturn($expected);
-        $actual = $this->target->getPickingList();
+            ->with($id, $date)
+            ->andReturn($result);
+        $actual = $this->target->getPickingList($date);
 
         // assert
         $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
@@ -87,15 +91,18 @@ class PickingControllersTest extends TestCase
     public function test_getPickingList_exception()
     {
         // arrange
+        $user = User::first();
+        $this->session(['user' => $user]);
+        $id = $user->id;
+        $date = '20180426';
         $expected = response()->json([], 400);
-        $date = null;
 
         // act
-        $this->mock->shouldReceive('getTodayPickingList')
+        $this->mock->shouldReceive('getPickingList')
             ->once()
-            ->with($date)
+            ->with($id, $date)
             ->andThrow(new Exception());
-        $actual = $this->target->getPickingList();
+        $actual = $this->target->getPickingList($date);
 
         // assert
         $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
@@ -107,8 +114,11 @@ class PickingControllersTest extends TestCase
     public function test_getPickingItems()
     {
         // arrange
-        $stop = request()->input('stop');
-        $date = null;
+        $user = User::first();
+        $this->session(['user' => $user]);
+        $id = $user->id;
+        $stop = str_random(8);
+        $date = '20180426';
         $expected = response()->json([], 200);
 
         // act
@@ -116,7 +126,7 @@ class PickingControllersTest extends TestCase
             ->once()
             ->with($stop, $date)
             ->andReturn($expected);
-        $actual = $this->target->getPickingItems($stop);
+        $actual = $this->target->getPickingItems($stop, $date);
 
         // assert
         $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
@@ -128,8 +138,11 @@ class PickingControllersTest extends TestCase
     public function test_getPickingItems_exception()
     {
         // arrange
-        $stop = request()->input('stop');
-        $date = null;
+        $user = User::first();
+        $this->session(['user' => $user]);
+        $id = $user->id;
+        $stop = str_random(8);
+        $date = '20180426';
         $expected = response()->json([], 400);
 
         // act
@@ -137,7 +150,55 @@ class PickingControllersTest extends TestCase
             ->once()
             ->with($stop, $date)
             ->andThrow(new Exception());
-        $actual = $this->target->getPickingItems($stop);
+        $actual = $this->target->getPickingItems($stop, $date);
+
+        // assert
+        $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
+    }
+
+    /**
+     * test getPickingItem()
+     */
+    public function test_getPickingItem()
+    {
+        // arrange
+        $user = User::first();
+        $this->session(['user' => $user]);
+        $id = $user->id;
+        $stop = str_random(8);
+        $date = '20180426';
+        $expected = response()->json([], 200);
+
+        // act
+        $this->mock->shouldReceive('getPickingItem')
+            ->once()
+            ->with($stop, $id, $date)
+            ->andReturn($expected);
+        $actual = $this->target->getPickingItem($stop, $date);
+
+        // assert
+        $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
+    }
+
+    /**
+     * test gettPickingItem return exception 
+     */
+    public function test_getPickingItem_exception()
+    {
+        // arrange
+        $user = User::first();
+        $this->session(['user' => $user]);
+        $id = $user->id;
+        $stop = str_random(8);
+        $date = '20180426';
+        $expected = response()->json([], 400);
+
+        // act
+        $this->mock->shouldReceive('getPickingItem')
+            ->once()
+            ->with($stop, $id, $date)
+            ->andThrow(new Exception());
+        $actual = $this->target->getPickingItem($stop, $date);
 
         // assert
         $this->assertEquals($expected->getStatusCode(), $actual->getStatusCode());
