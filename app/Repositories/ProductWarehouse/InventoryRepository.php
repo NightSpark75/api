@@ -31,6 +31,33 @@ class InventoryRepository extends Repository
         return 'App\Models\ProductWarehouse\Inventory';
     }
 
+    public function checkStartInventory()
+    {
+        $check = DB::selectOne("
+            select count(*) n
+                from mpm_inventory_m
+                where stop = '$stop'
+                    and addj = '$date'
+                    and state in ('Y', 'E')
+        ")->n;
+        return (int) $check === 0;
+    }
+
+    public function startInventory()
+    {
+
+    }
+    
+    public function pauseInventory()
+    {
+
+    }
+
+    public function endInventory()
+    {
+
+    }
+
     /**
      * get inventory list
      * 
@@ -46,7 +73,7 @@ class InventoryRepository extends Repository
                 group by pjcyno
                     having count(pjcyno) <> (
                       select count(cyno)
-                        from mpm_inventory b
+                        from mpm_inventory_d b
                         where a.pjcyno = b.cyno
                     )
         ");
@@ -74,7 +101,7 @@ class InventoryRepository extends Repository
                 where pjcyno = '$cyno' 
                     and not exists (
                         select cyno
-                            from mpm_inventory i
+                            from mpm_inventory_d i
                             where i.cyno = '$cyno'
                                 and trim(a.pjlocn )= i.locn and trim(a.pjlitm) = i.litm and trim(a.pjlotn) = i.lotn
                     )
@@ -93,7 +120,7 @@ class InventoryRepository extends Repository
     {
         $items = DB::selectOne("
             select sum(case when locn is null then 1 else 0 end) items 
-                from proddta.jt4141A@JDBPRD.STANDARD.COM.TW a, mpm_inventory b
+                from proddta.jt4141A@JDBPRD.STANDARD.COM.TW a, mpm_inventory_d b
                 where a.pjcyno = '$cyno'
                     and trim(a.pjcyno) = b.cyno(+) and trim(a.pjlocn) = b.locn(+) 
                     and trim(a.pjlitm) = b.litm(+) and trim(a.pjlotn) = b.lotn(+)
@@ -115,7 +142,7 @@ class InventoryRepository extends Repository
     public function saveInventory($id, $cyno, $locn, $litm, $lotn, $amount)
     {
         DB::insert("
-            insert into mpm_inventory 
+            insert into mpm_inventory_d 
                 values (:cyno, :locn, :litm, :lotn, :amount, :id, sysdate)
         ", [
             'cyno' => $cyno, 
@@ -138,8 +165,8 @@ class InventoryRepository extends Repository
     public function checkInventoryUser($id, $cyno)
     {
         $check = DB::select("
-            select 0
-                from mpm_inventory
+            select *
+                from mpm_inventory_d
                 where cyno = '$cyno' and duser = '$id'
         ");
         return count($check) > 0;
@@ -157,7 +184,7 @@ class InventoryRepository extends Repository
             select amount, locn, litm, lotn
                     , stdadm.pk_hra.fu_emp_name(duser) duser
                     , to_char(ddate, 'YYYYMMDD HH24:MI:SS') ddate
-                from mpm_inventory
+                from mpm_inventory_d
                 where cyno = '$cyno'
                 order by locn, litm, lotn
         ");

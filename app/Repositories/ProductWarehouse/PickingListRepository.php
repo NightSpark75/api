@@ -35,10 +35,11 @@ class PickingListRepository extends Repository
     public function getCurrent($user, $date)
     {
         $current = DB::selectOne("
-            select *
-                from mpm_picking_m
-                where duser = '$user' and addj = $date
-                    and state = 'Y'
+            select j.sticu, trim(j.ststop) ststop, j.staddj
+                from jdv_f594921 j, mpm_picking_m m
+                where trim(j.ststop) = m.stop and j.staddj = to_date(m.addj, 'YYYYMMDD')
+                    and m.duser = '$user' and m.addj = $date
+                    and m.state = 'Y'
         ");
         return $current;
     }
