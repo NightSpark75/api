@@ -42,31 +42,55 @@ class InventoryRepository extends Repository
         return $current;
     }
 
-    public function checkStartInventory()
+    public function checkStartInventory($cyno)
     {
         $check = DB::selectOne("
             select count(*) n
                 from mpm_inventory_m
-                where stop = '$stop'
-                    and addj = '$date'
+                where cyno = '$cyno'
                     and state in ('Y', 'E')
         ")->n;
         return (int) $check === 0;
     }
 
-    public function startInventory()
+    public function checkInventory($cyno, $user)
     {
+        $check = DB::selectOne("
+            select count(cyno) n
+                from mpm_inventory_m
+                where cyno = '$cyno' and duser = '$user'
+                    and state = 'Y' 
+        ")->n;
+        return (int) $check > 0;
+    }
 
+    public function startInventory($cyno, $user)
+    {
+        DB::insert("
+            insert into mpm_inventory_m
+                values ('$cyno', '$user', sysdate, null, 'Y', sysdate)
+        ");
+        return true;
     }
     
-    public function pauseInventory()
+    public function pauseInventory($cyno, $user)
     {
-
+        DB::update("
+            update mpm_inventory_m
+                set state = 'P'
+                where cyno = '$cyno', duser = '$user' and state = 'Y'
+        ");
+        return true;
     }
 
-    public function endInventory()
+    public function endInventory($cyno, $user)
     {
-
+        DB::update("
+            update mpm_inventory_m
+                set state = 'E'
+                where cyno = '$cyno', duser = '$user' and state = 'Y'
+        ");
+        return true;
     }
 
     /**

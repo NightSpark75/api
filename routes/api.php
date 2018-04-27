@@ -70,12 +70,14 @@ Route::group(['prefix' => 'productWarehouse', 'namespace' => 'ProductWarehouse']
         Route::post('pieces', 'ShippingController@savePieces');
     });
     // inventory
-Route::group(['prefix' => 'inventory', 'middleware' => 'jwt'], function () {
+    Route::group(['prefix' => 'inventory', 'middleware' => 'jwt'], function () {
         Route::get('list/{date?}', 'InventoryController@getInventoryList');
         Route::get('item/{cyno}', 'InventoryController@getInventoryItem');
         Route::get('finished/{cyno}', 'InventoryController@checkFinished');
         Route::post('save', 'InventoryController@saveInventory');
-        
+        Route::post('start', 'InventoryController@startInventory');
+        Route::post('pause', 'InventoryController@pauseInventory');
+        Route::post('end', 'InventoryController@endInventory');
     });
 });
 Route::get('productWarehouse/inventory/inventoried/{cyno}', 'ProductWarehouse\InventoryController@inventoried');

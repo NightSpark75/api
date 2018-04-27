@@ -133,5 +133,35 @@ class InventoryService {
         if ($check) $inventoried = $this->inventoryRepository->exportData($cyno);
         return $inventoried;
     }
+
+    public function startInventory($cyno, $user)
+    {
+        $check = $this->inventoryRepository->checkStartInventory($cyno);
+        if ($check) {
+            $this->inventoryRepository->startInventory($cyno, $user);
+            return true;
+        }
+        throw new Exception("cyno='$cyno', data not found!");
+    }
+
+    public function pauseInventory($cyno, $user)
+    {
+        $check = $this->inventoryRepository->checkInventory($cyno);
+        if ($check) {
+            $this->inventoryRepository->pauseInventory($cyno, $user);
+            return true;
+        }
+        throw new Exception("cyno='$cyno', data not found!");
+    }
+
+    public function endInventory($cyno, $user)
+    {
+        $check = $this->inventoryRepository->checkInventory($cyno);
+        if ($check) {
+            $this->inventoryRepository->endInventory($cyno, $user);
+            return true;
+        }
+        throw new Exception("cyno='$cyno', data not found!");
+    }
 }
 

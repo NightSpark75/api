@@ -158,4 +158,40 @@ class InventoryController extends Controller
         $export = $this->excel->download($inventoried, $cyno.'盤點資料.xlsx', true);
         return $export;
     }
+
+    public function startInventory()
+    {
+        try {
+            $user = auth()->user();
+            $id = $user->id;
+            $this->inventoryService->startInventory($id, $cyno);
+            return response()->json([], 200);
+        } catch (Exception $e) {
+            return response()->json($this->getException($e), 400);
+        }
+    }
+
+    public function pauseInventory()
+    {
+        try {
+            $user = auth()->user();
+            $id = $user->id;
+            $this->inventoryService->pauseInventory($id, $cyno);
+            return response()->json([], 200);
+        } catch (Exception $e) {
+            return response()->json($this->getException($e), 400);
+        }
+    }
+
+    public function endInventory()
+    {
+        try {
+            $user = auth()->user();
+            $id = $user->id;
+            $this->inventoryService->endInventory($id, $cyno);
+            return response()->json([], 200);
+        } catch (Exception $e) {
+            return response()->json($this->getException($e), 400);
+        }
+    }
 }
