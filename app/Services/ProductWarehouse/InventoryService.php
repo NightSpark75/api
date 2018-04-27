@@ -146,7 +146,7 @@ class InventoryService {
 
     public function pauseInventory($cyno, $user)
     {
-        $check = $this->inventoryRepository->checkInventory($cyno);
+        $check = $this->inventoryRepository->checkInventory($cyno, $user);
         if ($check) {
             $this->inventoryRepository->pauseInventory($cyno, $user);
             return true;
@@ -156,7 +156,7 @@ class InventoryService {
 
     public function endInventory($cyno, $user)
     {
-        $check = $this->inventoryRepository->checkInventory($cyno);
+        $check = $this->inventoryRepository->checkInventory($cyno, $user);
         if ($check) {
             $this->inventoryRepository->endInventory($cyno, $user);
             return true;
