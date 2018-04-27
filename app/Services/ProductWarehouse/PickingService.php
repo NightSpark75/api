@@ -162,7 +162,8 @@ class PickingService {
             $staddj = date_format(date_create($date), 'Y/m/d');
             $this->pickingItemsRepository->pickup($stop, $staddj, $rmk, $litm, $lotn, $user);
             $item = $this->pickingItemsRepository->getPickingItems($stop, $date, $user);
-            return $item[0];
+            $first = $item ? $item[0] : $item;
+            return $first;
         }
         throw new Exception("
             ststop='$stop' and staddj='$date' 
