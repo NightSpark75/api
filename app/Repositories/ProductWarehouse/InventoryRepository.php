@@ -78,7 +78,7 @@ class InventoryRepository extends Repository
         DB::update("
             update mpm_inventory_m
                 set state = 'P'
-                where cyno = '$cyno', duser = '$user' and state = 'Y'
+                where cyno = '$cyno' and duser = '$user' and state = 'Y'
         ");
         return true;
     }
@@ -88,7 +88,7 @@ class InventoryRepository extends Repository
         DB::update("
             update mpm_inventory_m
                 set state = 'E'
-                where cyno = '$cyno', duser = '$user' and state = 'Y'
+                where cyno = '$cyno' and duser = '$user' and state = 'Y'
         ");
         return true;
     }
