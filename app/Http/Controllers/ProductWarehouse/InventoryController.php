@@ -57,7 +57,9 @@ class InventoryController extends Controller
     public function getInventoryList($date = null)
     {
         try {
-            $list = $this->inventoryService->getInventoryList($date);
+            $user = session('user');
+            $id = $user->id;
+            $list = $this->inventoryService->getInventoryList($id, $date);
             return response()->json($list, 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
@@ -91,6 +93,8 @@ class InventoryController extends Controller
     public function getInventoryItem($cyno)
     {
         try {
+            $user = session('user');
+            $id = $user->id;
             $item = $this->inventoryService->getInventoryItem($cyno);
             return response()->json($item, 200);
         } catch (Exception $e) {

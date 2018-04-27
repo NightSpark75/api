@@ -40,10 +40,14 @@ class InventoryService {
      * @param string $date
      * @return array
      */
-    public function getInventoryList($date)
+    public function getInventoryList($user, $date)
     {
-        $list = $this->inventoryRepository->getInventoryList($date);
-        return $list;
+        $list = [];
+        $current = $this->inventoryRepository->getCurrent($user);
+        if (!$current) {
+            $list = $this->inventoryRepository->getInventoryList($date);
+        }
+        return compact('current', 'list');
     }
 
     /**

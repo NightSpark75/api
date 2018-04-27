@@ -31,6 +31,17 @@ class InventoryRepository extends Repository
         return 'App\Models\ProductWarehouse\Inventory';
     }
 
+    public function getCurrent($user)
+    {
+        $current = DB::selectOne("
+            select a.pjcyno
+                from proddta.jt4141A@JDBPRD.STANDARD.COM.TW a, mpm_inventory_m m
+                where a.pjcyno = m.cyno
+                    and m.duser = '$user' and m.state = 'Y'
+        ");
+        return $current;
+    }
+
     public function checkStartInventory()
     {
         $check = DB::selectOne("
@@ -70,6 +81,15 @@ class InventoryRepository extends Repository
             select a.pjcyno cyno
                 from proddta.jt4141A@JDBPRD.STANDARD.COM.TW a 
                 where to_char(to_date(substr(a.pjcsdj,2,5),'YYDDD'),'YYYYMMDD') = '$date'
+                    and (exists (
+                        select * from mpm_inventory_m m 
+                            where a.pjcyno = m.cyno
+                                and ((duser = '106013' and state in ('Y')))
+                    ) or (
+                        select count(*) from mpm_inventory_m m
+                            where a.pjcyno = m.cyno
+                                and ((duser <> '106013' and state = 'Y') or state = 'E')
+                    ) = 0)
                 group by pjcyno
                     having count(pjcyno) <> (
                       select count(cyno)
