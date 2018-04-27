@@ -162,9 +162,10 @@ class InventoryController extends Controller
     public function startInventory()
     {
         try {
-            $user = auth()->user();
+            $user = session('user');
             $id = $user->id;
-            $this->inventoryService->startInventory($id, $cyno);
+            $cyno = request()->input('cyno');
+            $this->inventoryService->startInventory($cyno, $id);
             return response()->json([], 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
@@ -174,9 +175,10 @@ class InventoryController extends Controller
     public function pauseInventory()
     {
         try {
-            $user = auth()->user();
+            $user = session('user');
             $id = $user->id;
-            $this->inventoryService->pauseInventory($id, $cyno);
+            $cyno = request()->input('cyno');
+            $this->inventoryService->pauseInventory($cyno, $id);
             return response()->json([], 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
@@ -186,9 +188,10 @@ class InventoryController extends Controller
     public function endInventory()
     {
         try {
-            $user = auth()->user();
+            $user = session('user');
             $id = $user->id;
-            $this->inventoryService->endInventory($id, $cyno);
+            $cyno = request()->input('cyno');
+            $this->inventoryService->endInventory($cyno, $id);
             return response()->json([], 200);
         } catch (Exception $e) {
             return response()->json($this->getException($e), 400);
