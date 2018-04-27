@@ -56,17 +56,17 @@ class PickingListRepository extends Repository
             select j.sticu, trim(j.ststop) ststop, j.staddj
                 from jdv_f594921 j
                 where j.staddj = to_date($date, 'YYYYMMDD') and j.stky6 is null
-                    and j.stky6 is null
                     and (exists (
                         select * from mpm_picking_m m 
                             where j.staddj = to_date(m.addj, 'YYYYMMDD')
                                 and trim(ststop) = m.stop
-                                and ((duser = '$user' and state in ('Y', 'P')) or (duser != '$user' and state = 'P'))
-                    ) AND not exists(
-                        select * from mpm_picking_m m
+                                and ((duser = '106013' and state in ('Y')))
+                    ) or (
+                        select count(*) from mpm_picking_m m
                             where j.staddj = to_date(m.addj, 'YYYYMMDD')
-                                and state = 'E'
-                    ))
+                                and trim(ststop) = m.stop
+                                and ((duser <> '106013' and state = 'Y') or state = 'E')
+                    ) = 0)
         ");
         return $list;
     }
