@@ -77,7 +77,7 @@ class InventoryServiceTest extends TestCase
 
         $this->mock->shouldReceive('getInventoryList')
             ->times(0)
-            ->with($date);
+            ->with($user, $date);
         $actual = $this->target->getInventoryList($user, $date);
 
         // assert
@@ -101,7 +101,7 @@ class InventoryServiceTest extends TestCase
 
         $this->mock->shouldReceive('getInventoryList')
             ->once()
-            ->with($date)
+            ->with($user, $date)
             ->andReturn($list);
         $actual = $this->target->getInventoryList($user, $date);
 

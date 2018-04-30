@@ -91,7 +91,6 @@ class ShippingServiceTest extends TestCase
         // arrange
         $data = ShippingList::
             where('tmy59spno', 'test')
-            //->where('tmaddj', null)
             ->select('tmtrdj', 'tmaddj', 'tmy59spno', 'tmcars', 'cars_na', 'tman8', 'tmalph', 'tm1in1', 'dltm_na', 'tmalph1')
             ->first();
         $spno = '1234';
@@ -119,7 +118,6 @@ class ShippingServiceTest extends TestCase
     {
         //arrange
         $data = ShippingList::
-            //where('tmaddj', null)
             select('tmtrdj', 'tmaddj', 'tmy59spno', 'tmcars', 'cars_na', 'tman8', 'tmalph', 'tm1in1', 'dltm_na', 'tmalph1')
             ->first();
         $spno = $data->tmy59spno;
@@ -151,7 +149,6 @@ class ShippingServiceTest extends TestCase
         //arrange
         $data = ShippingList::
             where('tmy59spno', 'test')
-            //->where('tmaddj', null)
             ->select('tmtrdj', 'tmaddj', 'tmy59spno', 'tmcars', 'cars_na', 'tman8', 'tmalph', 'tm1in1', 'dltm_na', 'tmalph1')
             ->first();
 

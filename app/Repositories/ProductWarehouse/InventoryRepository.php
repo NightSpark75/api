@@ -99,7 +99,7 @@ class InventoryRepository extends Repository
      * @param string $date
      * @return array
      */
-    public function getInventoryList($date)
+    public function getInventoryList($user, $date)
     {
         $list = DB::select("
             select a.pjcyno cyno
@@ -108,11 +108,11 @@ class InventoryRepository extends Repository
                     and (exists (
                         select * from mpm_inventory_m m 
                             where a.pjcyno = m.cyno
-                                and ((duser = '106013' and state in ('Y')))
+                                and ((duser = '$user' and state in ('Y')))
                     ) or (
                         select count(*) from mpm_inventory_m m
                             where a.pjcyno = m.cyno
-                                and ((duser <> '106013' and state = 'Y') or state = 'E')
+                                and ((duser <> '$user' and state = 'Y') or state = 'E')
                     ) = 0)
                 group by pjcyno
                     having count(pjcyno) <> (

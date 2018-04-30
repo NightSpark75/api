@@ -16,6 +16,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+use DB;
 use Exception;
 use App\Models\ProductWarehouse\ShippingList;
 use App\Repositories\ProductWarehouse\ShippingListRepository;
@@ -81,10 +82,10 @@ class ShippingListRepositoryTest extends TestCase
     public function test_savePieces()
     {
         //arrange
-        $spno = 'test';
-        $date = '';
-        $user = '';
-        $pieces = '';
+        $date = '20180426';
+        $user = str_random(6);
+        $pieces = rand(1, 10);
+        $spno = str_random(6);
 
         //act
         $actual = $this->target->savePieces($spno, $date, $user, $pieces);

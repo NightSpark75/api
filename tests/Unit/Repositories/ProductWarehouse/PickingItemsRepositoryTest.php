@@ -16,6 +16,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+use DB;
 use Exception;
 use App\Models\ProductWarehouse\PickingItems;
 use App\Repositories\ProductWarehouse\PickingItemsRepository;
@@ -50,23 +51,35 @@ class PickingItemsRepositoryTest extends TestCase
     public function test_getPickingItems()
     {
         // arrange
-        $first = PickingItems::first();
-        $stop = $first->psstop;
-        $date = $first->psaddj;
-        $expected = 
-            PickingItems::where('psaddj', $date)
-                ->where('psstop', $stop)
-                ->select('psicu', 'psaddj', 'psstop', 'pslocn', 'psrmk', 'pslitm', 'pslotn', 'pssoqs', 'pspqoh', 'psuom')
-                ->orderBy('psseq')
-                ->orderBy('pslocn')
-                ->orderBy('psrmk')
-                ->orderBy('pslitm')
-                ->get();
+        $date = '20180426';
+        $user = str_random(5);
+        $stop = DB::selectOne("
+            select psstop
+                from jdv_f5942520 
+                where psaddj = to_date('$date', 'YYYYMMDD')
+                group by psstop
+        ")->psstop;
+        $picking = DB::select("
+            select *
+                from jdv_f5942520
+                where psstop = '$stop'
+                    and psaddj = to_date('$date', 'YYYYMMDD')
+        ");
+
+        $rmk = trim($picking[0]->psrmk);
+        $litm = trim($picking[0]->pslitm);
+        $lotn = trim($picking[0]->pslotn);
+        $expected = count($picking) - 1;
+        
         // act
+        DB::insert("
+            insert into mpm_picking_d
+                values (trim('$stop'), $date, '$rmk', '$litm', '$lotn', '$user', sysdate)
+        ");
         $actual = $this->target->getPickingItems($stop, $date);
 
         // assert
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals($expected, count($actual));
     }
 
     /**
@@ -75,12 +88,24 @@ class PickingItemsRepositoryTest extends TestCase
     public function test_pickup()
     {
         // arrange
-        $stop = '';
-        $date = '';
-        $user = '';
-        $rmk = '';
-        $litm = '';
-        $lotn = '';
+        $date = '20180426';
+        $user = str_random(5);
+        $stop = DB::selectOne("
+            select psstop
+                from jdv_f5942520 
+                where psaddj = to_date('$date', 'YYYYMMDD')
+                group by psstop
+        ")->psstop;
+        $picking = DB::select("
+            select *
+                from jdv_f5942520
+                where psstop = '$stop'
+                    and psaddj = to_date('$date', 'YYYYMMDD')
+        ");
+
+        $rmk = trim($picking[0]->psrmk);
+        $litm = trim($picking[0]->pslitm);
+        $lotn = trim($picking[0]->pslotn);
         
         // act
         $actual = $this->target->pickup($stop, $date, $rmk, $litm, $lotn, $user);

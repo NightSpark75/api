@@ -45,7 +45,7 @@ class InventoryService {
         $list = [];
         $current = $this->inventoryRepository->getCurrent($user);
         if (!$current) {
-            $list = $this->inventoryRepository->getInventoryList($date);
+            $list = $this->inventoryRepository->getInventoryList($user, $date);
         }
         return compact('current', 'list');
     }
