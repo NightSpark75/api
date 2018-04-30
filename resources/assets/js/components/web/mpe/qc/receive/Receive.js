@@ -16,6 +16,7 @@ export default class Receive extends React.Component {
       barcode: '',
       msg: '',
       msgType: '',
+      post: false,
     }
   }
 
@@ -44,7 +45,12 @@ export default class Receive extends React.Component {
     let barcode = e.target.value
     this.setState({ barcode: barcode });
     if (barcode.length === 8) {
-      this.checkBarcode(barcode);
+      if (!this.state.post) {
+        this.setState({receive_list: []}
+        , () => this.checkBarcode(barcode))
+      } else {
+        this.checkBarcode(barcode)
+      }
     }
   }
 
@@ -85,6 +91,7 @@ export default class Receive extends React.Component {
       barcode: '',
       msgType: 'success',
       msg: '[' + item.barcode + ']' + item.partno + ' 已領用!',
+      post: true,
     });
   }
 
@@ -117,6 +124,8 @@ export default class Receive extends React.Component {
               barcode: '',
               msgType: 'success',
               msg: '已完成領料過帳!',
+              receive_list: response.data.list,
+              post: false,
             });
             console.log(response.data);
           } else {
@@ -141,7 +150,7 @@ export default class Receive extends React.Component {
   }
 
   render() {
-    const { barcode, barcode_list, receive, receive_list, msg, msgType } = this.state;
+    const { barcode, barcode_list, receive, receive_list, msg, msgType, post } = this.state
     return (
       <div>
         <div className="box" style={{ marginTop: '10px', marginBottom: '10px' }}>
@@ -153,7 +162,12 @@ export default class Receive extends React.Component {
             </div>
             <div className="level-right">
               <div className="level-item">
-                <button className="button is-success" disabled={receive_list.length === 0} onClick={this.goPosting.bind(this)}>領料過帳</button>
+                <button className="button is-success" 
+                  disabled={receive_list.length === 0 || !post} 
+                  onClick={this.goPosting.bind(this)}
+                >
+                  領料過帳
+                </button>
               </div>
             </div>
           </div>
@@ -210,7 +224,9 @@ export default class Receive extends React.Component {
                   <td>{item.opvl}</td>
                   <td>{item.predate}</td>
                   <td>
-                    <button className="button is-danger" onClick={this.removeReceive.bind(this, item)}>移除</button>
+                    {post &&
+                      <button className="button is-danger" onClick={this.removeReceive.bind(this, item)}>移除</button>
+                    }
                   </td>
                 </tr>
               </tbody>

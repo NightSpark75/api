@@ -58,7 +58,7 @@ class ReceiveRepository
 
     public function posting($receive_list) 
     {
-        
+        $barcodeList = [];
         try{
             DB::transaction( function () use($receive_list) {
                 $user = auth()->user()->id;
@@ -124,9 +124,19 @@ class ReceiveRepository
                 }
             });
             DB::commit();
+            for ($i = 0; $i < count($receive_list); $i++) {
+                $item = $receive_list[$i];
+                array_push($barcodeList, '\''.$item->barcode.'\'');
+            }
+            $where = implode(",",$barcodeList);
+            $list = DB::select("
+                select * from mpe_house_e
+                    where barcode in ($where)
+            ");
             $result = [
                 'result' => true,
                 'msg' => '領用過帳成功!(#0002)',
+                'list' => $list,
             ];
             return $result;
         } catch (Exception $e) {
