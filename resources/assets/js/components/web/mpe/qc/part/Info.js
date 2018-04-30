@@ -1,9 +1,10 @@
 /** 
  * Info.js
  */
-import React from 'react';
-import { Link } from 'react-router';
-import axios from 'axios';
+import React from 'react'
+import { Link } from 'react-router'
+import axios from 'axios'
+import Barcode from './barcode'
 
 export default class Info extends React.Component {
   constructor(props) {
@@ -14,7 +15,13 @@ export default class Info extends React.Component {
       search: '',
       searching: false,
       detail: null,
+      barcode: false,
+      partno: '',
+      batch: '',
     }
+
+    this.showBarcode = this.showBarcode.bind(this)
+    this.hideBarcode = this.hideBarcode.bind(this)
   }
 
   searchChange(e) {
@@ -60,8 +67,20 @@ export default class Info extends React.Component {
     this.setState({ detail: null })
   }
 
+  showBarcode(item) {
+    this.setState({ 
+      barcode: true,
+      partno: item.partno,
+      batch: item.batch,
+    })
+  }
+
+  hideBarcode() {
+    this.setState({ barcode: false})
+  }
+
   render() {
-    const { info, search, searching, detail } = this.state;
+    const { info, search, searching, detail, barcode, partno, batch } = this.state;
     let loading = searching ? 'is-loading' : '';
     let show = detail ? 'is-active' : '';
     return (
@@ -83,7 +102,7 @@ export default class Info extends React.Component {
                   onClick={this.getInfo.bind(this)}
                 >
                   查詢
-                                </button>
+                </button>
               </div>
             </div>
           </div>
@@ -92,7 +111,8 @@ export default class Info extends React.Component {
           <table className="table is-bordered is-hoverable is-fullwidth">
             <thead>
               <tr>
-                <td width="60"></td>
+                <td width="90">料品資訊</td>
+                <td width="90">條碼資訊</td>
                 <td width="80">料號</td>
                 <td>批號</td>
                 <td>品名</td>
@@ -110,6 +130,13 @@ export default class Info extends React.Component {
                     <button className="button" onClick={this.showDetail.bind(this, item)}>
                       <span className="icon is-small">
                         <i className="fa fa-info"></i>
+                      </span>
+                    </button>
+                  </td>
+                  <td>
+                    <button className="button" onClick={this.showBarcode.bind(this, item)}>
+                      <span className="icon is-small">
+                        <i className="fas fa-list"></i>
                       </span>
                     </button>
                   </td>
@@ -148,6 +175,9 @@ export default class Info extends React.Component {
               ))}
             </tbody>
           </table>
+        }
+        {barcode && 
+          <Barcode partno={partno} batch={batch} close={this.hideBarcode}/>
         }
         {detail &&
           <div className={"modal " + show}>

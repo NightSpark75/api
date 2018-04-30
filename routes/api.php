@@ -198,6 +198,7 @@ Route::group(['prefix' => 'web/mpe', 'namespace' => 'MPE'], function () {
             Route::post('partno', 'DocumentController@searchByPartno');
             Route::post('batch', 'DocumentController@searchByBatch');
             Route::get('read/{doc}/{partno}/{batch}/{file_id}', 'DocumentController@read');
+            Route::get('barcode/list/{partno}/{batch}', 'DocumentController@barcodeList');
         });
     });
 });

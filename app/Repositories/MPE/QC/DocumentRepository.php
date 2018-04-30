@@ -164,4 +164,14 @@ class DocumentRepository
         }
         
     }
+
+    public function barcodeList($partno, $batch)
+    {
+        $list = DB::select("
+            select barcode, partno, batch, opdate, opvl, buydate, valid
+                from mpe_house_e
+                where partno = '$partno' and batch= '$batch' and code = '01'
+        ");
+        return $list;
+    }
 }   

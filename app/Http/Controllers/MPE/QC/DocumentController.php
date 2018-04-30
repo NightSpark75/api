@@ -78,4 +78,10 @@ class DocumentController extends Controller
         $result = $this->doc->getFileSecurity($doc, $partno, $batch, $file_id);
         return $result;
     }
+
+    public function barcodeList($partno, $batch)
+    {
+        $result = $this->doc->barcodeList($partno, $batch);
+        return $result;
+    }
 }
