@@ -395,7 +395,7 @@ class PreworkRepository
             //$params['empno'] = $this->formatNo($params['empno']);
             DB::insert("
                 insert into mpb_order_tw 
-                    values (:sno, :psno, :empno, '3', sysdate)
+                    values (:sno, :psno, :empno, '3', sysdate, 'N', 'N', 'N', 'N')
             ", $params);
             $result = [
                 'result' => true,
