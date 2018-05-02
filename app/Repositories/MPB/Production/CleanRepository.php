@@ -241,7 +241,7 @@ class CleanRepository
             $params['psno'] = $this->getFirstPsno($params['sno']);
             DB::insert("
                 insert into mpb_order_tw 
-                    values (:sno, :psno, :empno, null, sysdate, 'N', 'N', 'Y', 'N')
+                    values (:sno, :psno, :empno, '2', sysdate)
             ", $params);
             $result = [
                 'result' => true,
