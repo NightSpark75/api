@@ -22,6 +22,7 @@ use DB;
  */
 class PickingListRepository extends Repository
 {   
+    private $jdv_f594921 = 'jdv_f594921';
     /**
      * Specify Model class name
      *
@@ -36,7 +37,7 @@ class PickingListRepository extends Repository
     {
         $current = DB::selectOne("
             select j.sticu, trim(j.ststop) ststop, j.staddj
-                from jdv_f594921 j, mpm_picking_m m
+                from $jdv_f594921 j, mpm_picking_m m
                 where trim(j.ststop) = m.stop and j.staddj = to_date(m.addj, 'YYYYMMDD')
                     and m.duser = '$user' and m.addj = $date
                     and m.state = 'Y'
@@ -54,7 +55,7 @@ class PickingListRepository extends Repository
     {
         $list = DB::select("
             select j.sticu, trim(j.ststop) ststop, j.staddj
-                from jdv_f594921 j
+                from $jdv_f594921 j
                 where j.staddj = to_date($date, 'YYYYMMDD') and j.stky6 is null
                     and (exists (
                         select * from mpm_picking_m m 
@@ -94,7 +95,7 @@ class PickingListRepository extends Repository
     {
         $check = DB::selectOne("
             select count(j.ststop) n
-                from jdv_f594921 j, mpm_picking_m m
+                from $jdv_f594921 j, mpm_picking_m m
                 where trim(j.ststop) = m.stop
                     and j.staddj = to_date(m.addj, 'YYYYMMDD')
                     and j.stky6 is null

@@ -21,6 +21,8 @@ use App\Repositories\Repository;
  */
 class InventoryRepository extends Repository
 {   
+    private $jt4141a = 'jt4141a';
+    //private $jt4141a = 'proddta.jt4141A@JDBPRD.STANDARD.COM.TW';
     /**
      * Specify Model class name
      *
@@ -35,7 +37,7 @@ class InventoryRepository extends Repository
     {
         $current = DB::selectOne("
             select a.pjcyno
-                from proddta.jt4141A@JDBPRD.STANDARD.COM.TW a, mpm_inventory_m m
+                from $jt4141a a, mpm_inventory_m m
                 where a.pjcyno = m.cyno
                     and m.duser = '$user' and m.state = 'Y'
         ");
@@ -103,7 +105,7 @@ class InventoryRepository extends Repository
     {
         $list = DB::select("
             select a.pjcyno cyno
-                from proddta.jt4141A@JDBPRD.STANDARD.COM.TW a 
+                from $jt4141a a 
                 where to_char(to_date(substr(a.pjcsdj,2,5),'YYDDD'),'YYYYMMDD') = '$date'
                     and (exists (
                         select * from mpm_inventory_m m 
@@ -141,7 +143,7 @@ class InventoryRepository extends Repository
                     a.pjtqoh tqoh, --庫存量
                     a.pjuom1 uom1,  --庫存單位
                     a.pjtqoh amount
-                from proddta.jt4141A@JDBPRD.STANDARD.COM.TW a
+                from $jt4141a a
                 where pjcyno = '$cyno' 
                     and not exists (
                         select cyno
@@ -164,7 +166,7 @@ class InventoryRepository extends Repository
     {
         $items = DB::selectOne("
             select sum(case when locn is null then 1 else 0 end) items 
-                from proddta.jt4141A@JDBPRD.STANDARD.COM.TW a, mpm_inventory_d b
+                from $jt4141a a, mpm_inventory_d b
                 where a.pjcyno = '$cyno'
                     and trim(a.pjcyno) = b.cyno(+) and trim(a.pjlocn) = b.locn(+) 
                     and trim(a.pjlitm) = b.litm(+) and trim(a.pjlotn) = b.lotn(+)

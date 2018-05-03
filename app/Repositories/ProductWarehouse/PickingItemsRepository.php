@@ -21,6 +21,8 @@ use DB;
  */
 class PickingItemsRepository extends Repository
 {       
+    private $jdv_f5942520 = 'jdv_f5942520';
+
     /**
      * Specify Model class name
      *
@@ -44,7 +46,7 @@ class PickingItemsRepository extends Repository
             select j.psicu, j.psaddj, 
                     trim(j.psstop) psstop, trim(j.pslocn) pslocn, trim(j.psrmk) psrmk, trim(j.pslitm) pslitm, trim(j.pslotn) pslotn, 
                     j.pssoqs, j.pspqoh, j.psuom, j.psseq
-                from jdv_f5942520 j
+                from $jdv_f5942520 j
                 where j.psstop = '$stop' and j.psaddj = to_date($date, 'YYYYMMDD')
                     and not exists (
                         select stop
