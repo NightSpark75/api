@@ -21,8 +21,8 @@ use App\Repositories\Repository;
  */
 class InventoryRepository extends Repository
 {   
-    private $jt4141a = 'jt4141a';
-    //private $jt4141a = 'proddta.jt4141A@JDBPRD.STANDARD.COM.TW';
+    //private $jt4141a = 'jt4141a';
+    private $jt4141a = 'proddta.jt4141A@JDBPRD.STANDARD.COM.TW';
     /**
      * Specify Model class name
      *
