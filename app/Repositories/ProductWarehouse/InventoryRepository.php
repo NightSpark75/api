@@ -21,8 +21,8 @@ use App\Repositories\Repository;
  */
 class InventoryRepository extends Repository
 {   
-    //private $jt4141a = 'jt4141a';
     private $jt4141a = 'proddta.jt4141A@JDBPRD.STANDARD.COM.TW';
+
     /**
      * Specify Model class name
      *
@@ -35,6 +35,7 @@ class InventoryRepository extends Repository
 
     public function getCurrent($user)
     {
+        $jt4141a = $this->jt4141a;
         $current = DB::selectOne("
             select a.pjcyno
                 from $jt4141a a, mpm_inventory_m m
@@ -103,6 +104,7 @@ class InventoryRepository extends Repository
      */
     public function getInventoryList($user, $date)
     {
+        $jt4141a = $this->jt4141a;
         $list = DB::select("
             select a.pjcyno cyno
                 from $jt4141a a 
@@ -134,6 +136,7 @@ class InventoryRepository extends Repository
      */
     public function getInventoryItem($cyno)
     {
+        $jt4141a = $this->jt4141a;
         $item = DB::selectOne("
             select  a.pjcyno cyno, --盤點號碼
                     a.pjcsdj csdj, --盤點日期
@@ -164,6 +167,7 @@ class InventoryRepository extends Repository
      */
     public function checkFinished($cyno)
     {
+        $jt4141a = $this->jt4141a;
         $items = DB::selectOne("
             select sum(case when locn is null then 1 else 0 end) items 
                 from $jt4141a a, mpm_inventory_d b

@@ -35,6 +35,7 @@ class PickingListRepository extends Repository
 
     public function getCurrent($user, $date)
     {
+        $jdv_f594921 = $this->jdv_f594921;
         $current = DB::selectOne("
             select j.sticu, trim(j.ststop) ststop, j.staddj
                 from $jdv_f594921 j, mpm_picking_m m
@@ -53,6 +54,7 @@ class PickingListRepository extends Repository
      */
     public function getPickingList($user, $date)
     {
+        $jdv_f594921 = $this->jdv_f594921;
         $list = DB::select("
             select j.sticu, trim(j.ststop) ststop, j.staddj
                 from $jdv_f594921 j
@@ -93,6 +95,7 @@ class PickingListRepository extends Repository
      */
     public function checkPicking($stop, $date, $user)
     {
+        $jdv_f594921 = $this->jdv_f594921;
         $check = DB::selectOne("
             select count(j.ststop) n
                 from $jdv_f594921 j, mpm_picking_m m

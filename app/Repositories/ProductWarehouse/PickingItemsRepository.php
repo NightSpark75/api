@@ -42,6 +42,7 @@ class PickingItemsRepository extends Repository
      */
     public function getPickingItems($stop, $date)
     {
+        $jdv_f5942520 = $this->jdv_f5942520;
         $list = DB::select("
             select j.psicu, j.psaddj, 
                     trim(j.psstop) psstop, trim(j.pslocn) pslocn, trim(j.psrmk) psrmk, trim(j.pslitm) pslitm, trim(j.pslotn) pslotn, 
