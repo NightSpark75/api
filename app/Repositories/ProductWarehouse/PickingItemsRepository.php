@@ -46,7 +46,10 @@ class PickingItemsRepository extends Repository
         $list = DB::select("
             select j.psicu, j.psaddj, 
                     trim(j.psstop) psstop, trim(j.pslocn) pslocn, trim(j.psrmk) psrmk, trim(j.pslitm) pslitm, trim(j.pslotn) pslotn, 
-                    j.pssoqs, j.pspqoh, j.psuom, j.psseq
+                    j.pssoqs, j.pspqoh, j.psuom, j.psseq,
+                    pk_mpm.fu_tag1(j.pslitm) tag1,
+                    pk_mpm.fu_tag2(j.pslitm) tag2,
+                    pk_mpm.fu_tag3(j.pslitm) tag3
                 from $jdv_f5942520 j
                 where trim(j.psstop) = '$stop' and j.psaddj = to_date($date, 'YYYYMMDD')
                     and not exists (
