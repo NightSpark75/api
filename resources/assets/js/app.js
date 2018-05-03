@@ -41,6 +41,7 @@ import Menu1 from "./components/test/menu1"
 import page1 from "./components/test/page1"
 import page2 from "./components/test/page2"
 import page3 from "./components/test/page3"
+import Calendar from './components/test/calendar'
 
 const app = document.getElementById('app')
 
@@ -55,6 +56,7 @@ ReactDOM.render(
         <Route path="page2" component={page2}></Route>
         <Route path="page3" component={page3}></Route>
       </Route>
+      <Route path="calendar" component={Calendar}></Route>
     </Route>
     <Route path="s" component={SinglePage}>
       <Route path="file/upload/:store_type/:file_id/:user_id" component={Upload}></Route>

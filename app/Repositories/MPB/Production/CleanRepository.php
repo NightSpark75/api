@@ -218,7 +218,7 @@ class CleanRepository
         $member = DB::select("
             select t.*, stdadm.pk_hra.fu_emp_name(t.empno) ename
                 from mpb_order_tw t
-                where t.sno = :sno and t.psno = :psno and t.clean = 'Y'
+                where t.sno = :sno and t.psno = :psno
         ", [
             'sno' => $sno,
             'psno' => $psno,
@@ -265,7 +265,7 @@ class CleanRepository
             $params['psno'] = $this->getFirstPsno($params['sno']);
             DB::delete("
                 delete from mpb_order_tw 
-                    where sno = :sno and psno = :psno and empno = :empno and clean = 'Y'
+                    where sno = :sno and psno = :psno and empno = :empno
             ", $params);
             $result = [
                 'result' => true,
