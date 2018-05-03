@@ -56,9 +56,10 @@ class PickingListRepository extends Repository
     {
         $jdv_f594921 = $this->jdv_f594921;
         $list = DB::select("
-            select j.sticu, trim(j.ststop) ststop, j.staddj
+            select j.stky1, j.sticu, trim(j.ststop) ststop, j.staddj
                 from $jdv_f594921 j
                 where j.staddj = to_date($date, 'YYYYMMDD') and j.stky6 is null
+                    and length(trim(ststop)) = 2
                     and (exists (
                         select * from mpm_picking_m m 
                             where j.staddj = to_date(m.addj, 'YYYYMMDD')
@@ -70,6 +71,23 @@ class PickingListRepository extends Repository
                                 and trim(ststop) = m.stop
                                 and ((duser <> '106013' and state = 'Y') or state = 'E')
                     ) = 0)
+            union
+            select j.stky1, j.sticu, trim(j.stlitm) ststop, j.staddj
+                from $jdv_f594921 j
+                where j.staddj = to_date($date, 'YYYYMMDD') and j.stky6 is null
+                    and length(trim(ststop)) = 3
+                    and (exists (
+                        select * from mpm_picking_m m 
+                            where j.staddj = to_date(m.addj, 'YYYYMMDD')
+                                and trim(stlitm) = m.stop
+                                and ((duser = '106013' and state in ('Y')))
+                    ) or (
+                        select count(*) from mpm_picking_m m
+                            where j.staddj = to_date(m.addj, 'YYYYMMDD')
+                                and trim(stlitm) = m.stop
+                                and ((duser <> '106013' and state = 'Y') or state = 'E')
+                    ) = 0)
+            order by 1
         ");
         return $list;
     }
@@ -99,7 +117,9 @@ class PickingListRepository extends Repository
         $check = DB::selectOne("
             select count(j.ststop) n
                 from $jdv_f594921 j, mpm_picking_m m
-                where trim(j.ststop) = m.stop
+                where 
+                    ((length(trim(j.ststop)) = 2 and trim(j.ststop) = m.stop) 
+                    or (length(trim(j.ststop)) = 3 and trim(j.stlitm) = m.stop))
                     and j.staddj = to_date(m.addj, 'YYYYMMDD')
                     and j.stky6 is null
                     and m.stop = '$stop'

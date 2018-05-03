@@ -51,7 +51,7 @@ class PickingItemsRepositoryTest extends TestCase
     public function test_getPickingItems()
     {
         // arrange
-        $date = '20180426';
+        $date = '20180503';
         $user = str_random(5);
         $stop = DB::selectOne("
             select psstop
@@ -88,7 +88,7 @@ class PickingItemsRepositoryTest extends TestCase
     public function test_pickup()
     {
         // arrange
-        $date = '20180426';
+        $date = '20180503';
         $user = str_random(5);
         $stop = DB::selectOne("
             select psstop

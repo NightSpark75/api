@@ -175,6 +175,7 @@ class InventoryRepositoryTest extends TestCase
         $expected = $cyno;
 
         // act
+        DB::delete("delete mpm_inventory_m");
         $actual = $this->target->startInventory($cyno, $user);
         $actual2 = DB::selectOne("select * from mpm_inventory_m")->cyno;    
 
