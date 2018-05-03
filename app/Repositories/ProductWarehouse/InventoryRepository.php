@@ -138,14 +138,15 @@ class InventoryRepository extends Repository
     {
         $jt4141a = $this->jt4141a;
         $item = DB::selectOne("
-            select  a.pjcyno cyno, --盤點號碼
-                    a.pjcsdj csdj, --盤點日期
-                    trim(a.pjlocn) locn, --儲位
-                    trim(a.pjlitm) litm, --料號
-                    trim(a.pjlotn) lotn, --批號
-                    a.pjtqoh tqoh, --庫存量
-                    a.pjuom1 uom1,  --庫存單位
-                    a.pjtqoh amount
+            select  trim(a.pjcyno) cyno,
+                    trim(a.pjlocn) locn,
+                    trim(a.pjlitm) litm,
+                    trim(a.pjlotn) lotn,
+                    trim(a.pjtqoh) tqoh,
+                    trim(a.pjuom1) uom1,
+                    pk_mpm.fu_tag1(a.pjlitm) tag1,
+                    pk_mpm.fu_tag2(a.pjlitm) tag2,
+                    pk_mpm.fu_tag3(a.pjlitm) tag3
                 from $jt4141a a
                 where pjcyno = '$cyno' 
                     and not exists (
