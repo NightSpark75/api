@@ -144,6 +144,7 @@ class InventoryRepository extends Repository
                     trim(a.pjlotn) lotn,
                     trim(a.pjtqoh) tqoh,
                     trim(a.pjuom1) uom1,
+                    (a.pjtqoh / 10000) amount,
                     pk_mpm.fu_tag1(a.pjlitm) tag1,
                     pk_mpm.fu_tag2(a.pjlitm) tag2,
                     pk_mpm.fu_tag3(a.pjlitm) tag3
@@ -153,7 +154,7 @@ class InventoryRepository extends Repository
                         select cyno
                             from mpm_inventory_d i
                             where i.cyno = '$cyno'
-                                and trim(a.pjlocn )= i.locn and trim(a.pjlitm) = i.litm and trim(a.pjlotn) = i.lotn
+                                and trim(a.pjlocn) = i.locn and trim(a.pjlitm) = i.litm and trim(a.pjlotn) = i.lotn
                     )
                 order by pjlocn, pjlitm, pjlotn
         ");
