@@ -44,8 +44,6 @@ export default class Pointlog extends React.Component {
     }
 
     this.refreash = this.refreash.bind(this)
-    this.showImage = this.showImage.bind(this)
-    this.hideImage = this.hideImage.bind(this)
   }
 
   init() {
@@ -128,17 +126,9 @@ export default class Pointlog extends React.Component {
     window.location = '/auth/web/menu'
   }
 
-  showImage() {
-    this.setState({showImage: true})
-  }
-
-  hideImage() {
-    this.setState({showImage: false})
-  }
-
   render() {
     let today = new Date()
-    const { point_info, scan, unrecorded, mcu, floor, showImage } = this.state
+    const { point_info, scan, unrecorded, mcu, floor } = this.state
     return (
       <div>
         <div className="box" style={{ marginTop: '10px', marginBottom: '10px' }}>
@@ -207,7 +197,7 @@ export default class Pointlog extends React.Component {
               </thead>
               <tbody>
                 {unrecorded.map((item) => (
-                  getUnrecorded(item, mcu, floor, this.showImage, this.hideImage, item.point_type, showImage)
+                  getUnrecorded(item, mcu, floor, item.point_type)
                 ))}
               </tbody>
             </table>
@@ -258,7 +248,7 @@ export default class Pointlog extends React.Component {
   }
 }
 
-function getUnrecorded(item, mcu, floor, show, hide, type, showImage) {
+function getUnrecorded(item, mcu, floor, type) {
   if (item.mcu === mcu && item.floor === floor) {
     return (
       <tr key={item.point_no}>
@@ -266,7 +256,13 @@ function getUnrecorded(item, mcu, floor, show, hide, type, showImage) {
         <td>{item.mo}</td>
         <td>{item.af}</td>
         <td>{item.ev}</td>
-        <td>{imageButton(show, hide, mcu, floor, type, showImage)}</td>
+        <td>
+          <Image 
+            mcu={mcu}
+            floor={floor}
+            type={type}
+          />
+        </td>
       </tr>
     )
   }
@@ -297,28 +293,5 @@ function getFloorButton(item, floor, click) {
     >
       {item}
     </span>
-  )
-}
-
-function imageButton(show, hide, mcu, floor, type, showImage) {
-  return (
-    <div>
-      <button
-        className="button"
-        onClick={show}
-      >
-        <span className="icon">
-          <i className="fas fa-map-marker-alt"></i>
-        </span>
-      </button>
-      {showImage &&
-        <Image 
-          hide={hide}
-          mcu={mcu}
-          floor={floor}
-          type={type}
-        />
-      }
-    </div>
   )
 }
