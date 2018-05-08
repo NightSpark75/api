@@ -373,7 +373,7 @@ export default class Wetestlog extends React.Component {
     } = this.state
     const { mo, af, ev } = this.state
     const isComplete = !(this.state.log_data === null)
-    let today = new Date(2018, 3, 23, 17, 5, 25)
+    let today = new Date()
     let date = today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate() + ' '
     let time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds()
     let showHumi

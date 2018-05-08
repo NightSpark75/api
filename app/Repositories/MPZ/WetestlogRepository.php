@@ -195,11 +195,12 @@ class WetestlogRepository
         $eh = $params[$k_eh];
         $devia = $params[$k_devia];
         $hde = $params[$k_hde];
+        $zero = $params['zero'];
         $str = "
             duser = '$user', ddate = sysdate,
             $k_hum = $hum, $k_max = $max, $k_min = $min,
             $k_ed = '$ed', $k_eh = '$eh', $k_devia = '$devia', $k_hde = '$hde',
-            $k_time = $time, $k_user = '$user'
+            $k_time = $time, $k_user = '$user', zero = '$zero'
         ";
         if ($this->type === 'mo') {
             $rmk = $params['mo_rmk'];
