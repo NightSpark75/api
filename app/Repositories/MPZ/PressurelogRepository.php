@@ -191,8 +191,8 @@ class PressurelogRepository
         $k_hde = $this->type.'_hde';
         $k_time = $this->type.'_time';
         $k_user = $this->type.'_user';
-        $pa = (int)$params[$k_pa];
-        $aq = (int)$params[$k_aq];
+        $pa = $params[$k_pa]?$params[$k_pa]:'null';
+        $aq = $params[$k_aq]?$params[$k_aq]:'null';
         $ed = $params[$k_ed];
         $ep = $params[$k_ep];
         $devia = $params[$k_devia];
