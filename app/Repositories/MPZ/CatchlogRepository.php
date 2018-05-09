@@ -184,7 +184,7 @@ class CatchlogRepository
                     DB::commit();
                 }
                 if ($params['deviation'] === 'Y' || $params['hde'] === 'Y') {
-                    //$this->mailhandler($params);
+                    $this->mailhandler($params);
                 }
             });
             $result = [
