@@ -97,8 +97,8 @@ class CatchlogRepository
     {
         $count = DB::selectOne("
             select sum($num) as n
-            from mpz_catchlog
-            where ldate like '$month%' and point_no = '$point_no' and ldate <> pk_date.fu_number(sysdate)
+                from mpz_catchlog
+                where ldate like '$month%' and point_no = '$point_no' and ldate <> pk_date.fu_number(sysdate)
         ");
         return $count->n;
     }
@@ -184,7 +184,7 @@ class CatchlogRepository
                     DB::commit();
                 }
                 if ($params['deviation'] === 'Y' || $params['hde'] === 'Y') {
-                    $this->mailhandler($params);
+                    //$this->mailhandler($params);
                 }
             });
             $result = [

@@ -38,22 +38,25 @@ export default class Calendar extends React.Component {
 
     //   }
     // }
-    
+
   }
 
   checkWidth() {
-    const width = this.refs.container.offsetWidth
-    const height = this.refs.container.offsetHeight
-    if (width <= 768) {
-      this.setState({ show: false })
-    } else {
-      this.setState({ show: true }, () => this.resetWidth())
+    const { calendar } = this.refs
+    if (calendar) {
+      const width = this.refs.calendar.offsetWidth
+      const height = this.refs.calendar.offsetHeight
+      if (width <= 768) {
+        this.setState({ show: false })
+      } else {
+        this.setState({ show: true }, () => this.resetWidth())
+      }
     }
   }
 
   resetWidth() {
-    const width = this.refs.container.offsetWidth
-    const height = this.refs.container.offsetWidth
+    const width = this.refs.calendar.offsetWidth
+    const height = this.refs.calendar.offsetWidth
     const leftLayout = (width / 10) * 2
     const rightLayout = (width / 10) * 8
     this.setState({

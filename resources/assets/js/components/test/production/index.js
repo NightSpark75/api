@@ -22,21 +22,22 @@ export default class Production extends React.Component {
     }
     this.checkWidth = this.checkWidth.bind(this)
     this.resetWidth = this.resetWidth.bind(this)
-    this.moveBar = this.moveBar.bind(this)
   }
   componentDidMount() {
-    console.log('did mount')
     this.resetWidth()
     window.addEventListener("resize", this.checkWidth);
   }
 
   checkWidth() {
-    const width = this.refs.container.offsetWidth
-    const height = this.refs.container.offsetHeight
-    if (width <= 768) {
-      this.setState({ show: false })
-    } else {
-      this.setState({ show: true }, () => this.resetWidth())
+    const { container } = this.refs
+    if (container) {
+      const width = this.refs.container.offsetWidth
+      const height = this.refs.container.offsetHeight
+      if (width <= 768) {
+        this.setState({ show: false })
+      } else {
+        this.setState({ show: true }, () => this.resetWidth())
+      }
     }
   }
 
@@ -56,7 +57,7 @@ export default class Production extends React.Component {
   render() {
     return (
       <div ref="container" className="widescreen-only"
-        //onClick={(event) => {console.log(event.pageX)}}
+      //onClick={(event) => {console.log(event.pageX)}}
       >
         {this.state.show &&
           <div>

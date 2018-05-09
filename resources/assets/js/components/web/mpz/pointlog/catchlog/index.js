@@ -125,7 +125,7 @@ export default class Catchlog extends React.Component {
         catch_num4: data.catch_num4 || '', catch_num5: data.catch_num5 || '', catch_num6: data.catch_num6 || '',
         change1: data.change1, change2: data.change2, change3: data.change3,
         change4: data.change4, change5: data.change5, change6: data.change6, check_lamp: data.check_lamp,
-        rmk: data.rmk || '', discription: data.discription, deviation: data.deviation, urmk: data.urmk || '', hde: data.hde,
+        rmk: data.rmk || '', discription: data.discription || '', deviation: data.deviation, urmk: data.urmk || '', hde: data.hde,
       }, () => { this.formCheck() })
     }
   }
@@ -252,7 +252,7 @@ export default class Catchlog extends React.Component {
   }
 
   checkFillTime() {
-    let today = new Date()
+    let today = new Date(2019,1,1,8,0,0)
     let hours = (today.getHours() * 100) + today.getMinutes()
     //let hours = 800
     let { rmk, rule } = this.state
@@ -399,7 +399,7 @@ export default class Catchlog extends React.Component {
     if (lastTotalCount > 0) {
       thisGrowth = (Number(allCount) - Number(lastTotalCount)) / Number(lastTotalCount)
     }
-    let today = new Date()
+    let today = new Date(2019,1,1,8,0,0)
     let date = today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate() + ' '
     let time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds()
     console.log(rule)
