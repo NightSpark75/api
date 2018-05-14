@@ -331,11 +331,15 @@ export default class Catchlog extends React.Component {
 
   checkRequire(item, show, value) {
     const { rule, changeDate, isChecked } = this.state
-    if (operatorHandle(Number(changeDate[item.key]['dday']), rule.CHANGE_REQUEST.cond, rule.CHANGE_REQUEST.val)
-      && show && value === 'N' && !isChecked) {
-      this.pushAlert(item.label + '必須更換')
+    if (item.key === 'change3' || item.key === 'change4') {
+      return
     } else {
-      this.removeAlert(item.label + '必須更換')
+      if (operatorHandle(Number(changeDate[item.key]['dday']), rule.CHANGE_REQUEST.cond, rule.CHANGE_REQUEST.val)
+        && show && value === 'N' && !isChecked) {
+        this.pushAlert(item.label + '必須更換')
+      } else {
+        this.removeAlert(item.label + '必須更換')
+      }
     }
   }
 

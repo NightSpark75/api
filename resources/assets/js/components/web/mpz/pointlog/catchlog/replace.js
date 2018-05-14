@@ -15,7 +15,13 @@ export default class Replace extends React.Component {
                   onChange={onChange}
                 />
                 <span style={{fontSize: '16px', fontWeight: 'bolder'}}>{label}</span>
-                <span style={{marginLeft: '20px'}}>{getChangeDate(changeDate, type, rule)}</span>
+                {label === '捕蚊燈管' || label === '驅蚊燈管' ? 
+                  <span style={{marginLeft: '20px'}}>
+                    <span>上次更換日期：{changeDate[type]['pday']}</span>
+                  </span>
+                :
+                  <span style={{marginLeft: '20px'}}>{getChangeDate(changeDate, type, rule)}</span>
+                }
               </label>
             </div>
           </div>
