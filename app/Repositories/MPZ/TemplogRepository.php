@@ -189,8 +189,8 @@ class TemplogRepository
         $k_hde = $this->type.'_hde';
         $k_time = $this->type.'_time';
         $k_user = $this->type.'_user';
-        $temp = $params[$k_temp];
-        $hum = $params[$k_hum];
+        $temp = $params[$k_temp]?$params[$k_temp]:'null';
+        $hum = $params[$k_hum]?$params[$k_hum]:'null';
         $ed = $params[$k_ed];
         $eth = $params[$k_eth];
         $devia = $params[$k_devia];

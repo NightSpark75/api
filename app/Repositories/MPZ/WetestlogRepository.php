@@ -188,9 +188,9 @@ class WetestlogRepository
         $k_hde = $this->type.'_hde';
         $k_time = $this->type.'_time';
         $k_user = $this->type.'_user';
-        $hum = $params[$k_hum];
-        $max = $params[$k_max];
-        $min = $params[$k_min];
+        $hum = $params[$k_hum]?$params[$k_hum]:'null';
+        $max = $params[$k_max]?$params[$k_max]:'null';
+        $min = $params[$k_min]?$params[$k_min]:'null';
         $ed = $params[$k_ed];
         $eh = $params[$k_eh];
         $devia = $params[$k_devia];
