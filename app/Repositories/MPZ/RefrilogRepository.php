@@ -163,8 +163,7 @@ class RefrilogRepository
 
     private function getCurrent($point_no)
     {
-        $time = date('Hi');
-        $time = '1645';        
+        $time = date('Hi');        
         $rule = $this->getPointRule($point_no);
         if ((int)$rule['MO_START']['val'] <= (int)$time && (int)$rule['MO_OTHER']['val'] >= (int)$time) {
             return 'mo';
