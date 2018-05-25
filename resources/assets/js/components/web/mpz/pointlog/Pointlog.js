@@ -98,7 +98,7 @@ export default class Pointlog extends React.Component {
         return 
       }
     })
-    if (point_no.length > 10) {
+    if (point_no.length > 7) {
       this.componentMsg('記錄點位不存在')
     } else {
       this.componentMsg('')
