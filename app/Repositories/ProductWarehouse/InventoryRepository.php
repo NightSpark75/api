@@ -256,7 +256,7 @@ class InventoryRepository extends Repository
         $list = $this->inventoried($cyno);
         for ($i = 0; $i < count($list); $i++) {
             array_push($content, [
-                $list[$i]->amount * 10000,
+                $list[$i]->amount,
                 '\''.(string) $list[$i]->locn,
                 '\''.(string) $list[$i]->litm,
                 '\''.(string) $list[$i]->lotn,
