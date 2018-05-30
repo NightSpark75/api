@@ -238,7 +238,7 @@ class InventoryRepository extends Repository
                     , to_char(ddate, 'YYYYMMDD HH24:MI:SS') ddate
                 from mpm_inventory_d
                 where cyno = '$cyno'
-                order by locn, litm, lotn
+                order by litm, lotn, locn
         ");
         return $inventoried;
     }
