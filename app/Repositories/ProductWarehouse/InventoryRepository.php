@@ -219,7 +219,8 @@ class InventoryRepository extends Repository
         $check = DB::select("
             select *
                 from mpm_inventory_d
-                where cyno = '$cyno' and duser = '$id'
+                where cyno = '$cyno' 
+                    and (duser = '$id' or '$id' in ('75092'))
         ");
         return count($check) > 0;
     }
