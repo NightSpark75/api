@@ -16,6 +16,7 @@ export default class Info extends React.Component {
     const self = this
     axios.get('/api/web/mpe/qc/doc/barcode/list/' + partno + '/' + batch)
     .then(function (response) {
+      console.log(response.data)
       self.setState({
         list: response.data,
       })
@@ -57,7 +58,7 @@ export default class Info extends React.Component {
                       <td>{item.valid}</td>
                       <td>{item.opdate}</td>
                       <td>{item.opvl}</td>
-                      <td>{item.state === 'N' ? '在庫' : '領用'}</td>
+                      <td>{item.sta === 'N' ? '在庫' : '領用'}</td>
                     </tr>
                   ))}
                 </tbody>
