@@ -220,7 +220,7 @@ class InventoryRepository extends Repository
             select *
                 from mpm_inventory_d
                 where cyno = '$cyno' 
-                    and (duser = '$id' or '$id' in ('75092'))
+                    and (duser = '$id' or '$id' in ('75092', '106018', '83121', '84121'))
         ");
         return count($check) > 0;
     }
