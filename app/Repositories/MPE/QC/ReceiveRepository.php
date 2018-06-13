@@ -49,7 +49,8 @@ class ReceiveRepository
         $barcode = DB::select("
             select barcode, partno, pk_mpe.fu_pname(partno) pname, pk_mpe.fu_ename(partno) ename, batch, opvl, 
                     opdate, valid, buydate, pk_mpe.fu_partno_predate(partno) predate, 
-                    whouse, stor, grid, amt, pk_mpe.fu_get_qc_unit(partno) unit
+                    whouse, stor, grid, amt, pk_mpe.fu_get_qc_unit(partno) unit,
+                    pk_mpe.fu_get_count_qty(code, partno) qty, pk_mpe.fu_get_mate_sfty(partno) sfty
                 from mpe_house_e
                 where sta = 'N' and code = '01'
         ");
@@ -130,7 +131,8 @@ class ReceiveRepository
             }
             $where = implode(",",$barcodeList);
             $list = DB::select("
-                select * from mpe_house_e
+                select e.*, pk_mpe.fu_get_count_qty(code, partno) qty, pk_mpe.fu_get_mate_sfty(partno) sfty 
+                    from mpe_house_e e
                     where barcode in ($where)
             ");
             $result = [

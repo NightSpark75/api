@@ -120,7 +120,6 @@ export default class Receive extends React.Component {
         .then(function (response) {
           if (response.data.result) {
             self.setState({
-              receive_list: [],
               barcode: '',
               msgType: 'success',
               msg: '已完成領料過帳!',
@@ -208,6 +207,7 @@ export default class Receive extends React.Component {
                 <td>開封日期</td>
                 <td>開封後失效日期</td>
                 <td>上次領用日</td>
+                <td>庫存量</td>
                 <td width="92.22"></td>
               </tr>
             </thead>
@@ -223,6 +223,11 @@ export default class Receive extends React.Component {
                   <td>{item.opdate}</td>
                   <td>{item.opvl}</td>
                   <td>{item.predate}</td>
+                  {item.qty < item.sfty ?
+                    <td className='is-danger'>{item.qty + '(' + item.sfty + ')'}</td>
+                  :
+                    <td>{item.qty + '(' + item.sfty + ')'}</td>
+                  }
                   <td>
                     {post &&
                       <button className="button is-danger" onClick={this.removeReceive.bind(this, item)}>移除</button>
