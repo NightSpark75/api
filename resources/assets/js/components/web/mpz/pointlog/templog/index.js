@@ -408,7 +408,7 @@ export default class Templog extends React.Component {
               </td>
               <td>溼度範圍</td>
               <td>
-                {this.getRange(humi_low, humi_low)}
+                {this.getRange(humi_low, humi_high)}
               </td>
             </tr>
             {this.checkTime() === 'mo' &&
