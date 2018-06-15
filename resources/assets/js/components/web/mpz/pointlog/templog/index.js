@@ -322,6 +322,21 @@ export default class Templog extends React.Component {
     this.props.onCancel()
   }
 
+  getRange(low, high) {
+    if (low === '-100' && high !== '100') {
+      return ' ≦ ' + high
+    }
+    if (low !== '-100' && high === '100') {
+      return ' ≧ ' + low
+    }
+    if (low !== '-100' && high === '100') {
+      return low + ' ~ ' + high
+    }
+    if (low === '-100' && high === '100') {
+      return ''
+    }
+  }
+
   render() {
     const { pointInfo } = this.props
     const {
@@ -389,19 +404,11 @@ export default class Templog extends React.Component {
             <tr>
               <td>溫度範圍</td>
               <td>
-                {
-                  (temp_low === 0 || temp_low === '-100' ? '' : temp_low)
-                  + " ~ " +
-                  (temp_high === 0 || temp_high === '100' ? '' : temp_high)
-                }
+                {this.getRange(temp_low, temp_high)}
               </td>
               <td>溼度範圍</td>
               <td>
-                {
-                  (humi_low === 0 || humi_low === '-100' ? '' : humi_low)
-                  + " ~ " +
-                  (humi_high === 0 || humi_high === '100' ? '' : humi_high)
-                }
+                {this.getRange(humi_low, humi_low)}
               </td>
             </tr>
             {this.checkTime() === 'mo' &&

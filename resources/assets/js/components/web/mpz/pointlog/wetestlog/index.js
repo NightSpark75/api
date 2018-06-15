@@ -434,7 +434,7 @@ export default class Wetestlog extends React.Component {
               <td colSpan={3}>
                 {
                   /*(humi_low === '0' || humi_low === '-200' ? '': humi_low) */
-                  " <= " +
+                  " ≦ " +
                   (humi_high === '0' || humi_high === '101' ? '' : humi_high) + ' %'
                 }
               </td>
