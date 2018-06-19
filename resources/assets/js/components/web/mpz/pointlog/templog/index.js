@@ -329,7 +329,7 @@ export default class Templog extends React.Component {
     if (low !== '-100' && high === '100') {
       return ' ≧ ' + low
     }
-    if (low !== '-100' && high === '100') {
+    if (low !== '-100' && high !== '100') {
       return low + ' ~ ' + high
     }
     if (low === '-100' && high === '100') {
