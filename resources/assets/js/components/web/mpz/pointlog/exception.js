@@ -1,7 +1,7 @@
 import React from "react"
 export default class Exception extends React.Component {
   render() {
-    const { changeDate, value, checked, onChange, label, type, rule } = this.props
+    const { value, checked, onChange, label } = this.props
     return (
       <div className="field is-horizontal" onChange={onChange}>
         <div className="field-body">

@@ -376,7 +376,6 @@ export default class Wetestlog extends React.Component {
     let today = new Date()
     let date = today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate() + ' '
     let time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds()
-    let showHumi
     return (
       <div>
         {alertMsg.length > 0 &&

@@ -87,7 +87,7 @@ export default class Pointlog extends React.Component {
 
   pointSearch(point_no) {
     let list = this.state.point
-    list.map((item, index) => {
+    list.map((item) => {
       if (item.point_no === point_no) {
         this.setState({
           point_info: item,

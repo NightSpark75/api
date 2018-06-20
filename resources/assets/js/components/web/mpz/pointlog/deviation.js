@@ -33,9 +33,3 @@ export default class Deviation extends React.Component {
     )
   }
 }
-
-/*
-if (isComplete) {
-  btnSubmit = (<button className="button is-success">今日已完成記錄</button>)
-}
-*/
