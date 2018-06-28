@@ -110,7 +110,7 @@ class ReceiveRepository
                 $today = date('Ymd');
                 DB::update("
                     update mpe_lsa_m
-                        set status = 'R', rdate = $today
+                        set status = 'R', rdate = $today, suser = '$user'
                         where no = :no
                 ", ['no' => $no]);
 
