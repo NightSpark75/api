@@ -230,7 +230,8 @@ class ReceiveRepository
         try {
             DB::update("
                 update mpe_lsa_m
-                    set status = 'S', receive_user = :receive_user
+                    set status = 'S', receive_user = :receive_user,
+                        receive_date = pk_date.fu_number(sysdate)
                     where no = :no and status = 'R'
             ", compact('receive_user', 'no'));
 
