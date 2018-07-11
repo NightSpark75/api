@@ -45,6 +45,11 @@ class RestoreRepository
                 , pk_mpe.fu_get_ldate(he.partno, he.batch, he.whouse, he.stor, he.grid) ldate
             from mpe_house_e he
             where he.code = '04' and he.sta = 'Y'
+                and he.barcode in (
+                    select barcode
+                        from mpe_lsa_e
+                        where status = 'R'
+                )
         ");
 
         return $this->success(['restore' => $restore]);
