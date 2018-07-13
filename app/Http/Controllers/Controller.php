@@ -1,5 +1,9 @@
 <?php
-
+/*alice:
+MPB生產報表
+MPE QA QC
+MPZ 倉管表單
+*/
 namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Bus\DispatchesJobs;
