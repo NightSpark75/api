@@ -20,6 +20,6 @@ class RuntestController extends Controller
     
     public function test()
     {
-        return '123';
+        return 'test';
     }
 }
